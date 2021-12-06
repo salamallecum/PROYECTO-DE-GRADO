@@ -1,0 +1,417 @@
+/*ESTILOS TEMPLATE E-PORTAFOLIO*/
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+    box-sizing: border-box;
+}
+
+/**********ENCABEZADO DE DATOS PERSONALES***************/
+.encabezado{
+    width: 1300px;
+    height: 650px;
+    background-color: #005e6e;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7)
+}
+
+.cardImage{
+    width: 1300px;
+    height: 200px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;   
+    overflow: hidden;
+    position: relative;
+    max-height: 300px;
+}
+
+.imgEncabezadoInfoEstudiante{
+    width: 100%;
+    vertical-align: middle;
+    height: 300px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+.cardInfoPersonal{
+    display: inline-block;
+    height: 480px;
+}
+
+.logoP{
+    width: 1300px;
+    height: 50px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.logoPandora{
+    width: 150px;
+    height: 50px;
+}
+
+.fotoDelEstudiante{
+    width: 250px;
+    height: 300px;
+    box-shadow: 5px 0px 5px rgba(0,0,0,.9)
+}
+
+.informacionPersonal{
+    margin-left: 300px;
+}
+
+.tableDatosP{
+    margin-left: 30px;
+    margin-bottom: 40px;
+    padding-top: 40px;
+    display: inline-block;
+}
+
+.casillaDato td{
+    padding: 10px;
+}
+
+.lblDatos{
+    font-size: 20px;
+    font-weight: bold;
+    font-style: oblique;
+    color: wheat;
+}
+
+.txt_info{
+    font-size: 18px;   
+    color: wheat;
+}
+
+
+/**********PERFIL PROFESIONAL***************/
+.cardPerfProfesional{
+    background-color: #F3E9C3;
+    width: 1300px;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7)
+}
+
+.perfProfesional{
+    padding-top: 10px;
+}
+
+.tituloPerfProfesional{
+    font-weight: bold;
+    font-style: oblique;
+    font-size: 20px;
+    padding-left: 550px;
+}
+
+.descripPerfProfesional{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+/**********GRAFICO DE PERFILAMIENTO PANDORA***************/
+.cardGraficoPerfilamiento{
+    background-color: #F3E9C3;
+    width: 1300px;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7);
+    padding-bottom: 20px;
+}
+
+.grafPerfilamiento{
+    padding-top: 10px;
+}
+
+.tituloGrafPerfilamiento{
+    font-weight: bold;
+    font-style: oblique;
+    font-size: 20px;
+    padding-left: 480px;
+    margin-top: 20px;
+}
+
+/*GRAFICO DE PERFILAMIENTO*/
+.perfPandora{
+    display: inline-flex;
+}
+
+#grafPerfPandora{
+    width: 900px;
+}
+
+.img_perfRol{
+    width: 300px;
+    height: 350px;
+    margin-bottom: 40px;
+}
+
+/**********TRABAJOS DESTACADOS***************/
+.cardTrabajosDestacados{
+    background-color: #F3E9C3;
+    width: 1300px;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7);
+    padding-bottom: 20px;
+}
+
+.trabajosDestacados{
+    padding-top: 10px;
+}
+
+.tituloTrabDestacados{
+    font-weight: bold;
+    font-style: oblique;
+    font-size: 20px;
+    padding-left: 520px;
+    margin-top: 20px;
+}
+
+.cardTrabajoDestacado{
+    background-color: #eecc41;
+    width: 1100px;
+    height: 254px;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-right: 20px;
+    /*box-shadow: 5px 0px 5px rgba(0,0,0,.7);*/
+    padding-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tituloTrabDestacado{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #005e6e;
+}
+
+.lblTituloTrabajo{
+    padding-left: 10px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.alineacionCompTrabajoDestacado{
+    display: inline-block;
+    height: 270px;
+}
+
+.imagenDelTrabajoDestacado{
+    width: 200px;
+    height: 215px;
+    border-bottom-left-radius: 10px;
+    display: block;
+}
+
+.tituloDescripcion{
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.descripcionTrabajo{
+    width: 600px;
+}
+
+.descripcionDelTrabajoDestacado{
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+}
+
+.tituloEvidencias{
+    padding-left: 20px;
+}
+
+.tablaDeEvidencias{
+    margin-bottom: 35px;
+    height: 100px;
+}
+
+.casillaEvidencia{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.icoEvidencias{
+    width: 60px;
+    height: 60px;
+}
+
+/**********INSIGNIAS OBTENIDAS***************/
+.cardInsignias{
+    background-color: #F3E9C3;
+    width: 1300px;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7);
+    padding-bottom: 20px;
+}
+
+.insignias{
+    padding-top: 10px;
+}
+
+.tituloInsignias{
+    font-weight: bold;
+    font-style: oblique;
+    font-size: 20px;
+    padding-left: 575px;
+    margin-top: 20px;
+}
+
+.tituloMegaInsignias{
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+.cardTrabajoDestacadoConMegainsig{
+    background-color: #eecc41;
+    width: 1100px;
+    height: 270px;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-right: 20px;
+    /*box-shadow: 5px 0px 5px rgba(0,0,0,.7);*/
+    padding-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.megaInsigDelTrabajo{
+    width: 150px;
+    height: 150px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.imagenDelTrabajoDestacadoConInsig{
+    width: 200px;
+    height: 231px;
+    margin-bottom: 90px;
+}
+
+.tituloDescripcionTrabajoConInsig{
+    font-weight: bold;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.descripcionTrabajoConMegaInsig{
+    width: 400px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.descripcionDelTrabajoDestacadoConMegaInsig{
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+}
+
+.tituloEvidencias{
+    padding-left: 20px;
+}
+
+.tablaDeEvidencias{
+    margin-bottom: 35px;
+    height: 100px;
+}
+
+.tituloInsig{
+    padding-left: 20px;
+}
+
+.cardTrabajoDestacadoConInsig{
+    background-color: #eecc41;
+    width: 1100px;
+    height: 270px;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-right: 20px;
+    /*box-shadow: 5px 0px 5px rgba(0,0,0,.7);*/
+    padding-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.insigDelTrabajo{
+    width: 90px;
+    height: 90px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.descripcionTrabajoConInsig{
+    width: 500px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.descripcionDelTrabajoDestacadoConInsig{
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;  
+    padding-bottom: 30px;  
+}
+
+
+
+/**********SELLO PANDORA***************/
+.cardSelloPandora{
+    background-color: #005e6e;
+    width: 1300px;
+    margin-top: 20px;
+    margin-left: 20px;
+    /*margin-left: 250px;*/
+    margin-right: 20px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 10px 0px 10px 5px rgba(0,0,0,.7);
+    padding-bottom: 20px;
+}
+
+.selloPandora{
+    padding-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+}
+
+
+
+
+
