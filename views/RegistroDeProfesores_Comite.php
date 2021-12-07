@@ -145,10 +145,13 @@
                                 <div class="justify-content-md-center row">
                                     <div class="col">
                                         <!--Este boton tu lo programas-->
-                                        <button type="submit" name="registraProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
+                                        <button type="submit" name="registrarProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
                                     </div>
                                 </div>
                             </form>
+                            <!--Incluios el archivo con la logica del formulario-->
+                            <?php include("logic/registrarProfesor.php") ?>
+
                         </div>
 
                         <!--POPUP DE REGISTRO DE PROFESOR SATISFACTORIO-->
