@@ -98,19 +98,19 @@
                         </div>
 
                         <div class="card-center">
-                            <form class="">
+                            <form action="../controllers/comite/registroDeProfesor.php" method="POST" class="">
                                 <div class="row">
                                     <div class="pr-1 col-md-6">
                                         <div>
                                             <label>Email</label>
-                                            <input id="txt_email" name="email" placeholder="" type="text" class="form-control">
+                                            <input id="txt_email" name="email" maxlength="50" type="text" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="pr-1 col-md-6">
                                         <div>
                                             <label>Usuario</label>
-                                            <input id="txt_usuario" name="usuario" placeholder=""  type="text" class="form-control">
+                                            <input id="txt_usuario" name="usuario" maxlength="10"  type="text" class="form-control">
                                         </div>
                                     </div>
                               
@@ -122,21 +122,21 @@
                                     <div class="pr-1 col-md-4">
                                         <div>
                                             <label>Contraseña</label>
-                                            <input id="txt_contraseña" name="contraseña" placeholder=""  type="text" class="form-control">
+                                            <input id="txt_contraseña" name="contraseña" maxlength="10" type="text" class="form-control">
                                         </div>
                                     </div>
                                     
                                     <div class="pr-1 col-md-4">
                                         <div>
                                             <label>Nombres</label>
-                                            <input id="txt_nombres" name="nombres" placeholder="" type="text" class="form-control">
+                                            <input id="txt_nombres" name="nombres" maxlength="30" type="text" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="pr-1 col-md-4">
                                         <div>
                                             <label>Apellidos</label>
-                                            <input id="txt_apellidos" name="apellidos" placeholder="" type="text" class="form-control">
+                                            <input id="txt_apellidos" name="apellidos" maxlength="30" type="text" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                 <div class="justify-content-md-center row">
                                     <div class="col">
                                         <!--Este boton tu lo programas-->
-                                        <a id="btn_crearProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
+                                        <button type="submit" name="registraProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
                                     </div>
                                 </div>
                             </form>
