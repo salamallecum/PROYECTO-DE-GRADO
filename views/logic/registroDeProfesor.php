@@ -2,7 +2,7 @@
 
 include("conexionDB.php");
 
-if(isset($_POST['registrarProfesor'])){
+if(isset($_POST['registroDeProfesor'])){
 
     //Validamos que los campos no se encuentren vacios
     if(strlen($_POST['nombres']) >= 1 && 
@@ -24,19 +24,18 @@ if(isset($_POST['registrarProfesor'])){
 
         if($resultado){
             ?>
-            <h3>Inscrito correctamente</h3>
+            <h3 class="indicadorSatisfactorio">* Profesor registrado satisfactoriamente</h3>   
             <?php
         }else{
             ?>
-            <h3>Inscrito incorrectamente</h3>
+            <h3 class="indicadorDeError">* Error al registrar Profesor</h3>   
             <?php
         }
     }else{
         ?>
-        <h3>Por favor diligencie todos los campos</h3>
+        <h3 class="indicadorDeIncompletos">* Por favor diligencie todos los campos</h3>
         <?php
     }
-}
-    
+}   
 
 ?>

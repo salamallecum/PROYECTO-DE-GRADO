@@ -10,9 +10,6 @@
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
-        <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpRegistroProfesor_Comite.js" type="module"></script>
-        <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
     <body>
@@ -98,7 +95,7 @@
                         </div>
 
                         <div class="card-center">
-                            <form action="../controllers/comite/registroDeProfesor.php" method="POST" class="">
+                            <form method="post">
                                 <div class="row">
                                     <div class="pr-1 col-md-6">
                                         <div>
@@ -145,31 +142,15 @@
                                 <div class="justify-content-md-center row">
                                     <div class="col">
                                         <!--Este boton tu lo programas-->
-                                        <button type="submit" name="registrarProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
+                                        <button type="submit" name="registroDeProfesor" class="btn-fill pull-right btn btn-info" title="Crear profesor">Crear profesor</a>
                                     </div>
                                 </div>
                             </form>
-                            <!--Incluios el archivo con la logica del formulario-->
-                            <?php include("logic/registrarProfesor.php") ?>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/registroDeProfesor.php") ?>
 
-                        </div>
-
-                        <!--POPUP DE REGISTRO DE PROFESOR SATISFACTORIO-->
-                        <div id="modal_container" class="modal_container" name="modal_container">
-                            <div class="modalSuccesful">
-                                <div class="respuestaok">
-                                    <img src="/assets/images/satisfactorio.png" alt="">
-                                </div>
-
-                                <div class="respuestaok">
-                                    <h3 class="titulo_seccion">Profesor registrado satisfactoriamente.</h3>
-                                </div>                               
-                                
-                                <br>
-                                <br>
-                                <a id="btn_aceptar" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                            </div>
-                        </div>
+                        </div>  
+                    
                     </div>
                 </div>
             </main>

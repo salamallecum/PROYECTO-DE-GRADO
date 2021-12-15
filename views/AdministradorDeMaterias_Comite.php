@@ -10,9 +10,26 @@
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
-        <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpRegistroAsigMaterias_Comite.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
+
+        <!--Funcion que detecta cuando el combobox profesor cambie en el modulo de Asignar materia-->
+        <script lang="javascript">
+            
+            $(document).ready(function(){
+				$("#cbx_profesor").change(function () {
+			
+					$("#cbx_profesor option:selected").each(function () {
+						id_usuario = $(this).val();
+						$.post("logic/getMateriaComboBox.php", { id_usuario: id_usuario }, function(data){
+							$("#cbx_materia").html(data);
+						});            
+					});
+				})
+			});
+            
+        </script>
+
+
     </head>
 
     <body>
@@ -105,22 +122,22 @@
                             <h3 class="titulo_seccion">Nueva materia</h3>
                             <br>
                             
-                            <form class="">
+                            <form method="post">
 
                                 <label class="camposFormulario">Materia</label>
-                                <input id="txt_materia" name="materia" placeholder="" type="text" class="form-control">
+                                <input name="materia" maxlength="30" type="text" class="form-control">
 
                                 <table>
                                     <tr>
                                         <td class="column-form-regMaterias">
                                             <label class="camposFormulario">Código</label>
-                                            <input id="txt_codigo" name="codigo" placeholder="" type="text" class="form-control">
+                                            <input name="codigo" maxlength="5" type="text" class="form-control">
                                         </td>
 
                                         <td class="column-form-regMaterias">
                                             <label class="camposFormulario">Semestre</label><br>
-                                            <select class="form-control" id="cmb_semestres" name="cmbSemestres">
-                                                <option value="" selected>Seleccione</option>
+                                            <select class="form-control" name="cmbSemestres">
+                                                <option value="seleccione">Seleccione</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -137,8 +154,8 @@
                                     <tr>
                                         <td>
                                             <label class="camposFormulario">Tipo</label><br>
-                                            <select class="form-control" id="cmb_tipoMaterias" name="cmbtipoMaterias">
-                                                <option value="" selected>Seleccione</option>
+                                            <select class="form-control" name="cmbTipoMaterias">
+                                                <option value="seleccione">Seleccione</option>
                                                 <option value="obligatoria">Obligatoria</option>
                                                 <option value="electiva">Electiva</option>
                                             </select>
@@ -146,8 +163,8 @@
 
                                         <td>
                                             <label class="camposFormulario">Jornada</label><br>
-                                            <select  class="form-control" id="cmb_jornadas" name="cmbJornadas">
-                                                <option value="" selected>Seleccione</option>
+                                            <select  class="form-control" name="cmbJornadas">
+                                                <option value="seleccione">Seleccione</option>
                                                 <option value="diurna">Diurna</option>
                                                 <option value="nocturna">Nocturna</option>
                                             </select>
@@ -157,10 +174,12 @@
                                 </table>
                                                 
                                 <br>                     
-                                <!--Este boton tu lo programas-->
-                                <a id="btn_crearMateria" class="btn-fill pull-right btn btn-info" title="Crear materia">Crear materia</a>
+                               <button type="submit" name="registroDeMateria" class="btn-fill pull-right btn btn-info" placeholder="Enviar">Crear Materia</button>
 
                             </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/MateriaControlador.php") ?>
+
                         </div>
                             
                         <input type="radio" name="radio" id="radio2">
@@ -168,63 +187,48 @@
                             <h3 class="titulo_seccion">Asignar materia</h3>
                             <br>
 
-                            <form class="">
+                            <form method="post">
 
-                                <label class="camposFormulario">Materia</label><br>
-                                <!--Este boton tu lo programas-->
-                                <select class="form-control" id="cmb_materias" name="cmbMaterias">
-                                    <option value="" selected>Seleccione</option>
+                                <label class="camposFormulario">Profesor</label><br>
+                                    
+                                <select  class="form-control" id="cbx_profesor" name="cbx_profesor">
+                                    <option value="">Seleccione</option>
+
+                                    <!--Codigo que llena el combobox de profesores con lo de la tabla de usuarios de la bd-->
+                                    <?php
+                                        include("logic/conexionDB.php");
+
+                                        $consulta = "SELECT * FROM tbl_usuario WHERE id_rol = 2";
+                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
+
+                                    ?>
+
+                                    <?php foreach($ejecutaConsulta as $opciones): ?>
+
+                                        <option value="<?php echo $opciones['id_usuario']?>"><?php echo $opciones['nombres_usuario']?></option>
+
+                                    <?php endforeach  ?>
+                                    
                                 </select>
 
                                 <br>
 
-                                <label class="camposFormulario">Profesor</label><br>
-                                <!--Este boton tu lo programas-->
-                                <select  class="form-control" id="cmb_profesores" name="cmbProfesores">
-                                    <option value="" selected>Seleccione</option>
+                                <label class="camposFormulario">Materia</label><br>
+                                
+                                <select class="form-control" id="cbx_materia" name="cbx_materia">
+
                                 </select>
 
                                 <br>                     
                                 <!--Este boton tu lo programas-->
-                                <a id="btn_AsignarMateria" class="btn-fill pull-right btn btn-info" title="Asignar materia">Asignar materia</a>
+                                <button type="submit" name="asignacionDeMateria" class="btn-fill pull-right btn btn-info" placeholder="Enviar">Asignar Materia</button>
 
                             </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/MateriaControlador.php") ?>
                         </div>
                    </div>
 
-                   <!--POPUP DE REGISTRO DE MATERIA SATISFACTORIO-->
-                   <div id="modal_container" class="modal_container" name="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Materia registrada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-                    
-                   <!--POPUP DE ASIGNACION DE MATERIA SATISFACTORIO-->
-                   <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Materia asignada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar2" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
                </div>
             </main>
         </div>

@@ -107,6 +107,14 @@
                     <br>
                     <br>
 
+                    <!--Script para cargar datos en tabla de Eventos-->           
+                    <?php
+                       include("logic/conexionDB.php");
+
+                        $query = "SELECT * FROM tbl_evento";
+                        $query_run = mysqli_query($conex, $query);
+                    ?>
+
                     <!--ESTRUCTURA DE TABLA DE EVENTOS-->
                     <table id="table_eventos" class="tablaDeEventos">
                         <thead>
@@ -120,43 +128,38 @@
                             </tr>
                         </thead>
 
-                        <!--Aqui van los registros de la tabla de eventos-->
-                        <tr class="filasDeDatosTablaEventos">
-                            <td class="datoTabla"><img class="imagenDelEventoEnTabla"src="/assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">EVENTO DE PRUEBA 1</td>
-                            <td class="datoTabla">Evento creado para la construcción de la tabla</td>
-                            <td class="datoTabla"> 01/01/2021</td>
-                            <td class="datoTabla">31/12/2021</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal2" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                </div>
+                    <?php
+                        if($query_run){
+                            foreach($query_run as $row){           
+                    ?>
 
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal3" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                </div>
-                            </div></td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td class="datoTabla"><img class="imagenDelEventoEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                <td class="datoTabla"><?php echo $row['nombre_evento'];  ?></td>
+                                <td class="datoTabla"><?php echo $row['descripcion_evento'];  ?></td>
+                                <td class="datoTabla"><?php echo $row['fecha_inicio'];  ?></td>
+                                <td class="datoTabla"><?php echo $row['fecha_fin'];  ?></td>
+                                <td class="datoTabla"><div class="compEsp-edicion">
+                                    <div class="col-botonesEdicion">
+                                        <a name="openModal2" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                    </div>
 
-                        <tr class="filasDeDatosTablaEventos">
-                            <td class="datoTabla"><img class="imagenDelEventoEnTabla"src="/assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">EVENTO DE PRUEBA 2</td>
-                            <td class="datoTabla">Evento creado para la construcción de la tabla</td>
-                            <td class="datoTabla"> 01/01/2021</td>
-                            <td class="datoTabla">31/12/2021</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal2" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                </div>
+                                    <div class="col-botonesEdicion">
+                                        <a name="openModal3" href="" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                    </div>
+                                </div></td>                                   
+                            </tr>   
+                        </tbody>
 
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal3" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                </div>
-                            </div></td>
-                        </tr>
+                    <?php
+                            }
+                        }else{
+                            echo "No hay ningún evento registrado...";
+                        }
+                    ?>
+
                     </table>
-
-
 
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE EVENTOS-->
                     <div id="modal_container1" class="modal_container" name="modal_container">
@@ -165,18 +168,18 @@
                             <br>
                             
                             <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" class="">
+                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST">
 
                                     <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input id="txt_nombreEvento" name="nombreEvento" placeholder="" type="text" class="form-control">
+                                    <input id="txt_nombreEvento" name="nombreEvento" placeholder="" maxlength="30" type="text" class="form-control">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionEvento" name="descripcionEvento" cols="80" placeholder="" rows="8" class="form-control"></textarea>
+                                    <textarea id="txt_descripcionEvento" name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
-                                    <input  id="btn_cargaArchivoInfoDelEvento" name="btnCargaArchivoInfoDelEvento" accept=".pdf" type="file" class="form-control">
+                                    <input  id="btn_cargaArchivoInfoDelEvento" name="archivoInfoDelEvento" accept=".pdf" type="file" class="form-control">
                                     <br>
 
                                     <!--Espacio para colocar campos tipo calendar-->
@@ -193,8 +196,23 @@
                                     <br>
 
                                     <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesoresResponsables">
-                                        <option value="" selected>Seleccione</option>
+                                    <select  class="form-control" id="cbx_profesor" name="cbx_profesor">
+                                        <option value="seleccione">Seleccione</option>
+
+                                        <!--Codigo que llena el combobox de profesores con lo de la tabla de usuarios de la bd-->
+                                        <?php
+                                            include("logic/conexionDB.php");
+
+                                            $consulta = "SELECT * FROM tbl_usuario WHERE id_rol = 2";
+                                            $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
+
+                                        ?>
+
+                                        <?php foreach($ejecutaConsulta as $opciones): ?>
+
+                                            <option value="<?php echo $opciones['id_usuario']?>"><?php echo $opciones['nombres_usuario']?></option>
+
+                                        <?php endforeach  ?>                                    
                                     </select>
                                     <br>
 
@@ -205,8 +223,24 @@
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label><br>
-                                                <select class="form-control" id="cmb_competenciasGenerales" name="cmbCompetenciasGenerales">
-                                                    <option value="" selected>Seleccione</option>
+                                                
+                                                <select  class="form-control" id="cbx_competenciasGenerales" name="cbx_competenciasGenerales">
+                                                    <option value="">Seleccione</option>
+
+                                                    <!--Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd-->
+                                                    <?php
+                                                        include("logic/conexionDB.php");
+
+                                                        $consulta = "SELECT * FROM tbl_competencia_general";
+                                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
+
+                                                    ?>
+
+                                                    <?php foreach($ejecutaConsulta as $opciones): ?>
+
+                                                        <option value="<?php echo $opciones['id_comp_gral']?>"><?php echo $opciones['nombre_comp_gral']?></option>
+
+                                                    <?php endforeach  ?>                                    
                                                 </select>
                                             </td>
                                             <td><a name="openModal4" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
@@ -215,14 +249,14 @@
                                     
                                     <br>
                                     <br>    
-                                    <a id="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</a>
-                                    <a id="btn_cancelar1" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
+                                    <button type="submit" name="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</button>
+                                    <a id="btn_cancelar1" name="btn_cancelarRegistro" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-
+                    
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
                     <div id="modal_container2" class="modal_container" name="modal_container">
                         <div class="modal">

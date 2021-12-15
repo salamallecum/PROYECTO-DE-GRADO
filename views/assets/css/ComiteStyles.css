@@ -33,6 +33,18 @@
     text-align: center;
 }
 
+.indicadorDeCamposIncompletos{
+    color: red;
+}
+
+.indicadorSatisfactorio{
+    color: green;
+}
+
+.indicadorDeError{
+    color: red;
+}
+
 .respuestaok{
     display: inline-block;
 }
