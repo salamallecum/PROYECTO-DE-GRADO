@@ -89,7 +89,7 @@
                         <span>Administrador de eventos</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -134,8 +134,27 @@
                     ?>
 
                         <tbody>
-                            <tr>
-                                <td class="datoTabla"><img class="imagenDelEventoEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                            <tr class="filasDeDatosTablaEventos">
+                                <?php 
+                                //Aqui se traen las imagenes de cada evento
+                                $nombreDeImg = $row['nombre_imagen'];
+
+                                if($nombreDeImg != null){
+
+                                ?>
+
+                                    <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='<?php echo "eventosImages/".$nombreDeImg?>'></td>
+
+                                <?php
+                                }else{
+                                ?>
+                                
+                                    <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
+
+                                <?php    
+                                }                       
+                                ?>
+                                
                                 <td class="datoTabla"><?php echo $row['nombre_evento'];  ?></td>
                                 <td class="datoTabla"><?php echo $row['descripcion_evento'];  ?></td>
                                 <td class="datoTabla"><?php echo $row['fecha_inicio'];  ?></td>
@@ -168,7 +187,7 @@
                             <br>
                             
                             <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST">
+                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST" enctype="multipart/form-data">
 
                                     <label class="camposFormulario">Nombre del evento</label><br>
                                     <input id="txt_nombreEvento" name="nombreEvento" placeholder="" maxlength="30" type="text" class="form-control">
@@ -250,7 +269,7 @@
                                     <br>
                                     <br>    
                                     <button type="submit" name="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</button>
-                                    <a id="btn_cancelar1" name="btn_cancelarRegistro" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
+                                    <button id="btn_cancelar1" name="btn_cancelarRegistro" class="btn_agregarEvento" title="Cancelar">Cancelar</button>
                                 </form>
                             </div>
                         </div>
