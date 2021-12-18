@@ -161,7 +161,10 @@ function limpiarFormularioRegistroDeEventos(){
 }
 
 
+
+
 //INVOCACION DE FUNCIONES
 eventoPopUpActualizacionDeEventos();
-eventoPopUpEliminacionDeEventos()
+eventoPopUpEliminacionDeEventos();
+
 

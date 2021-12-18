@@ -17,6 +17,11 @@
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></script>
+
     </head>
 
     <body>
@@ -187,7 +192,7 @@
                             <br>
                             
                             <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST" enctype="multipart/form-data">
+                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST" enctype="multipart/form-data" >
 
                                     <label class="camposFormulario">Nombre del evento</label><br>
                                     <input id="txt_nombreEvento" name="nombreEvento" placeholder="" maxlength="30" type="text" class="form-control">
@@ -238,34 +243,39 @@
                                     <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
                                     <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
                                     <br>
-
-                                    <table>
-                                        <tr>
-                                            <td><label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label><br>
-                                                
-                                                <select  class="form-control" id="cbx_competenciasGenerales" name="cbx_competenciasGenerales">
-                                                    <option value="">Seleccione</option>
-
-                                                    <!--Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd-->
-                                                    <?php
-                                                        include("logic/conexionDB.php");
-
-                                                        $consulta = "SELECT * FROM tbl_competencia_general";
-                                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
-
-                                                    ?>
-
-                                                    <?php foreach($ejecutaConsulta as $opciones): ?>
-
-                                                        <option value="<?php echo $opciones['id_comp_gral']?>"><?php echo $opciones['nombre_comp_gral']?></option>
-
-                                                    <?php endforeach  ?>                                    
-                                                </select>
-                                            </td>
-                                            <td><a name="openModal4" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
-                                        </tr>
-                                    </table>                                   
                                     
+                                    <label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label>
+                                    <br>
+
+                                    <!--
+                                    <form id="formularioDeSeleccionDeCompetencias" action="logic/CompetenciaControlador.php" method="GET">
+                                        <table>
+                                            <tr class="filaSelectCompetencias">
+                                                <td class="columnSelectCompetencias">
+
+                                                    <select multiple class="form-control" id="cmb_competenciasGenerales" name="cbx_competenciasGenerales[]">
+                                                        
+                                                        Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd
+                                                        <?php
+                                                            //include("logic/conexionDB.php");
+
+                                                            //$consulta = "SELECT * FROM tbl_competencia_general";
+                                                            //$ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
+
+                                                        ?>
+
+                                                        //<?php //foreach($ejecutaConsulta as $opciones): ?>
+
+                                                            <option value="<?php //echo $opciones['id_comp_gral']?>" title="<?php //echo $opciones['nombre_comp_gral']?>">🗸<?php //echo $opciones['nombre_comp_gral']?></option>
+
+                                                        <?php //endforeach  ?>                                    
+                                                    </select>
+                                                </td>
+                                                <td><button name="openModal4" id="btn_analizarComp" name="btn_AnalizarCompetencias" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</button></td>
+                                            </tr>
+                                        </table>  
+                                    </form>                                                                   
+                                                        -->
                                     <br>
                                     <br>    
                                     <button type="submit" name="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</button>
@@ -491,9 +501,6 @@
                             <a id="btn_aceptar4" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
                         </div>
                     </div>
-
-
-
                 </div>
             </main>
         </div>

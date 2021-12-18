@@ -5,8 +5,7 @@ include("conexionDB.php");
 //Invocamos el archivo que genera los nombres de los archivos
 include("generadorDeNombres.php");
 
-
-//Capturamos el evento del boton de guardar evento
+//Capturamos el evento del boton de guardar evento del formulario de registro de eventos
 if(isset($_POST['btn_guardarEvento'])){
 
     //Capturamos los datos de los campos del formulario
@@ -15,7 +14,7 @@ if(isset($_POST['btn_guardarEvento'])){
     $fechaInicioEvento = date('Y-m-d', strtotime($_POST['dateFechaInicioEvento']));
     $fechaFinEvento = date('Y-m-d', strtotime($_POST['dateFechaFinEvento']));
     $cmbProfesorEncargado = $_REQUEST['cbx_profesor'];
-    $cmbCompetencias = $_REQUEST['cbx_competenciasGenerales'];
+    $cmbCompetencias = $_POST['cbx_competenciasGenerales'];
    
     //Validamos que los campos no se encuentren vacios
     if(strlen($nombreDeEvento) >= 1 && 
@@ -23,7 +22,7 @@ if(isset($_POST['btn_guardarEvento'])){
     $fechaInicioEvento != '1970-01-01' &&
     $fechaFinEvento != '1970-01-01' &&
     $cmbProfesorEncargado != 'seleccione' && 
-    $cmbCompetencias != 'seleccione'){   
+    !empty($cmbCompetencias)){   
 
         //Registramos lo obtenido en bd
         $consulta = "INSERT INTO tbl_evento (`nombre_evento`,`descripcion_evento`,`fecha_inicio`,`fecha_fin`,`id_usuario`) VALUES ('$nombreDeEvento','$descripcionEvento','$fechaInicioEvento','$fechaFinEvento','$cmbProfesorEncargado')";

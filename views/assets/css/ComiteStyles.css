@@ -855,7 +855,7 @@ table .column-form-regMaterias select{
 }
 
 
-/*--------------------------ADMINISTRADOR DE COMPETENCIAS*--------------------------*/
+/*--------------------------ADMINISTRADOR DE EVENTOS*--------------------------*/
 .btn_agregarEvento{
     color: #fff;
     background-color: #005e6e;
@@ -867,6 +867,18 @@ table .column-form-regMaterias select{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.columnSelectCompetencias{
+    width: 800px;
+}
+
+#cmb_competenciasGenerales{
+    width: 400px;
+    height: 100px;
+}
+
+#btn_analizarComp{
+    margin-left: 0px;
+}
 
 /*  TABLA DE MUESTREO DE EVENTOS EXISTENTES */
 .tablaDeEventos{
