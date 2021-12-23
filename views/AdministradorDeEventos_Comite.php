@@ -17,11 +17,7 @@
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></script>
-
+        
     </head>
 
     <body>
@@ -247,35 +243,39 @@
                                     <label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label>
                                     <br>
 
-                                    <!--
-                                    <form id="formularioDeSeleccionDeCompetencias" action="logic/CompetenciaControlador.php" method="GET">
-                                        <table>
-                                            <tr class="filaSelectCompetencias">
-                                                <td class="columnSelectCompetencias">
+                                    <table>
+                                        <tr class="filaSelectCompetencias">
+                                            <td class="columnSelectCompetencias">
+                                                
+                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS GENERALES-->
+                                                <div class="compentenciasContent">
 
-                                                    <select multiple class="form-control" id="cmb_competenciasGenerales" name="cbx_competenciasGenerales[]">
-                                                        
-                                                        Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd
-                                                        <?php
-                                                            //include("logic/conexionDB.php");
+                                                    <!--Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd-->
+                                                    <?php
+                                                        include("logic/conexionDB.php");
 
-                                                            //$consulta = "SELECT * FROM tbl_competencia_general";
-                                                            //$ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
+                                                        $consulta = "SELECT * FROM tbl_competencia_general";
+                                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
 
-                                                        ?>
+                                                    ?>
 
-                                                        //<?php //foreach($ejecutaConsulta as $opciones): ?>
+                                                    <?php foreach($ejecutaConsulta as $opciones): ?>
 
-                                                            <option value="<?php //echo $opciones['id_comp_gral']?>" title="<?php //echo $opciones['nombre_comp_gral']?>">🗸<?php //echo $opciones['nombre_comp_gral']?></option>
+                                                        <label>
+                                                        <input type="checkbox" name="competencias[]" class="checkCompetenciaGeneral" value="<?php echo $opciones['id_comp_gral']?>" title="<?php echo $opciones['nombre_comp_gral']?>"> <?php echo $opciones['nombre_comp_gral']?> 
+                                                        </label>
+                                                        <br>
 
-                                                        <?php //endforeach  ?>                                    
-                                                    </select>
-                                                </td>
-                                                <td><button name="openModal4" id="btn_analizarComp" name="btn_AnalizarCompetencias" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</button></td>
-                                            </tr>
-                                        </table>  
-                                    </form>                                                                   
-                                                        -->
+                                                    <?php endforeach  ?>
+
+                                                </div>
+                                            </td>
+                                                    
+                                            <td><input type="submit" name="btn_analizar"  id="btn_analizarComp"  class="btn-fill pull-right btn btn-info" value="Analizar"></td>
+                                        </tr>
+                                    </table>  
+                                     
+                                                                                                                           
                                     <br>
                                     <br>    
                                     <button type="submit" name="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</button>
@@ -337,7 +337,7 @@
                                                     <option value="" selected>Seleccione</option>
                                                 </select>
                                             </td>
-                                            <td><a name="openModal4" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
+                                            <td><button type="submit" name="analisiscomp" class="btn-fill pull-right btn btn-info" placeholder="Analizar Competencias">Analizar</button></td>
                                         </tr>
                                     </table>         
                                                               
@@ -378,11 +378,32 @@
                             <div class="contenedor_compEspecificas">
 
                                 <form class="">
-                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
-                                    <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
+                                    
+                                    <!--Script para cargar datos en tabla de Eventos-->           
+                                    <?php
                                         
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                        
+                                        
+                                    
+
+                                    
+                                    
+                                    
+                                    
+
+                                    
+
+                                        
+                                    ?>
+                                
+                                
+                                
+                                
+                                    <!--Este es el código que contiene las competencias específicas a evaluar
+                                    <div class="contenedorCompeEspeciasAEvaluar">
+                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
+                                        
+                                        -Tabla de radiobuttons para evaluar competencia específica
                                         <table>
                                             <tr>
                                                 <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
@@ -400,29 +421,8 @@
                                             </tr>
                                         </table>
 
-                                        <br>
-
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
-
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
-                        
-                                            </tr>
-                                        </table>
                                     </div>  
-
+                                    -->
                                     <br>
                                     <br>
                                     <a id="btn_guardarAnalisis" class="btn_agregarEvento" title="Guardar">Guardar</a>

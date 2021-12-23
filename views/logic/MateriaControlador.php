@@ -2,6 +2,7 @@
 
 //Invocamos el archivo de conexion a la BD
 include("conexionDB.php");
+require_once("model/Materia.php");
 
 //Capturamos el evento del boton de registro de materias
 if(isset($_POST['registroDeMateria'])){
@@ -57,26 +58,37 @@ if(isset($_POST['registroDeMateria'])){
         }else if($cmbJornadas == 'nocturna'){
             $jornadaSeleccionada = "Nocturna";
         }
-     
-        //Registramos lo obtenido en bd
-        $consulta = "INSERT INTO tbl_asignatura (`nombre_asignatura`,`codigo`,`semestre`,`tipo`,`jornada`) VALUES ('$materia','$codigo','$semestreSeleccionado','$tipoMatSeleccionado','$jornadaSeleccionada')";
 
-        $resultado = mysqli_query($conex, $consulta);
+        //Encapsulamos los datos obtenidos en un objeto de tipo Materia
+        $objNuevaMateria = new Materia(0, $materia, $codigo, $semestreSeleccionado, $tipoMatSeleccionado, $jornadaSeleccionada, 0);
 
-        if($resultado){
-            ?>
-            <h3 class="indicadorSatisfactorio">* Materia registrada satisfactoriamente</h3>   
-            <?php
-        }else{
-            ?>
-            <h3 class="indicadorDeError">* Error al registrar Materia</h3>   
-            <?php
-        }
+        registrarMateria($objNuevaMateria);
+             
     }else{
         ?>
         <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>
         <?php
     }
 }   
+
+//Funcion que registra una materia
+function registrarMateria($objNuevaMateria){
+
+    //Registramos lo obtenido en bd
+    $consulta = "INSERT INTO tbl_asignatura (`id_asignatura`,`nombre_asignatura`,`codigo`,`semestre`,`tipo`,`jornada`,`id_profesor`) VALUES ('$objNuevaMateria->getId()','$objNuevaMateria->getNombre()','$objNuevaMateria->getCodigo()','$objNuevaMateria->getSemestre()','$objNuevaMateria->getTipo()', '$objNuevaMateria->getJornada()', '$objNuevaMateria->getProfeEncargado()')";
+
+    $resultado = mysqli_query(conectar(), $consulta);
+
+    if($resultado){
+        ?>
+        <h3 class="indicadorSatisfactorio">* Materia registrada satisfactoriamente</h3>   
+        <?php
+    }else{
+        ?>
+        <h3 class="indicadorDeError">* Error al registrar Materia</h3>   
+        <?php
+    }
+
+}
 
 ?>

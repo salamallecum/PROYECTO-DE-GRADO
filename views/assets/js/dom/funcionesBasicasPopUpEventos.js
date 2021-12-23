@@ -66,8 +66,8 @@ function eventoPopUpActualizacionDeEventos(){
 }
 
 
-//ASIGNACION DE EVENTO A BOTON "EVALUAR" PARA LA EVALUACION DE LAS COMPETENCIAS ESPECÍFICAS
-const listOpen4 = document.getElementsByName('openModal4');
+//ASIGNACION DE EVENTO A BOTON "ANALIZAR" PARA LA EVALUACION DE LAS COMPETENCIAS ESPECÍFICAS
+const listOpen4 = document.getElementsByName('btn_analizar');
 const modal_container4 = document.getElementById('modal_container4');
 const close4 = document.getElementById('btn_cancelar4');
 

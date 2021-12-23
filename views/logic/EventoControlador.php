@@ -5,6 +5,11 @@ include("conexionDB.php");
 //Invocamos el archivo que genera los nombres de los archivos
 include("generadorDeNombres.php");
 
+//Capturamos el evento del boton de analizar competencias
+if(isset($_POST['openModa4'])){
+  echo "se invoca bien";
+}
+
 //Capturamos el evento del boton de guardar evento del formulario de registro de eventos
 if(isset($_POST['btn_guardarEvento'])){
 
@@ -14,20 +19,30 @@ if(isset($_POST['btn_guardarEvento'])){
     $fechaInicioEvento = date('Y-m-d', strtotime($_POST['dateFechaInicioEvento']));
     $fechaFinEvento = date('Y-m-d', strtotime($_POST['dateFechaFinEvento']));
     $cmbProfesorEncargado = $_REQUEST['cbx_profesor'];
-    $cmbCompetencias = $_POST['cbx_competenciasGenerales'];
+    $cmbCompetencias = $_POST['competencias'];
    
     //Validamos que los campos no se encuentren vacios
     if(strlen($nombreDeEvento) >= 1 && 
     strlen($descripcionEvento) >= 1 && 
     $fechaInicioEvento != '1970-01-01' &&
     $fechaFinEvento != '1970-01-01' &&
-    $cmbProfesorEncargado != 'seleccione' && 
-    !empty($cmbCompetencias)){   
+    $cmbProfesorEncargado != 'seleccione' &&
+    $cmbCompetencias == true){   
 
         //Registramos lo obtenido en bd
         $consulta = "INSERT INTO tbl_evento (`nombre_evento`,`descripcion_evento`,`fecha_inicio`,`fecha_fin`,`id_usuario`) VALUES ('$nombreDeEvento','$descripcionEvento','$fechaInicioEvento','$fechaFinEvento','$cmbProfesorEncargado')";
 
         $resultado = mysqli_query($conex, $consulta);
+
+
+        if(isset($_POST['btn_analizar'])){
+
+        }else{
+
+        }
+
+
+
 
         if($resultado){
 
