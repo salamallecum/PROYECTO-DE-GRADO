@@ -100,7 +100,7 @@
                                     <div class="pr-1 col-md-6">
                                         <div>
                                             <label>Email</label>
-                                            <input id="txt_email" name="email" maxlength="50" type="text" class="form-control">
+                                            <input id="txt_email" name="email" maxlength="50" type="email" class="form-control">
                                         </div>
                                     </div>
 
@@ -146,9 +146,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <!--Incluimos el archivo con la logica del formulario-->
-                            <?php include("logic/registroDeProfesor.php") ?>
-
+                            <?php include("logic/capturaDatProfesor.php") ?>
                         </div>  
                     
                     </div>

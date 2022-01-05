@@ -113,7 +113,7 @@
                        include("logic/conexionDB.php");
 
                         $query = "SELECT * FROM tbl_evento";
-                        $query_run = mysqli_query($conex, $query);
+                        $query_run = mysqli_query(conectar(), $query);
                     ?>
 
                     <!--ESTRUCTURA DE TABLA DE EVENTOS-->

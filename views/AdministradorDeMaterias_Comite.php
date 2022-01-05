@@ -1,3 +1,9 @@
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once "logic/controllers/MateriaControlador.php";
+    require_once "logic/controllers/ProfesorControlador.php";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -10,23 +16,31 @@
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
-        <script src="assets/js/jquery-3.6.0.js"></script>
+        <!--Links scripts de eventos js-->
+        <script language="javascript" src="assets/js/jquery-3.6.0.js"></script>
 
-        <!--Funcion que detecta cuando el combobox profesor cambie en el modulo de Asignar materia-->
-        <script lang="javascript">
-            
+        <!--Este script permite traer las materias que tiene asignadas un profesor-->
+        <script type="text/javascript">
             $(document).ready(function(){
-				$("#cbx_profesor").change(function () {
-			
-					$("#cbx_profesor option:selected").each(function () {
-						id_usuario = $(this).val();
-						$.post("logic/getMateriaComboBox.php", { id_usuario: id_usuario }, function(data){
-							$("#cbx_materia").html(data);
-						});            
-					});
-				})
-			});
-            
+                $('#cbx_profesor').val(1);
+                recargarLista();
+
+                $('#cbx_profesor').change(function(){
+                    recargarLista();
+                });
+            })
+        </script>
+        <script type="text/javascript">
+            function recargarLista(){
+                $.ajax({
+                    type:"POST",
+                    url:"logic/utils/getMateriasAsignadas.php",
+                    data:"profesor=" + $('#cbx_profesor').val(),
+                    success:function(r){
+                        $('#selectListaMaterias').html(r);
+                    }
+                });
+            }
         </script>
 
 
@@ -45,7 +59,7 @@
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+            <ul>
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Comite.php">
                             <span><i class="ti-dashboard" title="Dashboard"></i></span>
@@ -155,7 +169,7 @@
                                         <td>
                                             <label class="camposFormulario">Tipo</label><br>
                                             <select class="form-control" name="cmbTipoMaterias">
-                                                <option value="seleccione">Seleccione</option>
+                                                <option value="selecione">Seleccione</option>
                                                 <option value="obligatoria">Obligatoria</option>
                                                 <option value="electiva">Electiva</option>
                                             </select>
@@ -174,12 +188,12 @@
                                 </table>
                                                 
                                 <br>                     
-                               <button type="submit" name="registroDeMateria" class="btn-fill pull-right btn btn-info" placeholder="Enviar">Crear Materia</button>
+                                <!--Este boton tu lo programas-->
+                                <button type="submit" name="registroDeMateria" class="btn-fill pull-right btn btn-info" placeholder="Enviar">Crear Materia</button>
 
                             </form>
-                            <!--Incluimos el archivo con la logica del formulario-->
-                            <?php include("logic/MateriaControlador.php") ?>
-
+                             <!--Incluimos el archivo con la logica del formulario-->
+                             <?php include("logic/capturaDatMateria.php") ?>
                         </div>
                             
                         <input type="radio" name="radio" id="radio2">
@@ -190,42 +204,61 @@
                             <form method="post">
 
                                 <label class="camposFormulario">Profesor</label><br>
-                                    
                                 <select  class="form-control" id="cbx_profesor" name="cbx_profesor">
-                                    <option value="">Seleccione</option>
+                                    <option value="seleccione">Seleccione</option>
 
-                                    <!--Codigo que llena el combobox de profesores con lo de la tabla de usuarios de la bd-->
                                     <?php
-                                        include("logic/conexionDB.php");
+                                        $obj = new ProfesorControlador();
+                                        $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                        $datos = $obj->mostrarProfesoresRegistrados($sql);
 
-                                        $consulta = "SELECT * FROM tbl_usuario WHERE id_rol = 2";
-                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
-
+                                        foreach ($datos as $key){
                                     ?>
 
-                                    <?php foreach($ejecutaConsulta as $opciones): ?>
+                                        <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
 
-                                        <option value="<?php echo $opciones['id_usuario']?>"><?php echo $opciones['nombres_usuario']?></option>
+                                    <?php
+                                        }
+                                    ?>
 
-                                    <?php endforeach  ?>
-                                    
                                 </select>
 
                                 <br>
 
                                 <label class="camposFormulario">Materia</label><br>
-                                
-                                <select class="form-control" id="cbx_materia" name="cbx_materia">
+                                <select class="form-control" id="cmb_materias" name="cbx_materia">
+                                    <option value="seleccione">Seleccione</option>
 
-                                </select>
+                                    <?php
+                                        $obj = new MateriaControlador();
+                                        $sql = "SELECT id_asignatura, nombre_asignatura FROM tbl_asignatura WHERE id_profesor IS NULL";
+                                        $datos = $obj->mostrarMateriasRegistradas($sql);
 
-                                <br>                     
+                                        foreach ($datos as $key){
+                                    ?>
+
+                                        <option value="<?php echo $key['id_asignatura']?>"><?php echo $key['nombre_asignatura']?></option>
+
+                                    <?php
+                                        }
+                                    ?>
+                                </select>                                   
+
+                                <br>
+                                                   
                                 <!--Este boton tu lo programas-->
-                                <button type="submit" name="asignacionDeMateria" class="btn-fill pull-right btn btn-info" placeholder="Enviar">Asignar Materia</button>
+                                <button type="submit" name="asignacionDeMateria" class="btn-fill pull-right btn btn-info" title="Asignar materia">Asignar materia</button>
 
+                                <br>
+                                <br>
+                                <label class='camposFormulario'>Materias asignadas</label> 
+                                <br>
+                                <span id="selectListaMaterias"></span>
+
+                                </table>
                             </form>
                             <!--Incluimos el archivo con la logica del formulario-->
-                            <?php include("logic/MateriaControlador.php") ?>
+                            <?php include("logic/capturaDatMateria.php") ?>
                         </div>
                    </div>
 

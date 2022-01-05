@@ -652,7 +652,6 @@ form-control[type=file]:not(:disabled):not([readonly]) {
 
 .tab2{
     width: 600px;
-    height: 400px;
 }
 
 .lbl-menu{
@@ -662,6 +661,15 @@ form-control[type=file]:not(:disabled):not([readonly]) {
     cursor: pointer;
     transition: all 400ms ease;
     max-width: 300px;
+}
+
+.cmbMateriasAsignadas {
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    color: #565656;
+    padding: 8px 12px;
+    height: 100px;
+    width: 400px;
 }
 
 .lbl-menu label:hover{
