@@ -6,6 +6,7 @@
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/EventoControlador.php";
     require_once "logic/controllers/ProfesorControlador.php";
+    require_once "logic/controllers/CompetenciaControlador.php";
 
     
     //Capturamos la variable id del evento para la eliminacion de un evento
@@ -178,7 +179,7 @@
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a name="openModal2" title="Editar" data-target="#actualizarEvento"><img src="assets/images/btn_editar.PNG"></a>
+                                            <a name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -195,7 +196,6 @@
                         </tbody>
 
                     </table>
-
 
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE EVENTOS-->
                     <div id="modal_container1" class="modal_container" name="modal_container">
@@ -262,33 +262,23 @@
                                     <table>
                                         <tr>
                                             <td class="columnSelectCompetencias">
-                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS ESPECÍFICAS-->
+                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS GENERALES-->
                                                 <div class="compentenciasContent">
 
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1 
+                                                    <?php
+                                                        $obj = new CompetenciaGeneralControlador();
+                                                        $sql = "SELECT id_comp_gral, nombre_comp_gral FROM tbl_competencia_general";
+                                                        $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                                        foreach ($datos as $key){
+                                                    ?>
+
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" name="competenciasGenerales[]" value="<?php echo $key['id_comp_gral']?>" title="<?php echo $key['nombre_comp_gral']?>"> <?php echo $key['nombre_comp_gral']?>
                                                     <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
+
+                                                    <?php
+                                                      }
+                                                    ?>                                                    
 
                                                 </div>
                                             </td>
@@ -308,7 +298,7 @@
                     </div>
                     
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
-                    <div id="actualizarEvento" class="modal_container" name="modal_container">
+                    <div id="modal_container2" class="modal_container" name="modal_container">
                         <div class="modal">
                             <h3 class="titulo_seccion">Actualizar Evento</h3>
                             <br>
@@ -373,34 +363,23 @@
                                     <table>
                                         <tr>
                                             <td class="columnSelectCompetencias">
-                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS ESPECÍFICAS-->
+                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS GENERALES-->
                                                 <div class="compentenciasContent">
 
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1 
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
-                                                    <br>
-                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <?php
+                                                        $obj = new CompetenciaGeneralControlador();
+                                                        $sql = "SELECT id_comp_gral, nombre_comp_gral FROM tbl_competencia_general";
+                                                        $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                                        foreach ($datos as $key){
+                                                    ?>
+
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" name="competenciasGenerales[]" value="<?php echo $key['id_comp_gral']?>" title="<?php echo $key['nombre_comp_gral']?>"> <?php echo $key['nombre_comp_gral']?>
                                                     <br>
 
+                                                    <?php
+                                                      }
+                                                    ?>
                                                 </div>
                                             </td>
                                             <td><a name="openModal4" id="btn_analizarComp" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
