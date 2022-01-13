@@ -2,7 +2,7 @@
 
 class MateriaControlador{
 
-    //Funcionque permite la creación de materias
+    //Funcion que permite la creación de materias
     public function insertarMateria(Materia $materia){
 
         $c = new conectar();

@@ -2,11 +2,31 @@
 <!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
 <!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
 
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once "logic/controllers/EventoControlador.php";
+    require_once "logic/controllers/ProfesorControlador.php";
+
+    
+    //Capturamos la variable id del evento para la eliminacion de un evento
+    $idEvento = $_GET['Id'];
+
+    if($idEvento > 0){
+        
+        $objEvento = new EventoControlador();
+
+        if($objEvento->eliminarEvento($idEvento) == 1){}
+    }
+    
+?>
+                                                                    
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv=”Cache-Control” content=”no-cache, mustrevalidate”>
+
         <title>Pandora</title>
         <link rel="shortcut icon" href="assets/images/favicon.png">        
         
@@ -17,7 +37,6 @@
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
-        
     </head>
 
     <body>
@@ -34,7 +53,7 @@
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+            <ul>
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Comite.php">
                             <span><i class="ti-dashboard" title="Dashboard"></i></span>
@@ -96,6 +115,7 @@
                 
             </header>
 
+           
             <!--Codigo de la ventana principal-->
             <main>
                 <div class="card-header">
@@ -107,14 +127,6 @@
                     <h3 class="titulo_seccion">Eventos existentes </h3>
                     <br>
                     <br>
-
-                    <!--Script para cargar datos en tabla de Eventos-->           
-                    <?php
-                       include("logic/conexionDB.php");
-
-                        $query = "SELECT * FROM tbl_evento";
-                        $query_run = mysqli_query(conectar(), $query);
-                    ?>
 
                     <!--ESTRUCTURA DE TABLA DE EVENTOS-->
                     <table id="table_eventos" class="tablaDeEventos">
@@ -129,57 +141,61 @@
                             </tr>
                         </thead>
 
-                    <?php
-                        if($query_run){
-                            foreach($query_run as $row){           
-                    ?>
-
                         <tbody>
-                            <tr class="filasDeDatosTablaEventos">
-                                <?php 
-                                //Aqui se traen las imagenes de cada evento
-                                $nombreDeImg = $row['nombre_imagen'];
 
-                                if($nombreDeImg != null){
+                        <!--Script para cargar datos en tabla de Eventos-->      
+                        <?php
+                            $obj = new EventoControlador();
+                            $sql = "SELECT id_evento, nombre_evento, descripcion_evento, fecha_inicio, fecha_fin, nombre_imagen from tbl_evento";
+                            $datos = $obj->mostrarDatosEventos($sql);
 
-                                ?>
+                            foreach ($datos as $key){
+                        ?>
+                                <tr class="filasDeDatosTablaEventos">
+                                    <?php 
+                                    //Aqui se traen las imagenes de cada evento
+                                    $nombreDeImg = $key['nombre_imagen'];
 
-                                    <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='<?php echo "eventosImages/".$nombreDeImg?>'></td>
+                                    if($nombreDeImg != null){
 
-                                <?php
-                                }else{
-                                ?>
-                                
-                                    <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
+                                    ?>
 
-                                <?php    
-                                }                       
-                                ?>
-                                
-                                <td class="datoTabla"><?php echo $row['nombre_evento'];  ?></td>
-                                <td class="datoTabla"><?php echo $row['descripcion_evento'];  ?></td>
-                                <td class="datoTabla"><?php echo $row['fecha_inicio'];  ?></td>
-                                <td class="datoTabla"><?php echo $row['fecha_fin'];  ?></td>
-                                <td class="datoTabla"><div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal2" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
-                                    </div>
+                                        <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='<?php echo "eventosImages/".$nombreDeImg?>'></td>
 
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal3" href="" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div></td>                                   
-                            </tr>   
+                                    <?php
+                                    }else{
+                                    ?>
+                                    
+                                        <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
+
+                                    <?php    
+                                    }                       
+                                    ?>
+                                    
+                                    <td class="datoTabla"><?php echo $key['nombre_evento'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['descripcion_evento'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
+                                    <td class="datoTabla"><div class="compEsp-edicion">
+                                        <div class="col-botonesEdicion">
+                                            <a name="openModal2" title="Editar" data-target="#actualizarEvento"><img src="assets/images/btn_editar.PNG"></a>
+                                        </div>
+
+                                        <div class="col-botonesEdicion">
+                                            <a href="?Id=<?php echo $key['id_evento'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                        </div>
+                                    
+                                    </div></td> 
+                                                                    
+                                </tr>    
+                        <?php
+                            }
+                        ?>
+                                               
                         </tbody>
 
-                    <?php
-                            }
-                        }else{
-                            echo "No hay ningún evento registrado...";
-                        }
-                    ?>
-
                     </table>
+
 
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE EVENTOS-->
                     <div id="modal_container1" class="modal_container" name="modal_container">
@@ -188,14 +204,14 @@
                             <br>
                             
                             <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" action="logic/EventoControlador.php" method="POST" enctype="multipart/form-data" >
-
+                                <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
+                                    
                                     <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input id="txt_nombreEvento" name="nombreEvento" placeholder="" maxlength="30" type="text" class="form-control">
+                                    <input id="txt_nombreEvento" name="nombreEvento" placeholder="" maxlength="30" type="text" class="form-control" required="true">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionEvento" name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control"></textarea>
+                                    <textarea id="txt_descripcionEvento" name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
@@ -206,165 +222,203 @@
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioEvento" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                                 
                                                 <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinEvento" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                             </td>
                                         </tr>
                                     </table>
                                     <br>
 
                                     <label class="camposFormulario">Profesor encargado</label>
-                                    <select  class="form-control" id="cbx_profesor" name="cbx_profesor">
+                                    <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesor" required="true">
                                         <option value="seleccione">Seleccione</option>
 
-                                        <!--Codigo que llena el combobox de profesores con lo de la tabla de usuarios de la bd-->
                                         <?php
-                                            include("logic/conexionDB.php");
+                                            $obj = new ProfesorControlador();
+                                            $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                            $datos = $obj->mostrarProfesoresRegistrados($sql);
 
-                                            $consulta = "SELECT * FROM tbl_usuario WHERE id_rol = 2";
-                                            $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
-
+                                            foreach ($datos as $key){
                                         ?>
 
-                                        <?php foreach($ejecutaConsulta as $opciones): ?>
+                                                <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
 
-                                            <option value="<?php echo $opciones['id_usuario']?>"><?php echo $opciones['nombres_usuario']?></option>
-
-                                        <?php endforeach  ?>                                    
+                                        <?php
+                                            }
+                                        ?>
                                     </select>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
                                     <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
                                     <br>
-                                    
+
                                     <label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label>
+                                    <br>
                                     <br>
 
                                     <table>
-                                        <tr class="filaSelectCompetencias">
+                                        <tr>
                                             <td class="columnSelectCompetencias">
-                                                
-                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS GENERALES-->
+                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS ESPECÍFICAS-->
                                                 <div class="compentenciasContent">
 
-                                                    <!--Codigo que llena el combobox de competencias con lo de la tabla de competencias generales de la bd-->
-                                                    <?php
-                                                        include("logic/conexionDB.php");
-
-                                                        $consulta = "SELECT * FROM tbl_competencia_general";
-                                                        $ejecutaConsulta = mysqli_query($conex, $consulta) or die(mysqli_error($conex));
-
-                                                    ?>
-
-                                                    <?php foreach($ejecutaConsulta as $opciones): ?>
-
-                                                        <label>
-                                                        <input type="checkbox" name="competencias[]" class="checkCompetenciaGeneral" value="<?php echo $opciones['id_comp_gral']?>" title="<?php echo $opciones['nombre_comp_gral']?>"> <?php echo $opciones['nombre_comp_gral']?> 
-                                                        </label>
-                                                        <br>
-
-                                                    <?php endforeach  ?>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1 
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
 
                                                 </div>
                                             </td>
-                                                    
-                                            <td><input type="submit" name="btn_analizar"  id="btn_analizarComp"  class="btn-fill pull-right btn btn-info" value="Analizar"></td>
+                                            <td><a name="openModal4" id="btn_analizarComp" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
                                         </tr>
-                                    </table>  
-                                     
-                                                                                                                           
+                                    </table>                                   
+                                    
                                     <br>
                                     <br>    
-                                    <button type="submit" name="btn_guardarEvento" class="btn_agregarEvento" title="Guardar">Guardar</button>
-                                    <button id="btn_cancelar1" name="btn_cancelarRegistro" class="btn_agregarEvento" title="Cancelar">Cancelar</button>
+                                    <button type="submit" name="guardarEvento" id="btn_guardarEvento"  class="btn_agregarEvento" title="Guardar">Guardar</button>
+                                    <a id="btn_cancelar1" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatEvento.php") ?>
                             </div>
                         </div>
                     </div>
-
                     
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
+                    <div id="actualizarEvento" class="modal_container" name="modal_container">
                         <div class="modal">
                             <h3 class="titulo_seccion">Actualizar Evento</h3>
                             <br>
                             
                             <div class="formulario-registroEvento">
-                                <form class="">
+                                <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
 
                                     <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input id="txt_nombreEvento" name="nombreEvento" placeholder="" type="text" class="form-control">
+                                    <input id="txt_nombreEvento" name="nombreEventoEditado" placeholder="" type="text" class="form-control" value="<?php echo $key['nombre_evento']; ?>" required="true">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_perfilProfesional" name="perfilProfesional" cols="80" placeholder="" rows="8" class="form-control"></textarea>
+                                    <textarea id="txt_perfilProfesional" name="descripcionActualizada" cols="80" placeholder="" rows="8" class="form-control" value="<?php echo $key['descripcion_evento']; ?>" required="true"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
-                                    <input  id="btn_cargaArchivoInfoDelEvento" name="btnCargaArchivoInfoDelEvento" accept=".pdf" type="file" class="form-control">
+                                    <input  id="btn_cargaArchivoInfoDelEvento" name="enunciadoActualizado" accept=".pdf" type="file" class="form-control">
                                     <br>
 
                                     <!--Espacio para colocar campos tipo calendar-->
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioEvento" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $key['fecha_inicio']; ?>" required="true"></td>
                                                 
                                                 <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinEvento" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $key['fecha_fin']; ?>" required="true"></td>
                                             </td>
                                         </tr>
                                     </table>
                                     <br>
 
                                     <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesoresResponsables">
-                                        <option value="" selected>Seleccione</option>
+                                    <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" required="true">
+                                        <option value="seleccione">Seleccione</option>
+
+                                        <?php
+                                            $obj = new ProfesorControlador();
+                                            $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                            $datos = $obj->mostrarProfesoresRegistrados($sql);
+
+                                            foreach ($datos as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                        
                                     </select>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
-                                    <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                    <input  id="btn_imgParaElEvento" name="imagenActualizada" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                    <br>
+
+                                    <label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label>
+                                    <br>
                                     <br>
 
                                     <table>
                                         <tr>
-                                            <td><label class="camposFormulario">Comp. generales a las cuales contribuye el evento</label><br>
-                                                <select class="form-control" id="cmb_competenciasGenerales" name="cmbCompetenciasGeneraless">
-                                                    <option value="" selected>Seleccione</option>
-                                                </select>
+                                            <td class="columnSelectCompetencias">
+                                                <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS ESPECÍFICAS-->
+                                                <div class="compentenciasContent">
+
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1 
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+                                                    <input class="checkCompetenciaGeneral" type="checkbox" value="" title="prueba"> Competencia general 1
+                                                    <br>
+
+                                                </div>
                                             </td>
-                                            <td><button type="submit" name="analisiscomp" class="btn-fill pull-right btn btn-info" placeholder="Analizar Competencias">Analizar</button></td>
+                                            <td><a name="openModal4" id="btn_analizarComp" class="btn-fill pull-right btn btn-info" title="Analizar competencias">Analizar</a></td>
                                         </tr>
-                                    </table>         
-                                                              
+                                    </table>                                        
+                                                                
                                     <br>
-                                    <br>   
-                                    <a id="btn_actualizarEvento" class="btn_agregarEvento" title="Actualizar">Actualizar</a>
+                                    <br>  
+                                    <button type="submit" name="actualizarEvento" id="btn_actualizarEvento"  class="btn_agregarEvento" title="Actualizar">Actualizar</button> 
                                     <a id="btn_cancelar2" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatEvento.php") ?>
                             </div>
                         </div>
                     </div>
 
-
-                    <!--ESTRUCTURA DEL POPUP DE ELIMINACIÓN DE EVENTOS-->
-                    <div id="modal_container3" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Eliminar Evento</h3>
-                            <br>
-                            <p>¿Está seguro de que desea eliminar?</p>
-                            <br>
-                            <br>
-                            <a id="btn_eliminarEvento" class="btn_agregarEvento" title="Si">Si</a>
-                            <a id="btn_cancelar3" class="btn_agregarEvento" title="No">No</a>
-                        </div>
-                    </div>
-
-                   
+                    
 
                     <!--POPUP PARA LA EVALUACIÓN DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
                     <div id="modal_container4" class="modal_container" name="modal_container">
@@ -378,32 +432,11 @@
                             <div class="contenedor_compEspecificas">
 
                                 <form class="">
-                                    
-                                    <!--Script para cargar datos en tabla de Eventos-->           
-                                    <?php
-                                        
-                                        
-                                        
-                                    
-
-                                    
-                                    
-                                    
-                                    
-
-                                    
-
-                                        
-                                    ?>
-                                
-                                
-                                
-                                
-                                    <!--Este es el código que contiene las competencias específicas a evaluar
+                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
                                     <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
+                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
                                         
-                                        -Tabla de radiobuttons para evaluar competencia específica
+                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
                                         <table>
                                             <tr>
                                                 <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
@@ -421,8 +454,29 @@
                                             </tr>
                                         </table>
 
+                                        <br>
+
+                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
+
+                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                        <table>
+                                            <tr>
+                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
+                                                <label for="Baja">Baja</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
+                                                <label for="Media">Media</label></td></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
+                                                <label for="Alta">Alta</label></td></td>
+
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
+                                                <label for="No aplica">No aplica</label></td></td>
+                        
+                                            </tr>
+                                        </table>
                                     </div>  
-                                    -->
+
                                     <br>
                                     <br>
                                     <a id="btn_guardarAnalisis" class="btn_agregarEvento" title="Guardar">Guardar</a>
@@ -432,75 +486,7 @@
                             </div>                            
                         </div>
                     </div>
-
-
-                    <!--POPUP DE REGISTRO DE EVENTO SATISFACTORIO-->
-                    <div id="modal_container5" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Evento registrado satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar1" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
-                     <!--POPUP DE ACTUALIZACION DE EVENTO SATISFACTORIO-->
-                     <div id="modal_container6" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Evento actualizado satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar2" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
-                    <!--POPUP DE ELIMINACION DE EVENTO SATISFACTORIO-->
-                     <div id="modal_container7" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Evento eliminado satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar3" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
-                    <!--POPUP DE EVALUACION DE COMPETENCIAS SATISFACTORIO-->
-                    <div id="modal_container8" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Evalución de competencias guardada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar4" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
+    
                 </div>
             </main>
         </div>

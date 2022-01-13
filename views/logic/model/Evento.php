@@ -12,15 +12,13 @@ class Evento{
     private $profeEncargado;
 
     //Constructor
-    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $nombreImagen, $nombreEnunciado, $profeEncargado)
+    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $profeEncargado)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
         $this->fechaInicio = $fechaInicio;
         $this->fechaFin = $fechaFin;
-        $this->nombreImagen = $nombreImagen;
-        $this->nombreEnunciado = $nombreEnunciado;
         $this->profeEncargado = $profeEncargado;
     }
     

@@ -58,7 +58,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./AdministradorDeEventos_Comite.php">
+                        <a class="link_menu" href="./AdministradorDeEventos_Comite.php?Id=0">
                             <span class="ti-flag" title="Eventos"></span>
                             <span class="items_menu">EVENTOS</span>
                         </a>

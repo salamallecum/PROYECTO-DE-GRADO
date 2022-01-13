@@ -1,163 +1,246 @@
 <?php
 
-//Invocamos el archivo de conexion a la BD
-include("conexionDB.php");
-//Invocamos el archivo que genera los nombres de los archivos
-include("generadorDeNombres.php");
+class EventoControlador{
 
-//Capturamos el evento del boton de analizar competencias
-if(isset($_POST['openModa4'])){
-  echo "se invoca bien";
-}
+    //Funcion que permite mostrar los eventos
+    public function mostrarDatosEventos($sql){
 
-//Capturamos el evento del boton de guardar evento del formulario de registro de eventos
-if(isset($_POST['btn_guardarEvento'])){
+        $c = new conectar();
+        $conexion = $c->conexion();
 
-    //Capturamos los datos de los campos del formulario
-    $nombreDeEvento = trim($_POST['nombreEvento']);
-    $descripcionEvento = trim($_POST['descripcionEvento']);
-    $fechaInicioEvento = date('Y-m-d', strtotime($_POST['dateFechaInicioEvento']));
-    $fechaFinEvento = date('Y-m-d', strtotime($_POST['dateFechaFinEvento']));
-    $cmbProfesorEncargado = $_REQUEST['cbx_profesor'];
-    $cmbCompetencias = $_POST['competencias'];
-   
-    //Validamos que los campos no se encuentren vacios
-    if(strlen($nombreDeEvento) >= 1 && 
-    strlen($descripcionEvento) >= 1 && 
-    $fechaInicioEvento != '1970-01-01' &&
-    $fechaFinEvento != '1970-01-01' &&
-    $cmbProfesorEncargado != 'seleccione' &&
-    $cmbCompetencias == true){   
+        $result = mysqli_query($conexion, $sql);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 
-        //Registramos lo obtenido en bd
-        $consulta = "INSERT INTO tbl_evento (`nombre_evento`,`descripcion_evento`,`fecha_inicio`,`fecha_fin`,`id_usuario`) VALUES ('$nombreDeEvento','$descripcionEvento','$fechaInicioEvento','$fechaFinEvento','$cmbProfesorEncargado')";
+    //Funcion que permite el registro de los eventos
+    public function insertarEvento(Evento $evento){
 
-        $resultado = mysqli_query($conex, $consulta);
+        $c = new conectar();
+        $conexion = $c->conexion();
 
+        //Capturamos los datos del objeto
+        $idEvento = $evento->getId();
+        $nombreEvento = $evento->getNombre();
+        $descripcionEvento = $evento->getDescripcion();
+        $fechaInicio = $evento->getFechaInicio();
+        $fechaFin = $evento->getFechaFin();
+        $profeEncargado = $evento->getProfeEncargado();
+                
+        $sql = "INSERT INTO tbl_evento (id_evento, nombre_evento, descripcion_evento, fecha_inicio, fecha_fin, id_usuario)
+                            values ($idEvento, '$nombreEvento', '$descripcionEvento', '$fechaInicio', '$fechaFin', $profeEncargado)";
 
-        if(isset($_POST['btn_analizar'])){
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+    }
 
-        }else{
+    //Funcion que permite cargar una imagen del evento
+    public function subirImagenEvento($rutaImg, $nombreImg, $imgEvento, $nomEvento){
 
-        }
+        $c = new conectar();
+        $conexion = $c->conexion();
 
+        //Evaluamos si no existe la carpeta eventosImages
+        if(!file_exists('../eventosImages')){
+            mkdir('../eventosImages', 0777, true);
 
+            if(file_exists('../eventosImages')){
+                if(move_uploaded_file($rutaImg, '../eventosImages/'. $imgEvento)){
 
+                    //Guardamos el nombre de la imagen en la base de datos
+                    $queryGuardarNombreImagen = "UPDATE tbl_evento SET nombre_imagen='$nombreImg' WHERE nombre_evento='$nomEvento'";
+                    $resultadoGuardaNombreImagen = mysqli_query($conexion, $queryGuardarNombreImagen);
 
-        if($resultado){
+                    //Renombramos la imagen con el nombre guardado en bd 
+                    rename("../eventosImages/".$imgEvento, "../eventosImages/".$nombreImg);
 
-            $imagenDelEvento = $_FILES['imgParaElEvento']['name'];
-            $enunciadoDelEvento = $_FILES['archivoInfoDelEvento']['name'];
-            
-            //Verificamos si el usuario ha subido una imagen para el evento
-            if(strlen($imagenDelEvento) >= 1){               
-
-                //Guardamos la ruta en la que se encuentra la imagen 
-                $rutaDeImagen = $_FILES['imgParaElEvento']['tmp_name'];
-
-                //Generamos un nuevo nombre para la imagen
-                $nuevoNombreArchivoImagen = generadorDeNombre().".jpg";
-
-                //Evaluamos si no existe la carpeta eventosImages
-                if(!file_exists('../eventosImages')){
-                    mkdir('../eventosImages', 0777, true);
-
-                    if(file_exists('../eventosImages')){
-                        if(move_uploaded_file($rutaDeImagen, '../eventosImages/'. $imagenDelEvento)){
-
-                            //Guardamos el nombre de la imagen en la base de datos
-                            $queryGuardarNombreImagen = "UPDATE tbl_evento SET nombre_imagen='$nuevoNombreArchivoImagen' WHERE nombre_evento='$nombreDeEvento'";
-                            $resultadoGuardaNombreImagen = mysqli_query($conex, $queryGuardarNombreImagen);
-
-                            //Renombramos la imagen con el nombre guardado en bd 
-                            rename("../eventosImages/".$imagenDelEvento, "../eventosImages/".$nuevoNombreArchivoImagen);
-
-                            echo "Imagen del evento guardada satisfactoriamente";
-                        }else{
-                            echo "La imagen no se pudo guardar";
-                        }
-                    }
                 }else{
-                    if(move_uploaded_file($rutaDeImagen, '../eventosImages/'. $imagenDelEvento)){
-
-                        //Generamos un nuevo nombre para el archivo
-                        $nuevoNombreImg = generadorDeNombre().".jpg";
-
-                       //Guardamos el nombre del archivo del enunciado en la base de datos
-                       $queryGuardarNombreImagen = "UPDATE tbl_evento SET nombre_imagen='$nuevoNombreImg' WHERE nombre_evento='$nombreDeEvento'";
-                       $resultadoGuardaNombreImagen = mysqli_query($conex, $queryGuardarNombreImagen);
-
-                       //Renombramos el achivo del enunciado con el nombre guardado en bd 
-                       rename("../eventosImages/".$imagenDelEvento, "../eventosImages/".$nuevoNombreImg);
-
-                       echo "Imagen del evento guardada satisfactoriamente";
-                    }else{
-                        echo "La imagen no se pudo guardar";
-                    }
-                }              
-            }
-
-            //Verificamos si el usuario ha subido un archivo con el enunciado del evento
-            if(strlen($enunciadoDelEvento) >= 1){
-
-                //Guardamos la ruta en la que se encuentra el enunciado 
-                $rutaDeEnunciado = $_FILES['archivoInfoDelEvento']['tmp_name'];
-
-                //Generamos un nuevo nombre para el archivo
-                $nuevoNombreArchivoEnunciado = generadorDeNombre().".pdf";
-
-                //Evaluamos si no existe la carpeta eventosFiles
-                if(!file_exists('../eventosFiles')){
-                    mkdir('../eventosFiles', 0777, true);
-
-                    if(file_exists('../eventosFiles')){
-                        if(move_uploaded_file($rutaDeEnunciado, '../eventosFiles/'. $enunciadoDelEvento)){
-
-                            //Guardamos el nombre del archivo del enunciado en la base de datos
-                            $queryGuardarNombreEnunciado = "UPDATE tbl_evento SET nombre_enunciado='$nuevoNombreArchivoEnunciado' WHERE nombre_evento='$nombreDeEvento'";
-                            $resultadoGuardaNombreEnunciado = mysqli_query($conex, $queryGuardarNombreEnunciado);
-
-                            //Renombramos el achivo del enunciado con el nombre guardado en bd 
-                            rename("../eventosFiles/".$enunciadoDelEvento, "../eventosFiles/".$nuevoNombreArchivoEnunciado);
-
-                            echo "Enunciado del evento guardado satisfactoriamente";
-                        }else{
-                            echo "Enunciado no se pudo guardar";
-                        }
-                    }
-                }else{
-                    if(move_uploaded_file($rutaDeEnunciado, '../eventosFiles/'. $enunciadoDelEvento)){
-
-                        //Generamos un nuevo nombre para el archivo
-                        $nuevoNombre = generadorDeNombre().".pdf";
-
-                       //Guardamos el nombre del archivo del enunciado en la base de datos
-                       $queryGuardarNombreEnunciado = "UPDATE tbl_evento SET nombre_enunciado='$nuevoNombre' WHERE nombre_evento='$nombreDeEvento'";
-                       $resultadoGuardaNombreEnunciado = mysqli_query($conex, $queryGuardarNombreEnunciado);
-
-                       //Renombramos el achivo del enunciado con el nombre guardado en bd 
-                       rename("../eventosFiles/".$enunciadoDelEvento, "../eventosFiles/".$nuevoNombre);
-                       
-                       echo "Enunciado del evento guardado satisfactoriamente";
-                    }else{
-                        echo "Enunciado no se pudo guardar";
-                    }
+                    echo "La imagen no se pudo guardar";
                 }
             }
-                       
-            ?>
-            <h3 class="indicadorSatisfactorio">* Evento registrado satisfactoriamente</h3>  
-            <?php
-            header("Location: " . $_SERVER["HTTP_REFERER"]);
         }else{
-            ?>
-            <h3 class="indicadorDeError">* Error al registrar Evento</h3>   
-            <?php
+            if(move_uploaded_file($rutaImg, '../eventosImages/'. $imgEvento)){
+
+               //Guardamos el nombre del archivo del enunciado en la base de datos
+               $queryGuardarNombreImagen = "UPDATE tbl_evento SET nombre_imagen='$nombreImg' WHERE nombre_evento='$nomEvento'";
+               $resultadoGuardaNombreImagen = mysqli_query($conexion, $queryGuardarNombreImagen);
+
+               //Renombramos el achivo del enunciado con el nombre guardado en bd 
+               rename("../eventosImages/".$imgEvento, "../eventosImages/".$nombreImg);
+
+            }else{
+                echo "La imagen no se pudo guardar";
+            }
+        } 
+    }
+
+    //Funcion que permite cargar el enunciado del evento
+    public function subirEnunciadoEvento($rutaEnun, $nombreEnun, $archEnun, $nomEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Evaluamos si no existe la carpeta eventosFiles
+        if(!file_exists('../eventosFiles')){
+            mkdir('../eventosFiles', 0777, true);
+
+            if(file_exists('../eventosFiles')){
+                if(move_uploaded_file($rutaEnun, '../eventosFiles/'. $archEnun)){
+
+                    //Guardamos el nombre de la imagen en la base de datos
+                    $queryGuardarNombreEnunciado = "UPDATE tbl_evento SET nombre_enunciado='$nombreEnun' WHERE nombre_evento='$nomEvento'";
+                    $resultadoGuardaNombreEnunciado = mysqli_query($conexion, $queryGuardarNombreEnunciado);
+
+                    //Renombramos la imagen con el nombre guardado en bd 
+                    rename("../eventosFiles/".$archEnun, "../eventosFiles/".$nombreEnun);
+
+                }else{
+                    echo "El enunciado no se pudo guardar";
+                }
+            }
+        }else{
+            if(move_uploaded_file($rutaEnun, '../eventosFiles/'. $archEnun)){
+
+               //Guardamos el nombre del archivo del enunciado en la base de datos
+               $queryGuardarNombreEnunciado = "UPDATE tbl_evento SET nombre_enunciado='$nombreEnun' WHERE nombre_evento='$nomEvento'";
+               $resultadoGuardaNombreEnunciado = mysqli_query($conexion, $queryGuardarNombreEnunciado);
+
+               //Renombramos el achivo del enunciado con el nombre guardado en bd 
+               rename("../eventosFiles/".$archEnun, "../eventosFiles/".$nombreEnun);
+
+            }else{
+                echo "El enunciado no se pudo guardar";
+            }
+        } 
+    }
+
+    //Funcion que permite eliminar un evento
+    public function eliminarEvento($idEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE  from tbl_evento where id_evento = $idEvento";
+
+        //Consultamos si tiene imagen o archivo almacenados en el servidor
+        $nombreImagen = (string) $this->consultarNombreImagenEvento($idEvento);
+        $nombreEnunciado = (string) $this->consultarNombreEnunciadoEvento($idEvento);
+
+        //Validamos que el evento tenga un nombre de imagen o un nombre de enunciado
+        if($nombreImagen != null){
+            $this->eliminarImagen($nombreImagen);
+        }else if($nombreEnunciado != null){
+            $this->eliminarEnunciado($nombreEnunciado);
         }
-    }else{
-       echo "<script>alert('Por favor diligencie todos los campos');</script>";
-       //header('Location:../AdministradorDeEventos_Comite.php');
-       header("Location: " . $_SERVER["HTTP_REFERER"]);
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que permite consultar el nombre de la imagen de un evento
+    public function consultarNombreImagenEvento($idEv){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_imagen from tbl_evento where id_evento = $idEv";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_imagen'];
+        }
+    }
+
+    
+    //Funcion que permite consultar el nombre del enunciado de un evento
+    public function consultarNombreEnunciadoEvento($idEv){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_enunciado from tbl_evento where id_evento = $idEv";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_enunciado'];
+        }
+
+    }
+    
+    //Funcion que permite eliminar la imagen de un evento
+    public function eliminarImagen(string $nomImg){
+
+        $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
+        $archAEliminar = $base_dir."/MockupsPandora/views/eventosImages/".$nomImg;
+
+        if(file_exists($archAEliminar)){
+
+            if(unlink($archAEliminar)){}else{
+                echo "La imagen ($nomImg) no se pudo eliminar";
+            }
+        
+        }else{
+            echo "No se encontró la imagen ($nomImg)";
+        }
+    }
+
+    //Funcion que permite eliminar el enunciado de un evento
+    public function eliminarEnunciado(string $nomEnun){
+
+        $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
+        $archAEliminar = $base_dir."/MockupsPandora/views/eventosFiles/".$nomEnun;
+
+        if(file_exists($archAEliminar)){
+
+            if(unlink($archAEliminar)){}else{
+                echo "El enunciado ($nomEnun) no se pudo eliminar";
+            }
+        
+        }else{
+            echo "No se encontró el enunciado ($nomEnun)";
+        }
+    }  
+    
+    //Funcion que permite actualizar la informacion de un evento
+    public function actualizarEvento(Evento $eventoEdit){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idEventoEdit = $eventoEdit->getId();
+        $nombreEventoAEditar = $eventoEdit->getNombre();
+        $descripcionAEditar = $eventoEdit->getDescripcion();
+        $fechaInicioEdit = $eventoEdit->getFechaInicio();
+        $fechaFinEdit = $eventoEdit->getFechaFin();
+        $profeEncargadoEdit = $eventoEdit->getProfeEncargado();
+                
+        $sql = "UPDATE SET nombre_evento='$nombreEventoAEditar', descripcion_evento='$descripcionAEditar', fecha_inicio='$fechaInicioEdit', fecha_fin='$fechaFinEdit', id_usuario='$profeEncargadoEdit'
+                            WHERE  id_evento=$idEventoEdit";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+
+    }
+
+    //Funcion que permite actualizar el enunciado de un evento
+    public function actualizarEnunciadoEvento($idEventoEdit, $rutanvoEnun, $nombrenvoEnun, $archnvoEnun, $nomEvento){
+
+        //Consultamos si tiene archivo almacenado en el servidor
+        $nombreEnunciado = (string) $this->consultarNombreEnunciadoEvento($idEventoEdit);
+
+        //Validamos que el evento tenga un nombre de enunciado
+        if($nombreEnunciado != null){
+            $this->eliminarEnunciado($nombreEnunciado);
+            $this->subirEnunciadoEvento($rutanvoEnun, $nombrenvoEnun, $archnvoEnun, $nomEvento);
+        }
+    }
+
+    //Funcion que permite actualizar la imagen de un evento
+    public function actualizarImagenEvento($idEventoEdit, $rutanvaImg, $nombrenvaImg, $archnvoImg, $nomEvento){
+
+        //Consultamos si tiene imagen  almacenada en el servidor
+        $nombreImagen = (string) $this->consultarNombreImagenEvento($idEventoEdit);
+
+        //Validamos que el evento tenga un nombre de enunciado
+        if($nombreImagen != null){
+            $this->eliminarEnunciado($nombreImagen);
+            $this->subirEnunciadoEvento($rutanvaImg, $nombrenvaImg, $archnvoImg, $nomEvento);
+        }
     }
 }
 
