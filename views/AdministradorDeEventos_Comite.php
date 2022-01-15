@@ -6,7 +6,7 @@
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/EventoControlador.php";
     require_once "logic/controllers/ProfesorControlador.php";
-    require_once "logic/controllers/CompetenciaControlador.php";
+    require_once "logic/controllers/CompetenciaGeneralControlador.php";
 
     
     //Capturamos la variable id del evento para la eliminacion de un evento
@@ -37,7 +37,13 @@
 
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
-        <script src="assets/js/jquery-3.6.0.js"></script>
+        <!--<script src="assets/js/jquery-3.6.0.js"></script>-->
+
+        <!--Links scripts para el uso de bootstrap-->
+        <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>-->
+        <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>-->
     </head>
 
     <body>
@@ -179,7 +185,7 @@
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            <a name="openModal2" class="editbtn" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -307,11 +313,11 @@
                                 <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
 
                                     <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input id="txt_nombreEvento" name="nombreEventoEditado" placeholder="" type="text" class="form-control" value="<?php echo $key['nombre_evento']; ?>" required="true">
+                                    <input id="txt_nombreEvento" name="nombreEventoEditado" id="nombreEventoEdit" placeholder="" type="text" class="form-control" required="true">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_perfilProfesional" name="descripcionActualizada" cols="80" placeholder="" rows="8" class="form-control" value="<?php echo $key['descripcion_evento']; ?>" required="true"></textarea>
+                                    <textarea id="txt_perfilProfesional" name="descripcionActualizada" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
@@ -322,17 +328,17 @@
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $key['fecha_inicio']; ?>" required="true"></td>
+                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                                 
                                                 <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $key['fecha_fin']; ?>" required="true"></td>
+                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                             </td>
                                         </tr>
                                     </table>
                                     <br>
 
                                     <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" required="true">
+                                    <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" id="profeEdit" required="true">
                                         <option value="seleccione">Seleccione</option>
 
                                         <?php
@@ -396,7 +402,7 @@
                             </div>
                         </div>
                     </div>
-
+                                            
                     
 
                     <!--POPUP PARA LA EVALUACIÓN DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
@@ -469,5 +475,21 @@
                 </div>
             </main>
         </div>
+
+        <!--Query que permite pasar los datos al popup de actualizacion de eventos-->
+        <script>
+            $('.editbtn').on('click', function(){
+                $tr=$(this).closest('tr');
+                var datos=$tr.children("td").map(function (){
+                    return $(this).text();
+                });
+                $('#nombreEventoEdit').val(datos[1]);
+                $('#descripcionEdit').val(datos[2]);
+                $('#fechaInicioEdit').val(datos[3]);
+                $('#fechaEdit').val(datos[4]);
+
+            });
+        </script>
+
     </body>
 </html>
