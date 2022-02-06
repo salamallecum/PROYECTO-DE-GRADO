@@ -1,4 +1,3 @@
-
 //Archivo que define las operaciones basicas de los popup en la app Pandora (Abrir y cerrar)
 
 //ROL COMITE----------------------------------------------------------------------------------------------------------------
@@ -64,74 +63,45 @@ function eventoPopUpActualizacionDeConvocatorias(){
     close2.addEventListener('click', (e) => {
         e.preventDefault();
         modal_container2.classList.remove('show');
+        limpiarFormularioEdicionDeConvocatorias();
     },false); 
 }
 
-//EVENTOS POPUP REGISTRO DE CONVOCATORIA SATISFACTORIO
-const open6 = document.getElementById('btn_guardarConvocatoria');
-const modal_container6 = document.getElementById('modal_container6');
-const close6 = document.getElementById('btn_aceptar1');
+//ASIGNACION DE EVENTO A BOTON "ASIGNAR COMPETENCIAS"
+const listOpen4 = document.getElementsByName('btn_asignarCompetencias');
+const modal_container4 = document.getElementById('modal_container4');
+const close4 = document.getElementById('btn_cancelar4');
 
-open6.addEventListener('click', (e) => {
+//Recorremos el arreglo de elementos con el name btn_analizar
+for(var i=0; i<listOpen4.length; i++){
+        
+    listOpen4[i].addEventListener('click', (e) => {
+        e.preventDefault();
+        modal_container4.classList.add('show');
+    },false);
+}
+
+close4.addEventListener('click', (e) => {
     e.preventDefault();
-    modal_container6.classList.add('show');
-},false); 
-
-close6.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container6.classList.remove('show');
-    modal_container1.classList.remove('show');
-},false);
-
-
-//EVENTOS POPUP ACTUALIZACION DE CONVOCATORIA SATISFACTORIO
-const open7 = document.getElementById('btn_actualizarConvocatoria');
-const modal_container7 = document.getElementById('modal_container7');
-const close7 = document.getElementById('btn_aceptar2');
-
-open7.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container7.classList.add('show');
-},false); 
-
-close7.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container7.classList.remove('show');
-    modal_container2.classList.remove('show');
-},false);
-
-
-//EVENTOS POPUP ELIMINACION DE CONVOCATORIA SATISFACTORIO
-const open8 = document.getElementById('btn_eliminarConvocatoria');
-const modal_container8 = document.getElementById('modal_container8');
-const close8 = document.getElementById('btn_aceptar3');
-
-open8.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container8.classList.add('show');
-},false); 
-
-close8.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container8.classList.remove('show');
-    modal_container3.classList.remove('show');
-},false);
-
-
-//EVENTOS POPUP EVALAUACION DE COMPETENCIAS SATISFACTORIO
-const open9 = document.getElementById('btn_guardarAnalisis');
-const modal_container9 = document.getElementById('modal_container9');
-const close9 = document.getElementById('btn_aceptar4');
-
-open9.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container9.classList.add('show');
-},false); 
-
-close9.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container9.classList.remove('show');
     modal_container4.classList.remove('show');
+},false);
+
+
+//ASIGNACION DE EVENTO A BOTON  PARA EVALUACION DE COMPETENCIAS
+const open5 = document.getElementById('btn_evaluarCompetencias');
+const modal_container5 = document.getElementById('modal_container5');
+const close5 = document.getElementById('btn_cancelar5');
+
+
+open5.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal_container5.classList.add('show');
+},false);
+
+
+close5.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal_container5.classList.remove('show');
 },false);
 
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE CONVOCATORIAS
@@ -141,9 +111,17 @@ function limpiarFormularioRegistroDeConvocatorias(){
     formRegistro.reset();
 }
 
+//FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE ACTUALIZACION DE EVENTOS
+function limpiarFormularioEdicionDeConvocatorias(){
+    
+    const formEdicion = document.getElementById('formularioDeActualizacionDeConvocatorias');
+    formEdicion.reset();
+}
+
 
 //INVOCACION DE FUNCIONES
 eventoPopUpActualizacionDeConvocatorias();
-eventoPopUpEliminacionDeConvocatorias();
-eventoPopUpDetalleDeConvocatorias();
+
+
+
 

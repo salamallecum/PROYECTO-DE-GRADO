@@ -1,9 +1,8 @@
 <?php
 
-class CompetenciaEspecifica{
+class CompetenciaGeneral{
 
     private $id;
-    private $idCompetenciaGeneral;
     private $codigo;
     private $nombre;
     private $rolDeContribucion;
@@ -13,13 +12,12 @@ class CompetenciaEspecifica{
     
 
     //Constructor
-    function __construct($id, $idCompetenciaGeneral, $codigo, $nombre, $rolDeContribucion)
+    function __construct($id, $codigo, $nombre, $rolDeContribucion)
     {
         $this->id = $id;
-        $this->idCompetenciaGeneral = $idCompetenciaGeneral;
         $this->codigo = $codigo;
         $this->nombre = $nombre;
-        $this->rolDeContribucion = $rolDeContribucion;
+        $this->rolDeContribucion = $rolDeContribucion;       
     }
     
     //GETTER Y SETTER
@@ -29,14 +27,6 @@ class CompetenciaEspecifica{
 
     public function getId(){
         return $this->id;
-    }
-
-    public function setIdCompGeneral($idCompGral){
-        $this->idCompetenciaGeneral = $idCompGral;
-    }
-
-    public function getIdCompGeneral(){
-        return $this->idCompetenciaGeneral;
     }
 
     public function setCodigo($cod){
@@ -86,6 +76,7 @@ class CompetenciaEspecifica{
     public function getNombreBadgeBronce(){
         return $this->nomBadgBronce;
     }
+
 }
 
 ?>

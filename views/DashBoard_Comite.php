@@ -1,3 +1,12 @@
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once "logic/controllers/EventoControlador.php";
+    require_once "logic/controllers/ConvocatoriaControlador.php";
+
+    $objEventoControla = new EventoControlador();
+    $objConvocatoriaControla = new ConvocatoriaControlador();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -97,7 +106,7 @@
                             <span><img src="assets/images/ico_evento.png"></span>
                             <div>
                                 <h5>Eventos</h5>
-                                <h4>4</h4>
+                                <h4><?php echo $objEventoControla->contadorDeEventos();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -111,7 +120,7 @@
                             <span><img src="assets/images/ico_convocatoria.png"></span>
                             <div>
                                 <h5>Convocatorias</h5>
-                                <h4>2</h4>
+                                <h4><?php echo $objConvocatoriaControla->contadorDeConvocatorias();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -125,7 +134,7 @@
                             <span><img src="assets/images/ico_insignias.PNG" alt=""></span>
                             <div>
                                 <h5>Insignias otorgadas</h5>
-                                <h4>5</h4>
+                                <h4>--P</h4>
                             </div>
                         </div>
                         <div class="card-footer">

@@ -1,6 +1,36 @@
 <!--IMPORTANTE-->
 <!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
 <!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once "logic/controllers/CompetenciaControlador.php";
+    
+
+    //Capturamos la variable id de la competencia general y el id de la competencia específica
+    if(isset($_GET['idCompGen'])){
+        $idCompetenciaGeneral = $_GET['IdCompGen'];
+
+        if($idCompetenciaGeneral > 0){
+        
+            $objCompetencia = new CompetenciaControlador();
+    
+            if($objCompetencia->eliminarCompetenciaGeneral($idCompetenciaGeneral) == 1){}
+        }
+    }
+
+    if(isset($_GET['idCompEsp'])){
+        $idCompetenciaEspecifica = $_GET['IdCompEsp'];
+
+        if($idCompetenciaEspecifica > 0){
+        
+            $objCompetencia = new CompetenciaControlador();
+    
+            if($objCompetencia->eliminarCompetenciaEspecifica($idCompetenciaEspecifica) == 1){}
+        }
+    }
+        
+?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -88,7 +118,7 @@
                         <span>Administrador de competencias</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -99,261 +129,172 @@
                     <a id="openModal" class="btn_agregarCompetencia" title="Nueva Competencia">Nueva competencia</a>                   
                 </div>
 
-                <!-- Estructura de targeta de la competencia-->
-                <div class="dash-cards">
-                    
-                    <!--CODIGO TARGETA DE COMPETENCIA 1-->
-                    <div class="card-competencia">
-                        <div class="card-competenciaBody">
-                            <div>
-                                <span><img id="lbl_imgTrabajoDestacado" class="imgCompetencia" src="assets/images/imgPorDefecto.jpg"></span>
-                            
-                                <div>
-                                    <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloCompetenciaGeneral">A. COMPETENCIA GENERAL DE PRUEBA 1</h4>
-                                </div>
+                <div class="main-tableEventos">
+                    <br>
+                    <h3 class="titulo_seccion">Competencias generales existentes </h3>
+                    <br>
+                    <br>
+
+                    <div class="contentTablaCompetencias">
     
-                                <div class="contenedorBotones">
-                                    <div class="filaBotonesCompGeneral">
-                                        <div class="columnaBotonesEdicion">
-                                            <a name="openModa5" href="" title="Editar"><img src="/assets/images/btn_editar.PNG">Editar</a>
-                                        </div>
-        
-                                        <div class="columnaBotonesEdicion">
-                                            <a name="openModal3" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG">Eliminar</a>
-                                        </div>
-                                    </div>
-                                </div>                          
-                            </div>                            
-                        </div>
-                        
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
+                        <!--ESTRUCTURA DE TABLA DE COMPETENCIAS GENERALES-->
+                        <table id="table_competenciasGenerales" class="tablaDeCompetencias">
+                            <thead>
+                                <tr>
+                                    <th class="campoTabla"></th>
+                                    <th class="campoTabla">Competencia general</th>
+                                    <th class="campoTabla">Rol</th>
+                                    <th class="campoTabla">Badges</th>
+                                    <th class="campoTabla">Acciones</th>
+                                </tr>
+                            </thead>
 
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
+                            <tbody>
+                              
+                            <!--Script para cargar datos en tabla de Competencias generales-->      
+                            <?php
+                                $obj = new CompetenciaControlador();
+                                $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral, rol, nombre_badgeoro, nombre_badgeplata, nombre_badgebronce from tbl_competencia_general";
+                                $datos = $obj->mostrarDatosCompetencias($sql);
 
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
+                                foreach ($datos as $key){
+                            ?>
+                                    <!--Aqui van los registros de la tabla de competencias generales-->
+                                    <tr class="filasDeDatosTablaConvocatorias">
+                                        <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                        <td class="datoTabla"><?php echo $key['codigo']; ?>. <?php echo $key['nombre_comp_gral']; ?></td>
+                                        <td class="datoTabla"><?php echo $key['rol'];?></td>
+                                        
+                                        <?php 
+                                            //Aqui se traen las imagenes de cada badge de la competencia
+                                            $nombreBadgeOroCompGeneral = $key['nombre_badgeoro'];
+                                            $nombreBadgePlataCompGeneral = $key['nombre_badgeplata'];
+                                            $nombreBadgeBronceCompGeneral = $key['nombre_badgebronce'];
 
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
+                                            if($nombreBadgeOroCompGeneral != null && $nombreBadgePlataCompGeneral != null && $nombreBadgeBronceCompGeneral != null
+                                            ){
 
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
+                                            ?>
 
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
+                                                <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgeOroCompGeneral?>'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgePlataCompGeneral?>'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgeBronceCompGeneral?>'></td>
 
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            
+                                            <td class="datoTabla"><img src="assets/images/badge_prueba muestreo.png" alt=""><img src="assets/images/badge_prueba muestreo.png" alt=""><img src="assets/images/badge_prueba muestreo.png" alt=""></td> 
 
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
+                                        <?php    
+                                        }                       
+                                        ?>
 
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
-
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
-
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
+                                        <td class="datoTabla"><div class="compEsp-edicion">
+                                            <div class="col-botonesEdicion">
+                                                <a name="openModa5" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            </div>
+            
+                                            <div class="col-botonesEdicion">
+                                               <a href="?IdCompGen=<?php echo $key['id_comp_gral'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                            </div>
+                                        </div></td>
+                                    </tr>
+                            
+                            <?php
+                                }
+                            ?>
+                            
+                            
+                                
+                            </tbody>   
+    
+                        </table>  
                     </div>
 
-                    <!--CODIGO TARGETA DE COMPETENCIA 2-->
-                    <div class="card-competencia">
-                        <div class="card-competenciaBody">
-                            <div>
-                                <span><img id="lbl_imgTrabajoDestacado" class="imgCompetencia" src="assets/images/imgPorDefecto.jpg"></span>
-                            
-                                <div>
-                                    <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloCompetenciaGeneral">A. COMPETENCIA GENERAL DE PRUEBA 2</h4>
-                                </div>
+                    <br>
+                    <br>
+                    <h3 class="titulo_seccion">Competencias específicas existentes </h3>
+                    <br>
+                    <br>
+
+                    <div class="contentTablaCompetencias">
     
-                                <div class="contenedorBotones">
-                                    <div class="filaBotonesCompGeneral">
-                                        <div class="columnaBotonesEdicion">
-                                            <a name="openModa5" href="" title="Editar"><img src="/assets/images/btn_editar.PNG">Editar</a>
-                                        </div>
-        
-                                        <div class="columnaBotonesEdicion">
-                                            <a name="openModal3" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG">Eliminar</a>
-                                        </div>
-                                    </div>
-                                </div>                          
-                            </div>                            
-                        </div>
-                        
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
+                        <!--ESTRUCTURA DE TABLA DE COMPETENCIAS ESPECIFICAS-->
+                        <table id="table_competenciasGenerales" class="tablaDeCompetencias">
+                            <thead>
+                                <tr>
+                                    <th class="campoTabla"></th>
+                                    <th class="campoTabla">Competencia específica</th>
+                                    <th class="campoTabla">Rol</th>
+                                    <th class="campoTabla">Badges</th>
+                                    <th class="campoTabla">Acciones</th>
+                                </tr>
+                            </thead>
 
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
+                            <tbody>
+                              
+                            <!--Script para cargar datos en tabla de Competencias especificas-->      
+                            <?php
+                                $obj = new CompetenciaControlador();
+                                $sql = "SELECT id_comp_esp, codigo, nombre_competencia_esp, rol, nombre_badgeoro, nombre_badgeplata, nombre_badgebronce from tbl_competencia_especifica";
+                                $datos = $obj->mostrarDatosCompetencias($sql);
 
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
+                                foreach ($datos as $key){
+                            ?>
+                                    <!--Aqui van los registros de la tabla de competencias especificas-->
+                                    <tr class="filasDeDatosTablaConvocatorias">
+                                        <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                        <td class="datoTabla"><?php echo $key['codigo']; ?>. <?php echo $key['nombre_competencia_esp']; ?></td>
+                                        <td class="datoTabla"><?php echo $key['rol'];?></td>
+                                        
+                                        <?php 
+                                            //Aqui se traen las imagenes de cada badge de la competencia
+                                            $nombreBadgeOroCompEsp = $key['nombre_badgeoro'];
+                                            $nombreBadgePlataCompEsp = $key['nombre_badgeplata'];
+                                            $nombreBadgeBronceCompEsp = $key['nombre_badgebronce'];
 
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
+                                            if($nombreBadgeOroCompEsp != null && $nombreBadgePlataCompEsp != null && $nombreBadgeBronceCompEsp != null){
 
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
+                                            ?>
 
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
+                                                <td class='datoTabla'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgeOroCompEsp?>'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgePlataCompEsp?>'><img class='imagenDelEventoEnTabla'src='<?php echo "badgesImages/".$nombreBadgeBronceCompEsp?>'></td>
 
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            
+                                            <td class="datoTabla"><img src="assets/images/badge_prueba muestreo.png" alt=""><img src="assets/images/badge_prueba muestreo.png" alt=""><img src="assets/images/badge_prueba muestreo.png" alt=""></td> 
 
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
-
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
-
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
-
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
-
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
-
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
-
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
-
-                        <ul name="targetaCompetenciaEspecífica" class="card-compEspecifica">
-                            <div class="competencia-especifica">
-                                <div class="compEsp-rol">
-                                    <p class="rol_compEsp">1. Maestro de los procesos</p>
-                                </div>
-
-                                <div class="compEsp-rol">
-                                    <!--El badge debe ser 32 x 32px-->
-                                    <img src="/assets/images/badge_prueba.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="competencia-especifica">
-                                <div class="compEsp-edicion">
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal6" href="" title="Editar"><img src="/assets/images/btn_editar.PNG"></a>
-                                    </div>
-
-                                    <div class="col-botonesEdicion">
-                                        <a name="openModal4" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG"></a>
-                                    </div>
-                                </div>
-                            </div>                  
-                        </ul>
+                                        <?php    
+                                        }                       
+                                        ?>
+                                        
+                                        <td class="datoTabla"><div class="compEsp-edicion">
+                                            <div class="col-botonesEdicion">
+                                                <a name="openModa5" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            </div>
+            
+                                            <div class="col-botonesEdicion">
+                                                <a href="?IdCompEsp=<?php echo $key['id_comp_esp'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                            </div>
+                                        </div></td>
+                                    </tr>
+                            
+                            <?php
+                                }
+                            ?>
+                            
+                            
+                                
+                            </tbody>   
+    
+                        </table>   
+                    
                     </div>
 
-                    
-                  
+                </div>
+
+
+                
 
 
 
@@ -421,13 +362,13 @@
                             <br>
                             
                             <div class="formulario-registroCompetencia">
-                                <form id="formularioDeRegistroDeCompetenciasGenerales" class="">
+                                <form id="formularioDeRegistroDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
                                     <table>
                                         <tr>
                                             <td class="column-form-codigoCompetenciaGeneral">
                                                 <label class="camposFormulario">Código</label>
-                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales">
-                                                    <option value="" selected>Seleccione</option>
+                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales" required="true">
+                                                    <option value="seleccione">Seleccione</option>
                                                     <option value="A">A</option>
                                                     <option value="B">B</option>
                                                     <option value="C">C</option>
@@ -460,59 +401,41 @@
     
                                             <td class="column-form-rolCompGeneral">
                                                 <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora">
-                                                    <option value="" selected>Seleccione</option>
-                                                    <option value="obligatoria">Noble lider</option>
-                                                    <option value="electiva">Virtuoso tecnológico</option>
-                                                    <option value="obligatoria">Maestro de los procesos</option>
-                                                    <option value="obligatoria">Explorador</option>
+                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora" required="true">
+                                                    <option value="seleccione">Seleccione</option>
+                                                    <option value="noble">Noble lider</option>
+                                                    <option value="virtuoso">Virtuoso tecnológico</option>
+                                                    <option value="maestro">Maestro de los procesos</option>
+                                                    <option value="explorador">Explorador</option>
                                                 </select>
                                             </td>
                                         </tr>
                                     </table>
                                         
                                     <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control">
+                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control" required="true">
                                     <br>  
       
                                     <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
+                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
+                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
+                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
                                     <br>
 
-                                    <table>
-                                        <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                        </tr>
-                                    </table>
                                     <br>
     
-                                    <a id="btn_guardarCompetenciaGeneral" name="registrarCompetencia" class="btn_agregarCompetencia" title="Guardar">Guardar</a>
+                                    <button type="submit" name="guardarCompetenciaGeneral" id="btn_guardarCompGeneral"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>                                    
                                     <a id="btn_cancelar1" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatCompetencia.php") ?>
                             </div>
-                        </div>
-                    </div>
-
-                    <!--ESTRUCTURA DEL POPUP DE ELIMINACIÓN DE COMPETENCIA GENERAL-->
-                    <div id="modal_container3" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Eliminar Competencia general</h3>
-                            <br>
-                            <p>¿Está seguro de que desea eliminar?</p>
-                            <br>
-                            <br>
-                            <a id="btn_eliminarCompetenciaGeneral" name="eliminarCompetencia" class="btn_agregarCompetencia" title="Si">Si</a>
-                            <a id="btn_cancelar3" class="btn_agregarCompetencia" title="No">No</a>
                         </div>
                     </div>
 
@@ -591,9 +514,9 @@
     
                                     <table>
                                         <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
                                         </tr>
                                     </table>
                                     <br>
@@ -633,77 +556,74 @@
                             <br>
                             
                             <div class="formulario-registroTrabDestacado">
-                                <form id="formularioDeRegistroDeCompetenciasEspecificas" class="">
+                                <form id="formularioDeRegistroDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
                                     <table>
                                         <tr>
                                             <td class="column-form-codigoCompetenciaGeneral">
                                                 <label class="camposFormulario">Código</label>
-                                                <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" placeholder="" type="text" class="form-control">
+                                                <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" placeholder="" type="text" class="form-control" required="true">
                                             </td>
     
                                             <td class="column-form-rolCompGeneral">
                                                 <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora">
-                                                    <option value="" selected>Seleccione</option>
-                                                    <option value="obligatoria">Noble lider</option>
-                                                    <option value="electiva">Virtuoso tecnológico</option>
-                                                    <option value="obligatoria">Maestro de los procesos</option>
-                                                    <option value="obligatoria">Explorador</option>
+                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEsp" required="true">
+                                                    <option value="seleccione" selected>Seleccione</option>
+                                                    <option value="noble">Noble lider</option>
+                                                    <option value="virtuoso">Virtuoso tecnológico</option>
+                                                    <option value="maestro">Maestro de los procesos</option>
+                                                    <option value="explorador">Explorador</option>
                                                 </select>
                                             </td>
                                         </tr>
                                     </table>
 
                                     <label class="camposFormulario">Competencia general a la que pertenece</label><br>
-                                    <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora">
-                                        <option value="" selected>Seleccione</option>
+                                    <select class="form-control" id="cmb_rolesPandora" name="cmbCompetenciasGenerales" required="true">
+                                        <option value="seleccione" selected>Seleccione</option>
+
+                                        <?php
+                                            $obj = new CompetenciaControlador();
+                                            $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
+                                            $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                            foreach ($datos as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+
                                     </select>
                             
                                     <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control">
+                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaEspecifica" placeholder="" type="text" class="form-control" required="true">
                                     <br>  
       
                                     <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
-
-                                    <table>
-                                        <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                        </tr>
-                                    </table>
                                     <br>
     
-                                    <a id="btn_guardarCompetenciaEspecifica" name="registrarCompetencia" class="btn_agregarCompetencia" title="Guardar">Guardar</a>
+                                    <button type="submit" name="guardarCompetenciaEspecifica" id="btn_guardarCompEspecifica"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>
                                     <a id="btn_cancelar2" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatCompetencia.php") ?>
                             </div>
                         </div>
                     </div> 
                     
-                    <!--ESTRUCTURA DEL POPUP DE ELIMINACION DE COMPETENCIA ESPECIFICA-->
-                    <div id="modal_container4" class="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Eliminar Competencia específica</h3>
-                            <br>
-                            <p>¿Está seguro de que desea eliminar?</p>
-                            <br>
-                            <br>
-                            <a id="btn_eliminarCompetenciaEspecifica" name="eliminarCompetencia" class="btn_agregarCompetencia" title="Si">Si</a>
-                            <a id="btn_cancelar4" class="btn_agregarCompetencia" title="No">No</a>
-                        </div>
-                    </div>
-
+                    
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE COMPETENCIA ESPECÍFICA-->
                     <div id="modal_container6" class="modal_container" name="modal_container">
                         <div class="modal">
@@ -779,9 +699,9 @@
 
                                     <table>
                                         <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="/assets/images/badge_prueba muestreo.png" alt=""></label></td>
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
+                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
                                         </tr>
                                     </table>
                                     <br>
@@ -792,73 +712,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <!--POPUP DE REGISTRO DE COMPETENCIA SATISFACTORIO-->
-                    <div id="modal_container7" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Competencia registrada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar1" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
-                     <!--POPUP DE ACTUALIZACION DE COMPETENCIA SATISFACTORIO-->
-                     <div id="modal_container8" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Competencia actualizada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar2" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
-                     <!--POPUP DE ELIMINACION DE COMPETENCIA SATISFACTORIO-->
-                     <div id="modal_container9" class="modal_container">
-                        <div class="modalSuccesful">
-                            <div class="respuestaok">
-                                <img src="/assets/images/satisfactorio.png" alt="">
-                            </div>
-
-                            <div class="respuestaok">
-                                <h3 class="titulo_seccion">Competencia eliminada satisfactoriamente.</h3>
-                            </div>                               
-                            
-                            <br>
-                            <br>
-                            <a id="btn_aceptar3" class="btn_agregarCompetencia" title="Aceptar">Aceptar</a>
-                        </div>
-                    </div>
-
                 </div>      
             </main>
         </div>

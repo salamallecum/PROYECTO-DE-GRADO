@@ -26,8 +26,8 @@ class EventoControlador{
         $fechaFin = $evento->getFechaFin();
         $profeEncargado = $evento->getProfeEncargado();
                 
-        $sql = "INSERT INTO tbl_evento (id_evento, nombre_evento, descripcion_evento, fecha_inicio, fecha_fin, id_usuario)
-                            values ($idEvento, '$nombreEvento', '$descripcionEvento', '$fechaInicio', '$fechaFin', $profeEncargado)";
+        $sql = "INSERT INTO tbl_evento (id_evento, nombre_evento, descripcion_evento, fecha_inicio, fecha_fin, id_usuario, competenciasAsignadas)
+                            values ($idEvento, '$nombreEvento', '$descripcionEvento', '$fechaInicio', '$fechaFin', $profeEncargado, 'No')";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
     }
@@ -53,7 +53,7 @@ class EventoControlador{
                     rename("../eventosImages/".$imgEvento, "../eventosImages/".$nombreImg);
 
                 }else{
-                    echo "La imagen no se pudo guardar";
+                    echo "La imagen del evento no se pudo guardar";
                 }
             }
         }else{
@@ -67,7 +67,7 @@ class EventoControlador{
                rename("../eventosImages/".$imgEvento, "../eventosImages/".$nombreImg);
 
             }else{
-                echo "La imagen no se pudo guardar";
+                echo "La imagen del evento no se pudo guardar";
             }
         } 
     }
@@ -127,7 +127,9 @@ class EventoControlador{
         //Validamos que el evento tenga un nombre de imagen o un nombre de enunciado
         if($nombreImagen != null){
             $this->eliminarImagen($nombreImagen);
-        }else if($nombreEnunciado != null){
+        }
+        
+        if($nombreEnunciado != null){
             $this->eliminarEnunciado($nombreEnunciado);
         }
                
@@ -147,6 +149,18 @@ class EventoControlador{
         }
     }
 
+    //Funcion que permite contar el numero de eventos registrados
+    public function contadorDeEventos(){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT COUNT(*) from tbl_evento";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['COUNT(*)'];
+        }
+    }
     
     //Funcion que permite consultar el nombre del enunciado de un evento
     public function consultarNombreEnunciadoEvento($idEv){
@@ -241,6 +255,14 @@ class EventoControlador{
             $this->eliminarEnunciado($nombreImagen);
             $this->subirEnunciadoEvento($rutanvaImg, $nombrenvaImg, $archnvoImg, $nomEvento);
         }
+    }
+
+    public function pasarId($idEv){
+        $this->idEventoSeleccionado = $idEv;
+    }
+
+    public function retornarIdEventoSeleccionado(){
+        return $this->idEventoSeleccionado;
     }
 }
 

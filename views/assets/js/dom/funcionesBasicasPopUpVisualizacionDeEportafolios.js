@@ -23,23 +23,6 @@ function eventoPopUpCompartirEportafolio(){
     },false); 
 }
 
-//EVENTOS POPUP PARA COMPARTIR UN E-PORTAFOLIO
-const open3 = document.getElementById('btn_compartirEportafolio');
-const modal_container3 = document.getElementById('modal_container3');
-const close3 = document.getElementById('btn_aceptar1');
-
-open3.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container3.classList.add('show');
-},false); 
-
-close3.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container3.classList.remove('show');
-    modal_container2.classList.remove('show');
-},false);
-
-
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE COMPARTIR EPORTAFOLIOS
 function limpiarFormularioCompartirEportafolio(){
     

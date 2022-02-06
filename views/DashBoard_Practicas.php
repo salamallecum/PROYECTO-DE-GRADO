@@ -1,3 +1,12 @@
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once "logic/controllers/EventoControlador.php";
+    require_once "logic/controllers/ConvocatoriaControlador.php";
+
+    $objEventoControla = new EventoControlador();
+    $objConvocatoriaControla = new ConvocatoriaControlador();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -7,7 +16,7 @@
         <link rel="shortcut icon" href="assets/images/favicon.png">        
         
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="/assets/css/PracticasStyles.css">
+        <link rel="stylesheet" href="assets/css/PracticasStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
         <!--Links scripts de eventos js-->
@@ -21,7 +30,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3 class="brand">
-                    <span> <img src="/assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
+                    <span> <img src="assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
                     <span>PANDORA</span>
                 </h3>
                 <label for="sidebar-toggle" class="ti-menu-alt"></label>
@@ -30,14 +39,14 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a class="link_menu-active" href="/DashBoard_Practicas.html">
+                        <a class="link_menu-active" href="./DashBoard_Practicas.php">
                             <span><i class="ti-dashboard" title="Dashboard"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="/AdministradorDeConvocatoriasExternas_Practicas.html">
+                        <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Practicas.php">
                             <span class="ti-hand-point-up" title="Convocatorias"></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
@@ -45,7 +54,7 @@
 
                     
                     <li>
-                        <a class="link_menu" href="/AdministradorDeEportafolios_Practicas.html">
+                        <a class="link_menu" href="./AdministradorDeEportafolios_Practicas.php">
                             <span class="ti-archive" title="E-portafolios"></span>
                             <span class="items_menu">E-PORTAFOLIOS</span>
                         </a>
@@ -64,7 +73,7 @@
                         <span>Dashboard</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -77,7 +86,7 @@
                             <span><img src="assets/images/ico_eportafolios.PNG"></span>
                             <div>
                                 <h5>E-portafolios públicos</h5>
-                                <h4>1</h4>
+                                <h4>--P</h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -91,7 +100,7 @@
                             <span><img src="assets/images/ico_convocatoria.png"></span>
                             <div>
                                 <h5>Convocatorias</h5>
-                                <h4>2</h4>
+                                <h4><?php echo $objConvocatoriaControla->contadorDeConvocatorias();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -105,7 +114,7 @@
                             <span><img src="assets/images/ico_evento.png" alt=""></span>
                             <div>
                                 <h5>Eventos</h5>
-                                <h4>4</h4>
+                                <h4><?php echo $objEventoControla->contadorDeEventos();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">

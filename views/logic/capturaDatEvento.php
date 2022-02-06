@@ -13,8 +13,8 @@
         $descripcionEvento = trim($_POST['descripcionEvento']);
         $fechaInicioEvento = date('Y-m-d', strtotime($_POST['dateFechaInicioEvento']));
         $fechaFinEvento = date('Y-m-d', strtotime($_POST['dateFechaFinEvento']));
-        $cmbProfesorEncargado = $_REQUEST['cbx_profesor'];
-        //$cmbCompetencias = $_POST['competencias'];
+        $cmbProfesorEncargado = $_REQUEST['cmbProfesor'];
+        
 
        //Validamos que los campos no se encuentren vacios
         if(strlen($nombreDeEvento) >= 1 && 

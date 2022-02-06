@@ -11,7 +11,7 @@
         <link rel="shortcut icon" href="assets/images/favicon.png">        
         
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="/assets/css/PracticasStyles.css">
+        <link rel="stylesheet" href="assets/css/PracticasStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
         <!--Links scripts de eventos js-->
@@ -26,7 +26,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3 class="brand">
-                    <span> <img src="/assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
+                    <span> <img src="assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
                     <span>PANDORA</span>
                 </h3>
                 <label for="sidebar-toggle" class="ti-menu-alt"></label>
@@ -35,14 +35,14 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a class="link_menu-active" href="/DashBoard_Practicas.html">
+                        <a class="link_menu-active" href="./DashBoard_Practicas.php">
                             <span><i class="ti-dashboard" title="Dashboard"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="/AdministradorDeConvocatoriasExternas_Practicas.html">
+                        <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Practicas.php">
                             <span class="ti-hand-point-up" title="Convocatorias"></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
@@ -50,7 +50,7 @@
 
                     
                     <li>
-                        <a class="link_menu" href="/AdministradorDeEportafolios_Practicas.html">
+                        <a class="link_menu" href="./AdministradorDeEportafolios_Practicas.php">
                             <span class="ti-archive" title="E-portafolios"></span>
                             <span class="items_menu">E-PORTAFOLIOS</span>
                         </a>
@@ -69,7 +69,7 @@
                         <span>Administrador de e-portafolios</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -97,24 +97,22 @@
 
                         <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
                         <tr class="filasDeDatosTablaEportafolios">
-                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="/assets/images/team/alejo.jpeg"></td>
+                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
                             <td class="datoTabla">LUIS ALEJANDRO</td>
                             <td class="datoTabla">AMAYA TORRES</td>
                             <td class="datoTabla"><div class="compEsp-edicion">
                                 <div class="col-botonesEdicion">
-                                    <a name="" href="" target="_blank" title="Ver E-portafolio"><img src="/assets/images/verDetallesActividad.png"></a>
+                                    <a name="" href="" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
                                 </div>
 
                                 <div class="col-botonesEdicion">
-                                    <a name="openModal2" href="" title="Compartir E-portafolio"><img src="/assets/images/compartirEportafolio.png"></a>
+                                    <a name="openModal2" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
                                 </div>
 
                             </div></td>
                         </tr>
                     </table>
-                </div>
-
-                
+                </div>               
 
                 <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
                 <div id="modal_container2" class="modal_container" name="modal_container">
@@ -134,24 +132,7 @@
                         <br>
                     
                         <a id="btn_compartirEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</a>
-                        <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
-                    </div>
-                </div>
-
-                <!--POPUP DE COMPARTIR E-PORTAFOLIO SATISFACTORIO-->
-                <div id="modal_container3" class="modal_container">
-                    <div class="modalSuccesful">
-                        <div class="respuestaok">
-                            <img src="/assets/images/satisfactorio.png" alt="">
-                        </div>
-
-                        <div class="respuestaok">
-                            <h3 class="titulo_seccion">E-portafolio compartido satisfactoriamente.</h3>
-                        </div>                               
-                        
-                        <br>
-                        <br>
-                        <a id="btn_aceptar1" class="btn_agregarConvocatoria" title="Aceptar">Aceptar</a>
+                        <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cerrar ventana">Cerrar</a>
                     </div>
                 </div>
 
