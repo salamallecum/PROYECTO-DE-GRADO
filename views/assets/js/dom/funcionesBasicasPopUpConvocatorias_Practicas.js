@@ -106,6 +106,6 @@ function limpiarFormularioCompartirEportafolio(){
 
 
 //INVOCACION DE FUNCIONES
-//eventoPopUpActualizacionDeConvocatorias();
+eventoPopUpActualizacionDeConvocatorias();
 eventoPopUpDetalleDeConvocatorias();
 eventoPopUpCompartirEportafolio();

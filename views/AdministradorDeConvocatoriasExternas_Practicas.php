@@ -21,60 +21,11 @@
     if(isset($_GET['IdEditConv'])){
         $idConvocatoriaEdit = $_GET['IdEditConv'];
 
-        if($idConvocatoriaEdit > 0){
-
-            $html = "<div id='modal_container2' class='modal_container' name='modal_container'>
-                    <div class='modal'>
-                        <h3 class='titulo_seccion'>Actualizar Convocatoria</h3>
-                        <br>
-                        
-                        <div class='formulario-registroConvocatoria'>
-                            <form class=''>
-
-                                <label class='camposFormulario'>Nombre de la convocatoria</label><br>
-                                <input id='txt_nombreConvocatoria' name='nombreConvocatoria' placeholder='' type='text' class='form-control' value="echo $convocatoriaAEditar->getNombre()" required='true'>
-                                <br>
-
-                                <label class="camposFormulario">Descripción</label>
-                                <textarea id="txt_descripcionConvocatoria" name="descripcionConvocatoria" cols="80" placeholder="" rows="8" class="form-control" required="true"><?php echo $convocatoriaAEditar->getDescripcion();?></textarea>
-                                <br>
-
-                                <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
-                                <input  id="btn_cargaArchivoInfoDeConvocatoria" name="btnCargaArchivoInfoDeConvocatoria" accept=".pdf" type="file" class="form-control">
-                                <br>
-
-                                Espacio para colocar campos tipo calendar
-                                <table>
-                                    <tr>
-                                        <td><label class="camposFormulario">Fecha inicio</label>
-                                            <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $convocatoriaAEditar->getFechaInicio();?>" required="true"></td>
-                                            
-                                            <td><label class="camposFormulario">Fecha fin</label><br>
-                                            <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $convocatoriaAEditar->getFechaFin();?>" required="true"></td>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
-
-                                <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
-                                <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoria" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                <br>   
-                                                                    
-                                <br>
-                                <br>    
-                                <a id="btn_actualizarConvocatoria" class="btn_agregarConvocatoria" title="Actualizar">Actualizar</a>
-                                <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
-                            </form>
-                        </div>
-                    </div>
-                </div>';
-
-            echo $html;     
+        if($idConvocatoriaEdit > 0){ 
             
             //$convocatoriaAEditar = $objConvocatoriaControla->consultarConvocatoriaPracticasAEditar($idConvocatoriaEdit);
         }
     }
-
 
 ?>
 
@@ -215,7 +166,7 @@
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                            <a href="?IdEditConv=<?php echo $key['Id'] ?>" name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            <a  name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -350,7 +301,7 @@
                     </div>
 
 
-                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE CONVOCATORIAS
+                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE CONVOCATORIAS-->
                     <div id="modal_container2" class="modal_container" name="modal_container">
                         <div class="modal">
                             <h3 class="titulo_seccion">Actualizar Convocatoria</h3>
@@ -371,7 +322,7 @@
                                     <input  id="btn_cargaArchivoInfoDeConvocatoria" name="btnCargaArchivoInfoDeConvocatoria" accept=".pdf" type="file" class="form-control">
                                     <br>
 
-                                    Espacio para colocar campos tipo calendar
+                                    <!--Espacio para colocar campos tipo calendar-->
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
@@ -396,7 +347,7 @@
                             </div>
                         </div>
                     </div>
-                        -->
+                        
 
                     <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
                     <div id="modal_container5" class="modal_container" name="modal_container">
@@ -416,7 +367,7 @@
                             <br>
                         
                             <a id="btn_guardarContraseña" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</a>
-                            <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
+                            <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
                         </div>
                     </div>
 
