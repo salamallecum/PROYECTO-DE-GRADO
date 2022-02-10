@@ -224,10 +224,10 @@ class EventoControlador{
         $fechaFinEdit = $eventoEdit->getFechaFin();
         $profeEncargadoEdit = $eventoEdit->getProfeEncargado();
                 
-        $sql = "UPDATE SET nombre_evento='$nombreEventoAEditar', descripcion_evento='$descripcionAEditar', fecha_inicio='$fechaInicioEdit', fecha_fin='$fechaFinEdit', id_usuario='$profeEncargadoEdit'
+        $sql = "UPDATE tbl_evento SET nombre_evento='$nombreEventoAEditar', descripcion_evento='$descripcionAEditar', fecha_inicio='$fechaInicioEdit', fecha_fin='$fechaFinEdit', id_usuario='$profeEncargadoEdit'
                             WHERE  id_evento=$idEventoEdit";
 
-        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
     }
 

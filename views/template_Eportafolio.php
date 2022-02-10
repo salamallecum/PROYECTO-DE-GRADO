@@ -7,7 +7,7 @@
         <link rel="shortcut icon" href="assets/images/favicon.png">        
         
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="/assets/css/EportafolioStyles.css">
+        <link rel="stylesheet" href="assets/css/EportafolioStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
         <!--Links scripts de eventos js-->
@@ -22,21 +22,21 @@
             <div class="cardEncabezado">
                 
                 <div class="cardImage">
-                    <img class="imgEncabezadoInfoEstudiante" src="/assets/images/uebAereaEportafolio.png" alt="">
+                    <img class="imgEncabezadoInfoEstudiante" src="assets/images/uebAereaEportafolio.png" alt="">
                 </div>
 
                 <div class="card-Estudiante">
                     
                     <div class="pnl-infoPersonal">
                         <div class="logoP">
-                            <img class="logoPandora" src="/assets/images/logo_pandora.PNG" alt="">
+                            <img class="logoPandora" src="assets/images/logo_pandora.PNG" alt="">
                         </div>
                     </div>
 
                     <div class="informacionPersonal">
 
                         <div class="cardInfoPersonal"> 
-                            <img class="fotoDelEstudiante" src="/assets/images/team/alejo.jpeg" alt="">                        
+                            <img class="fotoDelEstudiante" src="assets/images/team/alejo.jpeg" alt="">                        
                         </div>
         
                         <div class="cardInfoPersonal">
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="perfPandora">
-                    <img id="img_rolDelEstudiante" class="img_perfRol" src="/assets/images/roles/noblider2.jpg" alt="">
+                    <img id="img_rolDelEstudiante" class="img_perfRol" src="assets/images/roles/noblider2.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -127,7 +127,7 @@
                 </div>              
                                 
                 <div class="alineacionCompTrabajoDestacado">
-                    <img class="imagenDelTrabajoDestacado" src="/assets/images/imgPorDefecto.jpg">    
+                    <img class="imagenDelTrabajoDestacado" src="assets/images/imgPorDefecto.jpg">    
                 </div>
 
                 <div class="alineacionCompTrabajoDestacado">
@@ -145,10 +145,10 @@
                 <div class="alineacionCompTrabajoDestacado">
                     <table class="tablaDeEvidencias"> 
                         <tr>
-                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_documento.PNG"></a></td>
-                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_repocodigo.png"></a></td>
-                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_video.png"></a></td>
-                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_presentacion.png"></a></td>
+                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a></td>
+                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a></td>
+                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a></td>
+                            <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a></td>
                         </tr>
                     </table>                
                 </div>                          
@@ -177,7 +177,7 @@
                     </div>  
                     
                     <div class="alineacionCompTrabajoDestacado">
-                        <img class="megaInsigDelTrabajo" src="/assets/images/badge_prueba muestreo.png">
+                        <img class="megaInsigDelTrabajo" src="assets/images/badge_prueba muestreo.png">
                         <br>
                         <br>
                         <br>
@@ -189,7 +189,7 @@
                     </div>
                                     
                     <div class="alineacionCompTrabajoDestacado">
-                        <img class="imagenDelTrabajoDestacadoConInsig" src="/assets/images/imgPorDefecto.jpg">
+                        <img class="imagenDelTrabajoDestacadoConInsig" src="assets/images/imgPorDefecto.jpg">
                     </div>
     
                     <div class="alineacionCompTrabajoDestacado">
@@ -207,10 +207,10 @@
                     <div class="alineacionCompTrabajoDestacado">
                         <table class="tablaDeEvidencias"> 
                             <tr>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_documento.PNG"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_repocodigo.png"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_video.png"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_presentacion.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a></td>
                             </tr>
                         </table>                
                     </div>                          
@@ -231,7 +231,7 @@
                     </div>  
                     
                     <div class="alineacionCompTrabajoDestacado">
-                        <img class="insigDelTrabajo" src="/assets/images/badge_prueba muestreo.png">
+                        <img class="insigDelTrabajo" src="assets/images/badge_prueba muestreo.png">
                         <br>
                         <br>
                         <br>
@@ -245,7 +245,7 @@
                     </div>
                                     
                     <div class="alineacionCompTrabajoDestacado">
-                        <img class="imagenDelTrabajoDestacadoConInsig" src="/assets/images/imgPorDefecto.jpg">
+                        <img class="imagenDelTrabajoDestacadoConInsig" src="assets/images/imgPorDefecto.jpg">
                     </div>
     
                     <div class="alineacionCompTrabajoDestacado">
@@ -263,10 +263,10 @@
                     <div class="alineacionCompTrabajoDestacado">
                         <table class="tablaDeEvidencias"> 
                             <tr>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_documento.PNG"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_repocodigo.png"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_video.png"></a></td>
-                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="/assets/images/btn_evidenc_presentacion.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a></td>
+                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a></td>
                             </tr>
                         </table>                
                     </div>                          

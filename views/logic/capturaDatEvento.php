@@ -30,7 +30,6 @@
             $eventoControla = new EventoControlador();
 
             if($eventoControla->insertarEvento($nuevoEvento) == 1){
-
                 
                 $imagenDelEvento = $_FILES['imgParaElEvento']['name'];
                 $enunciadoDelEvento = $_FILES['archivoInfoDelEvento']['name'];
@@ -75,7 +74,7 @@
         }
     }   
 
-    //Capturamos el evento del boton de actualizacion de evento
+    //Capturamos el evento del boton de actualizacion de eventos
     if(isset($_POST['actualizarEvento'])){
 
         //Capturamos los datos de los campos del formulario

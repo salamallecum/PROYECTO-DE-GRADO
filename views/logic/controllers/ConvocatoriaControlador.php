@@ -12,7 +12,7 @@ class ConvocatoriaControlador{
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-    /*
+    
     //Funcion que permite consultar una convocatoria practicas a editar
     public function consultarConvocatoriaPracticasAEditar($idConvocatoriaAEditar){
         
@@ -28,11 +28,31 @@ class ConvocatoriaControlador{
             $fechaInicioConvAEditar = $row['fecha_inicio'];
             $fechaFinConvAEditar = $row['fecha_fin'];
 
-            $objConvocatoriaAEditar = new ConvocatoriaPracticas($idConvocatoriaAEditar, $nombreConvAEditar, $descripcionConvAEditar, $fechaInicioConvAEditar, $fechaFinConvAEditar);
-            return $objConvocatoriaAEditar;
+            $objConvocatoriaPracticasAEditar = new ConvocatoriaPracticas($idConvocatoriaAEditar, $nombreConvAEditar, $descripcionConvAEditar, $fechaInicioConvAEditar, $fechaFinConvAEditar);
+            return $objConvocatoriaPracticasAEditar;
         }
     }
-    */
+
+    //Funcion que permite consultar una convocatoria comite a editar
+    public function consultarConvocatoriaComiteAEditar($idConvAEditar){
+        
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_convocatoria, descripcion_convocatoria, fecha_inicio, fecha_fin, id_usuario from tbl_convocatoriacomite where Id = $idConvAEditar";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $nombreConvComiteAEditar = $row['nombre_convocatoria'];
+            $descripcionConvComiteAEditar = $row['descripcion_convocatoria'];
+            $fechaInicioConvComiteAEditar = $row['fecha_inicio'];
+            $fechaFinConvComiteAEditar = $row['fecha_fin'];
+            $profeEncargadoConvComiteAEditar = $row['id_usuario'];
+
+            $objConvocatoriaComiteAEditar = new ConvocatoriaPracticas($idConvAEditar, $nombreConvComiteAEditar, $descripcionConvComiteAEditar, $fechaInicioConvComiteAEditar, $fechaFinConvComiteAEditar, $profeEncargadoConvComiteAEditar);
+            return $objConvocatoriaComiteAEditar;
+        }
+    }    
 
     //Funcion que permite el registro de las convocatorias del rol comite
     public function insertarConvocatoriaComite(ConvocatoriaComite $nvaConv){
@@ -402,9 +422,45 @@ class ConvocatoriaControlador{
         return $totalConvocatorias;
     }
 
+    //Funcion que permite actualizar una convocatoria de tipo comite
+    public function actualizarConvocatoriaComite(ConvocatoriaComite $convComEdit){
 
+        $c = new conectar();
+        $conexion = $c->conexion();
 
+        //Capturamos los datos del objeto
+        $idConvComiteAEditar = $convComEdit->getId();
+        $nombreConvComiteAEditar = $convComEdit->getNombre();
+        $descripcionConvComiteAEditar = $convComEdit->getDescripcion();
+        $fechaInicioConvComiteAEditar = $convComEdit->getFechaInicio();
+        $fechaFinConvComiteAEditar = $convComEdit->getFechaFin();
+        $profeEncargadoConvComiteAEditar = $convComEdit->getProfeEncargado();
+                
+        $sql = "UPDATE tbl_convocatoriacomite SET nombre_convocatoria='$nombreConvComiteAEditar', descripcion_convocatoria='$descripcionConvComiteAEditar', fecha_inicio='$fechaInicioConvComiteAEditar', fecha_fin='$fechaFinConvComiteAEditar', id_usuario='$profeEncargadoConvComiteAEditar'
+                            WHERE  Id=$idConvComiteAEditar";
 
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
+    }
+
+    //Funcion que permite actualizar una convocatoria de tipo practicas
+    public function actualizarConvocatoriaPracticas(ConvocatoriaPracticas $convPracEdit){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idConvPracticasAEditar = $convPracEdit->getId();
+        $nombreConvPracticasAEditar = $convPracEdit->getNombre();
+        $descripcionConvPracticasAEditar = $convPracEdit->getDescripcion();
+        $fechaInicioConvPracticasAEditar = $convPracEdit->getFechaInicio();
+        $fechaFinConvPracticasAEditar = $convPracEdit->getFechaFin();
+                        
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_convocatoria='$nombreConvPracticasAEditar', descripcion='$descripcionConvPracticasAEditar', fecha_inicio='$fechaInicioConvPracticasAEditar', fecha_fin='$fechaFinConvPracticasAEditar'
+                            WHERE  Id=$idConvPracticasAEditar";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }
 }
 ?>

@@ -358,16 +358,16 @@
                             <br>
 
                             <div class="formulario-comparitEportafolio">
-                                <form id="formularioParaCompartirEportafolio" class="">
+                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
                                     <label class="camposFormulario">Correo electrónico</label>
                                     <input id="txt_correo" name="txtCorreo" placeholder="" type="text" class="form-control">
                                     <br>
+                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                    <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
                                 </form>
                             </div>
                             <br>
-                        
-                            <a id="btn_guardarContraseña" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</a>
-                            <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
+                    
                         </div>
                     </div>
 

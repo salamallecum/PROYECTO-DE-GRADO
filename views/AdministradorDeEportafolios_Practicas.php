@@ -102,7 +102,7 @@
                             <td class="datoTabla">AMAYA TORRES</td>
                             <td class="datoTabla"><div class="compEsp-edicion">
                                 <div class="col-botonesEdicion">
-                                    <a name="" href="" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
                                 </div>
 
                                 <div class="col-botonesEdicion">
@@ -116,26 +116,30 @@
 
                 <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
                 <div id="modal_container2" class="modal_container" name="modal_container">
-                    <div class="modal">
-                        <h3 class="titulo_seccion">Compartir E-portafolio</h3>
-                        <br>
-                        <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
-                        <br>
+                        <div class="modal">
+                            <h3 class="titulo_seccion">Compartir E-portafolio</h3>
+                            <br>
+                            <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
+                            <br>
 
-                        <div class="formulario-comparitEportafolio">
-                            <form id="formularioParaCompartirEportafolio" class="">
-                                <label class="camposFormulario">Correo electrónico</label>
-                                <input id="txt_correo" name="txtCorreo" placeholder="" type="text" class="form-control">
-                                <br>
-                            </form>
+                            <div class="formulario-comparitEportafolio">
+                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
+                                    <label class="camposFormulario">Correo electrónico</label>
+                                    <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                    <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
+                                </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatEportafolio.php") ?>
+                            </div>
+                            <br>
                         </div>
-                        <br>
-                    
-                        <a id="btn_compartirEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</a>
-                        <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cerrar ventana">Cerrar</a>
                     </div>
                 </div>
-
+                
             </main>
         </div>
     </body>

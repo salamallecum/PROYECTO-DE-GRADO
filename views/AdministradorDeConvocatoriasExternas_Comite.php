@@ -171,10 +171,10 @@
                                     }                       
                                     ?>
                                             
-                                    <td class="datoTabla"><input type="text" name="nombreEventoSeleccionado" value="<?php echo $key['nombre_convocatoria'];?>"><?php echo $key['nombre_convocatoria'];  ?></td>
-                                    <td class="datoTabla"><input type="text" name="descripcionEventoSeleccionado" value="<?php echo $key['descripcion_convocatoria'];?>"><?php echo $key['descripcion_convocatoria'];  ?></td>
-                                    <td class="datoTabla"><input type="text" name="fechaIniEventoSeleccionado" value="<?php echo $key['fecha_inicio'];?>"><?php echo $key['fecha_inicio'];  ?></td>
-                                    <td class="datoTabla"><input type="text" name="fechaFinEventoSeleccionado" value="<?php echo $key['fecha_fin'];?>"><?php echo $key['fecha_fin'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['nombre_convocatoria'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['descripcion_convocatoria'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
                                             <a name="btn_asignarCompetencias" href="" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
@@ -270,54 +270,72 @@
                     </div>
 
 
-                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
+                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE CONVOCATORIAS-->
                     <div id="modal_container2" class="modal_container" name="modal_container">
                         <div class="modal">
                             <h3 class="titulo_seccion">Actualizar Convocatoria</h3>
                             <br>
                             
                             <div class="formulario-registroConvocatoria">
-                                <form id="formularioDeActualizacionDeConvocatorias" class="">
+                                <form id="formularioDeActualizacionDeConvocatorias" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
+
+                                    <input type="texto" name="idConvocatoriaaActualizar" value="">
 
                                     <label class="camposFormulario">Nombre de la convocatoria</label><br>
-                                    <input id="txt_nombreConvocatoria" name="nombreConvocatoria" placeholder="" type="text" class="form-control">
+                                    <input id="txt_nombreConvocatoria" name="nombreConvocatoriaEdit" placeholder=""  maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionEvento" name="descripcionConvocatoria" cols="80" placeholder="" rows="8" class="form-control"></textarea>
+                                    <textarea id="txt_descripcionEvento" name="descripcionConvocatoriaEdit" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
-                                    <input  id="btn_cargaArchivoInfoDeConvocatoria" name="btnCargaArchivoInfoDeConvocatoria" accept=".pdf" type="file" class="form-control">
+                                    <input  id="btn_cargaArchivoInfoDeConvocatoria" name="archivoInfoDeConvocatoriaEdit" accept=".pdf" type="file" class="form-control">
                                     <br>
 
                                     <!--Espacio para colocar campos tipo calendar-->
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="date_fechaInicioConvocatoria" name="dateFechaInicioConvocatoria" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaInicioConvocatoria" name="dateFechaInicioConvocatoria" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                                 
                                                 <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="date_fechaFinConvocatoria" name="dateFechaFinConvocatoria" class="form-control" min="2000-01-01" max="2040-12-31"></td>
+                                                <input type="date" id="date_fechaFinConvocatoria" name="dateFechaFinConvocatoria" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                             </td>
                                         </tr>
                                     </table>
                                     <br>
 
                                     <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesoresResponsables">
-                                        <option value="" selected>Seleccione</option>
+                                    <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesoresResponsables" required="true">
+                                        <option value="seleccione">Seleccione</option>
+
+                                        <?php
+                                            $obj = new ProfesorControlador();
+                                            $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                            $datos = $obj->mostrarProfesoresRegistrados($sql);
+
+                                            foreach ($datos as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
                                     </select>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
-                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoria" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaEdit" accept=".jpeg, .jpg, .png" type="file" class="form-control">
                                     <br>
                                     <br>
                                     <br>    
-                                    <a id="btn_actualizarConvocatoria" class="btn_agregarConvocatoria" title="Guardar">Guardar</a>
+                                    <button type="submit" name="actualizarConvocatoriaComite" class="btn_agregarConvocatoria" title="Actualizar">Actualizar</button>
                                     <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatConvocatoria.php") ?>
                             </div>
                         </div>
                     </div>

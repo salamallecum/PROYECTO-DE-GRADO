@@ -190,6 +190,10 @@
 
                                         <td class="datoTabla"><div class="compEsp-edicion">
                                             <div class="col-botonesEdicion">
+                                                <input type="text" name="idCompGeneral" value="<?php echo $key['id_comp_gral'] ?>">
+                                            </div>
+                                        
+                                            <div class="col-botonesEdicion">
                                                 <a name="openModa5" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                             </div>
             
@@ -270,7 +274,11 @@
                                         
                                         <td class="datoTabla"><div class="compEsp-edicion">
                                             <div class="col-botonesEdicion">
-                                                <a name="openModa5" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                                <input type="text" name="idCompEspecifica" value="<?php echo $key['id_comp_esp'] ?>">
+                                            </div>
+
+                                            <div class="col-botonesEdicion">
+                                                <a name="openModal6" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                             </div>
             
                                             <div class="col-botonesEdicion">
@@ -446,13 +454,15 @@
                             <br>
                             
                             <div class="formulario-registroTrabDestacado">
-                                <form class="">
+                                <form id="formularioDeActualizacionDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+
+                                    <input type="text" name="idCompGeneralEdit" value="">
                                     <table>
                                         <tr>
                                             <td class="column-form-codigoCompetenciaGeneral">
                                                 <label class="camposFormulario">Código</label>
-                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales">
-                                                    <option value="" selected>Seleccione</option>
+                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGeneralesEdit" required="true">
+                                                    <option value="seleccione">Seleccione</option>
                                                     <option value="A">A</option>
                                                     <option value="B">B</option>
                                                     <option value="C">C</option>
@@ -485,31 +495,31 @@
     
                                             <td class="column-form-rolCompGeneral">
                                                 <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora">
-                                                    <option value="" selected>Seleccione</option>
-                                                    <option value="obligatoria">Noble lider</option>
-                                                    <option value="electiva">Virtuoso tecnológico</option>
-                                                    <option value="obligatoria">Maestro de los procesos</option>
-                                                    <option value="obligatoria">Explorador</option>
+                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEdit" required="true">
+                                                    <option value="seleccione">Seleccione</option>
+                                                    <option value="noble">Noble lider</option>
+                                                    <option value="virtuoso">Virtuoso tecnológico</option>
+                                                    <option value="maestro">Maestro de los procesos</option>
+                                                    <option value="explorador">Explorador</option>
                                                 </select>
                                             </td>
                                         </tr>
                                     </table>
                                         
                                     <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control">
+                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneralEdit" placeholder="" type="text" class="form-control" required="true">
                                     <br>  
       
                                     <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
                                     <br>
     
                                     <table>
@@ -521,9 +531,11 @@
                                     </table>
                                     <br>
 
-                                    <a id="btn_actualizarCompetenciaGeneral" name="actualizarCompetencia" class="btn_agregarCompetencia" title="Actualizar">Actualizar</a>
+                                    <button type="submit" name="actualizarCompetenciaGeneral" id="btn_guardarCompGeneral"  class="btn_agregarCompetencia" title="Actualizar competencia">Actualizar</button> 
                                     <a id="btn_cancelar5" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatCompetencia.php") ?>
                             </div>
                         </div>
                     </div>
@@ -631,88 +643,74 @@
                             <br>
                             
                             <div class="formulario-registroTrabDestacado">
-                                <form class="">
+                                <form id="formularioDeRegistroDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+                                    
+                                    <input type="text" name="idCompEspecificaAEdit" value="">
                                     <table>
                                         <tr>
                                             <td class="column-form-codigoCompetenciaGeneral">
                                                 <label class="camposFormulario">Código</label>
-                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales">
-                                                    <option value="" selected>Seleccione</option>
-                                                    <option value="A">A</option>
-                                                    <option value="B">B</option>
-                                                    <option value="C">C</option>
-                                                    <option value="D">D</option>
-                                                    <option value="E">E</option>
-                                                    <option value="F">F</option>
-                                                    <option value="G">G</option>
-                                                    <option value="H">H</option>
-                                                    <option value="I">I</option>
-                                                    <option value="J">J</option>
-                                                    <option value="K">K</option>
-                                                    <option value="L">L</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="Ñ">Ñ</option>
-                                                    <option value="O">O</option>
-                                                    <option value="P">P</option>
-                                                    <option value="Q">Q</option>
-                                                    <option value="R">R</option>
-                                                    <option value="S">S</option>
-                                                    <option value="T">T</option>
-                                                    <option value="U">U</option>
-                                                    <option value="V">V</option>
-                                                    <option value="W">W</option>
-                                                    <option value="X">X</option>
-                                                    <option value="Y">Y</option>
-                                                    <option value="Z">Z</option>
-                                                </select>
+                                                <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecíficEdit" placeholder="" type="text" class="form-control" required="true">
                                             </td>
     
                                             <td class="column-form-rolCompGeneral">
                                                 <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora">
-                                                    <option value="" selected>Seleccione</option>
-                                                    <option value="obligatoria">Noble lider</option>
-                                                    <option value="electiva">Virtuoso tecnológico</option>
-                                                    <option value="obligatoria">Maestro de los procesos</option>
-                                                    <option value="obligatoria">Explorador</option>
+                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEspEdit" required="true">
+                                                    <option value="seleccione">Seleccione</option>
+                                                    <option value="noble">Noble lider</option>
+                                                    <option value="virtuoso">Virtuoso tecnológico</option>
+                                                    <option value="maestro">Maestro de los procesos</option>
+                                                    <option value="explorador">Explorador</option>
                                                 </select>
                                             </td>
                                         </tr>
                                     </table>
-                                        
+
+                                    <label class="camposFormulario">Competencia general a la que pertenece</label><br>
+                                    <select class="form-control" id="cmb_rolesPandora" name="cmbCompetenciasGeneralesEdit" required="true">
+                                        <option value="seleccione" selected>Seleccione</option>
+
+                                        <?php
+                                            $obj = new CompetenciaControlador();
+                                            $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
+                                            $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                            foreach ($datos as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+
+                                    </select>
+                            
                                     <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control">
+                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaEspecificaEdit" placeholder="" type="text" class="form-control" required="true">
                                     <br>  
       
                                     <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
     
                                     <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
                                     <br>
-
-                                    <table>
-                                        <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompEspecific"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                        </tr>
-                                    </table>
                                     <br>
     
-                                    <a id="btn_actualizarCompetenciaEspecifica" name="actualizarCompetencia" class="btn_agregarCompetencia" title="Actualizar">Actualizar</a>
+                                    <button type="submit" name="actualizarCompetenciaEspecifica" id="btn_guardarCompEspecifica"  class="btn_agregarCompetencia" title="Actualizar">Actualizar</button>
                                     <a id="btn_cancelar6" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatCompetencia.php") ?>
                             </div>
                         </div>
-                    </div>
-                </div>      
+                    </div>      
             </main>
         </div>
     </body>

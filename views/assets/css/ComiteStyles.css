@@ -37,6 +37,15 @@
     display: inline-block;
 }
 
+.indicadorSatisfactorio{
+    color: green;
+}
+
+.indicadorDeCamposIncompletos{
+    color: red
+}
+
+
 .sidebar{
     height: 100%;
     width: 230px;

@@ -430,5 +430,87 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que permite actualizar una competencia general
+    public function actualizarCompetenciaGeneral(CompetenciaGeneral $compGeneralAEdit){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idCompGeneralAEditar = $compGeneralAEdit->getId();
+        $codigoCompGeneralAEditar = $compGeneralAEdit->getCodigo();
+        $nombreCompGeneralAEditar = $compGeneralAEdit->getNombre();
+        $rolCompGeneralAEditar = $compGeneralAEdit->getRolContribucion();
+        
+                
+        $sql = "UPDATE tbl_competencia_general SET codigo='$codigoCompGeneralAEditar', nombre_comp_gral='$nombreCompGeneralAEditar', rol='$rolCompGeneralAEditar'
+                            WHERE  id_comp_gral=$idCompGeneralAEditar";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+
+    }
+
+    //Funcion que permite actualizar una competencia específica
+    public function actualizarCompetenciaEspecifica(CompetenciaEspecifica $compEspecificaAEdit){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idCompEspecificaAEditar = $compEspecificaAEdit->getId();
+        $idCompGeneralAQuePerteneceEdit = $compEspecificaAEdit->getIdCompGeneral();
+        $codigoCompEspecificaAEditar = $compEspecificaAEdit->getCodigo();
+        $nombreCompEspecificaAEditar = $compEspecificaAEdit->getNombre();
+        $rolCompEspecificaAEditar = $compEspecificaAEdit->getRolContribucion();
+        
+                
+        $sql = "UPDATE tbl_competencia_especifica SET id_comp_gral=$idCompGeneralAQuePerteneceEdit, codigo='$codigoCompEspecificaAEditar', nombre_competencia_esp='$nombreCompEspecificaAEditar', rol='$rolCompEspecificaAEditar'
+                            WHERE  id_comp_gral = $idCompEspecificaAEditar";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    
+    //Funcion que permite consultar la competencia general a editar
+    public function consultarCompetenciaGeneralAEditar($idCompGeneralAEditar){
+        
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT codigo, nombre_comp_gral, rol from tbl_competencia_general where id_comp_gral = $idCompGeneralAEditar";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $nombreCompGeneralvAEditar = $row['nombre_comp_gral'];
+            $codigoCompGeneralAEditar = $row['codigo'];
+            $rolCompGeneralAEditar = $row['rol'];
+           
+
+            $objCompGenAEditar = new CompetenciaGeneral($idCompGeneralAEditar, $codigoCompGeneralAEditar, $nombreCompGeneralvAEditar, $rolCompGeneralAEditar);
+            return $objCompGenAEditar;
+        }
+    }
+
+    //Funcion que permite consultar la competencia especifica a editar
+    public function consultarCompetenciaEspecificaAEditar($idCompEspAEditar){
+        
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_comp_gral, codigo, nombre_competencia_esp, rol from tbl_competencia_especifica where id_comp_esp = $idCompEspAEditar";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $idCompGralEditar = $row['id_comp_gral'];
+            $codigoCompEspEditar = $row['codigo'];
+            $nombreCompEspvAEditar = $row['nombre_comp_esp'];
+            $rolCompEspAEditar = $row['rol'];          
+
+            $objCompEspAEditar = new CompetenciaEspecifica($idCompEspAEditar, $idCompGralEditar, $codigoCompEspEditar, $nombreCompEspvAEditar, $rolCompEspAEditar);
+            return $objCompEspAEditar;
+        }
+    }
+    
+
 }
 ?>
