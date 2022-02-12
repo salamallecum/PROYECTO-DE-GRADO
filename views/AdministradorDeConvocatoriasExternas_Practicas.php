@@ -17,16 +17,6 @@
         }
     }
 
-    //Capturamos la variable id de la convocatoria para la edicion de la misma
-    if(isset($_GET['IdEditConv'])){
-        $idConvocatoriaEdit = $_GET['IdEditConv'];
-
-        if($idConvocatoriaEdit > 0){ 
-            
-            //$convocatoriaAEditar = $objConvocatoriaControla->consultarConvocatoriaPracticasAEditar($idConvocatoriaEdit);
-        }
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -238,8 +228,12 @@
                     <div id="modal_container4" class="modal_container" name="modal_container">
                         <div class="modalConvocatoria">
                             <div class="modalBody">
+                                
                                 <h3 id="lbl_tituloDeConvocatoria" class="titulo_seccion">TITULO DE CONVOCATORIA</h3>
-                                <br>  
+                                <br> 
+                                
+                                <input type="text" name="idConvocatoriaAVisualizar" value="">
+                                <br>
 
                                 <div class="pnl-imgConvocatoria">
                                     <img class="imgConvocatoriaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">
@@ -282,7 +276,7 @@
                                                 <td class="datoTabla">AMAYA TORRES</td>
                                                 <td class="datoTabla"><div class="compEsp-edicion">
                                                     <div class="col-botonesEdicion">
-                                                        <a name="" href="" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                        <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
                                                     </div>
 
                                                     <div class="col-botonesEdicion">
@@ -308,42 +302,46 @@
                             <br>
                             
                             <div class="formulario-registroConvocatoria">
-                                <form class="">
+                                <form id="formularioDeActualizacionDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
+
+                                    <input type="text" name="idConvocatoriaPractAEditar" value=""> 
 
                                     <label class="camposFormulario">Nombre de la convocatoria</label><br>
-                                    <input id="txt_nombreConvocatoria" name="nombreConvocatoria" placeholder="" type="text" class="form-control" value="<?php echo $convocatoriaAEditar->getNombre();?>" required="true">
+                                    <input id="txt_nombreConvocatoria" name="nombreConvocatoriaPractEdit" placeholder="" type="text" class="form-control" value="" required="true">
                                     <br>
 
                                     <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionConvocatoria" name="descripcionConvocatoria" cols="80" placeholder="" rows="8" class="form-control" required="true"><?php echo $convocatoriaAEditar->getDescripcion();?></textarea>
+                                    <textarea id="txt_descripcionConvocatoria" name="descripcionConvocatoriaPractEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
-                                    <input  id="btn_cargaArchivoInfoDeConvocatoria" name="btnCargaArchivoInfoDeConvocatoria" accept=".pdf" type="file" class="form-control">
+                                    <input  id="btn_cargaArchivoInfoDeConvocatoria" name="archivoInfoDeConvocatoriaExtEdit" accept=".pdf" type="file" class="form-control">
                                     <br>
 
                                     <!--Espacio para colocar campos tipo calendar-->
                                     <table>
                                         <tr>
                                             <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $convocatoriaAEditar->getFechaInicio();?>" required="true"></td>
+                                                <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExtEdit" class="form-control" min="2000-01-01" max="2040-12-31" value=""></td>
                                                 
                                                 <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" value="<?php echo $convocatoriaAEditar->getFechaFin();?>" required="true"></td>
+                                                <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExtEdit" class="form-control" min="2000-01-01" max="2040-12-31" value="" required="true"></td>
                                             </td>
                                         </tr>
                                     </table>
                                     <br>
 
                                     <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
-                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoria" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaExtEdit" accept=".jpeg, .jpg, .png" type="file" class="form-control">
                                     <br>   
                                                                         
                                     <br>
                                     <br>    
-                                    <a id="btn_actualizarConvocatoria" class="btn_agregarConvocatoria" title="Actualizar">Actualizar</a>
+                                    <button type="submit" name="actualizarConvocatoriaPracticas" id="btn_actualizarConvocatoria"  class="btn_agregarConvocatoria" title="Actualizar">Actualizar</button>
                                     <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
                                 </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatConvocatoria.php") ?>
                             </div>
                         </div>
                     </div>
@@ -351,26 +349,30 @@
 
                     <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
                     <div id="modal_container5" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Compartir E-portafolio</h3>
-                            <br>
-                            <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
-                            <br>
+                            <div class="modal">
+                                <h3 class="titulo_seccion">Compartir E-portafolio</h3>
+                                <br>
+                                <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
+                                <br>
 
-                            <div class="formulario-comparitEportafolio">
-                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
-                                    <label class="camposFormulario">Correo electrónico</label>
-                                    <input id="txt_correo" name="txtCorreo" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
-                                    <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
-                                </form>
+                                <div class="formulario-comparitEportafolio">
+                                    <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
+                                        <label class="camposFormulario">Correo electrónico</label>
+                                        <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                        <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
+                                    </form>
+                                    <!--Incluimos el archivo con la logica del formulario-->
+                                    <?php include("logic/capturaDatEportafolio.php") ?>
+                                </div>
+                                <br>
                             </div>
-                            <br>
-                    
                         </div>
                     </div>
-
+                    
                 </div>
             </main>
         </div>

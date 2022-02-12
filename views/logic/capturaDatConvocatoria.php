@@ -136,7 +136,6 @@
                         $convocatoriaontrola->eliminarEnunciado($nombreAntiguoEnunciadoConvComEdit);
                     }
 
-                    $generador = new generadorNombres();
                     $nuevoNombreArchivoEnunciadoConvComEdit = $generador->generadorDeNombres().".pdf";
                     $convocatoriaControla->subirEnunciadoConvocatoriaComite($rutaDeEnunciadoConvComEdit, $nuevoNombreArchivoEnunciadoConvComEdit, $enunciadoEditDeConvComite, $nombreDeConvocatoriaComiteEdit);
                 
@@ -215,6 +214,87 @@
             }else{
                 ?>
                 <h3 class="indicadorDeCamposIncompletos">* Error al registrar Convocatoria</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }        
+        
+        }else{
+            ?>
+            <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>  
+            <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+        }
+    } 
+
+    //Capturamos el evento del boton de actualizacion de convocatorias del rol practicas
+    if(isset($_POST['actualizarConvocatoriaPracticas'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDeConvPracticasActualizar = trim($_POST['idConvocatoriaPractAEditar']);
+        $nombreDeConvocatoriaPracticasAEdit = trim($_POST['nombreConvocatoriaPractEdit']);
+        $descripcionConvocatoriaPracticasAEdit = trim($_POST['descripcionConvocatoriaPractEdit']);
+        $fechaInicioConvPracticasAEdit = date('Y-m-d', strtotime($_POST['dateFechaInicioConvocatoriaExtEdit']));
+        $fechaFinConvPracticasAEdit = date('Y-m-d', strtotime($_POST['dateFechaFinConvocatoriaExtEdit']));
+                
+
+       //Validamos que los campos no se encuentren vacios
+        if(strlen($nombreDeConvocatoriaPracticaseEdit) >= 1 && 
+        strlen($descripcionConvocatoriaPracticasEdit) >= 1 && 
+        $fechaInicioConvPracticasEdit != '1970-01-01' &&
+        $fechaFinConvPracticasEdit != '1970-01-01'){ 
+
+            //Encapsulamos los datos obtenidos en un objeto de tipo ConvocatoriaPracticas
+            $convocatoriaPracticasActualizar = new ConvocatoriaPracticas($idDeConvPracticasActualizar, $nombreDeConvocatoriaPracticasAEdit, $descripcionConvocatoriaPracticasAEdit, $fechaInicioConvPracticasAEdit, $fechaFinConvPracticasAEdit);
+            
+            if($convocatoriaControla->actualizarConvocatoriaPracticas($convocatoriaPracticasActualizar) == 1){
+                
+                $imagenEditDeConvPracticas = $_FILES['imgParaConvocatoriaExtEdit']['name'];
+                $enunciadoEditDeConvPracticas = $_FILES['archivoInfoDeConvocatoriaExtEdit']['name'];
+
+                //Verificamos si el usuario ha subido una imagen para la convocatoria Practicas
+                if(strlen($imagenEditDeConvPracticas) >= 1){
+                    
+                    $rutaDeImagenConvPracEdit = $_FILES['imgParaConvocatoriaExtEdit']['tmp_name'];
+
+                    //Consultamos si la convocatoria ya tiene una imagen previa en servidor
+                    $nombreAntiguaImagenConvPracEdit = $convocatoriaControla->consultarNombreImagenConvocatoriaPracticas($idDeConvPracticasActualizar);
+
+                    //Eliminamos la imagen previa en servidor
+                    if($nombreAntiguaImagenConvPracEdit != null){
+                        $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvPracEdit);
+                    }
+
+                    $nuevoNombreArchivoImagenConvPracEdit = $generador->generadorDeNombres().".jpg";
+                    $convocatoriaControla->subirImagenConvocatoriaPracticas($rutaDeImagenConvPracEdit, $nuevoNombreArchivoImagenConvPracEdit, $imagenEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
+                    
+                }
+                
+                //Verificamos si el usuario ha subido un archivo con el enunciado de la convocatoria comite
+                if(strlen($enunciadoEditDeConvPracticas) >= 1){
+                    
+                    $rutaDeEnunciadoConvPracEdit = $_FILES['archivoInfoDeConvocatoriaExtEdit']['tmp_name'];
+
+                    //Consultamos si la convocatoria ya tiene un enunciado previo en servidor
+                    $nombreAntiguoEnunciadoConvPracEdit = $convocatoriaControla->consultarNombreEnunciadoConvocatoriaPracticas($idDeConvPracticasActualizar);
+
+                    //Eliminamos el enunciado previo en servidor
+                    if($nombreAntiguoEnunciadoConvPracEdit != null){
+                        $convocatoriaControla->eliminarEnunciado($nombreAntiguoEnunciadoConvPracEdit);
+                    }
+
+                    $nuevoNombreArchivoEnunciadoConvPracEdit = $generador->generadorDeNombres().".pdf";
+                    $convocatoriaControla->subirEnunciadoConvocatoriaComite($rutaDeEnunciadoConvPracEdit, $nuevoNombreArchivoEnunciadoConvPracEdit, $enunciadoEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
+                
+                }
+                
+                ?>
+                <h3 class="indicadorSatisfactorio">* Convocatoria actualizada satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+            }else{
+                ?>
+                <h3 class="indicadorDeCamposIncompletos">* Error al actualizar Convocatoria</h3>  
                 <?php
                 header("Location: " . $_SERVER["HTTP_REFERER"]);
             }        

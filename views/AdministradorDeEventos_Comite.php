@@ -8,16 +8,19 @@
     require_once "logic/controllers/ProfesorControlador.php";
     require_once "logic/controllers/CompetenciaControlador.php";
 
-    
-    //Capturamos la variable id del evento para la eliminacion de un evento
-    $idEvento = $_GET['Id'];
+    //Capturamos la variable id de la competencia general y el id de la competencia específica
+    if(isset($_GET['Id'])){
 
-    if($idEvento > 0){
-        
-        $objEvento = new EventoControlador();
+        //Capturamos la variable id del evento para la eliminacion de un evento
+        $idEvento = $_GET['Id'];
 
-        if($objEvento->eliminarEvento($idEvento) == 1){}
-    }
+        if($idEvento > 0){
+            
+            $objEvento = new EventoControlador();
+
+            if($objEvento->eliminarEvento($idEvento) == 1){}
+        }
+    }   
 
 ?>
 
@@ -33,9 +36,14 @@
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
 
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
-        <script src="assets/js/jquery-3.6.0.js"></script>
+        <script src="assets/js/jquery-3.6.0.js"></script>       
+
     </head>
 
     <body>
@@ -117,14 +125,13 @@
             <!--Codigo de la ventana principal-->
             <main>
                 <div class="card-header">
-                    <a id="openModal" class="btn_agregarEvento" title="Nuevo Evento">Nuevo evento</a>                   
+                    <!--<a id="openModal" class="btn_agregarEvento" title="Nuevo Evento">Nuevo evento</a>-->
+                    <button type="button" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalRegistrarEvento" title="Nuevo Evento">Nuevo evento</button>
                 </div>
 
                 <div class="main-tableEventos">
                    <br>
                     <h3 class="titulo_seccion">Eventos existentes </h3>
-                    <br>
-                    <br>
 
                     <!--ESTRUCTURA DE TABLA DE EVENTOS-->
                     <table id="table_eventos" class="tablaDeEventos">
@@ -175,12 +182,12 @@
                                     <td class="datoTabla"><input type="hidden" name="fechaFinEventoSeleccionado" value="<?php echo $key['fecha_fin'];?>"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a name="btn_asignarCompetencias" href="" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
+                                            <a class="" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
                                         </div>
                                         
                                         <div class="col-botonesEdicion">
                                             <input type="texto" name="dato[]" class="idEventoInput" value="<?php echo $key['id_evento'];?>">
-                                            <a name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            <a class="" data-bs-toggle="modal" data-bs-target="#modalEditarEvento" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                             
                                         </div>
 
@@ -198,165 +205,176 @@
                         </tbody>  
                     </table>
 
-                    
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE EVENTOS-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nuevo Evento</h3>
-                            <br>
-                            
-                            <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
-                                    
-                                    <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input name="nombreEvento" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
-                                    <br>
-
-                                    <label class="camposFormulario">Descripción</label>
-                                    <textarea name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
-                                    <br>
-
-                                    <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
-                                    <input  id="btn_cargaArchivoInfoDelEvento" name="archivoInfoDelEvento" accept=".pdf" type="file" class="form-control">
-                                    <br>
-
-                                    <!--Espacio para colocar campos tipo calendar-->
-                                    <table>
-                                        <tr>
-                                            <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" name="dateFechaInicioEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                                
-                                                <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" name="dateFechaFinEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
-
-                                    <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesor" required="true">
-                                        <option value="seleccione">Seleccione</option>
-
-                                        <?php
-                                            $obj = new ProfesorControlador();
-                                            $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
-                                            $datos = $obj->mostrarProfesoresRegistrados($sql);
-
-                                            foreach ($datos as $key){
-                                        ?>
-
-                                                <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
-
-                                        <?php
-                                            }
-                                        ?>
-                                    </select>
-                                    <br>
-
-                                    <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
-                                    <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                    <br>                    
-                                    <br>
-                                    <br>    
-                                    <button type="submit" name="guardarEvento" id="btn_guardarEvento"  class="btn_agregarEvento" title="Guardar">Guardar</button>
-                                    <a id="btn_cancelar1" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatEvento.php") ?>
-                            </div>
+                    <div class="modal fade" id="modalRegistrarEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nuevo Evento</h3>
                         </div>
+                        <div class="modal-body">
+                            
+                            <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
+                                    
+                                <label class="camposFormulario">Nombre del evento</label><br>
+                                <input name="nombreEvento" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
+                                <input  id="btn_cargaArchivoInfoDelEvento" name="archivoInfoDelEvento" accept=".pdf" type="file" class="form-control">
+                                <br>
+
+                                <!--Espacio para colocar campos tipo calendar-->
+                                <table>
+                                    <tr>
+                                        <td><label class="camposFormulario">Fecha inicio</label>
+                                            <input type="date" name="dateFechaInicioEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            
+                                            <td><label class="camposFormulario">Fecha fin</label><br>
+                                            <input type="date" name="dateFechaFinEvento" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+
+                                <label class="camposFormulario">Profesor encargado</label>
+                                <select class="form-control" id="cmb_profesoresResponsables" name="cmbProfesor" required="true">
+                                    <option value="seleccione">Seleccione</option>
+
+                                    <?php
+                                        $obj = new ProfesorControlador();
+                                        $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                        $datos = $obj->mostrarProfesoresRegistrados($sql);
+
+                                        foreach ($datos as $key){
+                                    ?>
+
+                                            <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
+
+                                    <?php
+                                        }
+                                    ?>
+                                </select>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
+                                <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                <br>                    
+                                <br>
+                                <br>    
+                                <button type="submit" name="guardarEvento" id="btn_guardarEvento"  class="btn_agregarEvento" title="Guardar">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                  
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatEvento.php") ?>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
+                    <div class="modal fade" id="modalEditarEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar Evento</h3>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
+
+                                <input type="text" id="idEvento" value="">
+
+                                <label class="camposFormulario">Nombre del evento</label><br>
+                                <input id="txt_nombreEvento" name="nombreEventoEditado" id="nombreEventoEdit" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea id="txt_descripcionEvento" name="descripcionActualizada" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
+                                <input  id="btn_cargaArchivoInfoDelEvento" name="enunciadoActualizado" accept=".pdf" type="file" class="form-control">
+                                <br>
+
+                                <!--Espacio para colocar campos tipo calendar-->
+                                <table>
+                                    <tr>
+                                        <td><label class="camposFormulario">Fecha inicio</label>
+                                            <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            
+                                            <td><label class="camposFormulario">Fecha fin</label><br>
+                                            <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+
+                                <label class="camposFormulario">Profesor encargado</label>
+                                <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" id="profeEdit" required="true">
+                                    <option value="seleccione">Seleccione</option>
+
+                                    <?php
+                                        $obj = new ProfesorControlador();
+                                        $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
+                                        $datos = $obj->mostrarProfesoresRegistrados($sql);
+
+                                        foreach ($datos as $key){
+                                    ?>
+
+                                            <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
+
+                                    <?php
+                                        }
+                                    ?>
+                                    
+                                </select>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
+                                <input  id="btn_imgParaElEvento" name="imagenActualizada" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                <br>
+                                <br>                                                                                             
+                                <button type="submit" name="actualizarEvento" id="btn_actualizarEvento"  class="btn_agregarEvento" title="Actualizar">Actualizar</button> 
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatEvento.php") ?>
+                        </div>
+                        </div>
+                    </div>
                     </div>
 
                     <?php
                         $objEventoSelect = new EventoControlador();
                     ?>
-
-                    <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE EVENTOS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Actualizar Evento</h3>
-                            <br>
-                            
-                            <div class="formulario-registroEvento">
-                                <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
-
-                                    <input type="text" id="idEvento" value="">
-
-                                    <label class="camposFormulario">Nombre del evento</label><br>
-                                    <input id="txt_nombreEvento" name="nombreEventoEditado" id="nombreEventoEdit" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
-                                    <br>
-
-                                    <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionEvento" name="descripcionActualizada" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
-                                    <br>
-
-                                    <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
-                                    <input  id="btn_cargaArchivoInfoDelEvento" name="enunciadoActualizado" accept=".pdf" type="file" class="form-control">
-                                    <br>
-
-                                    <!--Espacio para colocar campos tipo calendar-->
-                                    <table>
-                                        <tr>
-                                            <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                                
-                                                <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
-
-                                    <label class="camposFormulario">Profesor encargado</label>
-                                    <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" id="profeEdit" required="true">
-                                        <option value="seleccione">Seleccione</option>
-
-                                        <?php
-                                            $obj = new ProfesorControlador();
-                                            $sql = "SELECT id_usuario, nombres_usuario FROM tbl_usuario WHERE id_rol = 2";
-                                            $datos = $obj->mostrarProfesoresRegistrados($sql);
-
-                                            foreach ($datos as $key){
-                                        ?>
-
-                                                <option value="<?php echo $key['id_usuario']?>"><?php echo $key['nombres_usuario']?></option>
-
-                                        <?php
-                                            }
-                                        ?>
-                                        
-                                    </select>
-                                    <br>
-
-                                    <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
-                                    <input  id="btn_imgParaElEvento" name="imagenActualizada" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                    <br>
-                                    <br>                                                                                             
-                                    <button type="submit" name="actualizarEvento" id="btn_actualizarEvento"  class="btn_agregarEvento" title="Actualizar">Actualizar</button> 
-                                    <a id="btn_cancelar2" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatEvento.php") ?>
-                            </div>
-                        </div>
-                    </div>
-
-                 
+                
                     <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
-                    <div id="modal_container4" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Asignación de competencias</h3>
-                            <br>
+                    <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias</h3>
+                        </div>
+                        <div class="modal-body">
                             
                             <p>Seleccione las competencias generales a las cuales contribuye el evento.</p>
                             <br>
-                            <br>
                             
-                            <form action="logic/capturaDatCompetencia.php" method="post">
+                            <form id="formularioDeAsignacionDeCompetencias" action="AdministradorDeEventos_Comite.php" method="POST">
+
                                 <table>
                                     <tr>
                                         <td class="columnSelectCompetencias">
-                                            <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS GENERALES-->
+                                            <!--AQUI DEFINIMOS EL PANEL QUE CONTIENE LAS COMPETENCIAS ESPECÍFICAS-->
                                             <div class="compentenciasContent">
 
                                                 <?php
@@ -373,31 +391,22 @@
                                                 <?php
                                                     }
                                                 ?>
+
                                             </div>
                                         </td>
+                                        <td></td>
                                     </tr>
-                                </table> 
+                                </table>                       
                                 <br>
-                                <br>
-                                <button type="submit" id="btn_evaluarCompetencias"  class="btn_agregarEvento" title="Analizar competencias">Analizar</button> 
-                                <a id="btn_cancelar4" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
+                                <!--<a id="btn_evaluarCompetencias" class="btn_agregarEvento" title="Analizar competencias">Analizar</a>-->
+                                <button type="submit" name="asignarCompetenciasGenerales" class="btn_agregarEvento" title="AnalizarComeptencias">Analizar</button>
                             </form>
-                           
-                                         
-                        
-                        </div>
-                    </div>
-
-                    <!--POPUP PARA LA EVALUACIÓN DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
-                    <div id="modal_container5" class="modal_container" name="modal_container">
-                        <div class="modal">
+                            <br>
                             <h3 class="titulo_seccion">Evaluación de competencias</h3>
-                            <br>
-                            <p>Evalúe el nivel de competencia propuesto por el desafio para las siguientes competencias específicas: </p>
+                            <p>Evalúe el nivel de competencia propuesto por la convocatoria para las siguientes competencias específicas: </p>
                             <br>
 
-
-                            <div class="contenedor_compEspecificas">
+                            <div class="contenedorEvaluacionCompetencias">
 
                                 <form class="">
                                     <!--Este es el código que contiene las competencias específicas a evaluar-->
@@ -418,7 +427,7 @@
 
                                                 <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
                                                 <label for="No aplica">No aplica</label></td></td>
-                    
+
                                             </tr>
                                         </table>
 
@@ -440,23 +449,22 @@
 
                                                 <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
                                                 <label for="No aplica">No aplica</label></td></td>
-                        
+
                                             </tr>
                                         </table>
                                     </div>  
-
                                     <br>
-                                    <br>
-                                    <a id="btn_guardarAnálisis" class="btn_agregarEvento" title="Guardar">Guardar</a>
-                                    <a id="btn_cancelar5" class="btn_agregarEvento" title="Cancelar">Cancelar</a>
-
+                                    <a id="btn_guardarAnalisis" class="btn_agregarConvocatoria" title="Guardar">Guardar</a>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
                                 </form>
-                            </div>                            
+                            </div>
+                        </div>
+                        </div>
                         </div>
                     </div>
+                    </div>
+
                 </div>
-            </main>
-        </div>
 
         <script>
             function cambiarAMayuscula(elemento){

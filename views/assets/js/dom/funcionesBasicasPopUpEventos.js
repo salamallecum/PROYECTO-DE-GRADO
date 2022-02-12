@@ -77,24 +77,6 @@ close4.addEventListener('click', (e) => {
 },false);
 
 
-//ASIGNACION DE EVENTO A BOTON  PARA EVALUACION DE COMPETENCIAS
-const open5 = document.getElementById('btn_evaluarCompetencias');
-const modal_container5 = document.getElementById('modal_container5');
-const close5 = document.getElementById('btn_cancelar5');
-
-
-open5.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container5.classList.add('show');
-},false);
-
-
-close5.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal_container5.classList.remove('show');
-},false);
-
-
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE EVENTOS
 function limpiarFormularioRegistroDeEventos(){
     

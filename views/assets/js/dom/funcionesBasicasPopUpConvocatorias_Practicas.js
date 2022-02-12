@@ -1,4 +1,5 @@
 
+
 //Archivo que define las operaciones basicas de los popup en la app Pandora (Abrir y cerrar)
 
 //ROL COORDINACION DE PRACTICAS PROFESIONALES-----------------------------------------------------------------------------------------------------------

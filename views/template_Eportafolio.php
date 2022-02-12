@@ -277,6 +277,10 @@
         <!--PIE DE EPORTAFOLIO - SELLO PANDORA-->
         <div class="cardSelloPandora">
             <p class=selloPandora>© Pandora</p>
+            
+            <form id="formularioParaDescargaEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
+                <button type="submit" name="descargarEportafolio" class="btn_descargarConvocatoria" title="Descargar E-portafolio">Descargar</button>
+            </form>
         </div>
     
 </body>

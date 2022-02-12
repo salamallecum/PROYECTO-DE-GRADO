@@ -24,7 +24,12 @@
             <?php
             header("Location: " . $_SERVER["HTTP_REFERER"]);             
         }
-    }     
+    }   
+    
+    //Capturamos el evento del boton de descargar eportafolio
+    if(isset($_POST['descargarEportafolio'])){
+
+    }
     
 
 ?>

@@ -1,12 +1,12 @@
 /*ESTILOS COMUNES*/
 :root{
-    --main-color: #f5841f;
+    --main-color: #f5841f !important;
     --color-dark: #1D2231;
     --text-grey: #8390A2;
 }
 
 *{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif !important;
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -21,16 +21,6 @@
 
 .ti-menu-alt{
     cursor: pointer;
-}
-
-.modalSuccesful{
-    background: rgb(140, 243, 119);
-    width: 600px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
 }
 
 .respuestaok{
@@ -101,8 +91,8 @@
 }
 
 .link_menu span{
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
 }
 
 .sidebar-menu ul li a .link-menu-active{
@@ -112,8 +102,8 @@
 }
 
 .items_menu{
-    color: white;
-    font-weight: bold;
+    color: white !important;
+    font-weight: bold !important;
 }
 
 .sidebar a span:last-child{
@@ -413,6 +403,8 @@ main{
 
 .titulo_seccion{
     color: #005e6e;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .card .card-header {
@@ -747,6 +739,7 @@ table .column-form-regMaterias select{
 
 
 /*ESTILOS POPUPS*/
+/*
 .modal_container{
     display: flex;
     background-color:rgba(0, 0, 0, 0.3);
@@ -789,7 +782,7 @@ table .column-form-regMaterias select{
 .formulario-registroCompetencia{
     text-align: left;
 }
-
+*/
 
 /*--------------------------ADMINISTRADOR DE EVENTOS*--------------------------*/
 .btn_agregarEvento{
@@ -804,7 +797,7 @@ table .column-form-regMaterias select{
 }
 
 .compentenciasContent{
-    width: 500px;
+    width: 450px;
     height: 100px;
     overflow-y: scroll; 
     border: 1px #000;
