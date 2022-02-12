@@ -186,8 +186,8 @@
                                         </div>
                                         
                                         <div class="col-botonesEdicion">
-                                            <input type="texto" name="dato[]" class="idEventoInput" value="<?php echo $key['id_evento'];?>">
-                                            <a class="" data-bs-toggle="modal" data-bs-target="#modalEditarEvento" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            <input type="texto" name="dato[]" id="idEventoSeleccionado" class="idEventoInput" value="<?php echo $key['id_evento'];?>">
+                                            <a class="btnEditarEvento" data-id="<?php echo $key['id_evento'];?>" data-bs-toggle="modal" data-bs-target="#modalEditarEvento" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                             
                                         </div>
 
@@ -288,16 +288,16 @@
                         </div>
                         <div class="modal-body">
                             
-                            <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
+                            <form id="formularioDeActualizacionDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
 
-                                <input type="text" id="idEvento" value="">
+                                <input type="text" id="idEvento" name="id_evento" value="">
 
                                 <label class="camposFormulario">Nombre del evento</label><br>
-                                <input id="txt_nombreEvento" name="nombreEventoEditado" id="nombreEventoEdit" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
+                                <input id="txt_nombreEvento" name="nombre_evento" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea id="txt_descripcionEvento" name="descripcionActualizada" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcionEvento" name="descripcion_evento" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
@@ -308,17 +308,17 @@
                                 <table>
                                     <tr>
                                         <td><label class="camposFormulario">Fecha inicio</label>
-                                            <input type="date" id="date_fechaInicioEvento" name="dateFechaInicioActualizada" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            <input type="date" id="date_fechaInicioEvento" name="fecha_inicio" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                             
                                             <td><label class="camposFormulario">Fecha fin</label><br>
-                                            <input type="date" id="date_fechaFinEvento" name="dateFechaFinActualizada" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            <input type="date" id="date_fechaFinEvento" name="fecha_fin" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                         </td>
                                     </tr>
                                 </table>
                                 <br>
 
                                 <label class="camposFormulario">Profesor encargado</label>
-                                <select class="form-control" id="cmb_profesoresResponsables" name="cbx_profesorEdit" id="profeEdit" required="true">
+                                <select class="form-control" id="cmb_profesoresResponsables" name="id_usuario" id="profeEdit" required="true">
                                     <option value="seleccione">Seleccione</option>
 
                                     <?php
@@ -473,5 +473,52 @@
             }            
 
         </script>
+
+        <!--Script que permite pasar los datos de un evento a la ventana modal de edicion del mismo-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+
+                $('.btnEditarEvento').click(function(){
+                    console.log("here")
+                    // var userid = document.getElementById('idEventoSeleccionado').value;
+                    var userid = $(this).data('id');
+                    console.log(userid)
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                             // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {userid: userid},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeActualizacionDeEventos';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                        
+                });
+            });
+            </script>
+
     </body>
 </html>
