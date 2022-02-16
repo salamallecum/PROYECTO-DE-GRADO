@@ -63,6 +63,11 @@
     padding: 2rem;
 }
 
+#tituloPagPrincipal{
+    font-weight: bold;
+    font-size: 22px;
+}
+
 .sidebar-menu li{
     margin-bottom: 2rem;
 }
@@ -99,15 +104,20 @@
     color: #fff;
     opacity: 1;
     background: hsla(0,0%,100%,.23);
+    font-weight: bold;
 }
 
 .items_menu{
-    color: white !important;
-    font-weight: bold !important;
+    color: white;
+    font-weight: bold;
+}
+
+.menuComite{
+    padding-left: 3px;
 }
 
 .sidebar a span:last-child{
-    padding-left: .6rem;
+    padding-left: .6rem !important;
 }
 
 #sidebar-toggle:checked ~ .sidebar{

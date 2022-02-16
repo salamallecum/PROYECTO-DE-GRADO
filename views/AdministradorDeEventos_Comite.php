@@ -30,15 +30,16 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Pandora</title>
-        <link rel="shortcut icon" href="assets/images/favicon.png">        
+        <link rel="shortcut icon" href="assets/images/favicon.png">              
         
-        <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="assets/css/ComiteStyles.css">
-        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
-
         <!--Bootstrap-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+       
+        <!--Links Scripts de estilos-->
+        <link rel="stylesheet" href="assets/css/ComiteStyles.css">
+        <!--<link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">-->
 
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
@@ -48,57 +49,56 @@
 
     <body>
         
-
         <input type="checkbox" id="sidebar-toggle">
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3 class="brand">
                     <span> <img src="assets/images/ico_pandMenuPrincComite.PNG"></span>
-                    <span>PANDORA</span>
+                    <span id="tituloPagPrincipal">PANDORA</span>
                 </h3>
-                <label for="sidebar-toggle" class="ti-menu-alt"></label>
+                <label for="sidebar-toggle"><i class="bi bi-menu-app"></i></label>
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+                <ul class="menuComite">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Comite.php">
-                            <span><i class="ti-dashboard" title="Dashboard"></i></span>
+                            <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./RegistroDeProfesores_Comite.php">
-                            <span class="ti-user" title="Profesores"></span>
+                            <span title="Profesores"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PROFESORES</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeMaterias_Comite.php">
-                            <span class="ti-clipboard" title="Materias"></span>
+                            <span title="Materias"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">MATERIAS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeCompetencias_Comite.php">
-                            <span class="ti-archive" title="Competencias"></span>
+                            <span title="Competencias"><i class="bi bi-archive"></i></span>
                             <span class="items_menu">COMP.PROGRAMA</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeEventos_Comite.php?Id=0">
-                            <span class="ti-flag" title="Eventos"></span>
+                            <span title="Eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">EVENTOS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Comite.php">
-                            <span class="ti-hand-point-up" title="Convocatorias"></span>
+                            <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
                     </li>
@@ -176,19 +176,17 @@
                                     }                       
                                     ?>
                                     
-                                    <td class="datoTabla"><input type="hidden" name="nombreEventoSeleccionado" value="<?php echo $key['nombre_evento'];?>"><?php echo $key['nombre_evento'];  ?></td>
-                                    <td class="datoTabla"><input type="hidden" name="descripcionEventoSeleccionado" value="<?php echo $key['descripcion_evento'];?>"><?php echo $key['descripcion_evento'];  ?></td>
-                                    <td class="datoTabla"><input type="hidden" name="fechaIniEventoSeleccionado" value="<?php echo $key['fecha_inicio'];?>"><?php echo $key['fecha_inicio'];  ?></td>
-                                    <td class="datoTabla"><input type="hidden" name="fechaFinEventoSeleccionado" value="<?php echo $key['fecha_fin'];?>"><?php echo $key['fecha_fin'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['nombre_evento'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['descripcion_evento'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
                                             <a class="" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
                                         </div>
                                         
                                         <div class="col-botonesEdicion">
-                                            <input type="texto" name="dato[]" id="idEventoSeleccionado" class="idEventoInput" value="<?php echo $key['id_evento'];?>">
                                             <a class="btnEditarEvento" data-id="<?php echo $key['id_evento'];?>" data-bs-toggle="modal" data-bs-target="#modalEditarEvento" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
-                            
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -262,8 +260,7 @@
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Cargue una imagen para el evento</label><br>
-                                <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                <br>                    
+                                <input  id="btn_imgParaElEvento" name="imgParaElEvento" accept=".jpeg, .jpg, .png" type="file" class="form-control">                   
                                 <br>
                                 <br>    
                                 <button type="submit" name="guardarEvento" id="btn_guardarEvento"  class="btn_agregarEvento" title="Guardar">Guardar</button>
@@ -290,7 +287,7 @@
                             
                             <form id="formularioDeActualizacionDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
 
-                                <input type="text" id="idEvento" name="id_evento" value="">
+                                <input type="hidden" id="idEvento" name="id_evento" value="">
 
                                 <label class="camposFormulario">Nombre del evento</label><br>
                                 <input id="txt_nombreEvento" name="nombre_evento" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
@@ -308,10 +305,10 @@
                                 <table>
                                     <tr>
                                         <td><label class="camposFormulario">Fecha inicio</label>
-                                            <input type="date" id="date_fechaInicioEvento" name="fecha_inicio" id="fechaInicioEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            <input type="date" id="date_fechaInicioEvento" name="fecha_inicio"  class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                             
                                             <td><label class="camposFormulario">Fecha fin</label><br>
-                                            <input type="date" id="date_fechaFinEvento" name="fecha_fin" id="fechaFinEdit" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            <input type="date" id="date_fechaFinEvento" name="fecha_fin"  class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
                                         </td>
                                     </tr>
                                 </table>
@@ -342,7 +339,7 @@
                                 <input  id="btn_imgParaElEvento" name="imagenActualizada" accept=".jpeg, .jpg, .png" type="file" class="form-control">
                                 <br>
                                 <br>                                                                                             
-                                <button type="submit" name="actualizarEvento" id="btn_actualizarEvento"  class="btn_agregarEvento" title="Actualizar">Actualizar</button> 
+                                <button type="submit" name="actualizarEvento" class="btn_agregarEvento" title="Actualizar">Actualizar</button> 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
                             </form>
                             <!--Incluimos el archivo con la logica del formulario-->
@@ -352,10 +349,7 @@
                     </div>
                     </div>
 
-                    <?php
-                        $objEventoSelect = new EventoControlador();
-                    ?>
-                
+                                    
                     <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -454,7 +448,7 @@
                                         </table>
                                     </div>  
                                     <br>
-                                    <a id="btn_guardarAnalisis" class="btn_agregarConvocatoria" title="Guardar">Guardar</a>
+                                    <button type="submit" name="guardarAsignacionComp" class="btn_agregarEvento" title="Guardar">Guardar</button> 
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
                                 </form>
                             </div>
@@ -478,12 +472,11 @@
         <script type='text/javascript'>
             $(document).ready(function(){
                 
-
                 $('.btnEditarEvento').click(function(){
                     console.log("here")
-                    // var userid = document.getElementById('idEventoSeleccionado').value;
-                    var userid = $(this).data('id');
-                    console.log(userid)
+                    
+                    var idEventoEdit = $(this).data('id');
+                    console.log(idEventoEdit)
                    
                     function getFormInfo() {
                         return new Promise((resolve, reject) => {
@@ -491,7 +484,7 @@
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
-                                data: {userid: userid},
+                                data: {idEventoEdit: idEventoEdit},
                                 success: function(response){
                                     resolve(response)
                                 },

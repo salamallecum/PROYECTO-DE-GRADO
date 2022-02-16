@@ -78,13 +78,12 @@
     if(isset($_POST['actualizarEvento'])){
 
         //Capturamos los datos de los campos del formulario
-        $nombreEditDeEvento = trim($_POST['nombreEventoEditado']);
-        $descripcionEditEvento = trim($_POST['descripcionActualizada']);
-        $fechaEditInicioEvento = date('Y-m-d', strtotime($_POST['dateFechaInicioActualizada']));
-        $fechaEditFinEvento = date('Y-m-d', strtotime($_POST['dateFechaFinActualizada']));
-        $cmbEditProfesorEncargado = $_REQUEST['cmbProfesoresRespEdit'];
-        //$cmbCompetencias = $_POST['competencias'];
-
+        $nombreEditDeEvento = trim($_POST['nombre_evento']);
+        $descripcionEditEvento = trim($_POST['descripcion_evento']);
+        $fechaEditInicioEvento = date('Y-m-d', strtotime($_POST['fecha_inicio']));
+        $fechaEditFinEvento = date('Y-m-d', strtotime($_POST['fecha_fin']));
+        $cmbEditProfesorEncargado = $_REQUEST['id_usuario'];
+  
        //Validamos que los campos no se encuentren vacios
         if(strlen($nombreEditDeEvento) >= 1 && 
         strlen($descripcionEditEvento) >= 1 && 
