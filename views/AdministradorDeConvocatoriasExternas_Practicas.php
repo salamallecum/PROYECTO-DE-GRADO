@@ -1,6 +1,4 @@
-<!--IMPORTANTE-->
-<!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
-<!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
+
 <?php
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/ConvocatoriaControlador.php";
@@ -25,42 +23,45 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Pandora</title>
-        <link rel="shortcut icon" href="assets/images/favicon.png">        
+        <link rel="shortcut icon" href="assets/images/favicon.png"> 
+        
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="assets/css/PracticasStyles.css">
-        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+        <link rel="stylesheet" href="assets/css/PracticasStyles.css">        
 
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpConvocatorias_Practicas.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
-    <body>
-        
+    <body>        
 
         <input type="checkbox" id="sidebar-toggle">
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3 class="brand">
                     <span> <img src="assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
-                    <span>PANDORA</span>
+                    <span id="tituloPagPrincipal">PANDORA</span>
                 </h3>
-                <label for="sidebar-toggle" class="ti-menu-alt"></label>
+                <label for="sidebar-toggle"><i class="bi bi-menu-app"></i></label>
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+                <ul class="menuPracticas">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Practicas.php">
-                            <span><i class="ti-dashboard" title="Dashboard"></i></span>
+                            <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Practicas.php">
-                            <span class="ti-hand-point-up" title="Convocatorias"></span>
+                            <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
                     </li>
@@ -68,7 +69,7 @@
                     
                     <li>
                         <a class="link_menu" href="./AdministradorDeEportafolios_Practicas.php">
-                            <span class="ti-archive" title="E-portafolios"></span>
+                            <span title="E-portafolios"><i class="bi bi-archive"></i></span>
                             <span class="items_menu">E-PORTAFOLIOS</span>
                         </a>
                     </li>
@@ -95,15 +96,13 @@
             <!--Codigo de la ventana principal-->
             <main>
                 <div class="card-header">
-                    <a id="openModal" class="btn_agregarConvocatoria" title="Nueva Convocatoria">Nueva convocatoria</a>                   
+                    <button type="button" class="btn_agregarConvocatoria" data-bs-toggle="modal" data-bs-target="#modalRegistrarConvocatoria" title="Nueva Convocatoria">Nueva convocatoria</button>                   
                 </div>
 
                 <div class="main-tableEventos">
                    <br>
                     <h3 class="titulo_seccion">Convocatorias existentes </h3>
-                    <br>
-                    <br>
-
+                    
                     <!--ESTRUCTURA DE TABLA DE CONVOCATORIAS-->
                     <table id="table_eventos" class="tablaDeConvocatorias">
                         <thead>
@@ -152,11 +151,11 @@
                                     <td class="datoTabla"><input type="hidden" name="fechaFinEventoSeleccionado" value="<?php echo $key['fecha_fin'];?>"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a name="openModal4" href="" title="Detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                            <a class="btnDetallesConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Editar"><img src="assets/images/verDetallesActividad.png"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                            <a  name="openModal2" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                            <a class="btnEditarConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEditarConvocatoria" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -170,182 +169,265 @@
                             }
                         ?>
 
-                        </tbody>
-                      
+                        </tbody>                      
                     </table>
 
-
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE CONVOCATORIAS-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nueva Convocatoria</h3>
-                            <br>
+                    <div class="modal fade" id="modalRegistrarConvocatoria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nueva Convocatoria</h3>
+                        </div>
+                        <div class="modal-body">
                             
-                            <div class="formulario-registroConvocatoria">
-                                <form id="formularioDeRegistroDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
+                            <form id="formularioDeRegistroDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
 
-                                    <label class="camposFormulario">Nombre de la convocatoria</label><br>
-                                    <input name="nombreConvocatoriaExt" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
-                                    <br>
+                                <label class="camposFormulario">Nombre de la convocatoria</label><br>
+                                <input name="nombreConvocatoriaExt" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
+                                <br>
 
-                                    <label class="camposFormulario">Descripción</label>
-                                    <textarea name="descripcionConvocatoriaExt" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
-                                    <br>
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea name="descripcionConvocatoriaExt" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
 
-                                    <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
-                                    <input  id="btn_cargaArchivoInfoDeConvocatoriaExt" name="archivoInfoDeConvocatoriaExt" accept=".pdf" type="file" class="form-control">
-                                    <br>
+                                <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
+                                <input  id="btn_cargaArchivoInfoDeConvocatoriaExt" name="archivoInfoDeConvocatoriaExt" accept=".pdf" type="file" class="form-control">
+                                <br>
 
-                                    <!--Espacio para colocar campos tipo calendar-->
-                                    <table>
-                                        <tr>
-                                            <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                                
-                                                <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
+                                <!--Espacio para colocar campos tipo calendar-->
+                                <table>
+                                    <tr>
+                                        <td><label class="camposFormulario">Fecha inicio</label>
+                                            <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                            
+                                            <td><label class="camposFormulario">Fecha fin</label><br>
+                                            <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExt" class="form-control" min="2000-01-01" max="2040-12-31" required="true"></td>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
 
-                                    <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
-                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaExt" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                    <br>   
-                                    <br>
-                                    <br>    
-                                    <button type="submit" name="guardarConvocatoriaPracticas" id="btn_guardarConvocatoria"  class="btn_agregarConvocatoria" title="Guardar">Guardar</button>
-                                    <a id="btn_cancelar1" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatConvocatoria.php") ?>
-                            </div>
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
+                                <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaExt" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                <br>   
+                                <br>   
+                                
+                                <button type="submit" name="guardarConvocatoriaPracticas" class="btn_agregarConvocatoria" title="Guardar">Guardar</button>
+                                <button id="btnCancelarRegistroConvPracticas" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatConvocatoria.php") ?>                         
+
+                        </div>
                         </div>
                     </div>
-
+                    </div>
 
                     <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LA CONVOCATORIA-->
-                    <div id="modal_container4" class="modal_container" name="modal_container">
-                        <div class="modalConvocatoria">
-                            <div class="modalBody">
+                    <div class="modal fade" id="modalDetallesConvocatoria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeConvocatorias_Practicas" class="modal-body">
+                            
+                            <input type="hidden" id="idConvEdit" name="Id" value="">                           
+                            
+                            <input type="text" class="detalleNombreConvocatoria" name="nombre_convocatoria" value="" disabled>
+                            <br>
+
+                            <img class="imgConvocatoriaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionConv" name="descripcion" value="" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetalleConvEdit" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetalleConvEdit" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
+
+                            <button type="submit" name="actualizarConvocatoriaPracticas" class="btn_agregarConvocatoria" title="Desacargar enunciado">Enunciado</button>
+                            <br>
+                            <br>
+
+                            <div class="panel-trabDesacadosEInsignias">
                                 
-                                <h3 id="lbl_tituloDeConvocatoria" class="titulo_seccion">TITULO DE CONVOCATORIA</h3>
-                                <br> 
+                                <label class="subtitulosInfo">E-portafolios postulados</label><br>
                                 
-                                <input type="text" name="idConvocatoriaAVisualizar" value="">
-                                <br>
+                                <div class="pnlTabla-eportafolios">
 
-                                <div class="pnl-imgConvocatoria">
-                                    <img class="imgConvocatoriaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">
-                                </div>
-                                <br>
-                                                                
-                                <div class="perfilprof">
-                                    <label class="subtitulosInfo">Descripción</label><br>
-                                    <p id="lbl_descripcionDeConvocatoria" class="descripcionDelTrabajo">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
-                                    <br>
-                                </div>
-
-                                <br>
-                                <a id="btn_descargarEnunciado" class="btn_agregarConvocatoria" title="DescargarEnunciado">Enunciado</a>
-                                <br>
-                                <br>
-                                <br>
-
-                                <div class="panel-trabDesacadosEInsignias">
-                                    
-                                    <label class="subtitulosInfo">E-portafolios postulados</label><br>
-                                    
-                                    <div class="pnlTabla-eportafolios">
-
-                                        <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
-                                        <table id="table_eportafoliosPostuladosConv" class="tablaDeEportafoliosPostuladosConv">
-                                            <thead>
-                                                <tr>
-                                                    <th class="campoTabla">Foto</th>
-                                                    <th class="campoTabla">Nombres</th>
-                                                    <th class="campoTabla">Apellidos</th>
-                                                    <th class="campoTabla">Acciones</th>
-                                                </tr>
-                                            </thead>
-
-                                            <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                                            <tr class="filasDeDatosTablaEportafolios">
-                                                <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                                                <td class="datoTabla">LUIS ALEJANDRO</td>
-                                                <td class="datoTabla">AMAYA TORRES</td>
-                                                <td class="datoTabla"><div class="compEsp-edicion">
-                                                    <div class="col-botonesEdicion">
-                                                        <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                    </div>
-
-                                                    <div class="col-botonesEdicion">
-                                                        <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                    </div>
-
-                                                </div></td>
+                                    <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
+                                    <table id="table_eportafoliosPostuladosConv" class="tablaDeEportafoliosPostuladosConv">
+                                        <thead>
+                                            <tr>
+                                                <th class="campoTabla">Foto</th>
+                                                <th class="campoTabla">Nombres</th>
+                                                <th class="campoTabla">Apellidos</th>
+                                                <th class="campoTabla">Acciones</th>
                                             </tr>
-                                        </table>
-                                    </div>
+                                        </thead>
+
+                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
+                                        <tr class="filasDeDatosTablaEportafolios">
+                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
+                                            <td class="datoTabla">LUIS ALEJANDRO</td>
+                                            <td class="datoTabla">AMAYA TORRES</td>
+                                            <td class="datoTabla"><div class="compEsp-edicion">
+                                                <div class="col-botonesEdicion">
+                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+
+                                                <div class="col-botonesEdicion">
+                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                </div>
+
+                                            </div></td>
+                                        </tr>
+
+                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
+                                        <tr class="filasDeDatosTablaEportafolios">
+                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
+                                            <td class="datoTabla">LUIS ALEJANDRO</td>
+                                            <td class="datoTabla">AMAYA TORRES</td>
+                                            <td class="datoTabla"><div class="compEsp-edicion">
+                                                <div class="col-botonesEdicion">
+                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+
+                                                <div class="col-botonesEdicion">
+                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                </div>
+
+                                            </div></td>
+                                        </tr>
+
+                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
+                                        <tr class="filasDeDatosTablaEportafolios">
+                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
+                                            <td class="datoTabla">LUIS ALEJANDRO</td>
+                                            <td class="datoTabla">AMAYA TORRES</td>
+                                            <td class="datoTabla"><div class="compEsp-edicion">
+                                                <div class="col-botonesEdicion">
+                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+
+                                                <div class="col-botonesEdicion">
+                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                </div>
+
+                                            </div></td>
+                                        </tr>
+
+                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
+                                        <tr class="filasDeDatosTablaEportafolios">
+                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
+                                            <td class="datoTabla">LUIS ALEJANDRO</td>
+                                            <td class="datoTabla">AMAYA TORRES</td>
+                                            <td class="datoTabla"><div class="compEsp-edicion">
+                                                <div class="col-botonesEdicion">
+                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+
+                                                <div class="col-botonesEdicion">
+                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                </div>
+
+                                            </div></td>
+                                        </tr>
+
+                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
+                                        <tr class="filasDeDatosTablaEportafolios">
+                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
+                                            <td class="datoTabla">LUIS ALEJANDRO</td>
+                                            <td class="datoTabla">AMAYA TORRES</td>
+                                            <td class="datoTabla"><div class="compEsp-edicion">
+                                                <div class="col-botonesEdicion">
+                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+
+                                                <div class="col-botonesEdicion">
+                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                </div>
+
+                                            </div></td>
+                                        </tr>
+
+                                    </table>
                                 </div>
-                                <br>              
-                                <a id="btn_cancelar4" class="btn_agregarConvocatoria" title="Atrás">Atrás</a>
                             </div>
+                            <br>        
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
+
+                        </div>
                         </div>
                     </div>
-
+                    </div>
 
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE CONVOCATORIAS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Actualizar Convocatoria</h3>
-                            <br>
+                    <div class="modal fade" id="modalEditarConvocatoria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar Convocatoria</h3>
+                        </div>
+                        <div class="modal-body">
                             
-                            <div class="formulario-registroConvocatoria">
-                                <form id="formularioDeActualizacionDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
+                            <form id="formularioDeActualizacionDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
 
-                                    <input type="text" name="idConvocatoriaPractAEditar" value=""> 
+                                <input type="text" name="Id" value=""> 
 
-                                    <label class="camposFormulario">Nombre de la convocatoria</label><br>
-                                    <input id="txt_nombreConvocatoria" name="nombreConvocatoriaPractEdit" placeholder="" type="text" class="form-control" value="" required="true">
-                                    <br>
+                                <label class="camposFormulario">Nombre de la convocatoria</label><br>
+                                <input name="nombre_convocatoria" placeholder="" type="text" class="form-control" value="" required="true">
+                                <br>
 
-                                    <label class="camposFormulario">Descripción</label>
-                                    <textarea id="txt_descripcionConvocatoria" name="descripcionConvocatoriaPractEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
-                                    <br>
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea id="txt_descripcionConvocatoria" name="descripcion" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
 
-                                    <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
-                                    <input  id="btn_cargaArchivoInfoDeConvocatoria" name="archivoInfoDeConvocatoriaExtEdit" accept=".pdf" type="file" class="form-control">
-                                    <br>
+                                <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
+                                <input  id="btn_cargaArchivoInfoDeConvocatoria" name="archivoInfoDeConvocatoriaExtEdit" accept=".pdf" type="file" class="form-control">
+                                <br>
 
-                                    <!--Espacio para colocar campos tipo calendar-->
-                                    <table>
-                                        <tr>
-                                            <td><label class="camposFormulario">Fecha inicio</label>
-                                                <input type="date" id="dateFechaInicioConvocatoriaExt" name="dateFechaInicioConvocatoriaExtEdit" class="form-control" min="2000-01-01" max="2040-12-31" value=""></td>
-                                                
-                                                <td><label class="camposFormulario">Fecha fin</label><br>
-                                                <input type="date" id="dateFechaFinConvocatoriaExt" name="dateFechaFinConvocatoriaExtEdit" class="form-control" min="2000-01-01" max="2040-12-31" value="" required="true"></td>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
+                                <!--Espacio para colocar campos tipo calendar-->
+                                <table>
+                                    <tr>
+                                        <td><label class="camposFormulario">Fecha inicio</label>
+                                            <input type="date" id="dateFechaInicioConvocatoriaExt" name="fecha_inicio" class="form-control" min="2000-01-01" max="2040-12-31" value=""></td>
+                                            
+                                            <td><label class="camposFormulario">Fecha fin</label><br>
+                                            <input type="date" id="dateFechaFinConvocatoriaExt" name="fecha_fin" class="form-control" min="2000-01-01" max="2040-12-31" value="" required="true"></td>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
 
-                                    <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
-                                    <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaExtEdit" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                    <br>   
-                                                                        
-                                    <br>
-                                    <br>    
-                                    <button type="submit" name="actualizarConvocatoriaPracticas" id="btn_actualizarConvocatoria"  class="btn_agregarConvocatoria" title="Actualizar">Actualizar</button>
-                                    <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatConvocatoria.php") ?>
-                            </div>
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para la convocatoria</label><br>
+                                <input  id="btn_imgParaConvocatoria" name="imgParaConvocatoriaExtEdit" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                <br> 
+                                
+                                <button type="submit" name="actualizarConvocatoriaPracticas" class="btn_agregarConvocatoria" title="Actualizar">Actualizar</button>
+                                <button id="btnCancelarRegistroConvPracticas" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                                                       
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatConvocatoria.php") ?>            
+
+                        </div>
                         </div>
                     </div>
-                        
+                    </div>
 
                     <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
                     <div id="modal_container5" class="modal_container" name="modal_container">
@@ -383,6 +465,89 @@
                 elemento.value = texto.toUpperCase();
             }            
 
+        </script>
+
+        <!--Script que permite pasar los datos de una convocatoria a la ventana modal de detalles y edicion de la misma-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesConvPracticas').click(function(){
+                    console.log("here")
+                    
+                    var idConvPracticasEdit = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                             // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idConvPracticasEdit: idConvPracticasEdit},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeConvocatorias_Practicas';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+
+            $(document).ready(function(){
+                
+                $('.btnEditarConvPracticas').click(function(){
+                    console.log("here")
+                    
+                    var idConvPracticasEdit = $(this).data('id');
+                    console.log(idConvPracticasEdit)
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                             // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idConvPracticasEdit: idConvPracticasEdit},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeActualizacionDeConvocatorias_Practicas';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                        
+                });
+            });
         </script>
     </body>
 </html>

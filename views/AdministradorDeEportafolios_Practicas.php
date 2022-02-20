@@ -1,6 +1,3 @@
-<!--IMPORTANTE-->
-<!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
-<!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -8,11 +5,15 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Pandora</title>
-        <link rel="shortcut icon" href="assets/images/favicon.png">        
+        <link rel="shortcut icon" href="assets/images/favicon.png"> 
+        
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="assets/css/PracticasStyles.css">
-        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+        <link rel="stylesheet" href="assets/css/PracticasStyles.css">                
 
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpVisualizacionDeEportafolios.js" type="module"></script>
@@ -27,23 +28,23 @@
             <div class="sidebar-header">
                 <h3 class="brand">
                     <span> <img src="assets/images/ico_pandMenuPrincEstudiante.PNG"></span>
-                    <span>PANDORA</span>
+                    <span id="tituloPagPrincipal">PANDORA</span>                   
                 </h3>
-                <label for="sidebar-toggle" class="ti-menu-alt"></label>
+                <label for="sidebar-toggle"><i class="bi bi-menu-app"></i></label>
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+                <ul class="menuPracticas">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Practicas.php">
-                            <span><i class="ti-dashboard" title="Dashboard"></i></span>
+                            <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Practicas.php">
-                            <span class="ti-hand-point-up" title="Convocatorias"></span>
+                            <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
                     </li>
@@ -51,7 +52,7 @@
                     
                     <li>
                         <a class="link_menu" href="./AdministradorDeEportafolios_Practicas.php">
-                            <span class="ti-archive" title="E-portafolios"></span>
+                            <span title="E-portafolios"><i class="bi bi-archive"></i></span>
                             <span class="items_menu">E-PORTAFOLIOS</span>
                         </a>
                     </li>

@@ -46,20 +46,6 @@
     transition: width 500ms;
 }
 
-.modalSuccesful{
-    background: rgb(140, 243, 119);
-    width: 600px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.respuestaok{
-    display: inline-block;
-}
-
 .sidebar-header{
     display: flex;
     justify-content: space-between;
@@ -72,6 +58,11 @@
 
 .sidebar-menu{
     padding: 2rem;
+}
+
+#tituloPagPrincipal{
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .sidebar-menu li{
@@ -88,6 +79,10 @@
 
 .sidebar li{
     margin-bottom: 2rem;
+}
+
+.menuPracticas{
+    padding-left: 3px;
 }
 
 .sidebar a{
@@ -151,6 +146,8 @@
 
 .titulo_seccion{
     color: #005e6e;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 /*ENCABEZADO PRINCIPAL*/
@@ -197,6 +194,19 @@ main{
     border-radius: 7px;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
     justify-content: center;
+}
+
+.tituloBloque{
+    color: var(--text-grey);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.resultadoBloque{
+    color: #005e6e;
+    font-size: 1.1rem;
+    margin-top: .2rem;
+    font-weight: bold;
 }
 
 .card-body{
@@ -399,9 +409,43 @@ thead{
     display: inline-block;
 }
 
+.imgConvocatoriaDetalle{
+    width: 450px;
+    height: 300px;
+}
+
+.subtitulosInfo{
+    font-weight: bold;
+}
+
+.pnlTabla-eportafolios{
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: none;
+}
+
 .imagenDeConvocatoriaEnTabla{
     width: 60px;
     height: 60px;
+}
+
+.detalleNombreConvocatoria{
+    width: 450px;
+    border: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #005e6e;
+    outline: none;
+}
+
+.infoDetalleConvEdit{
+    border: 0;
+    outline: none;
+}
+
+.textAreaDetalleDescripcionConv{
+    width: 450px;
+    height: 200px;
 }
 
 .filasDeDatosTablaConvocatorias:nth-child(even){
@@ -425,163 +469,6 @@ thead{
     padding-left: 20px;
 }
 
-/*ESTILOS POPUPS*/
-.modal_container{
-    display: flex;
-    background-color:rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    pointer-events: none;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-}
-
-.modalConvocatoria{
-    background: #fff;
-    width: 1100px;
-    height: 700px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    overflow-y: scroll;   
-}
-
-.pnlTabla-eportafolios{
-    height: 200px;
-    width: 690px;
-    overflow-y: scroll;
-    margin-left: 150px;
-}
-
-.tablaDeEportafoliosPostuladosConv{
-    align-content: center;
-    margin-top: 10px;
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-    background-color: white;    
-}
-
-.imgConvocatoriaDetalle{
-    width: 950px;
-    height: 300px;
-
-}
-
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
-    background-color: #f5f5f5;
-    color: #005e6e;
-    cursor: not-allowed;
-}
-
-.form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
-    opacity: 1;
-}
-
-.form-control, .form-control:focus {
-    background-color: #fff;
-    box-shadow: none;
-}
-
-.form-control {
-    border: 1px solid #e3e3e3;
-    border-radius: 4px;
-    color: #565656;
-    padding: 8px 12px;
-    height: 40px;
-}
-
-.form-control, .input-group-addon, .navbar, .navbar .alert, .tagsinput {
-    transition: all .3s linear;
-}
-
-.form-control {
-    display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 0.25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-.show{
-    pointer-events: auto;
-    opacity: 1;
-}
-
-.camposFormulario{
-    font-size: 12px;
-    font-weight: 400;
-    color: #9a9a9a;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-}
-
-.modal{
-    background: #fff;
-    width: 600px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.modal p{
-    opacity: 0.7;
-    font-size: 14px;
-    text-align: left;
-}
-
-.columnaImgInsignia{
-    padding-right: 10px;
-}
-
-.formulario-registroCompetencia{
-    text-align: left;
-}
-
-.btn {
-    padding: 8px 20px;
-    border-radius: 4px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-
-.subtitulosInfo{
-    font-weight: bold;
-}
-
-.btn-info.btn-fill {
-    color: #fff;
-    background-color: #1dc7ea;
-    opacity: 1;
-    filter: alpha(opacity=100);
-    margin-left: 140px;
-}
-
-.btn.btn-fill, .btn.btn-fill.active, .btn.btn-fill:active, .btn.btn-fill:focus, .btn.btn-fill:hover, .open>.btn.btn-fill.dropdown-toggle {
-    color: #fff;
-    /*background-color: #005e6e;*/
-}
-
-
 /*--------------------------ADMINISTRADOR DE EPORTAFOLIOS*--------------------------*/
 .tablaDeEportafolios{
     margin-left: 50px;
@@ -595,7 +482,6 @@ thead{
 .filasDeDatosTablaEportafolios:nth-child(even){
     background-color: #ddd;
 }
-
 
 
 .panel-graficoPerf{

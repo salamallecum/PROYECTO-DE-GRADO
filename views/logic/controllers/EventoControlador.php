@@ -245,7 +245,7 @@ class EventoControlador{
     }
 
     //Funcion que permite actualizar la imagen de un evento
-    public function actualizarImagenEvento($idEventoEdit, $rutanvaImg, $nombrenvaImg, $archnvoImg, $nomEvento){
+    public function actualizarImagenEvento($idEventoEdit, $rutanvaImg, $nombrenvaImg, $archivoImg, $nomEvento){
 
         //Consultamos si tiene imagen  almacenada en el servidor
         $nombreImagen = (string) $this->consultarNombreImagenEvento($idEventoEdit);
@@ -253,16 +253,30 @@ class EventoControlador{
         //Validamos que el evento tenga un nombre de enunciado
         if($nombreImagen != null){
             $this->eliminarEnunciado($nombreImagen);
-            $this->subirEnunciadoEvento($rutanvaImg, $nombrenvaImg, $archnvoImg, $nomEvento);
+            $this->subirEnunciadoEvento($rutanvaImg, $nombrenvaImg, $archivoImg, $nomEvento);
         }
     }
 
-    public function pasarId($idEv){
-        $this->idEventoSeleccionado = $idEv;
-    }
+    //Funcion que elimina de base de datos el nombre de una imagen de un evento
+    public function limpiarNombreImagenEvento($nombreImgEvento){
 
-    public function retornarIdEventoSeleccionado(){
-        return $this->idEventoSeleccionado;
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_evento SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgEvento'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    } 
+
+    //Funcion que elimina de base de datos el nombre de un enunciado de un evento
+    public function limpiarNombreEnunciadoEvento($nombreEnunEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_evento SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunEvento'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 }
 

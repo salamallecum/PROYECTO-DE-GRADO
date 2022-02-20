@@ -1,36 +1,8 @@
-<!--IMPORTANTE-->
-<!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
-<!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
 <?php
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/CompetenciaControlador.php";
-    
-
-    //Capturamos la variable id de la competencia general y el id de la competencia específica
-    if(isset($_GET['idCompGen'])){
-        $idCompetenciaGeneral = $_GET['IdCompGen'];
-
-        if($idCompetenciaGeneral > 0){
-        
-            $objCompetencia = new CompetenciaControlador();
-    
-            if($objCompetencia->eliminarCompetenciaGeneral($idCompetenciaGeneral) == 1){}
-        }
-    }
-
-    if(isset($_GET['idCompEsp'])){
-        $idCompetenciaEspecifica = $_GET['IdCompEsp'];
-
-        if($idCompetenciaEspecifica > 0){
-        
-            $objCompetencia = new CompetenciaControlador();
-    
-            if($objCompetencia->eliminarCompetenciaEspecifica($idCompetenciaEspecifica) == 1){}
-        }
-    }
         
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -38,15 +10,20 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Pandora</title>
-        <link rel="shortcut icon" href="assets/images/favicon.png">        
+        <link rel="shortcut icon" href="assets/images/favicon.png"> 
         
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+                        
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
-        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
-
+       
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpCompetencias.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
+        
     </head>
 
     <body>
@@ -56,51 +33,51 @@
             <div class="sidebar-header">
                 <h3 class="brand">
                     <span> <img src="assets/images/ico_pandMenuPrincComite.PNG"></span>
-                    <span>PANDORA</span>
+                    <span id="tituloPagPrincipal">PANDORA</span>
                 </h3>
-                <label for="sidebar-toggle" class="ti-menu-alt"></label>
+                <label for="sidebar-toggle"><i class="bi bi-menu-app"></i></label>
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+                <ul class="menuComite">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Comite.php">
-                            <span><i class="ti-dashboard" title="Dashboard"></i></span>
+                            <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./RegistroDeProfesores_Comite.php">
-                            <span class="ti-user" title="Profesores"></span>
+                            <span title="Profesores"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PROFESORES</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeMaterias_Comite.php">
-                            <span class="ti-clipboard" title="Materias"></span>
+                            <span title="Materias"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">MATERIAS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeCompetencias_Comite.php">
-                            <span class="ti-archive" title="Competencias"></span>
+                            <span title="Competencias"><i class="bi bi-archive"></i></span>
                             <span class="items_menu">COMP.PROGRAMA</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeEventos_Comite.php?Id=0">
-                            <span class="ti-flag" title="Eventos"></span>
+                            <span title="Eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">EVENTOS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Comite.php">
-                            <span class="ti-hand-point-up" title="Convocatorias"></span>
+                            <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
                     </li>
@@ -125,14 +102,13 @@
             </header>
 
             <main>
-                <div class="card-header">
-                    <a id="openModal" class="btn_agregarCompetencia" title="Nueva Competencia">Nueva competencia</a>                   
+                <div class="card-header"> 
+                    <button type="button" class="btn_agregarCompetencia" data-bs-toggle="modal" data-bs-target="#modalSeleccionarCompACrear" title="Nueva Competencia">Nueva competencia</button>              
                 </div>
 
                 <div class="main-tableEventos">
                     <br>
                     <h3 class="titulo_seccion">Competencias generales existentes </h3>
-                    <br>
                     <br>
 
                     <div class="contentTablaCompetencias">
@@ -190,25 +166,19 @@
 
                                         <td class="datoTabla"><div class="compEsp-edicion">
                                             <div class="col-botonesEdicion">
-                                                <input type="text" name="idCompGeneral" value="<?php echo $key['id_comp_gral'] ?>">
-                                            </div>
-                                        
-                                            <div class="col-botonesEdicion">
-                                                <a name="openModa5" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                                <a class="btnEditarCompGeneral" data-id="<?php echo $key['id_comp_gral'];?>" data-bs-toggle="modal" data-bs-target="#modalEditarCompetenciaGeneral" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                             </div>
             
                                             <div class="col-botonesEdicion">
-                                               <a href="?IdCompGen=<?php echo $key['id_comp_gral'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                               <a class="btnEliminarCompGeneral" data-id="<?php echo $key['id_comp_gral'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarCompetenciaGeneral" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
                                             </div>
                                         </div></td>
                                     </tr>
                             
                             <?php
                                 }
-                            ?>
-                            
-                            
-                                
+                            ?>                          
+                                   
                             </tbody>   
     
                         </table>  
@@ -218,7 +188,7 @@
                     <br>
                     <h3 class="titulo_seccion">Competencias específicas existentes </h3>
                     <br>
-                    <br>
+                    
 
                     <div class="contentTablaCompetencias">
     
@@ -256,7 +226,7 @@
                                             $nombreBadgePlataCompEsp = $key['nombre_badgeplata'];
                                             $nombreBadgeBronceCompEsp = $key['nombre_badgebronce'];
 
-                                            if($nombreBadgeOroCompEsp != null && $nombreBadgePlataCompEsp != null && $nombreBadgeBronceCompEsp != null){
+                                            if($nombreBadgeOroCompEsp != null || $nombreBadgePlataCompEsp != null || $nombreBadgeBronceCompEsp != null){
 
                                             ?>
 
@@ -274,15 +244,11 @@
                                         
                                         <td class="datoTabla"><div class="compEsp-edicion">
                                             <div class="col-botonesEdicion">
-                                                <input type="text" name="idCompEspecifica" value="<?php echo $key['id_comp_esp'] ?>">
-                                            </div>
-
-                                            <div class="col-botonesEdicion">
-                                                <a name="openModal6" href="" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
+                                                <a class="btnEditarCompEspecifica" data-id="<?php echo $key['id_comp_esp'];?>" data-bs-toggle="modal" data-bs-target="#modalEditarCompetenciaEspecifica" title="Editar"><img src="assets/images/btn_editar.PNG"></a>
                                             </div>
             
                                             <div class="col-botonesEdicion">
-                                                <a href="?IdCompEsp=<?php echo $key['id_comp_esp'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                                <a class="btnEliminarCompEspecifica" data-id="<?php echo $key['id_comp_esp'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarCompetenciaEspecifica" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
                                             </div>
                                         </div></td>
                                     </tr>
@@ -290,9 +256,7 @@
                             <?php
                                 }
                             ?>
-                            
-                            
-                                
+                             
                             </tbody>   
     
                         </table>   
@@ -350,368 +314,629 @@
 
             
                     <!--ESTRUCTURA DEL POPUP PARA ELEGIR EL TIPO DE COMPETENCIA A CREAR-->
-                    <div id="modal_container" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nueva competencia</h3>
-                            <br>
-                            <a id="openModal1" class="btn_agregarCompetencia" title="Competencia general">Competencia general</a>
-                            <a id="openModal2" class="btn_agregarCompetencia" title="Competencia específica">Competencia específica</a>
-                            <br>
-                            <br>
-                            <a id="btn_cancelar" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
+                    <div class="modal fade" id="modalSeleccionarCompACrear" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nueva competencia</h3>
                         </div>
+                        <div class="modal-body">
+                            
+                            <br>
+                            <button type="button" class="btn_agregarCompetencia" data-bs-toggle="modal" data-bs-target="#modalRegistroCompGeneral" title="Competencia general">Competencia general</button>
+                            <button type="button" class="btn_agregarCompetencia" data-bs-toggle="modal" data-bs-target="#modalRegistroCompEspecifica" title="Competencia específica">Competencia específica</button>
+                            <br>
+                            <br>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                        </div>
+                        </div>
+                    </div>
                     </div>
 
 
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE COMPETENCIAS GENERALES-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nueva Competencia general</h3>
-                            <br>
-                            
-                            <div class="formulario-registroCompetencia">
-                                <form id="formularioDeRegistroDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
-                                    <table>
-                                        <tr>
-                                            <td class="column-form-codigoCompetenciaGeneral">
-                                                <label class="camposFormulario">Código</label>
-                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales" required="true">
-                                                    <option value="seleccione">Seleccione</option>
-                                                    <option value="A">A</option>
-                                                    <option value="B">B</option>
-                                                    <option value="C">C</option>
-                                                    <option value="D">D</option>
-                                                    <option value="E">E</option>
-                                                    <option value="F">F</option>
-                                                    <option value="G">G</option>
-                                                    <option value="H">H</option>
-                                                    <option value="I">I</option>
-                                                    <option value="J">J</option>
-                                                    <option value="K">K</option>
-                                                    <option value="L">L</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="Ñ">Ñ</option>
-                                                    <option value="O">O</option>
-                                                    <option value="P">P</option>
-                                                    <option value="Q">Q</option>
-                                                    <option value="R">R</option>
-                                                    <option value="S">S</option>
-                                                    <option value="T">T</option>
-                                                    <option value="U">U</option>
-                                                    <option value="V">V</option>
-                                                    <option value="W">W</option>
-                                                    <option value="X">X</option>
-                                                    <option value="Y">Y</option>
-                                                    <option value="Z">Z</option>
-                                                </select>
-                                            </td>
-    
-                                            <td class="column-form-rolCompGeneral">
-                                                <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora" required="true">
-                                                    <option value="seleccione">Seleccione</option>
-                                                    <option value="noble">Noble lider</option>
-                                                    <option value="virtuoso">Virtuoso tecnológico</option>
-                                                    <option value="maestro">Maestro de los procesos</option>
-                                                    <option value="explorador">Explorador</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                        
-                                    <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" placeholder="" type="text" class="form-control" required="true">
-                                    <br>  
-      
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
-                                    <br>
+                    <div class="modal fade" id="modalRegistroCompGeneral" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nueva competencia general</h3>
+                        </div>
+                        <div class="modal-body">
 
-                                    <br>
+                            <form id="formularioDeRegistroDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+                                <table>
+                                    <tr>
+                                        <td class="column-form-codigoCompetenciaGeneral">
+                                            <label class="camposFormulario">Código</label>
+                                            <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGenerales" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="F">F</option>
+                                                <option value="G">G</option>
+                                                <option value="H">H</option>
+                                                <option value="I">I</option>
+                                                <option value="J">J</option>
+                                                <option value="K">K</option>
+                                                <option value="L">L</option>
+                                                <option value="M">M</option>
+                                                <option value="N">N</option>
+                                                <option value="Ñ">Ñ</option>
+                                                <option value="O">O</option>
+                                                <option value="P">P</option>
+                                                <option value="Q">Q</option>
+                                                <option value="R">R</option>
+                                                <option value="S">S</option>
+                                                <option value="T">T</option>
+                                                <option value="U">U</option>
+                                                <option value="V">V</option>
+                                                <option value="W">W</option>
+                                                <option value="X">X</option>
+                                                <option value="Y">Y</option>
+                                                <option value="Z">Z</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="column-form-rolCompGeneral">
+                                            <label class="camposFormulario">Rol al que contribuye</label><br>
+                                            <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandora" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="noble">Noble lider</option>
+                                                <option value="virtuoso">Virtuoso tecnológico</option>
+                                                <option value="maestro">Maestro de los procesos</option>
+                                                <option value="explorador">Explorador</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                    
+                                <label class="camposFormulario">Descripción</label><br>
+                                <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneral" maxlength="200" placeholder="" type="text" class="form-control" required="true">
+                                <br>  
     
-                                    <button type="submit" name="guardarCompetenciaGeneral" id="btn_guardarCompGeneral"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>                                    
-                                    <a id="btn_cancelar1" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatCompetencia.php") ?>
-                            </div>
+                                <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
+                                <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneral" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control" required="true">
+                                <br>
+
+                                <br>
+
+                                <button type="submit" name="guardarCompetenciaGeneral" id="btn_guardarCompGeneral"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>                                    
+                                <button id="btnCancelarRegistroCompGen" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatCompetencia.php") ?>
+
+                        </div>
                         </div>
                     </div>
+                    </div>
+
 
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE COMPETENCIA GENERAL-->
-                    <div id="modal_container5" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Actualizar Competencia general</h3>
-                            <br>
-                            
-                            <div class="formulario-registroTrabDestacado">
-                                <form id="formularioDeActualizacionDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+                    <div class="modal fade" id="modalEditarCompetenciaGeneral" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar competencia general</h3>
+                        </div>
+                        <div class="modal-body">
 
-                                    <input type="text" name="idCompGeneralEdit" value="">
-                                    <table>
-                                        <tr>
-                                            <td class="column-form-codigoCompetenciaGeneral">
-                                                <label class="camposFormulario">Código</label>
-                                                <select class="form-control" id="cmb_codigosCompetenciasGenerales" name="cmbCodigosCompGeneralesEdit" required="true">
-                                                    <option value="seleccione">Seleccione</option>
-                                                    <option value="A">A</option>
-                                                    <option value="B">B</option>
-                                                    <option value="C">C</option>
-                                                    <option value="D">D</option>
-                                                    <option value="E">E</option>
-                                                    <option value="F">F</option>
-                                                    <option value="G">G</option>
-                                                    <option value="H">H</option>
-                                                    <option value="I">I</option>
-                                                    <option value="J">J</option>
-                                                    <option value="K">K</option>
-                                                    <option value="L">L</option>
-                                                    <option value="M">M</option>
-                                                    <option value="N">N</option>
-                                                    <option value="Ñ">Ñ</option>
-                                                    <option value="O">O</option>
-                                                    <option value="P">P</option>
-                                                    <option value="Q">Q</option>
-                                                    <option value="R">R</option>
-                                                    <option value="S">S</option>
-                                                    <option value="T">T</option>
-                                                    <option value="U">U</option>
-                                                    <option value="V">V</option>
-                                                    <option value="W">W</option>
-                                                    <option value="X">X</option>
-                                                    <option value="Y">Y</option>
-                                                    <option value="Z">Z</option>
-                                                </select>
-                                            </td>
-    
-                                            <td class="column-form-rolCompGeneral">
-                                                <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEdit" required="true">
-                                                    <option value="seleccione">Seleccione</option>
-                                                    <option value="noble">Noble lider</option>
-                                                    <option value="virtuoso">Virtuoso tecnológico</option>
-                                                    <option value="maestro">Maestro de los procesos</option>
-                                                    <option value="explorador">Explorador</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                        
-                                    <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaGeneralEdit" placeholder="" type="text" class="form-control" required="true">
-                                    <br>  
-      
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
-                                    <br>
-    
-                                    <table>
-                                        <tr>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td><!--La imagen debe ser de 96 x 96px como máximo -->
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                            <td class="columnaImgInsignia"><label id="lbl_imgInsigniaOroCompGeneral"><img src="assets/images/badge_prueba muestreo.png" alt=""></label></td>
-                                        </tr>
-                                    </table>
-                                    <br>
+                            <form id="formularioDeActualizacionDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
 
-                                    <button type="submit" name="actualizarCompetenciaGeneral" id="btn_guardarCompGeneral"  class="btn_agregarCompetencia" title="Actualizar competencia">Actualizar</button> 
-                                    <a id="btn_cancelar5" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatCompetencia.php") ?>
-                            </div>
+                                <input type="hidden" id="idCompGeneralAEditar" name="id_comp_gral" value="">
+                                <table>
+                                    <tr>
+                                        <td class="column-form-codigoCompetenciaGeneral">
+                                            <label class="camposFormulario">Código</label>
+                                            <select class="form-control" id="cmb_codigoCompGeneralAEditar" name="codigo" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="F">F</option>
+                                                <option value="G">G</option>
+                                                <option value="H">H</option>
+                                                <option value="I">I</option>
+                                                <option value="J">J</option>
+                                                <option value="K">K</option>
+                                                <option value="L">L</option>
+                                                <option value="M">M</option>
+                                                <option value="N">N</option>
+                                                <option value="Ñ">Ñ</option>
+                                                <option value="O">O</option>
+                                                <option value="P">P</option>
+                                                <option value="Q">Q</option>
+                                                <option value="R">R</option>
+                                                <option value="S">S</option>
+                                                <option value="T">T</option>
+                                                <option value="U">U</option>
+                                                <option value="V">V</option>
+                                                <option value="W">W</option>
+                                                <option value="X">X</option>
+                                                <option value="Y">Y</option>
+                                                <option value="Z">Z</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="column-form-rolCompGeneral">
+                                            <label class="camposFormulario">Rol al que contribuye</label><br>
+                                            <select class="form-control" id="cmb_rolAEditar" name="rol" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="Noble lider">Noble lider</option>
+                                                <option value="virtuoso tecnológico">Virtuoso tecnológico</option>
+                                                <option value="Maestro de los procesos">Maestro de los procesos</option>
+                                                <option value="Explorador">Explorador</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                    
+                                <label class="camposFormulario">Descripción</label><br>
+                                <input id="descCompGeneralAEditar" name="nombre_comp_gral" maxlength="200" placeholder="" type="text" class="form-control" required="true">
+                                <br>  
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
+                                <input id="img_insigOroCompGeneralEdit" name="img_insigOroCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
+                                <input id="img_insigPlataCompGeneralEdit" name="img_insigPlataCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
+                                <input id="img_insigBronceCompGeneralEdit" name="img_insigBronceCompGeneralEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                <br>
+                                <br>
+
+                                <button type="submit" id="btn_actualizarCompGeneral" name="actualizarCompetenciaGeneral" class="btn_agregarCompetencia" title="Actualizar competencia">Actualizar</button> 
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatCompetencia.php") ?>
+
+                        </div>
                         </div>
                     </div>
+                    </div>
+
+                    <!-- ESTRUCTURA DEL POPUP PARA LA ELIMINACION DE UNA COMPETENCIA GENERAL -->
+                    <div class="modal fade" id="modalEliminarCompetenciaGeneral" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar competencia general</h3>
+                        </div>
+                        <form id="formularioDeEliminacionDeCompetenciasGenerales" action="logic/capturaDatCompetencia.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="id_comp_gral" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarCompetenciaGeneral" class="btn_agregarCompetencia" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatCompetencia.php") ?>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <!--ESTRUCTURA DEL POPUP PARA EL REGISTRO DE COMPETENCIAS ESPECIFICAS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nueva Competencia específica</h3>
-                            <br>
-                            
-                            <div class="formulario-registroTrabDestacado">
-                                <form id="formularioDeRegistroDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
-                                    <table>
-                                        <tr>
-                                            <td class="column-form-codigoCompetenciaGeneral">
-                                                <label class="camposFormulario">Código</label>
-                                                <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" placeholder="" type="text" class="form-control" required="true">
-                                            </td>
-    
-                                            <td class="column-form-rolCompGeneral">
-                                                <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEsp" required="true">
-                                                    <option value="seleccione" selected>Seleccione</option>
-                                                    <option value="noble">Noble lider</option>
-                                                    <option value="virtuoso">Virtuoso tecnológico</option>
-                                                    <option value="maestro">Maestro de los procesos</option>
-                                                    <option value="explorador">Explorador</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <label class="camposFormulario">Competencia general a la que pertenece</label><br>
-                                    <select class="form-control" id="cmb_rolesPandora" name="cmbCompetenciasGenerales" required="true">
-                                        <option value="seleccione" selected>Seleccione</option>
-
-                                        <?php
-                                            $obj = new CompetenciaControlador();
-                                            $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
-                                            $datos = $obj->mostrarDatosCompetencias($sql);
-
-                                            foreach ($datos as $key){
-                                        ?>
-
-                                                <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
-
-                                        <?php
-                                            }
-                                        ?>
-
-                                    </select>
-                            
-                                    <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaEspecifica" placeholder="" type="text" class="form-control" required="true">
-                                    <br>  
-      
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-                                    <br>
-    
-                                    <button type="submit" name="guardarCompetenciaEspecifica" id="btn_guardarCompEspecifica"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>
-                                    <a id="btn_cancelar2" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatCompetencia.php") ?>
-                            </div>
+                    <div class="modal fade" id="modalRegistroCompEspecifica" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nueva competencia específica</h3>
                         </div>
-                    </div> 
-                    
-                    
+                        <div class="modal-body">
+
+                            <form id="formularioDeRegistroDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+                                <table>
+                                    <tr>
+                                        <td class="column-form-codigoCompetenciaGeneral">
+                                            <label class="camposFormulario">Código</label>
+                                            <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" maxlength="3" placeholder="" type="text" class="form-control" required="true">
+                                        </td>
+
+                                        <td class="column-form-rolCompGeneral">
+                                            <label class="camposFormulario">Rol al que contribuye</label><br>
+                                            <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEsp" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="noble">Noble lider</option>
+                                                <option value="virtuoso">Virtuoso tecnológico</option>
+                                                <option value="maestro">Maestro de los procesos</option>
+                                                <option value="explorador">Explorador</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <label class="camposFormulario">Competencia general a la que pertenece</label><br>
+                                <select class="form-control" id="cmb_rolesPandora" name="cmbCompetenciasGenerales" required="true">
+                                    <option value="seleccione">Seleccione</option>
+
+                                    <?php
+                                        $obj = new CompetenciaControlador();
+                                        $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
+                                        $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                        foreach ($datos as $key){
+                                    ?>
+
+                                            <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
+
+                                    <?php
+                                        }
+                                    ?>
+
+                                </select>
+                        
+                                <label class="camposFormulario">Descripción</label><br>
+                                <input id="txt_descCompGeneral" name="descripcionCompetenciaEspecifica" maxlength="400" placeholder="" type="text" class="form-control" required="true">
+                                <br>  
+    
+                                <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
+                                <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEsp" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
+                                <br>
+                                <br>
+
+                                <button type="submit" name="guardarCompetenciaEspecifica" id="btn_guardarCompEspecifica"  class="btn_agregarCompetencia" title="Guardar">Guardar</button>
+                                <button id="btnCancelarRegistroCompEsp" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatCompetencia.php") ?>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    </div>  
+                                 
+                     
                     <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACIÓN DE COMPETENCIA ESPECÍFICA-->
-                    <div id="modal_container6" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Actualizar Competencia específica</h3>
-                            <br>
-                            
-                            <div class="formulario-registroTrabDestacado">
-                                <form id="formularioDeRegistroDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
-                                    
-                                    <input type="text" name="idCompEspecificaAEdit" value="">
-                                    <table>
-                                        <tr>
-                                            <td class="column-form-codigoCompetenciaGeneral">
-                                                <label class="camposFormulario">Código</label>
-                                                <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecíficEdit" placeholder="" type="text" class="form-control" required="true">
-                                            </td>
-    
-                                            <td class="column-form-rolCompGeneral">
-                                                <label class="camposFormulario">Rol al que contribuye</label><br>
-                                                <select class="form-control" id="cmb_rolesPandora" name="cmbRolesPandoraEspEdit" required="true">
-                                                    <option value="seleccione">Seleccione</option>
-                                                    <option value="noble">Noble lider</option>
-                                                    <option value="virtuoso">Virtuoso tecnológico</option>
-                                                    <option value="maestro">Maestro de los procesos</option>
-                                                    <option value="explorador">Explorador</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <label class="camposFormulario">Competencia general a la que pertenece</label><br>
-                                    <select class="form-control" id="cmb_rolesPandora" name="cmbCompetenciasGeneralesEdit" required="true">
-                                        <option value="seleccione" selected>Seleccione</option>
-
-                                        <?php
-                                            $obj = new CompetenciaControlador();
-                                            $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
-                                            $datos = $obj->mostrarDatosCompetencias($sql);
-
-                                            foreach ($datos as $key){
-                                        ?>
-
-                                                <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
-
-                                        <?php
-                                            }
-                                        ?>
-
-                                    </select>
-                            
-                                    <label class="camposFormulario">Descripción</label><br>
-                                    <input id="txt_descCompGeneral" name="descripcionCompetenciaEspecificaEdit" placeholder="" type="text" class="form-control" required="true">
-                                    <br>  
-      
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
-                                    <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-    
-                                    <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
-                                    <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control" required="true">
-                                    <br>
-                                    <br>
-    
-                                    <button type="submit" name="actualizarCompetenciaEspecifica" id="btn_guardarCompEspecifica"  class="btn_agregarCompetencia" title="Actualizar">Actualizar</button>
-                                    <a id="btn_cancelar6" class="btn_agregarCompetencia" title="Cancelar">Cancelar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatCompetencia.php") ?>
-                            </div>
+                    <div class="modal fade" id="modalEditarCompetenciaEspecifica" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar competencia específica</h3>
                         </div>
-                    </div>      
+                        <div class="modal-body">
+
+                            <form id="formularioDeActualizacionDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST" enctype="multipart/form-data">
+                                    
+                                <input type="hidden" name="id_comp_esp" value="">
+                                <table>
+                                    <tr>
+                                        <td class="column-form-codigoCompetenciaGeneral">
+                                            <label class="camposFormulario">Código</label>
+                                            <input id="txt_codigoCompEspecífic" name="codigo" maxlength="3" placeholder="" type="text" class="form-control" required="true">
+                                        </td>
+
+                                        <td class="column-form-rolCompGeneral">
+                                            <label class="camposFormulario">Rol al que contribuye</label><br>
+                                            <select class="form-control" id="cmb_rolesPandora" name="rol" required="true">
+                                                <option value="seleccione">Seleccione</option>
+                                                <option value="Noble lider">Noble lider</option>
+                                                <option value="Virtuoso tecnologico">Virtuoso tecnológico</option>
+                                                <option value="Maestro de los procesos">Maestro de los procesos</option>
+                                                <option value="Explorador">Explorador</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <label class="camposFormulario">Competencia general a la que pertenece</label><br>
+                                <select class="form-control" id="cmb_rolesPandora" name="id_comp_gral" required="true">
+                                    <option value="seleccione">Seleccione</option>
+
+                                    <?php
+                                        $obj = new CompetenciaControlador();
+                                        $sql = "SELECT id_comp_gral, codigo, nombre_comp_gral FROM tbl_competencia_general";
+                                        $datos = $obj->mostrarDatosCompetencias($sql);
+
+                                        foreach ($datos as $key){
+                                    ?>
+
+                                            <option value="<?php echo $key['id_comp_gral']?>"><?php echo $key['codigo'].'. '?><?php echo $key['nombre_comp_gral']?></option>
+
+                                    <?php
+                                        }
+                                    ?>
+
+                                </select>
+                        
+                                <label class="camposFormulario">Descripción</label><br>
+                                <input id="txt_descCompGeneral" name="nombre_competencia_esp" maxlength="400" placeholder="" type="text" class="form-control">
+                                <br>  
+    
+                                <label class="camposFormulario">Cargue Imagen del Badge de Oro (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaOroCompGeneral" name="img_insigOroCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Plata (formato svg)</label><br>
+                                <input  id="btn_imgInsigniaPlataCompGeneral" name="img_insigPlataCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Cargue Imagen del Badge de Bronce (formato svg)</label><br>
+                                <input id="btn_imgInsigniaBronceCompGeneral" name="img_insigBronceCompEspEdit" accept=".jpeg, .jpg, .png, .svg" type="file" id="foto" class="form-control">
+                                <br>
+                                <br>
+
+                                <button type="submit" name="actualizarCompetenciaEspecifica" class="btn_agregarCompetencia" title="Actualizar">Actualizar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatCompetencia.php") ?>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    </div>   
+                    
+                    <!-- ESTRUCTURA DEL POPUP PARA LA ELIMINACION DE UNA COMPETENCIA ESPECIFICA -->
+                    <div class="modal fade" id="modalEliminarCompetenciaEspecifica" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar competencia específica</h3>
+                        </div>
+                        <form id="formularioDeEliminacionDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="id_comp_esp" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarCompetenciaEspecifica" class="btn_agregarCompetencia" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatCompetencia.php") ?>
+                        </div>
+                    </div>
+                    </div>
+  
             </main>
         </div>
+
+        <!--Script que permite pasar los datos de una competencia general y competencia especifica desde la BD a su ventana modal de edicion correspondiente-->
+        <script type='text/javascript'>
+
+            //Aqui se pasan los datos para el caso de la competencia general
+            $(document).ready(function(){
+                
+                $('.btnEditarCompGeneral').click(function(){
+                    console.log("here")
+                    
+                    var idCompetenciaGralEdit = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idCompetenciaGralEdit: idCompetenciaGralEdit},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeActualizacionDeCompetenciasGenerales';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                      
+                });
+            });
+
+            //Aqui se pasan los datos para el caso de la competencia específica
+            $(document).ready(function(){
+                
+                $('.btnEditarCompEspecifica').click(function(){
+                    console.log("here")
+                    
+                    var idCompetenciaEspEdit = $(this).data('id');
+                    console.log(idCompetenciaEspEdit)
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                             // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idCompetenciaEspEdit: idCompetenciaEspEdit},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        console.log(data);
+                        var formId = '#formularioDeActualizacionDeCompetenciasEspecificas';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                });
+            });
+
+        </script>
+
+        <!--Script que permite pasar los datos de una competencia general y competencia especifica desde la BD a su ventana modal de eliminacion correspondiente-->
+        <script type='text/javascript'>
+
+            //Aqui se pasan los datos para el caso de la competencia general
+            $(document).ready(function(){
+                
+                $('.btnEliminarCompGeneral').click(function(){
+                    console.log("here")
+                    
+                    var idCompetenciaGralElim = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idCompetenciaGralElim: idCompetenciaGralElim},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        console.log(response);
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeEliminacionDeCompetenciasGenerales';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                      
+                });
+            });
+
+            //Aqui se pasan los datos para el caso de la competencia específica
+            $(document).ready(function(){
+                
+                $('.btnEliminarCompEspecifica').click(function(){
+                    console.log("here")
+                    
+                    var idCompetenciaEspElim = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idCompetenciaEspElim: idCompetenciaEspElim},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        console.log(response);
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeEliminacionDeCompetenciasEspecificas';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                      
+                });
+            });
+
+        </script>
+
     </body>
 </html>

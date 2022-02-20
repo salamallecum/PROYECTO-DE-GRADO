@@ -5,6 +5,10 @@
     require_once "model/Evento.php";
     require_once "utils/generadorDeNombres.php";
 
+    //Creamos el objeto controlador que invocará los metodos CRUD
+    $eventoControla = new EventoControlador();
+    $generador = new generadorNombres();
+
     //Capturamos el evento del boton de registro de evento
     if(isset($_POST['guardarEvento'])){
 
@@ -26,9 +30,6 @@
             //Encapsulamos los datos obtenidos en un objeto de tipo Evento
             $nuevoEvento = new Evento(0, $nombreDeEvento, $descripcionEvento, $fechaInicioEvento, $fechaFinEvento, $cmbProfesorEncargado);
 
-            //Creamos el objeto controlador que invocará los metodos CRUD
-            $eventoControla = new EventoControlador();
-
             if($eventoControla->insertarEvento($nuevoEvento) == 1){
                 
                 $imagenDelEvento = $_FILES['imgParaElEvento']['name'];
@@ -38,7 +39,6 @@
                 if(strlen($imagenDelEvento) >= 1){
                     
                     $rutaDeImagen = $_FILES['imgParaElEvento']['tmp_name'];
-                    $generador = new generadorNombres();
                     $nuevoNombreArchivoImagen = $generador->generadorDeNombres().".jpg";
                     $eventoControla->subirImagenEvento($rutaDeImagen, $nuevoNombreArchivoImagen, $imagenDelEvento, $nombreDeEvento);
                     
@@ -48,7 +48,6 @@
                 if(strlen($enunciadoDelEvento) >= 1){
                     
                     $rutaDeEnunciado = $_FILES['archivoInfoDelEvento']['tmp_name'];
-                    $generador = new generadorNombres();
                     $nuevoNombreArchivoEnunciado = $generador->generadorDeNombres().".pdf";
                     $eventoControla->subirEnunciadoEvento($rutaDeEnunciado, $nuevoNombreArchivoEnunciado, $enunciadoDelEvento, $nombreDeEvento);
                 
@@ -78,66 +77,74 @@
     if(isset($_POST['actualizarEvento'])){
 
         //Capturamos los datos de los campos del formulario
+        $idEventoAEditar = trim($_POST['id_evento']);
         $nombreEditDeEvento = trim($_POST['nombre_evento']);
         $descripcionEditEvento = trim($_POST['descripcion_evento']);
-        $fechaEditInicioEvento = date('Y-m-d', strtotime($_POST['fecha_inicio']));
-        $fechaEditFinEvento = date('Y-m-d', strtotime($_POST['fecha_fin']));
-        $cmbEditProfesorEncargado = $_REQUEST['id_usuario'];
+        $fechaEditInicioEvento = trim($_POST['fecha_inicio']);
+        $fechaEditFinEvento = trim($_POST['fecha_fin']);
+        $editProfesorEncargado = trim($_POST['id_usuario']);
   
        //Validamos que los campos no se encuentren vacios
         if(strlen($nombreEditDeEvento) >= 1 && 
         strlen($descripcionEditEvento) >= 1 && 
-        $fechaEditInicioEvento != '1970-01-01' &&
-        $fechaEditFinEvento != '1970-01-01' &&
-        $cmbEditProfesorEncargado != 'seleccione'){ 
+        strlen($fechaEditInicioEvento) >= 1 &&
+        strlen($fechaEditFinEvento) >= 1 &&
+        $editProfesorEncargado != 'seleccione'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo Evento
-            $eventoActualizado = new Evento(0, $nombreEditDeEvento, $descripcionEditEvento, $fechaEditInicioEvento, $fechaEditFinEvento, $cmbEditProfesorEncargado);
-
-            //Creamos el objeto controlador que invocará los metodos CRUD
-            $eventoControla = new EventoControlador();
+            $eventoActualizado = new Evento($idEventoAEditar, $nombreEditDeEvento, $descripcionEditEvento, $fechaEditInicioEvento, $fechaEditFinEvento, $editProfesorEncargado);
 
             if($eventoControla->actualizarEvento($eventoActualizado) == 1){
 
-                
-                $imagenEditDelEvento = $_FILES['imgParaElEvento']['name'];
-                $enunciadoEditDelEvento = $_FILES['archivoInfoDelEvento']['name'];
+                $imagenEditDelEvento = $_FILES['imagenActualizada']['name'];
+                $enunciadoEditDelEvento = $_FILES['enunciadoActualizado']['name'];
 
                 //Verificamos si el usuario ha subido una imagen para el evento
                 if(strlen($imagenEditDelEvento) >= 1){
                     
-                    $rutaDeImagen = $_FILES['imgParaElEvento']['tmp_name'];
+                    $rutaDeImagenEdit = $_FILES['imagenActualizada']['tmp_name'];
 
                     //Consultamos si el evento ya tiene una imagen previa en servidor
-                    $nombreAntiguaImagen = $eventoControla->consultarNombreImagenEvento($nombreEditDeEvento);
+                    $nombreAntiguaImagen = $eventoControla->consultarNombreImagenEvento($idEventoAEditar);
 
-                    //Eliminamoslaimagen previa en servidor
+                    //Eliminamos la imagen previa en servidor
                     if($nombreAntiguaImagen != null){
-                        $eventoControla->eliminarImagen($nombreAntiguaImagen);
-                    }
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $eventoControla->limpiarNombreImagenEvento($nombreAntiguaImagen);
+                       //Eliminamos la imagen previa en servidor del evento
+                       $eventoControla->eliminarImagen($nombreAntiguaImagen);
 
-                    $generador = new generadorNombres();
-                    $nuevoNombreArchivoImagen = $generador->generadorDeNombres().".jpg";
-                    $eventoControla->subirImagenEvento($rutaDeImagen, $nuevoNombreArchivoImagen, $imagenEditDelEvento, $nombreEditDeEvento);
+                       $nuevoNombreArchivoImagenEventoEdit = $generador->generadorDeNombres().".jpg";
+                       $eventoControla->subirImagenEvento($rutaDeImagenEdit, $nuevoNombreArchivoImagenEventoEdit, $imagenEditDelEvento, $nombreEditDeEvento);
+
+                    }
+        
+                    $nuevoNombreArchivoImagenEventoEditado = $generador->generadorDeNombres().".jpg";
+                    $eventoControla->subirImagenEvento($rutaDeImagenEdit, $nuevoNombreArchivoImagenEventoEditado, $imagenEditDelEvento, $nombreEditDeEvento);
                     
                 }
                 
                 //Verificamos si el usuario ha subido un archivo con el enunciado del evento
                 if(strlen($enunciadoEditDelEvento) >= 1){
                     
-                    $rutaDeEnunciado = $_FILES['archivoInfoDelEvento']['tmp_name'];
+                    $rutaDeEnunciadoEdit = $_FILES['enunciadoActualizado']['tmp_name'];
 
                     //Consultamos si el evento ya tiene un enunciado previo en servidor
-                    $nombreAntiguoEnunciado = $eventoControla->consultarNombreEnunciadoEvento($nombreEditDeEvento);
+                    $nombreAntiguoEnunciado = $eventoControla->consultarNombreEnunciadoEvento($idEventoAEditar);
 
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciado != null){
-                        $eventoControla->eliminarEnunciado($nombreAntiguoEnunciado);
-                    }
+                        //Eliminamos el nombre del enunciado en base de datos 
+                       $eventoControla->limpiarNombreEnunciadoEvento($nombreAntiguoEnunciado);
+                       //Eliminamos enunciado previo en servidor del evento
+                       $eventoControla->eliminarEnunciado($nombreAntiguoEnunciado);
 
-                    $generador = new generadorNombres();
-                    $nuevoNombreArchivoEnunciado = $generador->generadorDeNombres().".pdf";
-                    $eventoControla->subirEnunciadoEvento($rutaDeEnunciado, $nuevoNombreArchivoEnunciado, $enunciadoEditDelEvento, $nombreEditDeEvento);
+                       $nuevoNombreArchivoEnunciadoEventoEdit = $generador->generadorDeNombres().".pdf";
+                       $eventoControla->subirEnunciadoEvento($rutaDeEnunciadoEdit, $nuevoNombreArchivoEnunciadoEventoEdit, $enunciadoEditDelEvento, $nombreEditDeEvento);
+                    }
+                    
+                    $nuevoNombreArchivoEnunciadoEventoEditado = $generador->generadorDeNombres().".pdf";
+                    $eventoControla->subirEnunciadoEvento($rutaDeEnunciadoEdit, $nuevoNombreArchivoEnunciadoEventoEditado, $enunciadoEditDelEvento, $nombreEditDeEvento);
                 
                 }
                 
@@ -159,6 +166,15 @@
             <?php
             header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    //Capturamos el evento del boton de eliminacion de eventos
+    if(isset($_POST['eliminarEvento'])){
+
+        $idEventoAEliminar = trim($_POST['id_evento']);
+        $eventoControla->eliminarEvento($idEventoAEliminar);
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+
     }
     
 ?>

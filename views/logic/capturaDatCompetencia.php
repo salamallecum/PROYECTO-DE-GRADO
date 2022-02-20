@@ -11,11 +11,7 @@
     $listadoCompGenerales = array();
     $generador = new generadorNombres();
 
-    //Capturamos el evento del boton de analisis de competencias generales
-    if(isset($_POST['analizarCompetenciasGenerales'])){
-
-    }
-
+    
     //Capturamos el evento del boton de registro de una nueva competencia general
     if(isset($_POST['guardarCompetenciaGeneral'])){
 
@@ -96,9 +92,9 @@
 
             //Capturamos los datos del combobox de roles pandora
             if($cmbRolCompGeneral == 'noble'){
-                $rolSeleccionado = "Noble Lider";
+                $rolSeleccionado = "Noble lider";
             }else if($cmbRolCompGeneral == 'virtuoso'){
-                $rolSeleccionado = "Virtuoso Tecnológico";
+                $rolSeleccionado = "Virtuoso tecnologico";
             }else if($cmbRolCompGeneral == 'maestro'){
                 $rolSeleccionado = "Maestro de los procesos";
             }else if($cmbRolCompGeneral == 'explorador'){
@@ -165,9 +161,9 @@
        
             //Capturamos los datos del combobox de roles pandora
             if($cmbRolCompEspecifica == 'noble'){
-                $rolSeleccionadoEsp = "Noble Lider";
+                $rolSeleccionadoEsp = "Noble lider";
             }else if($cmbRolCompEspecifica == 'virtuoso'){
-                $rolSeleccionadoEsp = "Virtuoso Tecnológico";
+                $rolSeleccionadoEsp = "Virtuoso tecnologico";
             }else if($cmbRolCompEspecifica == 'maestro'){
                 $rolSeleccionadoEsp = "Maestro de los procesos";
             }else if($cmbRolCompEspecifica == 'explorador'){
@@ -214,91 +210,23 @@
     if(isset($_POST['actualizarCompetenciaGeneral'])){
 
         //Capturamos los datos de los campos del formulario
-        $idCompGeneralEditada = trim($_POST['idCompGeneralEdit']);
-        $cmbEditCodigoCompGeneral = $_REQUEST['cmbCodigosCompGeneralesEdit'];
-        $cmbEditRolCompGeneral = $_REQUEST['cmbRolesPandoraEdit'];
-        $nombreEditCompGeneral = trim($_POST['descripcionCompetenciaGeneralEdit']);
+        $idCompGeneralEditada = trim($_POST['id_comp_gral']);
+        $editCodigoCompGeneral = trim($_POST['codigo']);
+        $editRolCompGeneral = trim($_POST['rol']);
+        $nombreEditCompGeneral = trim($_POST['nombre_comp_gral']);
         $cargaEditBadgeOro = $_FILES['img_insigOroCompGeneralEdit']['name'];
         $cargaEditBadgePlata = $_FILES['img_insigPlataCompGeneralEdit']['name'];
         $cargaEditBadgeBronce = $_FILES['img_insigBronceCompGeneralEdit']['name'];
-        $codigoEditSeleccionado = "";
-        $rolEditSeleccionado = "";
+        
  
         //Validamos que los campos no se encuentren vacios
-        if($cmbEditCodigoCompGeneral != 'seleccione' && 
-         $cmbEditRolCompGeneral != 'seleccione' && 
+        if($editCodigoCompGeneral != 'seleccione' && 
+         $editRolCompGeneral != 'seleccione' && 
          strlen($nombreEditCompGeneral) >= 1){
         
-        //Capturamos los datos del combobox de codigos de competencias generales
-        if($cmbEditCodigoCompGeneral == 'A'){
-            $codigoEditSeleccionado = "A";
-        }else if($cmbEditCodigoCompGeneral == 'B'){
-            $codigoEditSeleccionado = "B";
-        }else if($cmbEditCodigoCompGeneral == 'C'){
-            $codigoEditSeleccionado = "C";
-        }else if($cmbEditCodigoCompGeneral == 'D'){
-            $codigoEditSeleccionado = "D";
-        }else if($cmbEditCodigoCompGeneral == 'E'){
-            $codigoEditSeleccionado = "E";
-        }else if($cmbEditCodigoCompGeneral == 'F'){
-            $codigoEditSeleccionado = "F";
-        }else if($cmbEditCodigoCompGeneral == 'G'){
-            $codigoEditSeleccionado = "G";
-        }else if($cmbEditCodigoCompGeneral == 'H'){
-            $codigoEditSeleccionado = "H";
-        }else if($cmbEditCodigoCompGeneral == 'I'){
-            $codigoEditSeleccionado = "I";
-        }else if($cmbEditCodigoCompGeneral == 'J'){
-            $codigoEditSeleccionado = "J";
-        }else if($cmbEditCodigoCompGeneral == 'K'){
-            $codigoEditSeleccionado = "K";
-        }else if($cmbEditCodigoCompGeneral == 'L'){
-            $codigoEditSeleccionado = "L";
-        }else if($cmbEditCodigoCompGeneral == 'M'){
-            $codigoEditSeleccionado = "M";
-        }else if($cmbEditCodigoCompGeneral == 'N'){
-            $codigoEditSeleccionado = "N";
-        }else if($cmbEditCodigoCompGeneral == 'Ñ'){
-            $codigoEditSeleccionado = "Ñ";
-        }else if($cmbEditCodigoCompGeneral == 'O'){
-            $codigoEditSeleccionado = "O";
-        }else if($cmbEditCodigoCompGeneral == 'P'){
-            $codigoEditSeleccionado = "P";
-        }else if($cmbEditCodigoCompGeneral == 'Q'){
-            $codigoEditSeleccionado = "Q";
-        }else if($cmbEditCodigoCompGeneral == 'R'){
-            $codigoEditSeleccionado = "R";
-        }else if($cmbEditCodigoCompGeneral == 'S'){
-            $codigoEditSeleccionado = "S";
-        }else if($cmbEditCodigoCompGeneral == 'T'){
-            $codigoEditSeleccionado = "T";
-        }else if($cmbEditCodigoCompGeneral == 'U'){
-            $codigoEditSeleccionado = "U";
-        }else if($cmbEditCodigoCompGeneral == 'V'){
-            $codigoEditSeleccionado = "V";
-        }else if($cmbEditCodigoCompGeneral == 'W'){
-            $codigoEditSeleccionado = "W";
-        }else if($cmbEditCodigoCompGeneral == 'X'){
-            $codigoEditSeleccionado = "X";
-        }else if($cmbEditCodigoCompGeneral == 'Y'){
-            $codigoEditSeleccionado = "Y";
-        }else if($cmbEditCodigoCompGeneral == 'Z'){
-            $codigoEditSeleccionado = "Z";
-        }
-
-        //Capturamos los datos del combobox de roles pandora
-        if($cmbEditRolCompGeneral == 'noble'){
-            $rolEditSeleccionado = "Noble Lider";
-        }else if($cmbEditRolCompGeneral == 'virtuoso'){
-            $rolEditSeleccionado = "Virtuoso Tecnológico";
-        }else if($cmbEditRolCompGeneral == 'maestro'){
-            $rolEditSeleccionado = "Maestro de los procesos";
-        }else if($cmbEditRolCompGeneral == 'explorador'){
-            $rolEditSeleccionado = "Explorador";
-        }
-
+     
         //Encapsulamos los datos obtenidos en un objeto de tipo Competencia general
-        $compGeneralAEditar = new CompetenciaGeneral($idCompGeneralEditada, $codigoEditSeleccionado, $nombreEditCompGeneral, $rolEditSeleccionado);
+        $compGeneralAEditar = new CompetenciaGeneral($idCompGeneralEditada, $editCodigoCompGeneral, $nombreEditCompGeneral, $editRolCompGeneral);
 
         if($competenciaControla->actualizarCompetenciaGeneral($compGeneralAEditar) == 1){
 
@@ -310,14 +238,20 @@
                 //Consultamos si el evento ya tiene una imagen previa en servidor
                 $nombreAntiguoBadgeOro = $competenciaControla->consultarNombreBadgeOroCompGeneral($idCompGeneralEditada);
 
-                //Eliminamos la imagen previa en servidor del badge oro
-                if($nombreAntiguoBadgeOro != null){
-                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeOro);
-                }
-
-                $nuevoNombreBadgeOroEditado = $generador->generadorDeNombres().".jpg";
-                $competenciaControla->subirBadgeOroCompGeneral($rutaDeBadgeOroEdit, $nuevoNombreBadgeOroEditado, $cargaEditBadgeOro, $nombreEditCompGeneral);
                 
+                if($nombreAntiguoBadgeOro != null){
+                    //Eliminamos el nombre de la imagen en base de datos 
+                    $competenciaControla->limpiarNombreBadgeOroCompGeneral($nombreAntiguoBadgeOro);
+                    //Eliminamos la imagen previa en servidor del badge oro
+                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeOro);
+
+                    $nuevoNombreBadgeOroEdit = $generador->generadorDeNombres().".jpg";
+                    $competenciaControla->subirBadgeOroCompGeneral($rutaDeBadgeOroEdit, $nuevoNombreBadgeOroEdit, $cargaEditBadgeOro, $nombreEditCompGeneral);
+
+                }else{
+                    $nuevoNombreBadgeOroEditado = $generador->generadorDeNombres().".jpg";
+                    $competenciaControla->subirBadgeOroCompGeneral($rutaDeBadgeOroEdit, $nuevoNombreBadgeOroEditado, $cargaEditBadgeOro, $nombreEditCompGeneral);
+                }  
             }
 
             //Verificamos si el usuario ha subido una imagen del badge plata para la competencia general
@@ -330,12 +264,18 @@
 
                 //Eliminamos la imagen previa en servidor del badge plata
                 if($nombreAntiguoBadgePlata != null){
-                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlata);
-                }
+                   //Eliminamos el nombre de la imagen en base de datos 
+                   $competenciaControla->limpiarNombreBadgePlataCompGeneral($nombreAntiguoBadgePlata);
+                   //Eliminamos la imagen previa en servidor del badge 
+                   $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlata);
 
-                $nuevoNombreBadgePlataEditado = $generador->generadorDeNombres().".jpg";
-                $competenciaControla->subirBadgePlataCompGeneral($rutaDeBadgePlataEdit, $nuevoNombreBadgePlataEditado, $cargaEditBadgePlata, $nombreEditCompGeneral);
-                
+                   $nuevoNombreBadgePlataEdit = $generador->generadorDeNombres().".jpg";
+                   $competenciaControla->subirBadgePlataCompGeneral($rutaDeBadgePlataEdit, $nuevoNombreBadgePlataEdit, $cargaEditBadgePlata, $nombreEditCompGeneral);
+
+                }else{
+                    $nuevoNombreBadgePlataEditado = $generador->generadorDeNombres().".jpg";
+                    $competenciaControla->subirBadgePlataCompGeneral($rutaDeBadgePlataEdit, $nuevoNombreBadgePlataEditado, $cargaEditBadgePlata, $nombreEditCompGeneral);
+                }  
             }
 
             //Verificamos si el usuario ha subido una imagen del badge bronce para la competencia general
@@ -348,14 +288,19 @@
 
                 //Eliminamos la imagen previa en servidor del badge bronce
                 if($nombreAntiguoBadgePlata != null){
-                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronce);
-                }
+                    //Eliminamos el nombre de la imagen en base de datos 
+                   $competenciaControla->limpiarNombreBadgeBronceCompGeneral($nombreAntiguoBadgeBronce);
+                   //Eliminamos la imagen previa en servidor del badge 
+                   $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronce);
 
-                $nuevoNombreBadgeBronceEditado = $generador->generadorDeNombres().".jpg";
-                $competenciaControla->subirBadgeBronceCompGeneral($rutaDeBadgeBronceEdit, $nuevoNombreBadgeBronceEditado, $cargaEditBadgeBronce, $nombreEditCompGeneral);
-                
-            }
-      
+                   $nuevoNombreBadgeBronceEdit = $generador->generadorDeNombres().".jpg";
+                   $competenciaControla->subirBadgeBronceCompGeneral($rutaDeBadgeBronceEdit, $nuevoNombreBadgeBronceEdit, $cargaEditBadgeBronce, $nombreEditCompGeneral);
+
+                }else{
+                    $nuevoNombreBadgeBronceEditado = $generador->generadorDeNombres().".jpg";
+                    $competenciaControla->subirBadgeBronceCompGeneral($rutaDeBadgeBronceEdit, $nuevoNombreBadgeBronceEditado, $cargaEditBadgeBronce, $nombreEditCompGeneral);
+                }   
+            }      
                             
             ?>
             <h3 class="indicadorSatisfactorio">* Competencia general actualizada satisfactoriamente</h3>  
@@ -373,44 +318,33 @@
             ?>
             <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>
             <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
     }
 
-    //Capturamos el evento del boton de registro de una nueva competencia especifica
+    //Capturamos el evento del boton de actualizacion de una competencia especifica
     if(isset($_POST['actualizarCompetenciaEspecifica'])){
 
         //Capturamos los datos de los campos del formulario
-        $idCompEspecificaAEditar = trim($_POST['idCompEspecificaAEdit']);
-        $codigoCompEspecificaEdit = trim($_POST['txtCodigoCompEspecíficEdit']);
-        $cmbRolCompEspecificaEdit = $_REQUEST['cmbRolesPandoraEspEdit'];
-        $nombreCompEspecificaEdit = trim($_POST['descripcionCompetenciaEspecificaEdit']);
-        $cmbCompGeneralEscogidaEdit = $_REQUEST['cmbCompetenciasGeneralesEdit'];
+        $idCompEspecificaAEditar = trim($_POST['id_comp_esp']);
+        $codigoCompEspecificaEdit = trim($_POST['codigo']);
+        $rolCompEspecificaEdit =  trim($_POST['rol']);
+        $nombreCompEspecificaEdit = trim($_POST['nombre_competencia_esp']);
+        $compGeneralEscogidaEdit =  trim($_POST['id_comp_gral']);
         $cargaBadgeOroEspEdit = $_FILES['img_insigOroCompEspEdit']['name'];
         $cargaBadgePlataEspEdit = $_FILES['img_insigPlataCompEspEdit']['name'];
         $cargaBadgeBronceEspEdit = $_FILES['img_insigBronceCompEspEdit']['name'];
-        $rolSeleccionadoEspEdit = "";
 
        //Validamos que los campos no se encuentren vacios
        if(strlen($codigoCompEspecificaEdit) >= 1 && 
-        $cmbRolCompEspecificaEdit != 'seleccione' && 
+        $rolCompEspecificaEdit != 'seleccione' && 
         strlen($nombreCompEspecificaEdit) >= 1 && 
-        $cmbCompGeneralEscogidaEdit != 'seleccione'){
+        $compGeneralEscogidaEdit != 'seleccione'){
        
-            //Capturamos los datos del combobox de roles pandora
-            if($cmbRolCompEspecificaEdit == 'noble'){
-                $rolSeleccionadoEspEdit = "Noble Lider";
-            }else if($cmbRolCompEspecificaEdit == 'virtuoso'){
-                $rolSeleccionadoEspEdit = "Virtuoso Tecnológico";
-            }else if($cmbRolCompEspecificaEdit == 'maestro'){
-                $rolSeleccionadoEspEdit = "Maestro de los procesos";
-            }else if($cmbRolCompEspecificaEdit == 'explorador'){
-                $rolSeleccionadoEspEdit = "Explorador";
-            }
-
             //Encapsulamos los datos obtenidos en un objeto de tipo Competencia especifica
-            $compEspecificaAEditar = new CompetenciaEspecifica($idCompEspecificaAEditar, $cmbCompGeneralEscogidaEdit, $codigoCompEspecificaEdit, $nombreCompEspecificaEdit, $rolSeleccionadoEspEdit);
+            $compEspecificaAEditar = new CompetenciaEspecifica($idCompEspecificaAEditar, $compGeneralEscogidaEdit, $codigoCompEspecificaEdit, $nombreCompEspecificaEdit, $rolCompEspecificaEdit);
 
-            if($competenciaControla->insertarCompEspecifica($compEspecificaAEditar) == 1){
+            if($competenciaControla->actualizarCompetenciaEspecifica($compEspecificaAEditar) == 1){
 
                 //Verificamos si el usuario ha subido una imagen del badge oro para la competencia especifica
                 if(strlen($cargaBadgeOroEspEdit) >= 1){
@@ -422,7 +356,13 @@
 
                     //Eliminamos la imagen previa en servidor del badge oro
                     if($nombreAntiguoBadgeOroCompEsp != null){
+                       //Eliminamos el nombre de la imagen en base de datos 
+                        $competenciaControla->limpiarNombreBadgeOroCompEspecifica($nombreAntiguoBadgeOroCompEsp);
+                        //Eliminamos la imagen previa en servidor del badge oro
                         $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeOroCompEsp);
+
+                        $nuevoNombreBadgeOroCompEspEdit = $generador->generadorDeNombres().".jpg";
+                        $competenciaControla->subirBadgeOroCompEspecifica($rutaDeBadgeOroCompEspEdit, $nuevoNombreBadgeOroCompEspEdit, $cargaBadgeOroEspEdit, $nombreCompEspecificaEdit);
                     }
 
                     $nuevoNombreBadgeOroCompEspEditado = $generador->generadorDeNombres().".jpg";
@@ -440,7 +380,13 @@
 
                     //Eliminamos la imagen previa en servidor del badge plata
                     if($nombreAntiguoBadgePlataCompEsp != null){
-                        $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlataCompEsp);
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $competenciaControla->limpiarNombreBadgePlataCompEspecifica($nombreAntiguoBadgePlataCompEsp);
+                       //Eliminamos la imagen previa en servidor del badge plata
+                       $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlataCompEsp);
+
+                       $nuevoNombreBadgePlataCompEspEdit = $generador->generadorDeNombres().".jpg";
+                       $competenciaControla->subirBadgePlataCompEspecifica($rutaDeBadgePlataCompEspEdit, $nuevoNombreBadgePlataCompEspEdit, $cargaBadgePlataEspEdit, $nombreCompEspecificaEdit);
                     }
 
                     $nuevoNombreBadgePlataCompEspEditado = $generador->generadorDeNombres().".jpg";
@@ -457,8 +403,14 @@
                     $nombreAntiguoBadgeBronceCompEsp = $competenciaControla->consultarNombreBadgeBronceCompEspecifica($idCompEspecificaAEditar);
 
                     //Eliminamos la imagen previa en servidor del badge bronce
-                    if($nombreAntiguoBadgePlataCompEsp != null){
-                        $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronceCompEsp);
+                    if($nombreAntiguoBadgeBronceCompEsp != null){
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $competenciaControla->limpiarNombreBadgeBronceCompEspecifica($nombreAntiguoBadgeBronceCompEsp);
+                       //Eliminamos la imagen previa en servidor del badge bronce
+                       $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronceCompEsp);
+
+                       $nuevoNombreBadgeBronceCompEspEdit = $generador->generadorDeNombres().".jpg";
+                       $competenciaControla->subirBadgePlataCompEspecifica($rutaDeBadgeBronceCompEspEdit, $nuevoNombreBadgeBronceCompEspEdit, $cargaBadgeBronceEspEdit, $nombreCompEspecificaEdit);
                     }
 
                     $nuevoNombreBadgeBronceCompEspEditado = $generador->generadorDeNombres().".jpg";
@@ -482,7 +434,25 @@
             ?>
             <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>
             <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    //Capturamos el evento del boton de eliminacion de una competencia general
+    if(isset($_POST['eliminarCompetenciaGeneral'])){
+
+        $idCompetenciaGeneralAEliminar = trim($_POST['id_comp_gral']);
+        $competenciaControla->eliminarCompetenciaGeneral($idCompetenciaGeneralAEliminar);
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+    }
+
+    //Capturamos el evento del boton de eliminacion de una competencia especifica
+    if(isset($_POST['eliminarCompetenciaEspecifica'])){
+
+        $idCompetenciaEspecificaAEliminar = trim($_POST['id_comp_esp']);
+        $competenciaControla->eliminarCompetenciaEspecifica($idCompetenciaEspecificaAEliminar);
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
     }
     
 ?>

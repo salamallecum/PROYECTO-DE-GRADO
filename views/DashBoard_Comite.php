@@ -13,15 +13,19 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Pandora</title>
-        <link rel="shortcut icon" href="assets/images/favicon.png">        
+        <link rel="shortcut icon" href="assets/images/favicon.png">       
+        
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
-        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
-
-         <!--Links scripts de eventos js-->
-         <script src="assets/js/dom/dashboard_comite.js" type="module"></script>
-         <script src="assets/js/jquery-3.6.0.js"></script>
+        
+        <!--Links scripts de eventos js-->
+        <script src="assets/js/dom/dashboard_comite.js" type="module"></script>
+        <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
     <body>
@@ -31,51 +35,51 @@
             <div class="sidebar-header">
                 <h3 class="brand">
                     <span> <img src="assets/images/ico_pandMenuPrincComite.PNG"></span>
-                    <span>PANDORA</span>
+                    <span id="tituloPagPrincipal">PANDORA</span>
                 </h3>
-                <label for="sidebar-toggle" class="ti-menu-alt"></label>
+                <label for="sidebar-toggle"><i class="bi bi-menu-app"></i></label>
             </div>
 
             <div class="sidebar-menu">
-                <ul>
+            <ul class="menuComite">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Comite.php">
-                            <span><i class="ti-dashboard" title="Dashboard"></i></span>
+                            <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./RegistroDeProfesores_Comite.php">
-                            <span class="ti-user" title="Profesores"></span>
+                            <span title="Profesores"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PROFESORES</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeMaterias_Comite.php">
-                            <span class="ti-clipboard" title="Materias"></span>
+                            <span title="Materias"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">MATERIAS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeCompetencias_Comite.php">
-                            <span class="ti-archive" title="Competencias"></span>
+                            <span title="Competencias"><i class="bi bi-archive"></i></span>
                             <span class="items_menu">COMP.PROGRAMA</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeEventos_Comite.php?Id=0">
-                            <span class="ti-flag" title="Eventos"></span>
+                            <span title="Eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">EVENTOS</span>
                         </a>
                     </li>
 
                     <li>
                         <a class="link_menu" href="./AdministradorDeConvocatoriasExternas_Comite.php">
-                            <span class="ti-hand-point-up" title="Convocatorias"></span>
+                            <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
                     </li>
@@ -93,7 +97,7 @@
                         <span>Dashboard</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -105,8 +109,8 @@
                         <div class="card-body">
                             <span><img src="assets/images/ico_evento.png"></span>
                             <div>
-                                <h5>Eventos</h5>
-                                <h4><?php echo $objEventoControla->contadorDeEventos();?></h4>
+                                <h5 class="tituloBloque">Eventos</h5>
+                                <h4 class="resultadoBloque"><?php echo $objEventoControla->contadorDeEventos();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -119,8 +123,8 @@
                         <div class="card-body">
                             <span><img src="assets/images/ico_convocatoria.png"></span>
                             <div>
-                                <h5>Convocatorias</h5>
-                                <h4><?php echo $objConvocatoriaControla->contadorDeConvocatorias();?></h4>
+                                <h5 class="tituloBloque">Convocatorias</h5>
+                                <h4 class="resultadoBloque"><?php echo $objConvocatoriaControla->contadorDeConvocatorias();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -133,8 +137,8 @@
                         <div class="card-body">
                             <span><img src="assets/images/ico_insignias.PNG" alt=""></span>
                             <div>
-                                <h5>Insignias otorgadas</h5>
-                                <h4>--P</h4>
+                                <h5 class="tituloBloque">Insignias otorgadas</h5>
+                                <h4 class="resultadoBloque">--P</h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -146,8 +150,8 @@
                             <div class="card-body">
                                 <span><img src="assets/images/comite_profile.PNG"></span>
                                 <div>
-                                    <h5>Perfil</h5>
-                                    <h4>Comité</h4>
+                                    <h5 class="tituloBloque">Perfil</h5>
+                                    <h4 class="resultadoBloque">Comité</h4>
                                 </div>
                             </div>
                         </div>

@@ -1,19 +1,23 @@
 
-//Archivo que define las operaciones basicas de los popup en la app Pandora (Abrir y cerrar)
+//Archivo que define las operaciones basicas de los formularios del Administrador de eventos
+
+//Asignamos la funcion de reseteo al boton cancelar del formulario de registro de eventos
+const botonCancelFormRegEvento = document.getElementById('btnCancelarRegistroEvento');
+
+botonCancelFormRegEvento.addEventListener('click', (e) => {
+    e.preventDefault();
+    limpiarFormularioRegistroDeEventos();
+},false);
 
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE EVENTOS
 function limpiarFormularioRegistroDeEventos(){
     
-    const formRegistro = document.getElementById('formularioDeRegistroDeEventos');
+    const formRegistro = document.getElementById('formularioDeRegEventos');
     formRegistro.reset();
 }
 
-//FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE ACTUALIZACION DE EVENTOS
-function limpiarFormularioEdicionDeEventos(){
-    
-    const formRegistro = document.getElementById('formularioDeActualizacionDeEventos');
-    formRegistro.reset();
-}
+
+
 
 
 

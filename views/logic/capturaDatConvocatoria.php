@@ -82,23 +82,23 @@
     if(isset($_POST['actualizarConvocatoriaComite'])){
 
         //Capturamos los datos de los campos del formulario
-        $idDeConvComiteActualizar = trim($_POST['idConvocatoriaaActualizar']);
-        $nombreDeConvocatoriaComiteEdit = trim($_POST['nombreConvocatoriaEdit']);
-        $descripcionConvocatoriaComiteEdit = trim($_POST['descripcionConvocatoriaEdit']);
-        $fechaInicioConvComiteEdit = date('Y-m-d', strtotime($_POST['dateFechaInicioConvocatoriaEdit']));
-        $fechaFinConvComiteEdit = date('Y-m-d', strtotime($_POST['dateFechaFinConvocatoriaEdit']));
-        $cmbProfesorEncargadoEdit = $_REQUEST['cmbProfesorEdit'];
+        $idDeConvComiteActualizar = trim($_POST['Id']);
+        $nombreDeConvocatoriaComiteEdit = trim($_POST['nombre_convocatoria']);
+        $descripcionConvocatoriaComiteEdit = trim($_POST['descripcion_convocatoria']);
+        $fechaInicioConvComiteEdit = trim($_POST['fecha_inicio']);
+        $fechaFinConvComiteEdit = trim($_POST['fecha_fin']);
+        $profesorEncargadoEdit = trim($_POST['id_usuario']);;
         
 
        //Validamos que los campos no se encuentren vacios
         if(strlen($nombreDeConvocatoriaComiteEdit) >= 1 && 
         strlen($descripcionConvocatoriaComiteEdit) >= 1 && 
-        $fechaInicioConvComiteEdit != '1970-01-01' &&
-        $fechaFinConvComiteEdit != '1970-01-01' &&
-        $cmbProfesorEncargadoEdit != 'seleccione'){ 
+        strlen($fechaInicioConvComiteEdit) >= 1 &&
+        strlen($fechaFinConvComiteEdit) >= 1 &&
+        $profesorEncargadoEdit != 'seleccione'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo ConvocatoriaComite
-            $convocatoriaComiteActualizar = new ConvocatoriaComite($idDeConvComiteActualizar, $nombreDeConvocatoriaComiteEdit, $descripcionConvocatoriaComiteEdit, $fechaInicioConvComiteEdit, $fechaFinConvComiteEdit, $cmbProfesorEncargadoEdit);
+            $convocatoriaComiteActualizar = new ConvocatoriaComite($idDeConvComiteActualizar, $nombreDeConvocatoriaComiteEdit, $descripcionConvocatoriaComiteEdit, $fechaInicioConvComiteEdit, $fechaFinConvComiteEdit, $profesorEncargadoEdit);
             
             if($convocatoriaControla->actualizarConvocatoriaComite($convocatoriaComiteActualizar) == 1){
                 
@@ -113,9 +113,15 @@
                     //Consultamos si la convocatoria ya tiene una imagen previa en servidor
                     $nombreAntiguaImagenConvComEdit = $convocatoriaControla->consultarNombreImagenConvocatoriaComite($idDeConvComiteActualizar);
 
-                    //Eliminamoslaimagen previa en servidor
+                    //Eliminamos la imagen previa en servidor
                     if($nombreAntiguaImagenConvComEdit != null){
-                        $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvComEdit);
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $convocatoriaControla->limpiarNombreImagenConvocatoriaComite($nombreAntiguaImagenConvComEdit);
+                       //Eliminamos la imagen previa en servidor de la convocatoria
+                       $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvComEdit);
+
+                       $nuevoNombreArchivoImagenConvComAEditar = $generador->generadorDeNombres().".jpg";
+                       $convocatoriaControla->subirImagenConvocatoriaComite($rutaDeImagenConvComEdit, $nuevoNombreArchivoImagenConvComAEditar, $imagenEditDeConvComite, $nombreDeConvocatoriaComiteEdit);
                     }
 
                     $nuevoNombreArchivoImagenConvComEdit = $generador->generadorDeNombres().".jpg";
@@ -133,7 +139,13 @@
 
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciadoConvComEdit != null){
-                        $convocatoriaontrola->eliminarEnunciado($nombreAntiguoEnunciadoConvComEdit);
+                       //Eliminamos el nombre del enunciado en base de datos 
+                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaComite($nombreAntiguaImagenConvComEdit);
+                       //Eliminamos el enunciado previo en servidor de la convocatoria
+                       $convocatoriaControla->eliminarEnunciado($nombreAntiguaImagenConvComEdit);
+
+                       $nuevoNombreArchivoEnunciadoConvComAEditar = $generador->generadorDeNombres().".pdf";
+                       $convocatoriaControla->subirEnunciadoConvocatoriaComite($rutaDeEnunciadoConvComEdit, $nuevoNombreArchivoEnunciadoConvComAEditar, $enunciadoEditDeConvComite, $nombreDeConvocatoriaComiteEdit);
                     }
 
                     $nuevoNombreArchivoEnunciadoConvComEdit = $generador->generadorDeNombres().".pdf";
@@ -306,5 +318,23 @@
             header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
     } 
+
+    //Capturamos el evento del boton de eliminacion de convocatorias comite
+    if(isset($_POST['eliminarConvComite'])){
+
+        $idConvocatoriaComiteAEliminar = trim($_POST['Id']);
+        $convocatoriaControla->eliminarConvocatoriaComite($idConvocatoriaComiteAEliminar);
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+    }
+
+    //Capturamos el evento del boton de eliminacion de convocatorias practicas
+    if(isset($_POST['eliminarConvPracticas'])){
+
+        $idConvocatoriaPracticasAEliminar = trim($_POST['Id']);
+        $convocatoriaControla->eliminarConvocatoriaPracticas($idConvocatoriaPracticasAEliminar);
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+    }
 
 ?>

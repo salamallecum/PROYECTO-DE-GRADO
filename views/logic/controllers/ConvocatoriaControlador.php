@@ -265,10 +265,12 @@ class ConvocatoriaControlador{
         $nombreImagenConvCom = (string) $this->consultarNombreImagenConvocatoriaComite($idConv);
         $nombreEnunciadoConvCom = (string) $this->consultarNombreEnunciadoConvocatoriaComite($idConv);
 
-        //Validamos que el evento tenga un nombre de imagen o un nombre de enunciado
+        //Validamos que la convocatoria tenga un nombre de imagen y un nombre de enunciado
         if($nombreImagenConvCom != null){
             $this->eliminarImagen($nombreImagenConvCom);
-        }else if($nombreEnunciadoConvCom != null){
+        }
+        
+        if($nombreEnunciadoConvCom != null){
             $this->eliminarEnunciado($nombreEnunciadoConvCom);
         }
                
@@ -461,6 +463,50 @@ class ConvocatoriaControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
+    }
+
+    //Funcion que elimina de base de datos el nombre de una imagen de una convocatoria comite
+    public function limpiarNombreImagenConvocatoriaComite($nombreImgConCom){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriacomite SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConCom'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    } 
+
+    //Funcion que elimina de base de datos el nombre de un enunciado de una convocatoria comite
+    public function limpiarNombreEnunciadoConvocatoriaComite($nombreEnunConCom){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriacomite SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunConCom'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que elimina de base de datos el nombre de una imagen de una convocatoria practicas
+    public function limpiarNombreImagenConvocatoriaPracticas($nombreImgConPrac){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConPrac'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    } 
+
+    //Funcion que elimina de base de datos el nombre de un enunciado de una convocatoria practicas
+    public function limpiarNombreEnunciadoConvocatoriaPracticas($nombreEnunConPrac){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunConPrac'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 }
 ?>

@@ -1,26 +1,9 @@
-<!--IMPORTANTE-->
-<!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
-<!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
 
 <?php
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/EventoControlador.php";
     require_once "logic/controllers/ProfesorControlador.php";
     require_once "logic/controllers/CompetenciaControlador.php";
-
-    //Capturamos la variable id de la competencia general y el id de la competencia específica
-    if(isset($_GET['Id'])){
-
-        //Capturamos la variable id del evento para la eliminacion de un evento
-        $idEvento = $_GET['Id'];
-
-        if($idEvento > 0){
-            
-            $objEvento = new EventoControlador();
-
-            if($objEvento->eliminarEvento($idEvento) == 1){}
-        }
-    }   
 
 ?>
 
@@ -39,7 +22,6 @@
        
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
-        <!--<link rel="stylesheet" href="https:/cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">-->
 
         <!--Links scripts de eventos js-->
         <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
@@ -125,7 +107,6 @@
             <!--Codigo de la ventana principal-->
             <main>
                 <div class="card-header">
-                    <!--<a id="openModal" class="btn_agregarEvento" title="Nuevo Evento">Nuevo evento</a>-->
                     <button type="button" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalRegistrarEvento" title="Nuevo Evento">Nuevo evento</button>
                 </div>
 
@@ -190,7 +171,7 @@
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                            <a href="?Id=<?php echo $key['id_evento'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                            <a class="btnEliminarEvento" data-id="<?php echo $key['id_evento'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarEvento" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
                                         </div>
                                     
                                     </div></td> 
@@ -212,7 +193,7 @@
                         </div>
                         <div class="modal-body">
                             
-                            <form id="formularioDeRegistroDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
+                            <form id="formularioDeRegEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
                                     
                                 <label class="camposFormulario">Nombre del evento</label><br>
                                 <input name="nombreEvento" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
@@ -264,7 +245,7 @@
                                 <br>
                                 <br>    
                                 <button type="submit" name="guardarEvento" id="btn_guardarEvento"  class="btn_agregarEvento" title="Guardar">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                <button id="btnCancelarRegistroEvento" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
                                   
                             </form>
                             <!--Incluimos el archivo con la logica del formulario-->
@@ -287,7 +268,7 @@
                             
                             <form id="formularioDeActualizacionDeEventos" action="logic/capturaDatEvento.php" method="POST" enctype="multipart/form-data">
 
-                                <input type="hidden" id="idEvento" name="id_evento" value="">
+                                <input type="hidden" name="id_evento" value="">
 
                                 <label class="camposFormulario">Nombre del evento</label><br>
                                 <input id="txt_nombreEvento" name="nombre_evento" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
@@ -345,6 +326,29 @@
                             <!--Incluimos el archivo con la logica del formulario-->
                             <?php include("logic/capturaDatEvento.php") ?>
                         </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- ESTRUCTURA DEL POPUP PARA LA ELIMINACION DE UN EVENTO -->
+                    <div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar evento</h3>
+                        </div>
+                        <form id="formularioDeEliminacionDeEventos" action="logic/capturaDatEvento.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="id_evento" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarEvento" class="btn_agregarEvento" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatEvento.php") ?>
                         </div>
                     </div>
                     </div>
@@ -511,6 +515,52 @@
                         
                 });
             });
+            </script>
+
+            <!--Script que permite pasar los datos de un evento desde la BD a su ventana modal de eliminacion correspondiente-->
+            <script type='text/javascript'>
+
+                //Aqui se pasan los datos para el caso de la competencia general
+                $(document).ready(function(){
+                    
+                    $('.btnEliminarEvento').click(function(){
+                        console.log("here")
+                        
+                        var idEventoElim = $(this).data('id');
+                    
+                        function getFormInfo() {
+                            return new Promise((resolve, reject) => {
+                                // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {idEventoElim: idEventoElim},
+                                    success: function(response){
+                                        resolve(response)
+                                    },
+                                    error: function (error) {
+                                    reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        getFormInfo()
+                        .then((response) => {
+                            console.log(response);
+                            var data = $.parseJSON(response)[0];
+                            var formId = '#formularioDeEliminacionDeEventos';
+                            $.each(data, function(key, value){
+                                console.log(key);
+                                console.log(value);
+                                $('[name='+key+']', formId).val(value);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                        
+                    });
+                });
             </script>
 
     </body>
