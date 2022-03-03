@@ -589,7 +589,7 @@
                                     <tr>
                                         <td class="column-form-codigoCompetenciaGeneral">
                                             <label class="camposFormulario">Código</label>
-                                            <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" maxlength="4" placeholder="" type="text" class="form-control" required="true">
+                                            <input id="txt_codigoCompEspecífic" name="txtCodigoCompEspecífic" maxlength="3" placeholder="" type="text" class="form-control" required="true">
                                         </td>
 
                                         <td class="column-form-rolCompGeneral">
@@ -670,7 +670,7 @@
                                     <tr>
                                         <td class="column-form-codigoCompetenciaGeneral">
                                             <label class="camposFormulario">Código</label>
-                                            <input id="txt_codigoCompEspecífic" name="codigo" maxlength="4" placeholder="" type="text" class="form-control" required="true">
+                                            <input id="txt_codigoCompEspecífic" name="codigo" maxlength="3" placeholder="" type="text" class="form-control" required="true">
                                         </td>
 
                                         <td class="column-form-rolCompGeneral">

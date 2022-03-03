@@ -368,7 +368,7 @@
                             
                             <form id="formularioDeAsignacionDeCompetencias">
 
-                                <input type="text" id="txt_idEventoAsigCompetencias" name="id_evento" value="">
+                                <input type="hidden" id="txt_idEventoAsigCompetencias" name="id_evento" value="">
 
                                 <table>
                                     <tr>
@@ -417,7 +417,7 @@
 
                                 <div class="contenedorEvaluacionCompetencias">
 
-                                    <form id="formularioDeEvaluacionDeCompetenciasEspecificas" action="logic/utils/ajaxfile.php" method="POST">
+                                    <form id="formularioDeEvaluacionDeCompetenciasEspecificas">
                                     
                                         <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="id_evento" value="">
                                         <br> 
@@ -434,8 +434,6 @@
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
 
                                     </form>
-                                    <!--Incluimos el archivo con la logica del formulario-->
-                                    <?php include("logic/utils/ajaxfile.php") ?>
                                 </div> 
                             </div>
                             </div>
@@ -544,7 +542,7 @@
                         //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
                         
                         var idEventoAsigCompetencias = $(this).data('id');
-                        console.log(idEventoAsigCompetencias);
+                        console.log('here');
                     
                         function getFormInfo() {
                             return new Promise((resolve, reject) => {
@@ -694,6 +692,7 @@
                         }
                         getFormInfo()
                         .then((response) => {
+                            console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeAsignacionDeCompetencias';
                             $.each(data, function(key, value){

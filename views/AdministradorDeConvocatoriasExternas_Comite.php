@@ -359,7 +359,11 @@
                     </div>
                                      
                     
+<<<<<<< HEAD
                     <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS GENERALES QUE CONTRIBUYEN A UNA CONVOCATORIA-->
+=======
+                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
+>>>>>>> parent of f238eae (AAM - Backend: Se adelanta modulo de asignacion de competencias a los eventos, solo falta la evaluacion del nivel de contribucion de las comeptencias especificas al desafio o evento)
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
@@ -422,6 +426,7 @@
 
                                 <div class="contenedorEvaluacionCompetencias">
 
+<<<<<<< HEAD
                                     <form id="formularioDeEvaluacionDeCompetenciasEspecificas" action="logic/utils/ajaxfile.php" method="POST">
                                     
                                         <input type="text" id="txt_idEventoEvaluacionCompetencias" name="Id" value="">
@@ -443,6 +448,57 @@
                                     <?php include("logic/utils/ajaxfile.php") ?>
                                 </div> 
                             </div>
+=======
+                                <form class="">
+                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
+                                    <div class="contenedorCompeEspeciasAEvaluar">
+                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
+                                        
+                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                        <table>
+                                            <tr>
+                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
+                                                <label for="Baja">Baja</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
+                                                <label for="Media">Media</label></td></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
+                                                <label for="Alta">Alta</label></td></td>
+
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
+                                                <label for="No aplica">No aplica</label></td></td>
+
+                                            </tr>
+                                        </table>
+
+                                        <br>
+
+                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
+
+                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                        <table>
+                                            <tr>
+                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
+                                                <label for="Baja">Baja</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
+                                                <label for="Media">Media</label></td></td>
+                                                
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
+                                                <label for="Alta">Alta</label></td></td>
+
+                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
+                                                <label for="No aplica">No aplica</label></td></td>
+
+                                            </tr>
+                                        </table>
+                                    </div>  
+                                    <br>
+                                    <button type="submit" name="guardarAsignacionComp" class="btn_agregarEvento" title="Guardar">Guardar</button> 
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                </form>
+>>>>>>> parent of f238eae (AAM - Backend: Se adelanta modulo de asignacion de competencias a los eventos, solo falta la evaluacion del nivel de contribucion de las comeptencias especificas al desafio o evento)
                             </div>
                         </div>
                     </div>

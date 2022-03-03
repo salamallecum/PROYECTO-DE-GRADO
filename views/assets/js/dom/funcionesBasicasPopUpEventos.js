@@ -9,13 +9,14 @@ botonCancelFormRegEvento.addEventListener('click', (e) => {
     limpiarFormularioRegistroDeEventos();
 },false);
 
-//Asignamos la funcion de reseteo al boton cancelar del formulario de Asignacion de competencias generales
-const botonCancelFormAsigComp = document.getElementById('btn_cancelarAsigCompetencias');
+//Asignamos la funcion de reseteo al boton cancelar del formulario asignacion de competencias generales
+const botonCancelAsigComp = document.getElementById('btn_cancelarAsigCompetencias');
 
-botonCancelFormAsigComp.addEventListener('click', (e) => {
+botonCancelAsigComp.addEventListener('click', (e) => {
     e.preventDefault();
-    limpiarFormularioAsignacionDeCompetenciasGenerales();
+    limpiarFormularioAsignacionDeCompetencias();
 },false);
+
 
 
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE EVENTOS
@@ -26,12 +27,11 @@ function limpiarFormularioRegistroDeEventos(){
 }
 
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE ASIGNACION DE COMPETENCIAS GENERALES
-function limpiarFormularioAsignacionDeCompetenciasGenerales(){
+function limpiarFormularioAsignacionDeCompetencias(){
     
-    const formAsigComp = document.getElementById('formularioDeAsignacionDeCompetencias');
-    formAsigComp.reset();
+    const formAsig = document.getElementById('formularioDeAsignacionDeCompetencias');
+    formAsig.reset();
 }
-
 
 
 

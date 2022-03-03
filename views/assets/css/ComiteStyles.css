@@ -750,6 +750,7 @@ table .column-form-regMaterias select{
     background-color: white
 }
 
+
 /*--------------------------ADMINISTRADOR DE EVENTOS*--------------------------*/
 .btn_agregarEvento{
     color: #fff;
@@ -828,15 +829,15 @@ thead{
 
 .contenedorCompeEspeciasAEvaluar{
     overflow-y: scroll;
-    height: 300px;
+    height: 200px;
 }
 
 .enunciadoCompEspecifica{
+    resize: none;
     width: 400px;
     height: 100px;
-    resize: none;
-
 }
+
 
 /*--------------------------ADMINISTRADOR DE CONVOCATORIAS EXTERNAS*--------------------------*/
 .btn_agregarConvocatoria{

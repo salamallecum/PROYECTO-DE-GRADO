@@ -143,7 +143,7 @@
                             <form method="post">
 
                                 <label class="camposFormulario">Materia</label>
-                                <input name="materia" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control">
+                                <input name="materia" maxlength="30" type="text" class="form-control">
 
                                 <table>
                                     <tr>
@@ -175,8 +175,7 @@
                                             <select class="form-control" name="cmbTipoMaterias">
                                                 <option value="selecione">Seleccione</option>
                                                 <option value="obligatoria">Obligatoria</option>
-                                                <option value="electivaProf">Electiva Profesional</option>
-                                                <option value="electivaLib">Electiva Libre</option>
+                                                <option value="electiva">Electiva</option>
                                             </select>
                                         </td>
 
@@ -187,11 +186,6 @@
                                                 <option value="diurna">Diurna</option>
                                                 <option value="nocturna">Nocturna</option>
                                             </select>
-                                        </td>
-
-                                        <td>
-                                            <label class="camposFormulario">Grupo</label><br>
-                                            <input name="grupo" maxlength="5" type="text" class="form-control">
                                         </td>
                                     </tr>
 
@@ -275,13 +269,5 @@
                </div>
             </main>
         </div>
-
-        <script>
-            function cambiarAMayuscula(elemento){
-                let texto = elemento.value;
-                elemento.value = texto.toUpperCase();
-            }            
-
-        </script>
     </body>
 </html>

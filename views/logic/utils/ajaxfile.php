@@ -25,24 +25,6 @@ if(isset($_POST['idEventoEdit'])){
     exit;
 }
 
-//Capturamos el evento del id de una convocatoria practicas a editar
-if(isset($_POST['idConvPracticasEdit'])){
-
-    //Aqui traemos los datos de las convocatorias de practicas para su edición-----------------------------------
-    $idConvPracticasEdit = $_POST['idConvPracticasEdit'];
-
-    $sql = "select * from tbl_convocatoriapracticas where Id=".$idConvPracticasEdit;
-    $resultConvPracticas = mysqli_query($conexion,$sql);
-
-    $emparrayConvPracticas = array();
-    while($row =mysqli_fetch_assoc($resultConvPracticas))
-    {
-        $emparrayConvPracticas[] = $row;
-    }
-    echo json_encode($emparrayConvPracticas);
-    exit;
-}
-
 //Capturamos el evento del id de una convocatoria comite a editar
 if(isset($_POST['idConvComiteEdit'])){
 
@@ -61,24 +43,6 @@ if(isset($_POST['idConvComiteEdit'])){
     exit;      
 }
 
-//Capturamos el evento del id de un evento a eliminar
-if(isset($_POST['idEventoElim'])){
-
-    //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
-    $idEventoElim = $_POST['idEventoElim'];
-
-    $sql = "select id_evento, nombre_evento from tbl_evento where id_evento=".$idEventoElim;
-    $resultCompElimEvento = mysqli_query($conexion,$sql);
-
-    $emparrayElimEvento = array();
-    while($row =mysqli_fetch_assoc($resultCompElimEvento))
-    {
-        $emparrayElimEvento[] = $row;
-    }
-    echo json_encode($emparrayElimEvento);
-    exit;
-}
-
 //Capturamos el evento del id de una convocatoria comite a eliminar
 if(isset($_POST['idConvocatoriaComiteElim'])){
 
@@ -94,6 +58,42 @@ if(isset($_POST['idConvocatoriaComiteElim'])){
         $emparrayElimConvComite[] = $row;
     }
     echo json_encode($emparrayElimConvComite);
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria practicas a editar
+if(isset($_POST['idConvPracticasEdit'])){
+
+    //Aqui traemos los datos de las convocatorias de practicas para su edición-----------------------------------
+    $idConvPracticasEdit = $_POST['idConvPracticasEdit'];
+
+    $sql = "select * from tbl_convocatoriapracticas where Id=".$idConvPracticasEdit;
+    $resultConvPracticas = mysqli_query($conexion,$sql);
+
+    $emparrayConvPracticas = array();
+    while($row =mysqli_fetch_assoc($resultConvPracticas))
+    {
+        $emparrayConvPracticas[] = $row;
+    }
+    echo json_encode($emparrayConvPracticas);
+    exit;
+}
+
+//Capturamos el evento del id de un evento a eliminar
+if(isset($_POST['idEventoElim'])){
+
+    //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
+    $idEventoElim = $_POST['idEventoElim'];
+
+    $sql = "select id_evento, nombre_evento from tbl_evento where id_evento=".$idEventoElim;
+    $resultCompElimEvento = mysqli_query($conexion,$sql);
+
+    $emparrayElimEvento = array();
+    while($row =mysqli_fetch_assoc($resultCompElimEvento))
+    {
+        $emparrayElimEvento[] = $row;
+    }
+    echo json_encode($emparrayElimEvento);
     exit;
 }
 
@@ -115,24 +115,6 @@ if(isset($_POST['idCompetenciaGralEdit'])){
     exit;
 }
 
-//Capturamos el evento del id de una competencia especifica a editar
-if(isset($_POST['idCompetenciaEspEdit'])){
-
-    //Aqui traemos los datos de las competencias especificas para su edición-----------------------------------
-    $idCompetenciaEspEdit = $_POST['idCompetenciaEspEdit'];
-
-    $sql = "select * from tbl_competencia_especifica where id_comp_esp=".$idCompetenciaEspEdit;
-    $resultCompEspecifica = mysqli_query($conexion,$sql);
-
-    $emparrayCompEspecificas = array();
-    while($row =mysqli_fetch_assoc($resultCompEspecifica))
-    {
-        $emparrayCompEspecificas[] = $row;
-    }
-    echo json_encode($emparrayCompEspecificas);
-    exit;
-}
-
 //Capturamos el evento del id de una competencia general a eliminar
 if(isset($_POST['idCompetenciaGralElim'])){
 
@@ -151,10 +133,10 @@ if(isset($_POST['idCompetenciaGralElim'])){
     exit;
 }
 
-//Capturamos el evento del id de una competencia especifica a eliminar
+//Capturamos el evento del id de una competencia general a eliminar
 if(isset($_POST['idCompetenciaEspElim'])){
 
-    //Aqui traemos los datos de las competencias especificas para su eliminacion-----------------------------------
+    //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
     $idCompetenciaEspElim = $_POST['idCompetenciaEspElim'];
 
     $sql = "select id_comp_esp, codigo from tbl_competencia_especifica where id_comp_esp=".$idCompetenciaEspElim;
@@ -219,23 +201,37 @@ if(isset($_POST['idConvocatoriaAsigCompetencias'])){
 if(isset($_POST['idEventoParaConsultarCompGeneralesRegistradasConAnterioridad'])){
 
     //Aqui traemos el id del evento para verificar si tiene unaasignacion de competencias previa-----------------------------------
-    $idEventoParaRevisionAsigCompetenciasPrevia = $_POST['idEventoParaConsultarCompGeneralesRegistradasConAnterioridad'];
+    $idEventoParaConsultarCompGeneralesRegistradasConAnterioridad = $_POST['idEventoParaConsultarCompGeneralesRegistradasConAnterioridad'];
 
-    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idEventoParaRevisionAsigCompetenciasPrevia. " and tipo_actividad='EVENTO'";
-    $resultCompPrevAsigEvento = mysqli_query($conexion,$sql);
+    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idEventoParaConsultarCompGeneralesRegistradasConAnterioridad." and tipo_actividad = 'EVENTO'";
+    $resultCompGeneralesPrevRegistradasEvento = mysqli_query($conexion,$sql);
 
-    $arrayCompPreviasAsignadasAEvento = array();
-
-    while($row =mysqli_fetch_assoc($resultCompPrevAsigEvento))
+    $emparrayCompGeneralesPrevRegistradasEvento = array();
+    while($row =mysqli_fetch_assoc($resultCompGeneralesPrevRegistradasEvento))
     {
-        $arrayCompPreviasAsignadasAEvento[] = $row;
-
+        $emparrayCompGeneralesPrevRegistradasEvento[] = $row;
     }
-
-    echo json_encode($arrayCompPreviasAsignadasAEvento);
-
+    echo json_encode($emparrayCompGeneralesPrevRegistradasEvento);
     exit;
-    
+
+}
+
+//Capturamos el evento del id de una competencia especifica a editar
+if(isset($_POST['idCompetenciaEspEdit'])){
+
+    //Aqui traemos los datos de las competencias especificas para su edición-----------------------------------
+    $idCompetenciaEspEdit = $_POST['idCompetenciaEspEdit'];
+
+    $sql = "select * from tbl_competencia_especifica where id_comp_esp=".$idCompetenciaEspEdit;
+    $resultCompEspecifica = mysqli_query($conexion,$sql);
+
+    $emparrayCompEspecificas = array();
+    while($row =mysqli_fetch_assoc($resultCompEspecifica))
+    {
+        $emparrayCompEspecificas[] = $row;
+    }
+    echo json_encode($emparrayCompEspecificas);
+    exit;
 }
 
 //Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para un evento (boton analizar)

@@ -454,5 +454,5 @@
         $competenciaControla->eliminarCompetenciaEspecifica($idCompetenciaEspecificaAEliminar);
         header("Location: " . $_SERVER["HTTP_REFERER"]);
     }
-
+    
 ?>
