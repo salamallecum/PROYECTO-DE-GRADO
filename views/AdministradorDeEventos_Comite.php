@@ -163,7 +163,7 @@
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a class="" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
+                                            <a class="btnAsignarCompetencias" data-id="<?php echo $key['id_evento'];?>" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Asignar competencias"><img src="assets/images/btn_asignarCompetencias.png"></a>
                                         </div>
                                         
                                         <div class="col-botonesEdicion">
@@ -354,10 +354,9 @@
                     </div>
 
                                     
-                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
+                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS GENERALES QUE CONTRIBUYEN A UN EVENTO-->
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias</h3>
@@ -367,7 +366,9 @@
                             <p>Seleccione las competencias generales a las cuales contribuye el evento.</p>
                             <br>
                             
-                            <form id="formularioDeAsignacionDeCompetencias" action="AdministradorDeEventos_Comite.php" method="POST">
+                            <form id="formularioDeAsignacionDeCompetencias">
+
+                                <input type="hidden" id="txt_idEventoAsigCompetencias" name="id_evento" value="">
 
                                 <table>
                                     <tr>
@@ -383,7 +384,7 @@
                                                     foreach ($datos as $key){
                                                 ?>
 
-                                                <input class="checkCompetenciaGeneral" type="checkbox" name="competenciasGenerales[]" value="<?php echo $key['id_comp_gral']?>" title="<?php echo $key['nombre_comp_gral']?>"> <?php echo $key['nombre_comp_gral']?>
+                                                <input class="checkCompetenciaGeneral" type="checkbox" name="compAContribuir" value="<?php echo $key['id_comp_gral']?>" title="<?php echo $key['nombre_comp_gral']?>"> <?php echo $key['nombre_comp_gral']?>
                                                 <br>
 
                                                 <?php
@@ -392,74 +393,48 @@
 
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 </table>                       
                                 <br>
-                                <!--<a id="btn_evaluarCompetencias" class="btn_agregarEvento" title="Analizar competencias">Analizar</a>-->
-                                <button type="submit" name="asignarCompetenciasGenerales" class="btn_agregarEvento" title="AnalizarComeptencias">Analizar</button>
-                            </form>
-                            <br>
-                            <h3 class="titulo_seccion">Evaluación de competencias</h3>
-                            <p>Evalúe el nivel de competencia propuesto por la convocatoria para las siguientes competencias específicas: </p>
-                            <br>
-
-                            <div class="contenedorEvaluacionCompetencias">
-
-                                <form class="">
-                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
-                                    <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
-                                        
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
-
-                                            </tr>
-                                        </table>
-
-                                        <br>
-
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
-
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
-
-                                            </tr>
-                                        </table>
-                                    </div>  
-                                    <br>
-                                    <button type="submit" name="guardarAsignacionComp" class="btn_agregarEvento" title="Guardar">Guardar</button> 
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
-                                </form>
-                            </div>
+                                <button id="btn_analizarCompetencias" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="AnalizarComeptencias">Analizar</button>
+                                <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                            </form>                           
                         </div>
                         </div>
                         </div>
                     </div>
+
+                    <!--POPUP PARA LA EVALUACION DE LAS COMPETENCIAS ESPECIFICAS QUE CONTRIBUYEN A UN EVENTO-->
+                    <div class="modal fade" id="modalEvaluarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>Evalúe el nivel de competencia propuesto por el evento para las siguientes competencias específicas: </p>
+                                <br>
+
+                                <div class="contenedorEvaluacionCompetencias">
+                                        <!--Este es el código que contiene las competencias específicas a evaluar-->
+                                        <div class="contenedorCompeEspeciasAEvaluar">                                 
+                                            
+                                            <span id="panelListaCompetenciasAEvaluar"></span>                                            
+                                            <br>
+                                                
+                                        </div>  
+                                                <br>
+                                                <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
+                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
+
+                                            </form>
+                                            <!--Incluimos el archivo con la logica del formulario-->
+                                            <?php include("logic/capturaDatCompetencia.php") ?>
+
+                                </div> 
+                            </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -477,8 +452,7 @@
             $(document).ready(function(){
                 
                 $('.btnEditarEvento').click(function(){
-                    console.log("here")
-                    
+                                        
                     var idEventoEdit = $(this).data('id');
                     console.log(idEventoEdit)
                    
@@ -503,8 +477,6 @@
                         var data = $.parseJSON(response)[0];
                         var formId = '#formularioDeActualizacionDeEventos';
                         $.each(data, function(key, value){
-                            console.log(key);
-                            console.log(value);
                             $('[name='+key+']', formId).val(value);
                         });
                     })
@@ -524,7 +496,6 @@
                 $(document).ready(function(){
                     
                     $('.btnEliminarEvento').click(function(){
-                        console.log("here")
                         
                         var idEventoElim = $(this).data('id');
                     
@@ -546,12 +517,9 @@
                         }
                         getFormInfo()
                         .then((response) => {
-                            console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeEliminacionDeEventos';
                             $.each(data, function(key, value){
-                                console.log(key);
-                                console.log(value);
                                 $('[name='+key+']', formId).val(value);
                             });
                         })
@@ -560,6 +528,177 @@
                         })
                         
                     });
+                });
+            </script>
+
+            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la asignacion de competencias -->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('.btnAsignarCompetencias').click(function() {
+                        
+                        //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
+                        
+                        var idEventoAsigCompetencias = $(this).data('id');
+                    
+                        function getFormInfo() {
+                            return new Promise((resolve, reject) => {
+                                // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {idEventoAsigCompetencias: idEventoAsigCompetencias},
+                                    success: function(response){
+                                        resolve(response)
+                                    },
+                                    error: function (error) {
+                                    reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        getFormInfo()
+                        .then((response) => {
+                            var data = $.parseJSON(response)[0];
+                            var formId = '#formularioDeAsignacionDeCompetencias';
+                            $.each(data, function(key, value){
+                                $('[name='+key+']', formId).val(value);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        }) 
+                    });
+                    
+                });
+            </script>
+
+            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la asignacion de competencias -->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('.btnAsignarCompetencias').click(function() {
+                        
+                        //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
+                        
+                        var idEventoAsigCompetencias = $(this).data('id');
+                    
+                        function getFormInfo() {
+                            return new Promise((resolve, reject) => {
+                                // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {idEventoAsigCompetencias: idEventoAsigCompetencias},
+                                    success: function(response){
+                                        resolve(response)
+                                    },
+                                    error: function (error) {
+                                    reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        getFormInfo()
+                        .then((response) => {
+                            var data = $.parseJSON(response)[0];
+                            var formId = '#formularioDeEvaluacionDeCompetenciasEspecificas';
+                            $.each(data, function(key, value){
+                                $('[name='+key+']', formId).val(value);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        }) 
+                    });
+                    
+                });
+            </script>
+
+            <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una -->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('#btn_analizarCompetencias').click(function() {
+                        // defines un arreglo
+                        var compGenSeleccionadas = [];
+
+                        var idEvento = document.getElementById('txt_idEventoAsigCompetencias').value;
+
+                        $(":checkbox[name=compAContribuir]").each(function() {
+                            if (this.checked) {
+                            // agregas cada elemento.
+                            compGenSeleccionadas.push($(this).val());
+                            }
+                        });
+
+                        if (compGenSeleccionadas.length) {
+                    
+                            function envioCompGenerales(){
+                                return new Promise((resolve, reject) => {
+
+                                    $.ajax({
+                                        type: 'post', 
+                                        data: {'arrayCompetencias': JSON.stringify(compGenSeleccionadas), 'idEvento': idEvento}, 
+                                        url: 'logic/utils/ajaxfile.php',
+                                        success: function(response){
+                                            resolve(response)
+                                            $('#panelListaCompetenciasAEvaluar').html(response);
+                                        },
+                                        error: function (error) {
+                                            reject(error)
+                                        },
+                                    });
+                                })
+                            }
+
+                            envioCompGenerales();
+                                                       
+                        } else
+                            alert('Debes seleccionar al menos una competencia general.');
+                    
+                        return false;
+                    });
+                });
+
+            </script>
+
+            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la consulta de la asignacion de competencias registrada previamente en BD -->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('.btnAsignarCompetencias').click(function() {
+                        
+                        //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
+                        
+                        var idEventoParaConsultarCompGeneralesRegistradasConAnterioridad = $(this).data('id');
+                    
+                        function getFormInfo() {
+                            return new Promise((resolve, reject) => {
+                                // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {idEventoParaConsultarCompGeneralesRegistradasConAnterioridad: idEventoParaConsultarCompGeneralesRegistradasConAnterioridad},
+                                    success: function(response){
+                                        resolve(response)
+                                    },
+                                    error: function (error) {
+                                    reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        getFormInfo()
+                        .then((response) => {
+                            var data = $.parseJSON(response)[0];
+                            var formId = '#formularioDeAsignacionDeCompetencias';
+                            $.each(data, function(key, value){
+                                let arrayCompetencias = value.split(',');
+                                $('[name='+key+']', formId).val(arrayCompetencias);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        }) 
+                    });
+                    
                 });
             </script>
 

@@ -4,6 +4,9 @@
     require_once "controllers/MateriaControlador.php";
     require_once "model/Materia.php";
 
+    //Creamos el objeto controlador que invocará los metodos CRUD
+    $materiaControla = new MateriaControlador();
+
     //Capturamos el evento del boton de registro de materia
     if(isset($_POST['registroDeMateria'])){
 
@@ -13,6 +16,7 @@
         $cmbSemestres = $_REQUEST['cmbSemestres'];
         $cmbTiposDeMateria = $_REQUEST['cmbTipoMaterias'];
         $cmbJornadas = $_REQUEST['cmbJornadas'];
+        $grupo = trim($_POST['grupo']);
         $semestreSeleccionado = "";
         $tipoMatSeleccionado = "";
         $jornadaSeleccionada = "";
@@ -48,8 +52,10 @@
                 //Capturamos los datos del combobox de tipos de materias
                 if($cmbTiposDeMateria == 'obligatoria'){
                     $tipoMatSeleccionado = "Obligatoria";
-                }else if($cmbTiposDeMateria == 'electiva'){
-                    $tipoMatSeleccionado = "Electiva";
+                }else if($cmbTiposDeMateria == 'electivaProf'){
+                    $tipoMatSeleccionado = "Electiva Profesional";
+                }else if($cmbTiposDeMateria == 'electivaLib'){
+                    $tipoMatSeleccionado = "Electiva Libre";
                 }
 
                 //Capturamos los datos del combobox de tipos de materias
@@ -60,10 +66,7 @@
                 }
     
                 //Encapsulamos los datos obtenidos en un objeto de tipo Materia
-                $nuevaMateria = new Materia(0, $materia, $codigo, $semestreSeleccionado, $tipoMatSeleccionado, $jornadaSeleccionada, 0);
-
-                //Creamos el objeto controlador que invocará los metodos CRUD
-                $materiaControla = new MateriaControlador();
+                $nuevaMateria = new Materia(0, $materia, $codigo, $semestreSeleccionado, $tipoMatSeleccionado, $jornadaSeleccionada, $grupo, 0);
 
                 if($materiaControla->insertarMateria($nuevaMateria) == 1){
                     ?>
@@ -92,9 +95,6 @@
         //Validamos que los campos no se encuentren vacios
         if($cmbProfesores != 'seleccione' && 
             $cmbMaterias != 'seleccione'){
-
-                //Creamos el objeto controlador que invocará los metodos CRUD
-                $materiaControla = new MateriaControlador();
 
                 if($materiaControla->asignarMateria($cmbMaterias, $cmbProfesores) == 1){
                     ?>

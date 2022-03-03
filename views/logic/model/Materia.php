@@ -8,10 +8,12 @@ class Materia{
     private $semestre;
     private $tipo;
     private $jornada;
+    private $grupo;
     private $profeEncargado;
 
+
     //Constructor
-    public function __construct($id, $nombre, $codigo, $semestre, $tipo, $jornada)
+    public function __construct($id, $nombre, $codigo, $semestre, $tipo, $jornada, $grupo, $profeEncargado)
     {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -19,6 +21,9 @@ class Materia{
         $this->semestre = $semestre;
         $this->tipo = $tipo;
         $this->jornada = $jornada;
+        $this->grupo = $grupo;
+        $this->profeEncargado = $profeEncargado;
+
     }
     
     //GETTER Y SETTER
@@ -68,6 +73,14 @@ class Materia{
 
     public function getJornada():string{
         return $this->jornada;
+    }
+
+    public function setGrupo($grup){
+        $this->grupo = $grup;
+    }
+
+    public function getGrupo():string{
+        return $this->grupo;
     }
 
     public function setProfeEncargado(int $profeEnc){

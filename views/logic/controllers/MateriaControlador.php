@@ -15,9 +15,10 @@ class MateriaControlador{
         $semestreMateria = $materia->getSemestre();
         $tipoMat = $materia->getTipo();
         $jornadaMateria = $materia->getJornada();
+        $grupoMateria = $materia->getGrupo();
                 
-        $sql = "INSERT INTO tbl_asignatura (id_asignatura, nombre_asignatura, codigo, semestre, tipo, jornada)
-                            values ($idMateria, '$nombreMateria', '$codigoMateria', '$semestreMateria', '$tipoMat', '$jornadaMateria')";
+        $sql = "INSERT INTO tbl_asignatura (id_asignatura, nombre_asignatura, codigo, semestre, tipo, jornada, grupo)
+                            values ($idMateria, '$nombreMateria', '$codigoMateria', '$semestreMateria', '$tipoMat', '$jornadaMateria', '$grupoMateria')";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
     }

@@ -165,7 +165,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/badgesImages/IpWGSR.jpg" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">

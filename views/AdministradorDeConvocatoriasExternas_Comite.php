@@ -359,7 +359,7 @@
                     </div>
                                      
                     
-                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
+                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UNA CONVOCATORIA-->
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-dialog modal-dialog-scrollable">
@@ -414,47 +414,53 @@
                                 <form class="">
                                     <!--Este es el código que contiene las competencias específicas a evaluar-->
                                     <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
                                         
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
+                                        <div class="compentenciasContent">
 
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
+                                            <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
+                                            
+                                            <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                            <table>
+                                                <tr>
+                                                    <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
+                                                    <label for="Baja">Baja</label></td>
+                                                    
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
+                                                    <label for="Media">Media</label></td></td>
+                                                    
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
+                                                    <label for="Alta">Alta</label></td></td>
 
-                                            </tr>
-                                        </table>
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
+                                                    <label for="No aplica">No aplica</label></td></td>
 
-                                        <br>
+                                                </tr>
+                                            </table>
 
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
+                                            <br>
 
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
+                                            <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
 
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
+                                            <!--Tabla de radiobuttons para evaluar competencia específica-->
+                                            <table>
+                                                <tr>
+                                                    <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
+                                                    <label for="Baja">Baja</label></td>
+                                                    
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
+                                                    <label for="Media">Media</label></td></td>
+                                                    
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
+                                                    <label for="Alta">Alta</label></td></td>
 
-                                            </tr>
-                                        </table>
+                                                    <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
+                                                    <label for="No aplica">No aplica</label></td></td>
+
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    
+                                        
                                     </div>  
                                     <br>
                                     <button type="submit" name="guardarAsignacionComp" class="btn_agregarEvento" title="Guardar">Guardar</button> 

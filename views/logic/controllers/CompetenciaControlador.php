@@ -577,5 +577,56 @@ class CompetenciaControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
+
+    //Funcion que consulta los codigos de las competencias especificas de un grupo de competencias generales con el fin de utilizarlos para el registro de los niveles de contribucion 
+    public function consultarCodigosDeCompetenciasEspecificas(array $arregloCompGenerales){
+
+        $c = new conectar();
+        $conexion = $c->conexion(); 
+
+        $sql = "SELECT codigo from tbl_competencia_especifica where id_comp_gral in(".$arregloCompGenerales.")";
+        $resultCompEspecifica = mysqli_query($conexion,$sql);
+
+        $emparrayCodigosCompEspecificas = array();
+        while($row =mysqli_fetch_assoc($resultCompEspecifica))
+        {
+            $emparrayCodigosCompEspecificas[] = $row;
+        }
+        return $emparrayCodigosCompEspecificas;
+    }
+
+    //Funcion que permite consultar si ya hay un registro de competencias generales para un evento con anterioridad
+    public function verificarSiElEventoTieneRegistroDeCompGenerales(int $idDelEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT  id_actividad from tbl_contribcompgenerales_actividad where id_actividad = $idDelEvento and tipo_actividad = 'EVENTO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+
+    }
+   
+    //Funcion que permite consultar el Id de la selección de competencias generales realizada para un evento
+    public function consultarIdDeSeleccionDeCompetenciasGenerales(string $strCompGenerales){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_contribcompgenerales_actividad where compAContribuir = '".$strCompGenerales."'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+
+    }
+
+
+   
+
 }
 ?>
