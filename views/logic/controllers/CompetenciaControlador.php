@@ -620,5 +620,19 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que nos permite verificar si la convocatoria tiene un registro de competencias generales previo
+    public function verificarSiLaConvocatoriaTieneRegistroDeCompGenerales(int $idDeConvocatoria){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT compAContribuir from tbl_contribcompgenerales_actividad where id_actividad =".$idDeConvocatoria." and tipo_actividad = 'CONVOCATORIA'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }
+
 }
 ?>

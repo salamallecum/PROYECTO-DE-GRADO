@@ -359,11 +359,7 @@
                     </div>
                                      
                     
-<<<<<<< HEAD
                     <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS GENERALES QUE CONTRIBUYEN A UNA CONVOCATORIA-->
-=======
-                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS QUE CONTRIBUYEN A UN EVENTO-->
->>>>>>> parent of f238eae (AAM - Backend: Se adelanta modulo de asignacion de competencias a los eventos, solo falta la evaluacion del nivel de contribucion de las comeptencias especificas al desafio o evento)
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
@@ -372,12 +368,12 @@
                         </div>
                         <div class="modal-body">
                             
-                            <p>Seleccione las competencias generales a las cuales contribuye la convocatoria.</p>
+                            <p class="enunciadoModalCompetencias">Seleccione las competencias generales a las cuales contribuye la convocatoria.</p>
                             <br>
                             
                             <form id="formularioDeAsignacionDeCompetencias">
 
-                                <input type="text" id="txt_idConvocatoriaAsigCompetencias" name="Id" value="">
+                                <input type="hidden" id="txt_idConvocatoriaAsigCompetencias" name="Id" value="">
 
                                 <table>
                                     <tr>
@@ -405,7 +401,7 @@
                                     </tr>
                                 </table>                       
                                 <br>
-                                <button id="btn_analizarCompetencias" class="btn_agregarConvocatoria" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="AnalizarComeptencias">Analizar</button>
+                                <button id="btn_analizarCompetencias" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="AnalizarComeptencias">Analizar</button>
                                 <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
                             </form>                           
                         </div>
@@ -421,15 +417,14 @@
                                 <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias</h3>
                             </div>
                             <div class="modal-body">
-                                <p>Evalúe el nivel de competencia propuesto por la convocatoria para las siguientes competencias específicas: </p>
+                                <p class="enunciadoModalCompetencias">Evalúe el nivel de competencia propuesto por la convocatoria para las siguientes competencias específicas: </p>
                                 <br>
 
                                 <div class="contenedorEvaluacionCompetencias">
 
-<<<<<<< HEAD
-                                    <form id="formularioDeEvaluacionDeCompetenciasEspecificas" action="logic/utils/ajaxfile.php" method="POST">
+                                    <form id="formularioDeEvaluacionDeCompetenciasEspecificas">
                                     
-                                        <input type="text" id="txt_idEventoEvaluacionCompetencias" name="Id" value="">
+                                        <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="Id" value="">
                                         <br> 
 
                                         <!--Este es el código que contiene las competencias específicas a evaluar-->
@@ -440,65 +435,12 @@
                                                 
                                         </div>  
                                         <br>
-                                        <button type="submit" id="btnGuardarNivelesContribucionConvocatoria" class="btn_agregarConvocatoria" title="Guardar">Guardar</button> 
+                                        <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
 
                                     </form>
-                                    <!--Incluimos el archivo con la logica del formulario-->
-                                    <?php include("logic/utils/ajaxfile.php") ?>
                                 </div> 
                             </div>
-=======
-                                <form class="">
-                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
-                                    <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
-                                        
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
-
-                                            </tr>
-                                        </table>
-
-                                        <br>
-
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
-
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_NoContribucion" name="noContribucion" value="">
-                                                <label for="No aplica">No aplica</label></td></td>
-
-                                            </tr>
-                                        </table>
-                                    </div>  
-                                    <br>
-                                    <button type="submit" name="guardarAsignacionComp" class="btn_agregarEvento" title="Guardar">Guardar</button> 
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
-                                </form>
->>>>>>> parent of f238eae (AAM - Backend: Se adelanta modulo de asignacion de competencias a los eventos, solo falta la evaluacion del nivel de contribucion de las comeptencias especificas al desafio o evento)
                             </div>
                         </div>
                     </div>
@@ -605,13 +547,12 @@
             </script>
 
             <!--Script que permite pasar el Id de la convocatoria comite para que sea tenida en cuenta en la insercion de los datos para la asignacion de competencias -->
-            <!--
+            
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
                         
                         //En este bloque pasamos el id de la convocatoria para tener el cuenta en la insercion de datos
-                        
                         var idConvocatoriaAsigCompetencias = $(this).data('id');
                     
                         function getFormInfo() {
@@ -645,14 +586,13 @@
                     
                 });
             </script>
-
-            Script que permite pasar el Id de la convocatoria comite para que sea tenido en cuenta en la insercion de los datos para la Evaluacion de las competencias especificas 
+            
+            <!--Script que permite pasar el Id de la convocatoria comite para que sea tenido en cuenta en la insercion de los datos para la Evaluacion de las competencias especificas--> 
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
                         
                         //En este bloque pasamos el id de la convocatoria para tener el cuenta en la insercion de datos
-                        
                         var idConvocatoriaAsigCompetencias = $(this).data('id');
                     
                         function getFormInfo() {
@@ -687,7 +627,7 @@
                 });
             </script>
 
-            Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una 
+            <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una-->
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('#btn_analizarCompetencias').click(function() {
@@ -733,14 +673,13 @@
                 });
 
             </script>
-
-            Script que permite pasar el Id de la convocatoria para que sea tenido en cuenta en la consulta de la asignacion de competencias registrada previamente en BD 
+            
+            <!--Script que permite pasar el Id de la convocatoria para que sea tenido en cuenta en la consulta de la asignacion de competencias registrada previamente en BD-->
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
                         
                         //En este bloque pasamos el id de la convocatoria para tener el cuenta en la insercion de datos
-                        
                         var idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad = $(this).data('id');
                     
                         function getFormInfo() {
@@ -775,6 +714,6 @@
                     
                 });
             </script>
-            -->
+            
     </body>
 </html>

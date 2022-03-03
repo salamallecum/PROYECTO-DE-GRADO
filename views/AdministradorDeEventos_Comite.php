@@ -363,7 +363,7 @@
                         </div>
                         <div class="modal-body">
                             
-                            <p>Seleccione las competencias generales a las cuales contribuye el evento.</p>
+                            <p class="enunciadoModalCompetencias">Seleccione las competencias generales a las cuales contribuye el evento.</p>
                             <br>
                             
                             <form id="formularioDeAsignacionDeCompetencias">
@@ -412,7 +412,7 @@
                                 <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias</h3>
                             </div>
                             <div class="modal-body">
-                                <p>Evalúe el nivel de competencia propuesto por el evento para las siguientes competencias específicas: </p>
+                                <p class="enunciadoModalCompetencias">Evalúe el nivel de competencia propuesto por el evento para las siguientes competencias específicas: </p>
                                 <br>
 
                                 <div class="contenedorEvaluacionCompetencias">
@@ -457,7 +457,6 @@
                 $('.btnEditarEvento').click(function(){
                                         
                     var idEventoEdit = $(this).data('id');
-                    console.log(idEventoEdit)
                    
                     function getFormInfo() {
                         return new Promise((resolve, reject) => {
@@ -542,7 +541,6 @@
                         //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
                         
                         var idEventoAsigCompetencias = $(this).data('id');
-                        console.log('here');
                     
                         function getFormInfo() {
                             return new Promise((resolve, reject) => {
@@ -562,7 +560,6 @@
                         }
                         getFormInfo()
                         .then((response) => {
-                            console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeAsignacionDeCompetencias';
                             $.each(data, function(key, value){
@@ -692,12 +689,10 @@
                         }
                         getFormInfo()
                         .then((response) => {
-                            console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeAsignacionDeCompetencias';
                             $.each(data, function(key, value){
                                 let arrayCompetencias = value.split(',');
-                                console.log(arrayCompetencias);
                                 $('[name='+key+']', formId).val(arrayCompetencias);
                             });
                         })

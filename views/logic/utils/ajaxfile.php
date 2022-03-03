@@ -174,13 +174,25 @@ if(isset($_POST['idEventoAsigCompetencias'])){
     exit;
 }
 
-//Capturamos el evento del id de la convocatoria a asignar y evaluar competencias
+
+
+
+
+
+
+
+
+
+
+
+
+//Capturamos el evento del id de una convocatoria para asignar y evaluar competencias
 if(isset($_POST['idConvocatoriaAsigCompetencias'])){
 
-    //Aqui traemos el id de la convocatoria para su asignacion de competencias-----------------------------------
+    //Aqui traemos el id del evento para su asignacion de competencias-----------------------------------
     $idConvocatoriaAsigCompetencias = $_POST['idConvocatoriaAsigCompetencias'];
 
-    //Query que trae los id de las convocatorias para su muestreo
+    //Query que trae los id de los eventos para su muestreo
     $sql = "select Id from tbl_convocatoriacomite where Id=".$idConvocatoriaAsigCompetencias;
     $resultCompAsigConvocatoria = mysqli_query($conexion,$sql);
 
@@ -196,6 +208,200 @@ if(isset($_POST['idConvocatoriaAsigCompetencias'])){
 
     exit;
 }
+
+//Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para una convocatoria (boton analizar)
+if(isset($_POST['arrayCompetencias']) && isset($_POST['idConvocatoria'])){
+
+    $dataCompetenciasGenerales = json_decode(stripslashes($_POST['arrayCompetencias']));
+    $idConvocatoria = $_POST['idConvocatoria'];
+    $arrayCompGeneralesParaConvocatoria = implode(",", $dataCompetenciasGenerales);
+    $codigoHtml = "";
+
+    //Aqui verificamos si ya hay un registro de competencias generales con anterioridad
+    $laConvocatoriaTieneRegistroDeCompGeneralesPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompGenerales($idConvocatoria);
+
+    if($laConvocatoriaTieneRegistroDeCompGeneralesPrevio){
+
+        //Actualizamos la seleccion de competencias generales en el registro previamente ingresado 
+        $sql = "UPDATE tbl_contribcompgenerales_actividad SET compAContribuir= '".$arrayCompGeneralesParaConvocatoria."' where id_actividad=".$idConvocatoria. " and tipo_actividad='CONVOCATORIA'";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }else{
+
+        //Insertamos la seleccion de competencias generales a la BD
+        $sql = "INSERT INTO tbl_contribcompgenerales_actividad VALUES (0, $idConvocatoria, 'CONVOCATORIA', '$arrayCompGeneralesParaConvocatoria')";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    $sqlCompEspecificasConv = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$arrayCompGeneralesParaConvocatoria.")";
+    $resultCompEspecificasAEvaluarConv = mysqli_query($conexion, $sqlCompEspecificasConv);
+    
+    foreach($resultCompEspecificasAEvaluarConv as $ver)
+    {
+        $codigoHtml = $codigoHtml.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                
+                                        '<table>
+                                            <tr>
+                                                <td><input type="radio" name='.$ver['codigo'].' value="BAJA">
+                                                <label for="Baja">Baja</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="MEDIA">
+                                                <label for="Media">Media</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="ALTA">
+                                                <label for="Alta">Alta</label></td>
+
+                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="N/A">
+                                                <label for="No aplica">No aplica</label></td>
+
+                                            </tr>
+                                        </table>
+                                        <br>';           
+    }
+    
+    echo $codigoHtml; 
+}
+
+//Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a una convocatoria
+if(isset($_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'])){
+
+    //Aqui traemos el id de la convocatoria para verificar si tiene una asignacion de competencias previa-----------------------------------
+    $idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad = $_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'];
+
+    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad." and tipo_actividad = 'CONVOCATORIA'";
+    $resultCompGeneralesPrevRegistradasConvocatoria = mysqli_query($conexion,$sql);
+
+    $emparrayCompGeneralesPrevRegistradasConvocatoria = array();
+    while($row =mysqli_fetch_assoc($resultCompGeneralesPrevRegistradasConvocatoria))
+    {
+        $emparrayCompGeneralesPrevRegistradasConvocatoria[] = $row;
+    }
+    echo json_encode($emparrayCompGeneralesPrevRegistradasConvocatoria);
+    exit;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a un evento 
 if(isset($_POST['idEventoParaConsultarCompGeneralesRegistradasConAnterioridad'])){
@@ -288,6 +494,8 @@ if(isset($_POST['arrayCompetencias']) && isset($_POST['idEvento'])){
 }
 
 //Capturamos el evento del boton de asignacion de los niveles de contribucion de una competencia especifica a un evento (boton guardar niveles de contribucion)
+//REVISAR CON OSCAR PORQUE NO ESTA FUNCIONANDO
+/*
 if(isset($_POST['btnGuardarNivelesContribucionEvento'])){
 
     //Capturamos los datos de los campos del formulario
@@ -315,6 +523,24 @@ if(isset($_POST['btnGuardarNivelesContribucionEvento'])){
         }
     }
 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ?>

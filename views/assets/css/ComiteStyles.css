@@ -838,6 +838,11 @@ thead{
     height: 100px;
 }
 
+.enunciadoModalCompetencias{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 
 /*--------------------------ADMINISTRADOR DE CONVOCATORIAS EXTERNAS*--------------------------*/
 .btn_agregarConvocatoria{
