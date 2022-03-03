@@ -169,7 +169,7 @@ if(isset($_POST['idCompetenciaEspElim'])){
     exit;
 }
 
-//Capturamos el evento del id de un evento a asignar competencias
+//Capturamos el evento del id de un evento a asignar y evaluar competencias
 if(isset($_POST['idEventoAsigCompetencias'])){
 
     //Aqui traemos el id del evento para su asignacion de competencias-----------------------------------
@@ -188,6 +188,29 @@ if(isset($_POST['idEventoAsigCompetencias'])){
     }
 
     echo json_encode($emparrayAsigCompEvento);
+
+    exit;
+}
+
+//Capturamos el evento del id de la convocatoria a asignar y evaluar competencias
+if(isset($_POST['idConvocatoriaAsigCompetencias'])){
+
+    //Aqui traemos el id de la convocatoria para su asignacion de competencias-----------------------------------
+    $idConvocatoriaAsigCompetencias = $_POST['idConvocatoriaAsigCompetencias'];
+
+    //Query que trae los id de las convocatorias para su muestreo
+    $sql = "select Id from tbl_convocatoriacomite where Id=".$idConvocatoriaAsigCompetencias;
+    $resultCompAsigConvocatoria = mysqli_query($conexion,$sql);
+
+    $emparrayAsigCompConvocatoria = array();
+
+    while($row =mysqli_fetch_assoc($resultCompAsigConvocatoria))
+    {
+        $emparrayAsigCompConvocatoria[] = $row;
+
+    }
+
+    echo json_encode($emparrayAsigCompConvocatoria);
 
     exit;
 }
@@ -246,12 +269,7 @@ if(isset($_POST['arrayCompetencias']) && isset($_POST['idEvento'])){
     {
         $codigoHtml = $codigoHtml.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
                 
-                                    '<form id="formularioDeEvaluacionDeCompetenciasEspecificas" action="logic/capturaDatCompetencia.php" method="POST">
-                                            
-                                        <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="id_evento" value="">
-                                        <br>                                 
-                                    
-                                        <table>
+                                        '<table>
                                             <tr>
                                                 <td><input type="radio" name='.$ver['codigo'].' value="BAJA">
                                                 <label for="Baja">Baja</label></td>
@@ -295,6 +313,8 @@ if(isset($_POST['btnGuardarNivelesContribucionEvento'])){
             //Insertamos el nivel de contribucion de la competencia especifica a la BD
             $sql = "INSERT INTO tbl_contribcompespecificas_actividad VALUES (0, $idSeleccionDeCompetenciasGenerales, $idDelEventoNivelContribCompetencias, 'EVENTO', '$codigo', '$nivelDeContribucioncompetenciaEspEvaluada')";
             mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
 
         }
     }

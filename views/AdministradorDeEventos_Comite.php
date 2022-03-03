@@ -368,7 +368,7 @@
                             
                             <form id="formularioDeAsignacionDeCompetencias">
 
-                                <input type="hidden" id="txt_idEventoAsigCompetencias" name="id_evento" value="">
+                                <input type="text" id="txt_idEventoAsigCompetencias" name="id_evento" value="">
 
                                 <table>
                                     <tr>
@@ -416,6 +416,12 @@
                                 <br>
 
                                 <div class="contenedorEvaluacionCompetencias">
+
+                                    <form id="formularioDeEvaluacionDeCompetenciasEspecificas" action="logic/utils/ajaxfile.php" method="POST">
+                                    
+                                        <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="id_evento" value="">
+                                        <br> 
+
                                         <!--Este es el código que contiene las competencias específicas a evaluar-->
                                         <div class="contenedorCompeEspeciasAEvaluar">                                 
                                             
@@ -423,14 +429,13 @@
                                             <br>
                                                 
                                         </div>  
-                                                <br>
-                                                <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
-                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
+                                        <br>
+                                        <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
 
-                                            </form>
-                                            <!--Incluimos el archivo con la logica del formulario-->
-                                            <?php include("logic/capturaDatCompetencia.php") ?>
-
+                                    </form>
+                                    <!--Incluimos el archivo con la logica del formulario-->
+                                    <?php include("logic/utils/ajaxfile.php") ?>
                                 </div> 
                             </div>
                             </div>
@@ -539,6 +544,7 @@
                         //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
                         
                         var idEventoAsigCompetencias = $(this).data('id');
+                        console.log(idEventoAsigCompetencias);
                     
                         function getFormInfo() {
                             return new Promise((resolve, reject) => {
@@ -558,6 +564,7 @@
                         }
                         getFormInfo()
                         .then((response) => {
+                            console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeAsignacionDeCompetencias';
                             $.each(data, function(key, value){
@@ -572,7 +579,7 @@
                 });
             </script>
 
-            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la asignacion de competencias -->
+            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la Evaluacion de las competencias especificas -->
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
@@ -691,6 +698,7 @@
                             var formId = '#formularioDeAsignacionDeCompetencias';
                             $.each(data, function(key, value){
                                 let arrayCompetencias = value.split(',');
+                                console.log(arrayCompetencias);
                                 $('[name='+key+']', formId).val(arrayCompetencias);
                             });
                         })
