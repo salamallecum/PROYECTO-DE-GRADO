@@ -504,7 +504,7 @@ class ConvocatoriaControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunConPrac'";
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_archivo = null WHERE  nombre_archivo='$nombreEnunConPrac'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

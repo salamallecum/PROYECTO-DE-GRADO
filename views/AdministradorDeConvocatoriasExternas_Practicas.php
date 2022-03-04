@@ -151,7 +151,7 @@
                                     <td class="datoTabla"><input type="hidden" name="fechaFinEventoSeleccionado" value="<?php echo $key['fecha_fin'];?>"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
                                         <div class="col-botonesEdicion">
-                                            <a class="btnDetallesConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Editar"><img src="assets/images/verDetallesActividad.png"></a>
+                                            <a class="btnDetallesConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Ver convocatoria"><img src="assets/images/verDetallesActividad.png"></a>
                                         </div>
 
                                         <div class="col-botonesEdicion">
@@ -159,7 +159,7 @@
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                            <a href="?Id=<?php echo $key['Id'] ?>" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
+                                        <a class="btnEliminarConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
                                         </div>
                                     
                                     </div></td> 
@@ -188,7 +188,7 @@
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea name="descripcionConvocatoriaExt" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcionConvocatoriaExt" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
@@ -386,14 +386,14 @@
                             
                             <form id="formularioDeActualizacionDeConvocatorias_Practicas" action="logic/capturaDatConvocatoria.php" method="POST" enctype="multipart/form-data">
 
-                                <input type="text" name="Id" value=""> 
+                                <input type="hidden" name="Id" value=""> 
 
                                 <label class="camposFormulario">Nombre de la convocatoria</label><br>
                                 <input name="nombre_convocatoria" placeholder="" type="text" class="form-control" value="" required="true">
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea id="txt_descripcionConvocatoria" name="descripcion" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcion" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
@@ -423,8 +423,30 @@
                             </form>
                             <!--Incluimos el archivo con la logica del formulario-->
                             <?php include("logic/capturaDatConvocatoria.php") ?>            
-
                         </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- ESTRUCTURA DEL POPUP PARA LA ELIMINACION DE UNA CONVOCATORIA -->
+                    <div class="modal fade" id="modalEliminarConvocatoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar convocatoria</h3>
+                        </div>
+                        <form id="formularioDeEliminacionDeConvocatorias" action="logic/capturaDatConvocatoria.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="Id" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarConvPracticas" class="btn_agregarConvocatoria" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatConvocatoria.php") ?>
                         </div>
                     </div>
                     </div>
@@ -546,6 +568,52 @@
                     })
                     
                         
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar los datos de una convocatoria comite desde la BD a su ventana modal de eliminacion correspondiente-->
+        <script type='text/javascript'>
+
+            //Aqui se pasan los datos para el caso de la competencia general
+            $(document).ready(function(){
+                
+                $('.btnEliminarConvPracticas').click(function(){
+                    console.log("here")
+                    
+                    var idConvocatoriaPracticasElim = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idConvocatoriaPracticasElim: idConvocatoriaPracticasElim},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        console.log(response);
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeEliminacionDeConvocatorias';
+                        $.each(data, function(key, value){
+                            console.log(key);
+                            console.log(value);
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
                 });
             });
         </script>

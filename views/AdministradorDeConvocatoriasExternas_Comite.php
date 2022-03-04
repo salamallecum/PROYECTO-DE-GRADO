@@ -172,7 +172,7 @@
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                        <a class="btnEliminarConvComite" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria" title="Editar"><img src="assets/images/btn_eliminar.PNG"></a>
+                                            <a class="btnEliminarConvComite" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
                                         </div>
                                     
                                     </div></td> 
@@ -202,7 +202,7 @@
                             <br>
 
                             <label class="camposFormulario">Descripción</label>
-                            <textarea name="descripcionConvocatoria" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                            <textarea id="txt_descripcion" name="descripcionConvocatoria" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                             <br>
 
                             <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
@@ -278,7 +278,7 @@
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea name="descripcion_convocatoria" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcion_convocatoria" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info de convocatoria</label><br>
@@ -353,7 +353,7 @@
                             </div>
                         </form>
                         <!--Incluimos el archivo con la logica del formulario-->
-                        <?php include("logic/capturaDatEvento.php") ?>
+                        <?php include("logic/capturaDatConvocatoria.php") ?>
                         </div>
                     </div>
                     </div>

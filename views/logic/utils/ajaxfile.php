@@ -61,6 +61,24 @@ if(isset($_POST['idConvocatoriaComiteElim'])){
     exit;
 }
 
+//Capturamos el evento del id de una convocatoria practicas a eliminar
+if(isset($_POST['idConvocatoriaPracticasElim'])){
+
+    //Aqui traemos los datos de las convocatorias comite para su eliminacion-----------------------------------
+    $idConvocatoriaPracticasElim = $_POST['idConvocatoriaPracticasElim'];
+
+    $sql = "select Id, nombre_convocatoria from tbl_convocatoriapracticas where Id=".$idConvocatoriaPracticasElim;
+    $resultConvPractElim = mysqli_query($conexion,$sql);
+
+    $emparrayElimConvPracticas = array();
+    while($row =mysqli_fetch_assoc($resultConvPractElim))
+    {
+        $emparrayElimConvPracticas[] = $row;
+    }
+    echo json_encode($emparrayElimConvPracticas);
+    exit;
+}
+
 //Capturamos el evento del id de una convocatoria practicas a editar
 if(isset($_POST['idConvPracticasEdit'])){
 
@@ -133,7 +151,7 @@ if(isset($_POST['idCompetenciaGralElim'])){
     exit;
 }
 
-//Capturamos el evento del id de una competencia general a eliminar
+//Capturamos el evento del id de una competencia especifica a eliminar
 if(isset($_POST['idCompetenciaEspElim'])){
 
     //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
@@ -173,18 +191,6 @@ if(isset($_POST['idEventoAsigCompetencias'])){
 
     exit;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Capturamos el evento del id de una convocatoria para asignar y evaluar competencias
 if(isset($_POST['idConvocatoriaAsigCompetencias'])){

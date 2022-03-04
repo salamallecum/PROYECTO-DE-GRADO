@@ -14,6 +14,13 @@
     box-sizing: border-box;
 }
 
+#txt_descripcion{
+    resize: none;
+    width: 455px;
+    height: 100px;
+    overflow-y: scroll;
+}
+
 /*BARRA DE NAVEGACIÓN*/
 #sidebar-toggle{
     display: none;

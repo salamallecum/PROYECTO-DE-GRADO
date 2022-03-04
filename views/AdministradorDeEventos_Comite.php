@@ -200,7 +200,7 @@
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcionEvento" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
@@ -275,7 +275,7 @@
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea id="txt_descripcionEvento" name="descripcion_evento" id="descripcionEdit" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcion_evento" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>

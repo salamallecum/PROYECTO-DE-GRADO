@@ -242,18 +242,18 @@
     if(isset($_POST['actualizarConvocatoriaPracticas'])){
 
         //Capturamos los datos de los campos del formulario
-        $idDeConvPracticasActualizar = trim($_POST['idConvocatoriaPractAEditar']);
-        $nombreDeConvocatoriaPracticasAEdit = trim($_POST['nombreConvocatoriaPractEdit']);
-        $descripcionConvocatoriaPracticasAEdit = trim($_POST['descripcionConvocatoriaPractEdit']);
-        $fechaInicioConvPracticasAEdit = date('Y-m-d', strtotime($_POST['dateFechaInicioConvocatoriaExtEdit']));
-        $fechaFinConvPracticasAEdit = date('Y-m-d', strtotime($_POST['dateFechaFinConvocatoriaExtEdit']));
+        $idDeConvPracticasActualizar = trim($_POST['Id']);
+        $nombreDeConvocatoriaPracticasAEdit = trim($_POST['nombre_convocatoria']);
+        $descripcionConvocatoriaPracticasAEdit = trim($_POST['descripcion']);
+        $fechaInicioConvPracticasAEdit = date('Y-m-d', strtotime($_POST['fecha_inicio']));
+        $fechaFinConvPracticasAEdit = date('Y-m-d', strtotime($_POST['fecha_fin']));
                 
 
        //Validamos que los campos no se encuentren vacios
-        if(strlen($nombreDeConvocatoriaPracticaseEdit) >= 1 && 
-        strlen($descripcionConvocatoriaPracticasEdit) >= 1 && 
-        $fechaInicioConvPracticasEdit != '1970-01-01' &&
-        $fechaFinConvPracticasEdit != '1970-01-01'){ 
+        if(strlen($nombreDeConvocatoriaPracticasAEdit) >= 1 && 
+        strlen($descripcionConvocatoriaPracticasAEdit) >= 1 && 
+        $fechaInicioConvPracticasAEdit != '1970-01-01' &&
+        $fechaFinConvPracticasAEdit != '1970-01-01'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo ConvocatoriaPracticas
             $convocatoriaPracticasActualizar = new ConvocatoriaPracticas($idDeConvPracticasActualizar, $nombreDeConvocatoriaPracticasAEdit, $descripcionConvocatoriaPracticasAEdit, $fechaInicioConvPracticasAEdit, $fechaFinConvPracticasAEdit);
@@ -273,7 +273,14 @@
 
                     //Eliminamos la imagen previa en servidor
                     if($nombreAntiguaImagenConvPracEdit != null){
-                        $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvPracEdit);
+                        
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $convocatoriaControla->limpiarNombreImagenConvocatoriaPracticas($nombreAntiguaImagenConvPracEdit);
+                       //Eliminamos la imagen previa en servidor de la convocatoria
+                       $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvPracEdit);
+
+                       $nuevoNombreArchivoImagenConvPractAEditar = $generador->generadorDeNombres().".jpg";
+                       $convocatoriaControla->subirImagenConvocatoriaPracticas($rutaDeImagenConvPracEdit, $nuevoNombreArchivoImagenConvPractAEditar, $imagenEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
                     }
 
                     $nuevoNombreArchivoImagenConvPracEdit = $generador->generadorDeNombres().".jpg";
@@ -281,7 +288,7 @@
                     
                 }
                 
-                //Verificamos si el usuario ha subido un archivo con el enunciado de la convocatoria comite
+                //Verificamos si el usuario ha subido un archivo con el enunciado de la convocatoria practicas
                 if(strlen($enunciadoEditDeConvPracticas) >= 1){
                     
                     $rutaDeEnunciadoConvPracEdit = $_FILES['archivoInfoDeConvocatoriaExtEdit']['tmp_name'];
@@ -291,11 +298,18 @@
 
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciadoConvPracEdit != null){
-                        $convocatoriaControla->eliminarEnunciado($nombreAntiguoEnunciadoConvPracEdit);
+                        
+                        //Eliminamos el nombre del enunciado en base de datos 
+                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaPracticas($nombreAntiguoEnunciadoConvPracEdit);
+                       //Eliminamos el enunciado previo en servidor de la convocatoria
+                       $convocatoriaControla->eliminarEnunciado($nombreAntiguoEnunciadoConvPracEdit);
+
+                       $nuevoNombreArchivoEnunciadoConvPractAEditar = $generador->generadorDeNombres().".pdf";
+                       $convocatoriaControla->subirEnunciadoConvocatoriaPracticas($rutaDeEnunciadoConvPracEdit, $nuevoNombreArchivoEnunciadoConvPractAEditar, $enunciadoEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
                     }
 
                     $nuevoNombreArchivoEnunciadoConvPracEdit = $generador->generadorDeNombres().".pdf";
-                    $convocatoriaControla->subirEnunciadoConvocatoriaComite($rutaDeEnunciadoConvPracEdit, $nuevoNombreArchivoEnunciadoConvPracEdit, $enunciadoEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
+                    $convocatoriaControla->subirEnunciadoConvocatoriaPracticas($rutaDeEnunciadoConvPracEdit, $nuevoNombreArchivoEnunciadoConvPracEdit, $enunciadoEditDeConvPracticas, $nombreDeConvocatoriaPracticasAEdit);
                 
                 }
                 
