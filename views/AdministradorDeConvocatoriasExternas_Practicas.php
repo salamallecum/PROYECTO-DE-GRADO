@@ -1,20 +1,8 @@
-
 <?php
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/ConvocatoriaControlador.php";
 
-    $objConvocatoriaControla = new ConvocatoriaControlador();
-    
-    //Capturamos la variable id de la convocatoria para la eliminacion de la misma
-    if(isset($_GET['Id'])){
-        $idConvocatoria = $_GET['Id'];
-
-        if($idConvocatoria > 0){           
-
-            if($objConvocatoriaControla->eliminarConvocatoriaPracticas($idConvocatoria) == 1){}
-        }
-    }
-
+    $obj = new ConvocatoriaControlador();
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +106,6 @@
                         <tbody>
                         <!--Script para cargar datos en tabla de Convocatorias-->      
                         <?php
-                            $obj = new ConvocatoriaControlador();
                             $sql = "SELECT Id, nombre_convocatoria, descripcion, fecha_inicio, fecha_fin, nombre_imagen from tbl_convocatoriapracticas";
                             $datos = $obj->mostrarDatosConvocatorias($sql);
                             foreach ($datos as $key){
@@ -232,12 +219,15 @@
                         
                         <div id="detallesDeConvocatorias_Practicas" class="modal-body">
                             
-                            <input type="hidden" id="idConvEdit" name="Id" value="">                           
+                            <input type="hidden" id="idConvDetalles" name="Id" value="">
+                            <input type="hidden" id="nombreEnunciadoConvDetalles" name="nombre_archivo" value="">
+                            <input type="hidden" id="nombreImagenConvDetalles" name="nombre_imagen" value="">
                             
                             <input type="text" class="detalleNombreConvocatoria" name="nombre_convocatoria" value="" disabled>
                             <br>
 
-                            <img class="imgConvocatoriaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">
+                            <!--Aqui ccolocamos la imagen de la convocatoria-->
+                            <span id="panelParaImagenDeLaConvocatoria"></span>
                             <br>
                             <br>
                                                             
@@ -257,9 +247,8 @@
                             </table>                           
                             <br>
 
-                            <button type="submit" name="actualizarConvocatoriaPracticas" class="btn_agregarConvocatoria" title="Desacargar enunciado">Enunciado</button>
-                            <br>
-                            <br>
+                            <!--Aqui construimos el link para la descarga del archivo de la convocatoria-->
+                            <span id="panelParaBotonDescargaEnunciado"></span>
 
                             <div class="panel-trabDesacadosEInsignias">
                                 
@@ -285,62 +274,11 @@
                                             <td class="datoTabla">AMAYA TORRES</td>
                                             <td class="datoTabla"><div class="compEsp-edicion">
                                                 <div class="col-botonesEdicion">
-                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                    <a href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
                                                 </div>
 
                                                 <div class="col-botonesEdicion">
-                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                </div>
-
-                                            </div></td>
-                                        </tr>
-
-                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                                        <tr class="filasDeDatosTablaEportafolios">
-                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                                            <td class="datoTabla">LUIS ALEJANDRO</td>
-                                            <td class="datoTabla">AMAYA TORRES</td>
-                                            <td class="datoTabla"><div class="compEsp-edicion">
-                                                <div class="col-botonesEdicion">
-                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                </div>
-
-                                                <div class="col-botonesEdicion">
-                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                </div>
-
-                                            </div></td>
-                                        </tr>
-
-                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                                        <tr class="filasDeDatosTablaEportafolios">
-                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                                            <td class="datoTabla">LUIS ALEJANDRO</td>
-                                            <td class="datoTabla">AMAYA TORRES</td>
-                                            <td class="datoTabla"><div class="compEsp-edicion">
-                                                <div class="col-botonesEdicion">
-                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                </div>
-
-                                                <div class="col-botonesEdicion">
-                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                </div>
-
-                                            </div></td>
-                                        </tr>
-
-                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                                        <tr class="filasDeDatosTablaEportafolios">
-                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                                            <td class="datoTabla">LUIS ALEJANDRO</td>
-                                            <td class="datoTabla">AMAYA TORRES</td>
-                                            <td class="datoTabla"><div class="compEsp-edicion">
-                                                <div class="col-botonesEdicion">
-                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                </div>
-
-                                                <div class="col-botonesEdicion">
-                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                    <a class="btnVerEportafolioEstudiante" data-id="<?php //echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>   
                                                 </div>
 
                                             </div></td>
@@ -452,31 +390,34 @@
                     </div>
 
                     <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
-                    <div id="modal_container5" class="modal_container" name="modal_container">
-                            <div class="modal">
-                                <h3 class="titulo_seccion">Compartir E-portafolio</h3>
-                                <br>
-                                <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
-                                <br>
+                    <div class="modal fade" id="modalCompartirEportafolio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Compartir E-portafolio</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
 
-                                <div class="formulario-comparitEportafolio">
-                                    <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
-                                        <label class="camposFormulario">Correo electrónico</label>
-                                        <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
-                                        <a id="btn_cancelar5" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
-                                    </form>
-                                    <!--Incluimos el archivo con la logica del formulario-->
-                                    <?php include("logic/capturaDatEportafolio.php") ?>
-                                </div>
-                                <br>
+                            <div class="formulario-comparitEportafolio">
+                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
+
+                                    <input type="text" name="Id" value=""> 
+
+                                    <label class="camposFormulario">Correo electrónico</label>
+                                    <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
+                                    <br>
+                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
+                                </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatEportafolio.php") ?>
                             </div>
                         </div>
+                        </div>
                     </div>
-                    
+                    </div>
+
                 </div>
             </main>
         </div>
@@ -489,14 +430,13 @@
 
         </script>
 
-        <!--Script que permite pasar los datos de una convocatoria a la ventana modal de detalles y edicion de la misma-->
+        <!--Script que permite pasar los datos de una convocatoria a la ventana modal de detalles de la misma-->
         <script type='text/javascript'>
             $(document).ready(function(){
                 
                 $('.btnDetallesConvPracticas').click(function(){
-                    console.log("here")
                     
-                    var idConvPracticasEdit = $(this).data('id');
+                    var idConvPracticasDetalles = $(this).data('id');
                    
                     function getFormInfo() {
                         return new Promise((resolve, reject) => {
@@ -504,7 +444,7 @@
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
-                                data: {idConvPracticasEdit: idConvPracticasEdit},
+                                data: {idConvPracticasDetalles: idConvPracticasDetalles},
                                 success: function(response){
                                     resolve(response)
                                 },
@@ -528,18 +468,83 @@
                         
                 });
             });
+        </script>
 
+        <!--Script que permite pasar el id de una convocatoria con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesConvPracticas').click(function(){
+                        
+                    var idConvPracticasEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaConvocatoria() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idConvPracticasEnunciado: idConvPracticasEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciado').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaConvocatoria();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una convocatoria con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesConvPracticas').click(function(){
+                        
+                    var idConvPracticasImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaConvocatoria() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {idConvPracticasImagen: idConvPracticasImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaConvocatoria').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaConvocatoria();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar los datos de una convocatoria a la ventana modal de edicion de la misma-->
+        <script type='text/javascript'>
             $(document).ready(function(){
                 
                 $('.btnEditarConvPracticas').click(function(){
-                    console.log("here")
                     
                     var idConvPracticasEdit = $(this).data('id');
-                    console.log(idConvPracticasEdit)
-                   
+                           
                     function getFormInfo() {
                         return new Promise((resolve, reject) => {
-                             // AJAX request
+                            // AJAX request
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
@@ -558,8 +563,6 @@
                         var data = $.parseJSON(response)[0];
                         var formId = '#formularioDeActualizacionDeConvocatorias_Practicas';
                         $.each(data, function(key, value){
-                            console.log(key);
-                            console.log(value);
                             $('[name='+key+']', formId).val(value);
                         });
                     })
@@ -572,15 +575,13 @@
             });
         </script>
 
-        <!--Script que permite pasar los datos de una convocatoria comite desde la BD a su ventana modal de eliminacion correspondiente-->
+        <!--Script que permite pasar los datos de una convocatoria practicas desde la BD a su ventana modal de eliminacion correspondiente-->
         <script type='text/javascript'>
 
-            //Aqui se pasan los datos para el caso de la competencia general
             $(document).ready(function(){
                 
                 $('.btnEliminarConvPracticas').click(function(){
-                    console.log("here")
-                    
+                                        
                     var idConvocatoriaPracticasElim = $(this).data('id');
                 
                     function getFormInfo() {
@@ -601,12 +602,9 @@
                     }
                     getFormInfo()
                     .then((response) => {
-                        console.log(response);
                         var data = $.parseJSON(response)[0];
                         var formId = '#formularioDeEliminacionDeConvocatorias';
                         $.each(data, function(key, value){
-                            console.log(key);
-                            console.log(value);
                             $('[name='+key+']', formId).val(value);
                         });
                     })
@@ -617,5 +615,7 @@
                 });
             });
         </script>
+
+        
     </body>
 </html>

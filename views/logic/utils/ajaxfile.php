@@ -1,11 +1,14 @@
 <?php
 include "Conexion.php";
 include "../controllers/CompetenciaControlador.php";
+include "../controllers/ConvocatoriaControlador.php";
+
 
 //Este archivo se encarga de traer de base de datos los datos de los objetos del sistema (sea Eventos, Convocatorias, Eportafolios o Competencias) 
 $c = new conectar();
 $conexion = $c->conexion();
 $competenciaControla = new CompetenciaControlador();
+$convocatoriaControla = new ConvocatoriaControlador();
 
 //Capturamos el evento del id de un evento a editar
 if(isset($_POST['idEventoEdit'])){
@@ -95,6 +98,116 @@ if(isset($_POST['idConvPracticasEdit'])){
     }
     echo json_encode($emparrayConvPracticas);
     exit;
+}
+
+//Capturamos el evento del id de una convocatoria practicas para ver detalles
+if(isset($_POST['idConvPracticasDetalles'])){
+
+    //Aqui traemos los datos de las convocatorias de practicas para ver su informacion-----------------------------------
+    $idConvPracticasDetalles = $_POST['idConvPracticasDetalles'];
+
+    $sql = "select * from tbl_convocatoriapracticas where Id=".$idConvPracticasDetalles;
+    $resultConvPracticasDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayConvPracticasDetail = array();
+    while($row =mysqli_fetch_assoc($resultConvPracticasDetail))
+    {
+        $emparrayConvPracticasDetail[] = $row;
+    }
+
+    echo json_encode($emparrayConvPracticasDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria conel fin de mostrar el boton dedescarga de enunciado en el modal de detalles
+if(isset($_POST['idConvPracticasEnunciado'])){
+
+    $idConvPracticasEnunciado = $_POST['idConvPracticasEnunciado'];
+
+    //Evaluamos si la convocatoria tiene un enunciado registrado en BD
+    $laConvocatoriaTieneEnunciado = $convocatoriaControla->consultarSiConvocatoriaPracticasTieneEnunciado($idConvPracticasEnunciado);
+
+    if($laConvocatoriaTieneEnunciado != null){
+        $botonDescargaEnunciado = '<a href="logic/utils/ajaxfile.php?download='.$laConvocatoriaTieneEnunciado.'" class="btn_descargarEnunciado" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciado;
+    }
+}
+
+//Capturamos el nombre del enunciado de convocatoria practicas para su descarga (boton descargar enunciado)
+if(isset($_REQUEST['download'])){
+
+    $nombreEnunciadoConvPracticasDescarga = $_REQUEST['download'];
+
+    $rutaBase = realpath($_SERVER["DOCUMENT_ROOT"]); 
+    $rutaArchivo = $rutaBase."/MockupsPandora/views/convocatoriasFiles/".$nombreEnunciadoConvPracticasDescarga;
+    $type = '';
+
+    if (is_file($rutaArchivo)) {
+        
+        $size = filesize($rutaArchivo);
+
+        if (function_exists('mime_content_type')) {
+            $type = mime_content_type($rutaArchivo);
+        } else if (function_exists('finfo_file')) {
+            $info = finfo_open(FILEINFO_MIME);
+            $type = finfo_file($info, $rutaArchivo);
+            finfo_close($info);
+        } 
+
+        if ($type == '') {
+            $type = "application/force-download";
+        }
+
+        // Definir headers
+        header("Content-Type: $type");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Content-Disposition: attachment; filename=".$nombreEnunciadoConvPracticasDescarga."");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: " . $size);
+        // Descargar archivo
+        readfile($rutaArchivo);
+    } else {
+        die("El archivo ".$nombreEnunciadoConvPracticasDescarga." no existe.");
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Capturamos el evento del id de una convocatoria conel fin de mostrar la imagen de una convocatoria en el modal de detalles
+if(isset($_POST['idConvPracticasImagen'])){
+
+    //Aqui traemos los datos de las convocatorias de practicas para ver su informacion-----------------------------------
+    $idConvPracticasImagen = $_POST['idConvPracticasImagen'];
+
+    //Evaluamos si la convocatoria tiene un enunciado registrado en BD
+    $laConvocatoriaTieneImagen = $convocatoriaControla->consultarSiConvocatoriaPracticasTieneImagen($idConvPracticasImagen);
+
+    if($laConvocatoriaTieneImagen != null){
+        $imagenGuardadaDeLaConvocatoria = '<img class="imgConvocatoriaDetalle" src="convocatoriasImages/'.$laConvocatoriaTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaConvocatoria;
+    }else{
+        $imagenPorDefectoDeLaConvocatoria = '<img class="imgConvocatoriaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaConvocatoria;
+    }
 }
 
 //Capturamos el evento del id de un evento a eliminar
@@ -286,128 +399,6 @@ if(isset($_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnteriori
     exit;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a un evento 
 if(isset($_POST['idEventoParaConsultarCompGeneralesRegistradasConAnterioridad'])){

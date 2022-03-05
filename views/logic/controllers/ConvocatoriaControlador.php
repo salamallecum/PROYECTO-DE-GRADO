@@ -413,7 +413,7 @@ class ConvocatoriaControlador{
         }
     }
 
-    //Funcion que clacula cuantas convocatorias hayregistradas en el sistema
+    //Funcion que clacula cuantas convocatorias hay registradas en el sistema
     public function contadorDeConvocatorias(){
 
         //Obtenemos cuantas convocatorias hayde comite y de practicas
@@ -507,6 +507,34 @@ class ConvocatoriaControlador{
         $sql = "UPDATE tbl_convocatoriapracticas SET nombre_archivo = null WHERE  nombre_archivo='$nombreEnunConPrac'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que nos permite identificar si una convocatoria practicas tiene un archivo de enunciado registrado
+    public function consultarSiConvocatoriaPracticasTieneEnunciado(int $idConvPracticas){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_archivo from tbl_convocatoriapracticas where Id=".$idConvPracticas;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_archivo'];
+        }
+    }
+
+    //Funcion que nos permite identificar si una convocatoria practicas tiene una imagen registrada
+    public function consultarSiConvocatoriaPracticasTieneImagen(int $idConvPract){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_imagen from tbl_convocatoriapracticas where Id=".$idConvPract;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_imagen'];
+        }
     }
 }
 ?>
