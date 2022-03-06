@@ -454,5 +454,23 @@
         $competenciaControla->eliminarCompetenciaEspecifica($idCompetenciaEspecificaAEliminar);
         header("Location: " . $_SERVER["HTTP_REFERER"]);
     }
+
+    //Capturamos el evento del id de una competencia general a editar
+    if(isset($_POST['idCompetenciaGralEdit'])){
+
+        //Aqui traemos los datos de las competencias generales para su edición-----------------------------------
+        $idCompetenciaGralEdit = $_POST['idCompetenciaGralEdit'];
+
+        $sql = "select id_comp_gral, codigo, nombre_comp_gral, rol from tbl_competencia_general where id_comp_gral=".$idCompetenciaGralEdit;
+        $resultCompGeneral = mysqli_query($conexion,$sql);
+
+        $emparrayCompGenerales = array();
+        while($row =mysqli_fetch_assoc($resultCompGeneral))
+        {
+            $emparrayCompGenerales[] = $row;
+        }
+        echo json_encode($emparrayCompGenerales);
+        exit;
+    }
     
 ?>

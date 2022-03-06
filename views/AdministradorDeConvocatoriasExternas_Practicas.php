@@ -284,23 +284,6 @@
                                             </div></td>
                                         </tr>
 
-                                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                                        <tr class="filasDeDatosTablaEportafolios">
-                                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                                            <td class="datoTabla">LUIS ALEJANDRO</td>
-                                            <td class="datoTabla">AMAYA TORRES</td>
-                                            <td class="datoTabla"><div class="compEsp-edicion">
-                                                <div class="col-botonesEdicion">
-                                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                </div>
-
-                                                <div class="col-botonesEdicion">
-                                                    <a name="openModal5" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                </div>
-
-                                            </div></td>
-                                        </tr>
-
                                     </table>
                                 </div>
                             </div>
@@ -400,18 +383,17 @@
                             <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
 
                             <div class="formulario-comparitEportafolio">
-                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
+                               
+                                <input type="text" name="Id" value=""> 
 
-                                    <input type="text" name="Id" value=""> 
-
-                                    <label class="camposFormulario">Correo electrónico</label>
-                                    <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
-                                    <br>
-                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatEportafolio.php") ?>
+                                <label class="camposFormulario">Correo electrónico</label>
+                                <input id="correoDestino" name="correoDestino" placeholder="" type="email" onclick="resetSpanShareEportafolio()" class="form-control" required="true">
+                                <br>
+                                <span id="panelConfirmacionDeEnvio"></span>  
+                                
+                                <button type="button" id="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                <button id="btnCerrarModalCompartirEportafolio" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
+                                                                       
                             </div>
                         </div>
                         </div>
@@ -422,10 +404,20 @@
             </main>
         </div>
 
+        <!--Funcion que cambia a mayuscula lo ingresado en un input-->
         <script>
             function cambiarAMayuscula(elemento){
                 let texto = elemento.value;
                 elemento.value = texto.toUpperCase();
+            }            
+
+        </script>
+
+        <!--Funcion que resetea el span de confirmacion de envio de eportafolio exitoso-->
+        <script>
+            function resetSpanShareEportafolio(){
+                document.getElementById("correoDestino").value = "";
+                document.getElementById('panelConfirmacionDeEnvio').innerHTML="";
             }            
 
         </script>
@@ -611,6 +603,44 @@
                     .catch((error) => {
                         console.log(error)
                     })
+                    
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el correo electronico ingresado en el modal de compartir eportafolio para que el eportafolio sea compartido con el usuario-->
+        <script type='text/javascript'>
+
+            $(document).ready(function(){
+                
+                $('#enviarEportafolio').click(function(){
+
+                    var emailDestinatario = document.getElementById('correoDestino').value;
+
+                    if (emailDestinatario != "") {
+
+                        function compartirEportafolio() {
+                            return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {emailDestinatario: emailDestinatario},
+                                    success: function(response){
+                                        resolve(response)
+                                        $('#panelConfirmacionDeEnvio').html(response);
+                                    },
+                                    error: function (error) {
+                                        reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        compartirEportafolio();
+
+                    }else{
+                        alert('Ingrese el correo de la persona con la que desea compartir este e-portafolio');
+                    }
                     
                 });
             });

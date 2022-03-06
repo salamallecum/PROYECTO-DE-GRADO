@@ -103,11 +103,11 @@
                             <td class="datoTabla">AMAYA TORRES</td>
                             <td class="datoTabla"><div class="compEsp-edicion">
                                 <div class="col-botonesEdicion">
-                                    <a name="" href="template_Eportafolio.php" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                    <a href="template_Eportafolio.php?IdEportafolio=2?IdUsuario=33" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
                                 </div>
 
                                 <div class="col-botonesEdicion">
-                                    <a name="openModal2" href="" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                    <a class="btnVerEportafolioEstudiante" data-id="<?php //echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>   
                                 </div>
 
                             </div></td>
@@ -116,32 +116,81 @@
                 </div>               
 
                 <!--ESTRUCTURA DEL POPUP PARA COMPARTIR UN E-PORTAFOLIO-->
-                <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Compartir E-portafolio</h3>
-                            <br>
+                <div class="modal fade" id="modalCompartirEportafolio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Compartir E-portafolio</h3>
+                        </div>
+                        <div class="modal-body">
                             <p>Ingrese el correo electrónico del usuario con el que desea compartir este e-portafolio.</p>
-                            <br>
 
                             <div class="formulario-comparitEportafolio">
-                                <form id="formularioParaCompartirEportafolio" action="logic/capturaDatEportafolio.php" method="POST">
-                                    <label class="camposFormulario">Correo electrónico</label>
-                                    <input name="correoDestino" placeholder="" type="email" class="form-control" required="true">
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <button type="submit" name="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
-                                    <a id="btn_cancelar2" class="btn_agregarConvocatoria" title="Cerrar">Cerrar</a>
-                                </form>
-                                <!--Incluimos el archivo con la logica del formulario-->
-                                <?php include("logic/capturaDatEportafolio.php") ?>
+                               
+                                <input type="text" name="Id" value=""> 
+
+                                <label class="camposFormulario">Correo electrónico</label>
+                                <input id="correoDestino" name="correoDestino" placeholder="" type="email" onclick="resetSpanShareEportafolio()" class="form-control" required="true">
+                                <br>
+                                <span id="panelConfirmacionDeEnvio"></span>  
+                                
+                                <button type="button" id="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                <button id="btnCerrarModalCompartirEportafolio" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
+                                                                       
                             </div>
-                            <br>
+                        </div>
                         </div>
                     </div>
-                </div>
+                    </div>
                 
             </main>
         </div>
+
+        <!--Funcion que resetea el span de confirmacion de envio de eportafolio exitoso-->
+        <script>
+            function resetSpanShareEportafolio(){
+                document.getElementById("correoDestino").value = "";
+                document.getElementById('panelConfirmacionDeEnvio').innerHTML="";
+            }            
+
+        </script>
+
+        <!--Script que permite pasar el correo electronico ingresado en el modal de compartir eportafolio para que el eportafolio sea compartido con el usuario-->
+        <script type='text/javascript'>
+
+            $(document).ready(function(){
+                
+                $('#enviarEportafolio').click(function(){
+
+                    var emailDestinatario = document.getElementById('correoDestino').value;
+
+                    if (emailDestinatario != "") {
+
+                        function compartirEportafolio() {
+                            return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {emailDestinatario: emailDestinatario},
+                                    success: function(response){
+                                        resolve(response)
+                                        $('#panelConfirmacionDeEnvio').html(response);
+                                    },
+                                    error: function (error) {
+                                        reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        compartirEportafolio();
+
+                    }else{
+                        alert('Ingrese el correo de la persona con la que desea compartir este e-portafolio');
+                    }
+                    
+                });
+            });
+        </script>
     </body>
 </html>

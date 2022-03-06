@@ -449,6 +449,7 @@
             </main>
         </div>
 
+        <!--Funcion que cambia a mayuscula lo ingresado en un input-->
         <script>
             function cambiarAMayuscula(elemento){
                 let texto = elemento.value;
