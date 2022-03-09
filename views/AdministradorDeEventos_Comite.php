@@ -396,8 +396,8 @@
                                     </tr>
                                 </table>                       
                                 <br>
-                                <button id="btn_analizarCompetencias" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="AnalizarComeptencias">Analizar</button>
-                                <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                <button id="btn_analizarCompetencias" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="Analizar Competencias">Analizar</button>
+                                <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cerrar">Cerrar</button>
                             </form>                           
                         </div>
                         </div>
@@ -416,9 +416,7 @@
                                 <br>
 
                                 <div class="contenedorEvaluacionCompetencias">
-
                                     <form id="formularioDeEvaluacionDeCompetenciasEspecificas">
-                                    
                                         <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="id_evento" value="">
                                         <br> 
 
@@ -430,10 +428,14 @@
                                                 
                                         </div>  
                                         <br>
-                                        <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
-                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
 
-                                    </form>
+                                        <span id="panelIndicadorDeRegistroDeEvaluacion"></span> 
+                                        <br>
+                                   </form>
+                                        
+                                    <button type="button" id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
+                                    <button type="button" class="btn btn-secondary" onclick="resetSpanEvaluacionCompEspecificas()" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cerrar">Cerrar</button>
+     
                                 </div> 
                             </div>
                             </div>
@@ -447,6 +449,14 @@
             function cambiarAMayuscula(elemento){
                 let texto = elemento.value;
                 elemento.value = texto.toUpperCase();
+            }            
+
+        </script>
+
+        <!--Funcion que resetea el span de confirmacion de evaluacion de competencias especificas-->
+        <script>
+            function resetSpanEvaluacionCompEspecificas(){
+                document.getElementById('panelIndicadorDeRegistroDeEvaluacion').innerHTML="";
             }            
 
         </script>
@@ -465,7 +475,7 @@
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
-                                data: {idEventoEdit: idEventoEdit},
+                                data: {'idEventoEdit': idEventoEdit},
                                 success: function(response){
                                     resolve(response)
                                 },
@@ -508,7 +518,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idEventoElim: idEventoElim},
+                                    data: {'idEventoElim': idEventoElim},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -549,7 +559,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idEventoAsigCompetencias: idEventoAsigCompetencias},
+                                    data: {'idEventoAsigCompetencias': idEventoAsigCompetencias},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -582,7 +592,7 @@
                         
                         //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
                         
-                        var idEventoAsigCompetencias = $(this).data('id');
+                        var idEventoEvaluacionCompetencias = $(this).data('id');
                     
                         function getFormInfo() {
                             return new Promise((resolve, reject) => {
@@ -590,7 +600,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idEventoAsigCompetencias: idEventoAsigCompetencias},
+                                    data: {'idEventoEvaluacionCompetencias': idEventoEvaluacionCompetencias},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -616,6 +626,8 @@
                 });
             </script>
 
+
+
             <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una -->
             <script type='text/javascript'>
                 $(document).ready(function() {
@@ -624,6 +636,10 @@
                         var compGenSeleccionadas = [];
 
                         var idEvento = document.getElementById('txt_idEventoAsigCompetencias').value;
+
+                        //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
+                        var idEventoParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad = document.getElementById('txt_idEventoEvaluacionCompetencias').value;
+                        var idEventoParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad = document.getElementById('txt_idEventoEvaluacionCompetencias').value;
 
                         $(":checkbox[name=compAContribuir]").each(function() {
                             if (this.checked) {
@@ -652,16 +668,83 @@
                                 })
                             }
 
+                            function obtenerArrayCodigosEvaluacionCompEspecificasRegistradasConAnterioridad() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idEventoParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad': idEventoParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad},
+                                        success: function(response){
+                                            resolve(response)
+                                        },
+                                        error: function (error) {
+                                        reject(error)
+                                        },
+                                    });
+                                })
+                            }   
+                        
+                            function obtenerArrayNivelesContribEvaluacionCompEspecificasRegistradasConAnterioridad() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idEventoParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad': idEventoParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad},
+                                        success: function(response){
+                                            resolve(response)
+                                        },
+                                        error: function (error) {
+                                        reject(error)
+                                        },
+                                    });
+                                })
+                            } 
+
                             envioCompGenerales();
-                                                       
+
+                            obtenerArrayCodigosEvaluacionCompEspecificasRegistradasConAnterioridad()
+                            .then((response) => {
+                                var dataCodigos = $.parseJSON(response)[0];
+                                let arrayCodigosCompEsp = [];
+
+                                $.each(dataCodigos, function(key, value){
+                                    arrayCodigosCompEsp = value.split(',');
+                                                                        
+                                    obtenerArrayNivelesContribEvaluacionCompEspecificasRegistradasConAnterioridad()
+                                    .then((response) => {
+                                        var dataNivContrib = $.parseJSON(response)[0];
+                                        let arrayNivelesContribCompEsp = [];
+                                        var formId = '#formularioDeEvaluacionDeCompetenciasEspecificas';
+                                        $.each(dataNivContrib, function(key, value){
+                                            arrayNivelesContribCompEsp = value.split(',');
+                                            
+                                            for(i=0; i<arrayCodigosCompEsp.length; i++){
+                                                $('input[name="'+arrayCodigosCompEsp[i]+'"][value="'+arrayNivelesContribCompEsp[i]+'"', formId).prop("checked", true);
+                                            }
+                                        
+                                        });   
+                                    })
+                                    .catch((error) => {
+                                        console.log(error)
+                                    }) 
+                                }); 
+                                    
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
+                                                        
                         } else
                             alert('Debes seleccionar al menos una competencia general.');
                     
                         return false;
+
                     });
                 });
-
             </script>
+
 
             <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la consulta de la asignacion de competencias registrada previamente en BD -->
             <script type='text/javascript'>
@@ -669,7 +752,6 @@
                     $('.btnAsignarCompetencias').click(function() {
                         
                         //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
-                        
                         var idEventoParaConsultarCompGeneralesRegistradasConAnterioridad = $(this).data('id');
                     
                         function getFormInfo() {
@@ -678,7 +760,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idEventoParaConsultarCompGeneralesRegistradasConAnterioridad: idEventoParaConsultarCompGeneralesRegistradasConAnterioridad},
+                                    data: {'idEventoParaConsultarCompGeneralesRegistradasConAnterioridad': idEventoParaConsultarCompGeneralesRegistradasConAnterioridad},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -705,5 +787,68 @@
                 });
             </script>
 
+            <!--Script que permite el registro de la evaluación de competencias específicas para un evento-->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('#btnGuardarNivelesContribucionEvento').click(function() {
+                        
+                        //En este bloque pasamos el id del evento para tener el cuenta en la insercion de datos
+                        var idEventoParaGuardarContribucionCompEspecificas = document.getElementById('txt_idEventoEvaluacionCompetencias').value;
+                        var contenedoresDeRespuestasNivelContribCompetencia = document.getElementsByClassName('contenedorRespContribucionCompEsp');
+                        var arregloCodigosCompEspecificas = []; 
+                        var arregloNivelesContribucionCompEspecificas = []; 
+                 
+
+                        for (let item of contenedoresDeRespuestasNivelContribCompetencia) {
+                            arregloCodigosCompEspecificas.push(item.id)  
+                        }
+                        
+                        //Recogemos lo marcado por el usario en los radiobuttons
+                        for (let item of arregloCodigosCompEspecificas) {
+                            var radioButtonsCmpEspecifica = document.getElementsByName(item);
+                            
+                            for (var i = 0, length = radioButtonsCmpEspecifica.length; i < length; i++) {
+                                if (radioButtonsCmpEspecifica[i].checked) {
+                                    arregloNivelesContribucionCompEspecificas.push(radioButtonsCmpEspecifica[i].value);
+                                    break;
+                                }
+                            }
+                        }
+
+                        var numeroDeCompEspecificas = arregloCodigosCompEspecificas.length;
+
+                        if(arregloNivelesContribucionCompEspecificas.length > 0 && arregloNivelesContribucionCompEspecificas.length == numeroDeCompEspecificas){
+
+                            function getFormEvaluacionDeCompetenciasEspecificas() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idEventoParaGuardarContribucionCompEspecificas': idEventoParaGuardarContribucionCompEspecificas, 'arregloCodigosCompEspecificas': JSON.stringify(arregloCodigosCompEspecificas), 'arregloNivelesContribucionCompEspecificas': JSON.stringify(arregloNivelesContribucionCompEspecificas)},
+                                        success: function(response){
+                                            resolve(response)
+                                            $('#panelIndicadorDeRegistroDeEvaluacion').html(response);
+                                            
+                                        },
+                                        error: function (error) {
+                                        reject(error)
+                                        console.log(error);
+                                        },
+                                    });
+                                })
+                            }
+                        
+                            getFormEvaluacionDeCompetenciasEspecificas();
+                                            
+                        }else{
+                            alert('Debe evaluar todas las competencias específicas propuestas');
+                            return false;
+                        }                     
+                        
+                    });
+                });
+            </script>
+            
     </body>
 </html>

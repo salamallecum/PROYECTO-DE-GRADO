@@ -578,13 +578,13 @@ class CompetenciaControlador{
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
-    //Funcion que consulta el id de la asignacion de competencias generales realizadas a un evento
-    public function consultarIdDeSeleccionDeCompetenciasGenerales(string $strSeleccionCompGenerales){
+    //Funcion que consulta el id de la asignacion de competencias generales realizadas a un actividad, sea evento o convocatoria
+    public function consultarIdDeSeleccionDeCompetenciasGenerales(int $idActividad, string $tipoActividad){
 
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT Id from tbl_contribcompgenerales_actividad where compAContribuir = $strSeleccionCompGenerales";
+        $sql = "SELECT Id from tbl_contribcompgenerales_actividad where id_actividad = $idActividad and tipo_actividad = '$tipoActividad'";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -592,7 +592,7 @@ class CompetenciaControlador{
         }
     }
 
-    //Funcion que permite consultar los codigos de las competencias especificaas para su evaluación
+    //Funcion que permite consultar los codigos de las competencias especificas para su evaluación
     public function consultarCodigosDeCompetenciasEspecificas(string $strSeleccionCompGenerales){
 
         $c = new conectar();
@@ -601,10 +601,31 @@ class CompetenciaControlador{
         $sql = "SELECT codigo from tbl_competencia_especifica where id_comp_gral in ($strSeleccionCompGenerales)";
         $result = mysqli_query($conexion, $sql);
 
+        $emparrayCodigosCompEspecificas = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayCodigosCompEspecificas[$contador] = $row['codigo'];
+            $contador++;
+        }
+
+        return $emparrayCodigosCompEspecificas;
+    }
+
+    //Funcion que permite consultar los ides de lacompetencias generales que contribuyen a una actividad
+    public function consultarCompetenciasGeneralesAlasQueContribuyeUnaActividad(int $idActividad, string $tipoActividad){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT compAContribuir from tbl_contribcompgenerales_actividad where id_actividad = $idActividad and tipo_actividad='$tipoActividad'";
+        $result = mysqli_query($conexion, $sql);
+
         while ($row = $result->fetch_assoc()) {
-            return $row['codigo'];
+            return $row['compAContribuir'];
         }
     }
+
 
     //Funcion que nos permite verificar si el evento tiene un registro de competencias generales previo
     public function verificarSiElEventoTieneRegistroDeCompGenerales(int $idDelEvento){
@@ -620,6 +641,20 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que nos permite verificar si el evento tiene un registro de competencias especificas previo
+    public function verificarSiElEventoTieneRegistroDeCompEspecificas(int $idDelEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad =".$idDelEvento." and tipo_actividad = 'EVENTO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }    
+
     //Funcion que nos permite verificar si la convocatoria tiene un registro de competencias generales previo
     public function verificarSiLaConvocatoriaTieneRegistroDeCompGenerales(int $idDeConvocatoria){
 
@@ -632,6 +667,28 @@ class CompetenciaControlador{
         while ($row = $result->fetch_assoc()) {
             return true;
         }
+    }
+
+    //Funcion que permite eliminar la asignacion de competencias generales guardada en BD para una actividad (Sea evento o Convocatoria)
+    public function eliminarAsignacionDeCompetenciasGenerales(int $idActividad, string $tipoActividad){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_contribcompgenerales_actividad where id_actividad = $idActividad and tipo_actividad = '$tipoActividad'";     
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que permite eliminar la asignacion de competencias especificas guardada en BD para una actividad (Sea evento o Convocatoria)
+    public function eliminarAsignacionDeCompetenciasEspecificas(int $idActividad, string $tipoActividad){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_contribcompespecificas_actividad where id_actividad = $idActividad and tipo_actividad = '$tipoActividad'";     
+               
+        return $result = mysqli_query($conexion, $sql);
     }
 
 }

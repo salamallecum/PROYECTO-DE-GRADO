@@ -2,11 +2,13 @@
 
     require_once "utils/Conexion.php";
     require_once "controllers/EventoControlador.php";
+    require_once "controllers/CompetenciaControlador.php";
     require_once "model/Evento.php";
     require_once "utils/generadorDeNombres.php";
 
     //Creamos el objeto controlador que invocará los metodos CRUD
     $eventoControla = new EventoControlador();
+    $competenciaControla = new CompetenciaControlador();
     $generador = new generadorNombres();
 
     //Capturamos el evento del boton de registro de evento
@@ -173,6 +175,19 @@
 
         $idEventoAEliminar = trim($_POST['id_evento']);
         $eventoControla->eliminarEvento($idEventoAEliminar);
+
+        $elEventoTieneRegCGPrevio = $competenciaControla->verificarSiElEventoTieneRegistroDeCompGenerales($idEventoAEliminar);
+
+        $elEventoTieneRegCEPrevio = $competenciaControla->verificarSiElEventoTieneRegistroDeCompEspecificas($idEventoAEliminar);
+
+        if($elEventoTieneRegCGPrevio){
+            $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idEventoAEliminar, 'EVENTO');
+        }
+
+        if($elEventoTieneRegCEPrevio){
+            $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idEventoAEliminar, 'EVENTO');
+        }
+
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 
     }

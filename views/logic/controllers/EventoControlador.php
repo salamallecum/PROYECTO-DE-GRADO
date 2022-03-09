@@ -131,8 +131,7 @@ class EventoControlador{
         
         if($nombreEnunciado != null){
             $this->eliminarEnunciado($nombreEnunciado);
-        }
-               
+        }            
         return $result = mysqli_query($conexion, $sql);
     }
 
@@ -275,6 +274,17 @@ class EventoControlador{
         $conexion = $c->conexion();      
                 
         $sql = "UPDATE tbl_evento SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunEvento'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que permite publicar un evento
+    public function publicarEvento(int $idEv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_evento SET competenciasAsignadas = 'Si' WHERE id_evento='$idEv'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
