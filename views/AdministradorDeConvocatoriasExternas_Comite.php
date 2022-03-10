@@ -357,14 +357,14 @@
                         </div>
                     </div>
                     </div>
+
                                      
-                    
-                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS GENERALES QUE CONTRIBUYEN A UNA CONVOCATORIA-->
+                    <!--POPUP PARA LA ASIGNACION DE COMPETENCIAS GENERALES QUE CONTRIBUYEN A UN EVENTO-->
                     <div class="modal fade" id="modalAsignarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias</h3>
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias generales</h3>
                         </div>
                         <div class="modal-body">
                             
@@ -401,30 +401,28 @@
                                     </tr>
                                 </table>                       
                                 <br>
-                                <button id="btn_analizarCompetencias" class="btn_agregarEvento" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="AnalizarComeptencias">Analizar</button>
-                                <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+                                <button id="btn_analizarCompetencias" class="btn_agregarConvocatoria" data-bs-toggle="modal" data-bs-target="#modalEvaluarCompetencias" title="Analizar Competencias">Analizar</button>
+                                <button id="btn_cancelarAsigCompetencias" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cerrar">Cerrar</button>
                             </form>                           
                         </div>
                         </div>
                         </div>
                     </div>
 
-                    <!--POPUP PARA LA EVALUACION DE LAS COMPETENCIAS ESPECIFICAS QUE CONTRIBUYEN A UNA CONVOCATORIA-->
+                    <!--POPUP PARA LA EVALUACION DE LAS COMPETENCIAS ESPECIFICAS QUE CONTRIBUYEN A UN EVENTO-->
                     <div class="modal fade" id="modalEvaluarCompetencias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias</h3>
+                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias específicas</h3>
                             </div>
                             <div class="modal-body">
                                 <p class="enunciadoModalCompetencias">Evalúe el nivel de competencia propuesto por la convocatoria para las siguientes competencias específicas: </p>
                                 <br>
 
                                 <div class="contenedorEvaluacionCompetencias">
-
                                     <form id="formularioDeEvaluacionDeCompetenciasEspecificas">
-                                    
-                                        <input type="hidden" id="txt_idEventoEvaluacionCompetencias" name="Id" value="">
+                                        <input type="hidden" id="txt_idConvocatoriaEvaluacionCompetencias" name="Id" value="">
                                         <br> 
 
                                         <!--Este es el código que contiene las competencias específicas a evaluar-->
@@ -435,10 +433,14 @@
                                                 
                                         </div>  
                                         <br>
-                                        <button id="btnGuardarNivelesContribucionEvento" class="btn_agregarEvento" title="Guardar">Guardar</button> 
-                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cancelar">Cancelar</button>
 
-                                    </form>
+                                        <span id="panelIndicadorDeRegistroDeEvaluacion"></span> 
+                                        <br>
+                                   </form>
+                                        
+                                    <button type="button" id="btnGuardarNivelesContribucionConvocatoria" class="btn_agregarConvocatoria" title="Guardar">Guardar</button> 
+                                    <button type="button" class="btn btn-secondary" onclick="resetSpanEvaluacionCompEspecificas()" data-bs-toggle="modal" data-bs-target="#modalAsignarCompetencias" title="Cerrar">Cerrar</button>
+     
                                 </div> 
                             </div>
                             </div>
@@ -454,6 +456,14 @@
             function cambiarAMayuscula(elemento){
                 let texto = elemento.value;
                 elemento.value = texto.toUpperCase();
+            }            
+
+        </script>
+
+        <!--Funcion que resetea el span de confirmacion de evaluacion de competencias especificas-->
+        <script>
+            function resetSpanEvaluacionCompEspecificas(){
+                document.getElementById('panelIndicadorDeRegistroDeEvaluacion').innerHTML="";
             }            
 
         </script>
@@ -474,7 +484,7 @@
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
-                                data: {idConvComiteEdit: idConvComiteEdit},
+                                data: {'idConvComiteEdit': idConvComiteEdit},
                                 success: function(response){
                                     resolve(response)
                                 },
@@ -518,7 +528,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idConvocatoriaComiteElim: idConvocatoriaComiteElim},
+                                    data: {'idConvocatoriaComiteElim': idConvocatoriaComiteElim},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -548,7 +558,6 @@
             </script>
 
             <!--Script que permite pasar el Id de la convocatoria comite para que sea tenida en cuenta en la insercion de los datos para la asignacion de competencias -->
-            
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
@@ -562,7 +571,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idConvocatoriaAsigCompetencias: idConvocatoriaAsigCompetencias},
+                                    data: {'idConvocatoriaAsigCompetencias': idConvocatoriaAsigCompetencias},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -594,7 +603,7 @@
                     $('.btnAsignarCompetencias').click(function() {
                         
                         //En este bloque pasamos el id de la convocatoria para tener el cuenta en la insercion de datos
-                        var idConvocatoriaAsigCompetencias = $(this).data('id');
+                        var idConvocatoriaEvaluacionCompetencias = $(this).data('id');
                     
                         function getFormInfo() {
                             return new Promise((resolve, reject) => {
@@ -602,7 +611,7 @@
                                 $.ajax({
                                     url: 'logic/utils/ajaxfile.php',
                                     type: 'post',
-                                    data: {idConvocatoriaAsigCompetencias: idConvocatoriaAsigCompetencias},
+                                    data: {'idConvocatoriaEvaluacionCompetencias': idConvocatoriaEvaluacionCompetencias},
                                     success: function(response){
                                         resolve(response)
                                     },
@@ -628,7 +637,7 @@
                 });
             </script>
 
-            <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una-->
+            <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una -->
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('#btn_analizarCompetencias').click(function() {
@@ -636,6 +645,10 @@
                         var compGenSeleccionadas = [];
 
                         var idConvocatoria = document.getElementById('txt_idConvocatoriaAsigCompetencias').value;
+
+                        //En este bloque pasamos el id de la convocatoria para tener el cuenta en la insercion de datos
+                        var idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad = document.getElementById('txt_idConvocatoriaEvaluacionCompetencias').value;
+                        var idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad = document.getElementById('txt_idConvocatoriaEvaluacionCompetencias').value;
 
                         $(":checkbox[name=compAContribuir]").each(function() {
                             if (this.checked) {
@@ -664,15 +677,85 @@
                                 })
                             }
 
+                            function obtenerArrayCodigosEvaluacionCompEspecificasRegistradasConAnterioridad() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad': idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad},
+                                        success: function(response){
+                                            resolve(response)
+                                            //console.log('Trajo los codigos de la BD - Convocatoria');
+                                        },
+                                        error: function (error) {
+                                            reject(error)
+                                            //console.log('No trajo los codigos de la BD - Convocatoria', error);
+                                        },
+                                    });
+                                })
+                            }   
+                        
+                            function obtenerArrayNivelesContribEvaluacionCompEspecificasRegistradasConAnterioridad() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad': idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad},
+                                        success: function(response){
+                                            resolve(response)
+                                            //console.log('Trajo los niveles de la BD - Convocatoria');
+                                        },
+                                        error: function (error) {
+                                            reject(error)
+                                            //console.log('No trajo los niveles de la BD - Convocatoria', error);
+                                        },
+                                    });
+                                })
+                            } 
+
                             envioCompGenerales();
-                                                       
+
+                            obtenerArrayCodigosEvaluacionCompEspecificasRegistradasConAnterioridad()
+                            .then((response) => {
+                                var dataCodigos = $.parseJSON(response)[0];
+                                let arrayCodigosCompEsp = [];
+
+                                $.each(dataCodigos, function(key, value){
+                                    arrayCodigosCompEsp = value.split(',');
+                                                                        
+                                    obtenerArrayNivelesContribEvaluacionCompEspecificasRegistradasConAnterioridad()
+                                    .then((response) => {
+                                        var dataNivContrib = $.parseJSON(response)[0];
+                                        let arrayNivelesContribCompEsp = [];
+                                        var formId = '#formularioDeEvaluacionDeCompetenciasEspecificas';
+                                        $.each(dataNivContrib, function(key, value){
+                                            arrayNivelesContribCompEsp = value.split(',');
+                                            
+                                            for(i=0; i<arrayCodigosCompEsp.length; i++){
+                                                $('input[name="'+arrayCodigosCompEsp[i]+'"][value="'+arrayNivelesContribCompEsp[i]+'"', formId).prop("checked", true);
+                                            }
+                                        
+                                        });   
+                                    })
+                                    .catch((error) => {
+                                        console.log(error)
+                                    }) 
+                                }); 
+                                    
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
+                                                        
                         } else
                             alert('Debes seleccionar al menos una competencia general.');
                     
                         return false;
+
                     });
                 });
-
             </script>
             
             <!--Script que permite pasar el Id de la convocatoria para que sea tenido en cuenta en la consulta de la asignacion de competencias registrada previamente en BD-->
@@ -713,6 +796,69 @@
                         }) 
                     });
                     
+                });
+            </script>
+
+            <!--Script que permite el registro de la evaluación de competencias específicas para una convocatoria-->
+            <script type='text/javascript'>
+                $(document).ready(function() {
+                    $('#btnGuardarNivelesContribucionConvocatoria').click(function() {
+                        
+                        //En este bloque pasamos el id de laconvocatoria para tener el cuenta en la insercion de datos
+                        var idConvocatoriaParaGuardarContribucionCompEspecificas = document.getElementById('txt_idConvocatoriaEvaluacionCompetencias').value;
+                        var contenedoresDeRespuestasNivelContribCompetencia = document.getElementsByClassName('contenedorRespContribucionCompEsp');
+                        var arregloCodigosCompEspecificas = []; 
+                        var arregloNivelesContribucionCompEspecificas = []; 
+                 
+
+                        for (let item of contenedoresDeRespuestasNivelContribCompetencia) {
+                            arregloCodigosCompEspecificas.push(item.id)  
+                        }
+                        
+                        //Recogemos lo marcado por el usario en los radiobuttons
+                        for (let item of arregloCodigosCompEspecificas) {
+                            var radioButtonsCmpEspecifica = document.getElementsByName(item);
+                            
+                            for (var i = 0, length = radioButtonsCmpEspecifica.length; i < length; i++) {
+                                if (radioButtonsCmpEspecifica[i].checked) {
+                                    arregloNivelesContribucionCompEspecificas.push(radioButtonsCmpEspecifica[i].value);
+                                    break;
+                                }
+                            }
+                        }
+
+                        var numeroDeCompEspecificas = arregloCodigosCompEspecificas.length;
+
+                        if(arregloNivelesContribucionCompEspecificas.length > 0 && arregloNivelesContribucionCompEspecificas.length == numeroDeCompEspecificas){
+
+                            function getFormEvaluacionDeCompetenciasEspecificas() {
+                                return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                    $.ajax({
+                                        url: 'logic/utils/ajaxfile.php',
+                                        type: 'post',
+                                        data: {'idConvocatoriaParaGuardarContribucionCompEspecificas': idConvocatoriaParaGuardarContribucionCompEspecificas, 'arregloCodigosCompEspecificas': JSON.stringify(arregloCodigosCompEspecificas), 'arregloNivelesContribucionCompEspecificas': JSON.stringify(arregloNivelesContribucionCompEspecificas)},
+                                        success: function(response){
+                                            resolve(response)
+                                            $('#panelIndicadorDeRegistroDeEvaluacion').html(response);
+                                            
+                                        },
+                                        error: function (error) {
+                                        reject(error)
+                                        console.log(error);
+                                        },
+                                    });
+                                })
+                            }
+                        
+                            getFormEvaluacionDeCompetenciasEspecificas();
+                                            
+                        }else{
+                            alert('Debe evaluar todas las competencias específicas propuestas');
+                            return false;
+                        }                     
+                        
+                    });
                 });
             </script>
             

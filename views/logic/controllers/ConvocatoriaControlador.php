@@ -536,5 +536,16 @@ class ConvocatoriaControlador{
             return $row['nombre_imagen'];
         }
     }
+
+    //Funcion que permite publicar una convocatoria comite
+    public function publicarConvocatoria(int $idConv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriacomite SET competenciasAsignadas = 'Si' WHERE Id='$idConv'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
 }
 ?>

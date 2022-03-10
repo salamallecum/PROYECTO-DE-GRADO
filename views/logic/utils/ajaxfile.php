@@ -343,6 +343,348 @@ if(isset($_POST['idConvocatoriaComiteElim'])){
     exit;
 }
 
+//Capturamos el evento del id de una convocatoria para asignar competencias
+if(isset($_POST['idConvocatoriaAsigCompetencias'])){
+
+    //Aqui traemos el id del evento para su asignacion de competencias-----------------------------------
+    $idConvocatoriaAsigCompetencias = $_POST['idConvocatoriaAsigCompetencias'];
+
+    //Query que trae los id de los eventos para su muestreo
+    $sql = "select Id from tbl_convocatoriacomite where Id=".$idConvocatoriaAsigCompetencias;
+    $resultCompAsigConvocatoria = mysqli_query($conexion,$sql);
+
+    $emparrayAsigCompConvocatoria = array();
+
+    while($row =mysqli_fetch_assoc($resultCompAsigConvocatoria))
+    {
+        $emparrayAsigCompConvocatoria[] = $row;
+
+    }
+
+    echo json_encode($emparrayAsigCompConvocatoria);
+
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria a evaluar competencias
+if(isset($_POST['idConvocatoriaEvaluacionCompetencias'])){
+
+    //Aqui traemos el id del evento para su asignacion de competencias-----------------------------------
+    $idConvocatoriaEvaluacionCompetencias = $_POST['idConvocatoriaEvaluacionCompetencias'];
+
+    //Query que trae los id de los eventos para su muestreo
+    $sql = "select Id from tbl_convocatoriacomite where Id=".$idConvocatoriaEvaluacionCompetencias;
+    $resultCompEvaluaConvocatoria = mysqli_query($conexion,$sql);
+
+    $emparrayEvaluacionCompConvocatoria = array();
+
+    while($row =mysqli_fetch_assoc($resultCompEvaluaConvocatoria))
+    {
+        $emparrayEvaluacionCompConvocatoria[] = $row;
+
+    }
+
+    echo json_encode($emparrayEvaluacionCompConvocatoria);
+
+    exit;
+}
+
+//Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a una convocatoria
+if(isset($_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'])){
+
+    //Aqui traemos el id de la convocatoria para verificar si tiene una asignacion de competencias previa-----------------------------------
+    $idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad = $_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'];
+
+    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad." and tipo_actividad = 'CONVOCATORIA'";
+    $resultCompGeneralesPrevRegistradasConvocatoria = mysqli_query($conexion,$sql);
+
+    $emparrayCompGeneralesPrevRegistradasConvocatoria = array();
+    while($row =mysqli_fetch_assoc($resultCompGeneralesPrevRegistradasConvocatoria))
+    {
+        $emparrayCompGeneralesPrevRegistradasConvocatoria[] = $row;
+    }
+    echo json_encode($emparrayCompGeneralesPrevRegistradasConvocatoria);
+    exit;
+
+}
+
+//Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para una convocatoria (boton analizar)
+if(isset($_POST['arrayCompetencias']) && isset($_POST['idConvocatoria'])){
+
+    $dataCompetenciasGeneralesConv = json_decode(stripslashes($_POST['arrayCompetencias']));
+    $idConvocatoria = $_POST['idConvocatoria'];
+    $arrayCompGeneralesParaConvocatoria = implode(",", $dataCompetenciasGeneralesConv);
+    $codigoHtmlConv = "";
+    $codigoHtmlConvEdicion = "";
+
+    //Aqui verificamos si ya hay un registro de competencias generales con anterioridad
+    $laConvocatoriaTieneRegistroDeCompGeneralesPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompGenerales($idConvocatoria);
+
+    if($laConvocatoriaTieneRegistroDeCompGeneralesPrevio){
+
+        //Actualizamos la seleccion de competencias generales en el registro previamente ingresado 
+        $sqlConv = "UPDATE tbl_contribcompgenerales_actividad SET compAContribuir= '".$arrayCompGeneralesParaConvocatoria."' where id_actividad=".$idConvocatoria. " and tipo_actividad='CONVOCATORIA'";
+        mysqli_query($conexion, $sqlConv) or die(mysqli_error($conexion));
+
+    }else{
+
+        //Insertamos la seleccion de competencias generales a la BD
+        $sqlInsertCGConv = "INSERT INTO tbl_contribcompgenerales_actividad VALUES (0, $idConvocatoria, 'CONVOCATORIA', '$arrayCompGeneralesParaConvocatoria')";
+        mysqli_query($conexion, $sqlInsertCGConv) or die(mysqli_error($conexion));
+        
+    }
+
+    //Aqui verificamos si ya hay un evaluacion de competencias especificas con anterioridad
+    $laConvocatoriaTieneRegistroDeCompEspecificasPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompEspecificas($idConvocatoria);
+
+    $arrayCodigosDeCompEspecificasImplicadasConv = $competenciaControla->consultarCodigosDeCompetenciasEspecificas($arrayCompGeneralesParaConvocatoria);
+    $stringCodigosDeCompEspecificasImplicadasConv = implode(",", $arrayCodigosDeCompEspecificasImplicadasConv);
+    $idDeSeleccionDeCompetenciasGeneralesConv = $competenciaControla->consultarIdDeSeleccionDeCompetenciasGenerales($idConvocatoria, 'CONVOCATORIA');
+    $stringIdesComGeneralesDeContribucionActualizadasConv = $competenciaControla->consultarCompetenciasGeneralesAlasQueContribuyeUnaActividad($idConvocatoria, 'CONVOCATORIA');
+
+    if($laConvocatoriaTieneRegistroDeCompEspecificasPrevio){
+
+        //Actualizamos la seleccion de competencias especificas en el registro previamente ingresado 
+        $sqlCEConv = "UPDATE tbl_contribcompespecificas_actividad SET codigosCompEspecificas= '".$stringCodigosDeCompEspecificasImplicadasConv."' where id_actividad=".$idConvocatoria. " and tipo_actividad='CONVOCATORIA'";
+        mysqli_query($conexion, $sqlCEConv) or die(mysqli_error($conexion));
+
+        //Consultamos la nueva seleccion de competencias especificas para su evaluacion teniendo en cuenta el array de codigos obtenido
+        $sqlCompEspActualizacionConvocatoria = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$stringIdesComGeneralesDeContribucionActualizadasConv.")";
+        $resultCompEspActualizacionConv = mysqli_query($conexion, $sqlCompEspActualizacionConvocatoria);
+    
+        foreach($resultCompEspActualizacionConv as $ver)
+            {
+                $codigoHtmlConv = $codigoHtmlConv.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                        
+                                                '<table class="contenedorRespContribucionCompEsp" id="'.$ver['codigo'].'">
+                                                    <tr>
+                                                        <td><input type="radio" name="'.$ver['codigo'].'" value="BAJA">
+                                                        <label for="Baja">Baja</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="MEDIA">
+                                                        <label for="Media">Media</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="ALTA">
+                                                        <label for="Alta">Alta</label></td>
+        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="N/A">
+                                                        <label for="No aplica">No aplica</label></td>
+        
+                                                    </tr>
+                                                </table>
+                                                <br>';           
+            }
+            
+        echo $codigoHtmlConv;
+
+    }else{
+
+        //Cargamos el listado de competencias especificas como formulario en blanco si el evento no tiene evaluacion de comp especificas previa o con los datos de las evaluaciones de las comp especificas previamente realizadas mediante ajax
+        $sqlCompEspecificasConvovatoria = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$arrayCompGeneralesParaConvocatoria.")";
+        $resultCompEspecificasAEvaluarConv = mysqli_query($conexion, $sqlCompEspecificasConvovatoria);
+
+        foreach($resultCompEspecificasAEvaluarConv as $ver){
+                $codigoHtmlConvEdicion = $codigoHtmlConvEdicion.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                        
+                                                '<table class="contenedorRespContribucionCompEsp" id="'.$ver['codigo'].'">
+                                                    <tr>
+                                                        <td><input type="radio" name="'.$ver['codigo'].'" value="BAJA">
+                                                        <label for="Baja">Baja</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="MEDIA">
+                                                        <label for="Media">Media</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="ALTA">
+                                                        <label for="Alta">Alta</label></td>
+        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="N/A">
+                                                        <label for="No aplica">No aplica</label></td>
+        
+                                                    </tr>
+                                                </table>
+                                                <br>';           
+            }
+            
+        echo $codigoHtmlConvEdicion;
+        
+    }
+}
+
+//Capturamos los array para el registro de la evaluacion realizada a las competencias especificas que contribuyen a una convocatoria
+if(isset($_POST['idConvocatoriaParaGuardarContribucionCompEspecificas']) && isset($_POST['arregloCodigosCompEspecificas']) && isset($_POST['arregloNivelesContribucionCompEspecificas'])) {
+
+    //Capturamos los datos de los campos del formulario
+    $idConvocatoriaParaGuardarContribucionCompEspecificas = trim($_POST['idConvocatoriaParaGuardarContribucionCompEspecificas']);
+    $arregloCodigosCompEspecificasConv = json_decode(stripslashes($_POST['arregloCodigosCompEspecificas']));
+    $arregloNivelesContribucionCompEspecificasConv = json_decode(stripslashes($_POST['arregloNivelesContribucionCompEspecificas']));
+    
+    $confirmacionEvaluacionCompetenciasExitosa = '<p class="indicadorSatisfactorio">* Evaluación de competencias registrada satisfactoriamente</p><br>';
+    $confirmacionEdicionEvaluacionCompetenciasExitosa = '<p class="indicadorSatisfactorio">* Evaluación de competencias actualizada satisfactoriamente</p><br>';
+
+    //Convertimos los arreglos de los codigos y los niveles de contribucion a string
+    $stringArregloCodigosCompEspecificasConv = implode(",", $arregloCodigosCompEspecificasConv);
+    $stringArregloNivelesContribucionCompEspecificasConv  = implode(",", $arregloNivelesContribucionCompEspecificasConv);
+
+    //Aqui verificamos si ya hay un registro de competencias especificas con anterioridad
+    $laConvocatoriaTieneRegistroDeCompEspecificasPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompEspecificas($idConvocatoriaParaGuardarContribucionCompEspecificas);
+
+    if($laConvocatoriaTieneRegistroDeCompEspecificasPrevio){
+
+        //Actualizamos la seleccion de competencias especificas en el registro previamente ingresado 
+        $sqlCompEspConvocato = "UPDATE tbl_contribcompespecificas_actividad SET codigosCompEspecificas= '".$stringArregloCodigosCompEspecificasConv."', nivelesDeContribucion= '".$stringArregloNivelesContribucionCompEspecificasConv."' where id_actividad=".$idConvocatoriaParaGuardarContribucionCompEspecificas. " and tipo_actividad='CONVOCATORIA'";
+        mysqli_query($conexion, $sqlCompEspConvocato) or die(mysqli_error($conexion)); 
+        
+        echo $confirmacionEdicionEvaluacionCompetenciasExitosa;
+
+    }else{
+
+        //Consultamos el id del registro que contiene la seleccion de competencias generales realizada
+        $idSeleccionDeCompetenciasGeneralesCnv = $competenciaControla->consultarIdDeSeleccionDeCompetenciasGenerales($idConvocatoriaParaGuardarContribucionCompEspecificas, 'CONVOCATORIA');
+
+        //Insertamos la evaluacion de competencias especificas a la BD
+        $sqlInsConv = "INSERT INTO tbl_contribcompespecificas_actividad VALUES (0, $idSeleccionDeCompetenciasGeneralesCnv, $idConvocatoriaParaGuardarContribucionCompEspecificas, 'CONVOCATORIA', '$stringArregloCodigosCompEspecificasConv', '$stringArregloNivelesContribucionCompEspecificasConv')";
+        mysqli_query($conexion, $sqlInsConv) or die(mysqli_error($conexion));
+
+        //Ajustamos el atributo de publicacion de la convocatoria en la tabla convovcatorias comite con el fin de que este quede publicado
+        $convocatoriaControla->publicarConvocatoria($idConvocatoriaParaGuardarContribucionCompEspecificas);
+
+        echo $confirmacionEvaluacionCompetenciasExitosa;
+
+    }
+}
+
+//Capturamos el evento que nos permite consultar los codigos de las competencias especificas previamente evaluadas como contribucion a una convocatoria
+if(isset($_POST['idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad'])){
+
+    //Aqui traemos el id de la convocatoria para verificar si tiene una evaluación de competencias previa-----------------------------------
+    $idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad = $_POST['idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad'];
+
+    $sqlCodConv = "select codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad=".$idConvocatoriaParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad." and tipo_actividad = 'CONVOCATORIA'";
+    $resultCodigosCompEspecificasPrevRegistradasConvocatoriaCom = mysqli_query($conexion,$sqlCodConv);
+
+    $emparrayCodigosCompEspecificasPrevRegistradasConvocatoria = array();
+    while($row =mysqli_fetch_assoc($resultCodigosCompEspecificasPrevRegistradasConvocatoriaCom))
+    {
+        $emparrayCodigosCompEspecificasPrevRegistradasConvocatoria[] = $row;
+    }
+    echo json_encode($emparrayCodigosCompEspecificasPrevRegistradasConvocatoria);
+    exit;
+
+}
+
+//Capturamos el evento que nos permite consultar los niveles de contribucion de las competencias especificas a una convocatoria
+if(isset($_POST['idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad'])){
+
+    //Aqui traemos el id del evento para verificar si tiene una evaluación de competencias previa-----------------------------------
+    $idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad = $_POST['idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad'];
+
+    $sqlNivContribConv = "select nivelesDeContribucion from tbl_contribcompespecificas_actividad where id_actividad=".$idConvocatoriaParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad." and tipo_actividad = 'CONVOCATORIA'";
+    $resultNivelesContribCompEspecificasPrevRegistradasConvocatoriaCom = mysqli_query($conexion, $sqlNivContribConv);
+
+    $emparrayNivelesContribCompEspecificasPrevRegistradasConvocatoria = array();
+    while($row =mysqli_fetch_assoc($resultNivelesContribCompEspecificasPrevRegistradasConvocatoriaCom))
+    {
+        $emparrayNivelesContribCompEspecificasPrevRegistradasConvocatoria[] = $row;
+    }
+    echo json_encode($emparrayNivelesContribCompEspecificasPrevRegistradasConvocatoria);
+    exit;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Capturamos el evento del id de una convocatoria practicas a eliminar
 if(isset($_POST['idConvocatoriaPracticasElim'])){
 
@@ -493,6 +835,7 @@ if(isset($_POST['idConvocatoriaAsigCompetencias'])){
     exit;
 }
 
+/*
 //Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para una convocatoria (boton analizar)
 if(isset($_POST['arrayCompetencias']) && isset($_POST['idConvocatoria'])){
 
@@ -545,25 +888,49 @@ if(isset($_POST['arrayCompetencias']) && isset($_POST['idConvocatoria'])){
     
     echo $codigoHtml; 
 }
+*/
 
-//Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a una convocatoria
-if(isset($_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'])){
 
-    //Aqui traemos el id de la convocatoria para verificar si tiene una asignacion de competencias previa-----------------------------------
-    $idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad = $_POST['idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad'];
 
-    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idConvocatoriaParaConsultarCompGeneralesRegistradasConAnterioridad." and tipo_actividad = 'CONVOCATORIA'";
-    $resultCompGeneralesPrevRegistradasConvocatoria = mysqli_query($conexion,$sql);
 
-    $emparrayCompGeneralesPrevRegistradasConvocatoria = array();
-    while($row =mysqli_fetch_assoc($resultCompGeneralesPrevRegistradasConvocatoria))
-    {
-        $emparrayCompGeneralesPrevRegistradasConvocatoria[] = $row;
-    }
-    echo json_encode($emparrayCompGeneralesPrevRegistradasConvocatoria);
-    exit;
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

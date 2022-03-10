@@ -359,7 +359,7 @@
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias</h3>
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Asignación de competencias generales</h3>
                         </div>
                         <div class="modal-body">
                             
@@ -409,7 +409,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias</h3>
+                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de competencias específicas</h3>
                             </div>
                             <div class="modal-body">
                                 <p class="enunciadoModalCompetencias">Evalúe el nivel de competencia propuesto por el evento para las siguientes competencias específicas: </p>
@@ -585,7 +585,7 @@
                 });
             </script>
 
-            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la Evaluacion de las competencias especificas -->
+            <!--Script que permite pasar el Id del evento para que sea tenido en cuenta en la insercion de los datos para la Evaluacion de las competencias especificas-->
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $('.btnAsignarCompetencias').click(function() {
@@ -625,7 +625,7 @@
                     
                 });
             </script>
-
+            
 
 
             <!--Script que permite pasar el array de competencias generales seleccionadas para que puedan ser evaluadas sus competencias especificas y determinar el nivel de contribucion de cada una -->
@@ -677,9 +677,11 @@
                                         data: {'idEventoParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad': idEventoParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad},
                                         success: function(response){
                                             resolve(response)
+                                            //console.log('Trajo los codigos de la BD - Eventos');
                                         },
                                         error: function (error) {
-                                        reject(error)
+                                            reject(error)
+                                            //console.log('No trajo los codigos de la BD - Eventos', error);
                                         },
                                     });
                                 })
@@ -694,15 +696,15 @@
                                         data: {'idEventoParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad': idEventoParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad},
                                         success: function(response){
                                             resolve(response)
+                                            //console.log('Trajo los niveles de la BD - Eventos');
                                         },
                                         error: function (error) {
-                                        reject(error)
+                                            reject(error)
+                                            //console.log('No trajo los niveles de la BD - Eventos', error);
                                         },
                                     });
                                 })
                             } 
-
-                            envioCompGenerales();
 
                             obtenerArrayCodigosEvaluacionCompEspecificasRegistradasConAnterioridad()
                             .then((response) => {
@@ -735,6 +737,8 @@
                             .catch((error) => {
                                 console.log(error)
                             })
+
+                            envioCompGenerales();
                                                         
                         } else
                             alert('Debes seleccionar al menos una competencia general.');

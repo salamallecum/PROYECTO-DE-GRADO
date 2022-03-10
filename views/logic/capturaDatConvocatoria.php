@@ -2,14 +2,16 @@
 
     require_once "utils/Conexion.php";
     require_once "controllers/ConvocatoriaControlador.php";
+    require_once "controllers/CompetenciaControlador.php";
     require_once "model/ConvocatoriaComite.php";
     require_once "model/ConvocatoriaPracticas.php";
     require_once "utils/generadorDeNombres.php";
 
     $generador = new generadorNombres();
 
-    //Creamos el objeto controlador que invocará los metodos CRUD
+    //Creamos los objetos controlador que invocarán los metodos CRUD
     $convocatoriaControla = new ConvocatoriaControlador();
+    $competenciaControla = new CompetenciaControlador();
 
     //Capturamos el evento del boton de registro de convocatorias del rol comite
     if(isset($_POST['guardarConvocatoriaComite'])){
@@ -338,6 +340,19 @@
 
         $idConvocatoriaComiteAEliminar = trim($_POST['Id']);
         $convocatoriaControla->eliminarConvocatoriaComite($idConvocatoriaComiteAEliminar);
+
+        $laConvComiteTieneRegCGPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompGenerales($idConvocatoriaComiteAEliminar);
+
+        $laConvComiteTieneRegCEPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompEspecificas($idConvocatoriaComiteAEliminar);
+
+        if($laConvComiteTieneRegCGPrevio){
+            $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idConvocatoriaComiteAEliminar, 'CONVOCATORIA');
+        }
+
+        if($laConvComiteTieneRegCEPrevio){
+            $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idConvocatoriaComiteAEliminar, 'CONVOCATORIA');
+        }
+
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 
     }

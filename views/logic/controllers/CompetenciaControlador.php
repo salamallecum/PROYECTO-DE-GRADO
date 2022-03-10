@@ -669,6 +669,20 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que nos permite verificar si la convocatoria tiene un registro de competencias especificas previo
+    public function verificarSiLaConvocatoriaTieneRegistroDeCompEspecificas(int $idDeConv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad =".$idDeConv." and tipo_actividad = 'CONVOCATORIA'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }  
+
     //Funcion que permite eliminar la asignacion de competencias generales guardada en BD para una actividad (Sea evento o Convocatoria)
     public function eliminarAsignacionDeCompetenciasGenerales(int $idActividad, string $tipoActividad){
 
