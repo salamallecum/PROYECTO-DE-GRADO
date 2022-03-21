@@ -420,6 +420,10 @@
                 document.getElementById('panelConfirmacionDeEnvio').innerHTML="";
             }            
 
+            //Asignamos elevento de reseteo al boton que cierrael modal de compartir eportafolios
+            $('#btnCerrarModalCompartirEportafolio').click(function(){
+                resetSpanShareEportafolio();
+            });
         </script>
 
         <!--Script que permite pasar los datos de una convocatoria a la ventana modal de detalles de la misma-->
@@ -623,7 +627,7 @@
                             return new Promise((resolve, reject) => {
                                     // AJAX request
                                 $.ajax({
-                                    url: 'logic/utils/ajaxfile.php',
+                                    url: 'EportafolioService/capturaDatEportafolio.php',
                                     type: 'post',
                                     data: {emailDestinatario: emailDestinatario},
                                     success: function(response){

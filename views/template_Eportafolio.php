@@ -165,7 +165,7 @@
                 <label class="tituloInsignias">Insignias</label>
                 <br>
                 <br>
-                <label class="tituloEvidencias">Haga click sobre cada uno de las insignias para ver el trabajo por el cual fue certificado...</label>
+                <label class="tituloEvidencias">Haga click sobre cada uno de los íconos para ver las evidencias por las cuales fue certificado...</label>
                 <br>
                 <br>
             </div>
@@ -282,7 +282,7 @@
         <div class="cardSelloPandora">
             <p class=selloPandora>© Pandora</p>
 
-            <a href="PDFService/generaPDF.php" target="_blank" class="btn_descargarConvocatoria" title="Descargar E-portafolio">Descargar</a>
+            <a href="EportafolioService/generaPDF.php" target="_blank" class="btn_descargarConvocatoria" title="Descargar E-portafolio">Descargar</a>
         
         </div>
 

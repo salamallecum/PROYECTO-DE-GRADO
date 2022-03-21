@@ -12,6 +12,7 @@ $competenciaControla = new CompetenciaControlador();
 $convocatoriaControla = new ConvocatoriaControlador();
 $eventoControla = new EventoControlador();
 
+
 //----------------------------------------------------------------------------------------------------------------------------//
 //---------------------------------------------------SECCION EVENTOS----------------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
@@ -591,100 +592,6 @@ if(isset($_POST['idConvocatoriaParaConsultarNivelesContribCompetenciasEspecifica
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Capturamos el evento del id de una convocatoria practicas a eliminar
 if(isset($_POST['idConvocatoriaPracticasElim'])){
 
@@ -835,105 +742,6 @@ if(isset($_POST['idConvocatoriaAsigCompetencias'])){
     exit;
 }
 
-/*
-//Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para una convocatoria (boton analizar)
-if(isset($_POST['arrayCompetencias']) && isset($_POST['idConvocatoria'])){
-
-    $dataCompetenciasGenerales = json_decode(stripslashes($_POST['arrayCompetencias']));
-    $idConvocatoria = $_POST['idConvocatoria'];
-    $arrayCompGeneralesParaConvocatoria = implode(",", $dataCompetenciasGenerales);
-    $codigoHtml = "";
-
-    //Aqui verificamos si ya hay un registro de competencias generales con anterioridad
-    $laConvocatoriaTieneRegistroDeCompGeneralesPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompGenerales($idConvocatoria);
-
-    if($laConvocatoriaTieneRegistroDeCompGeneralesPrevio){
-
-        //Actualizamos la seleccion de competencias generales en el registro previamente ingresado 
-        $sql = "UPDATE tbl_contribcompgenerales_actividad SET compAContribuir= '".$arrayCompGeneralesParaConvocatoria."' where id_actividad=".$idConvocatoria. " and tipo_actividad='CONVOCATORIA'";
-        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
-
-    }else{
-
-        //Insertamos la seleccion de competencias generales a la BD
-        $sql = "INSERT INTO tbl_contribcompgenerales_actividad VALUES (0, $idConvocatoria, 'CONVOCATORIA', '$arrayCompGeneralesParaConvocatoria')";
-        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
-    }
-
-    $sqlCompEspecificasConv = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$arrayCompGeneralesParaConvocatoria.")";
-    $resultCompEspecificasAEvaluarConv = mysqli_query($conexion, $sqlCompEspecificasConv);
-    
-    foreach($resultCompEspecificasAEvaluarConv as $ver)
-    {
-        $codigoHtml = $codigoHtml.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
-                
-                                        '<table>
-                                            <tr>
-                                                <td><input type="radio" name='.$ver['codigo'].' value="BAJA">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="MEDIA">
-                                                <label for="Media">Media</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="ALTA">
-                                                <label for="Alta">Alta</label></td>
-
-                                                <td class=columnaNivelContribucion><input type="radio" name='.$ver['codigo'].' value="N/A">
-                                                <label for="No aplica">No aplica</label></td>
-
-                                            </tr>
-                                        </table>
-                                        <br>';           
-    }
-    
-    echo $codigoHtml; 
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //----------------------------------------------------------------------------------------------------------------------------//
 //---------------------------------------------------SECCION COMPETENCIAS----------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
@@ -1008,44 +816,6 @@ if(isset($_POST['idCompetenciaEspEdit'])){
     echo json_encode($emparrayCompEspecificas);
     exit;
 }
-
-
-
-//----------------------------------------------------------------------------------------------------------------------------//
-//---------------------------------------------------SECCION EPORTAFOLIOS----------------------------------------------------//
-//----------------------------------------------------------------------------------------------------------------------------//
-//Capturamos el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
-if(isset($_POST['emailDestinatario'])){
-
-    //Capturamos los datos de los campos del formulario
-    $emailDestinatario = trim($_POST['emailDestinatario']);
-    $confirmacionEnvioExitoso = '<p class="indicadorSatisfactorio">* E-portafolio compartido satisfactoriamente</p><br>';
-
-    //Definimos el contenido del correo electronico a enviar
-    $desde = "From:". "Equipo Pandora";
-    $asunto = "Asunto de prueba";
-    $mensaje = "Este es un correo de prueba emitido por el sistema Pandora";
-    mail($emailDestinatario, $asunto, $mensaje, $desde);
-
-    echo $confirmacionEnvioExitoso;            
-    
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ?>
 
