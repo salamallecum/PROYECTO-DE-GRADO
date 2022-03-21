@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-03-2022 a las 03:46:50
+-- Tiempo de generación: 21-03-2022 a las 17:15:10
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `pandora`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_aplicaciondetrabajos`
+--
+
+CREATE TABLE `tbl_aplicaciondetrabajos` (
+  `Id` int(11) NOT NULL,
+  `id_trabajo` int(11) NOT NULL,
+  `id_actividad` int(11) NOT NULL,
+  `tipo_actividad` varchar(15) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de aplicacion de los trabajos a las actividades ';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_aplicacioneportafolio`
+--
+
+CREATE TABLE `tbl_aplicacioneportafolio` (
+  `Id` int(11) NOT NULL,
+  `Id_portafolioEstudiante` int(11) NOT NULL,
+  `id_convocatoria` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tablade aplicacion de eportafolios a convocatorias';
 
 -- --------------------------------------------------------
 
@@ -250,6 +275,32 @@ INSERT INTO `tbl_convocatoriapracticas` (`Id`, `nombre_convocatoria`, `descripci
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbl_eportafolio`
+--
+
+CREATE TABLE `tbl_eportafolio` (
+  `Id` int(11) NOT NULL,
+  `Id_estudiante` int(11) NOT NULL,
+  `Id_trabajo` int(11) NOT NULL,
+  `trabajoTieneBadge` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `tipo_badge` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id_competencia` int(11) DEFAULT NULL,
+  `tipo_competencia` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `eportafolioPublicado` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `linkPortafolioParaCompartir` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de eportafolios';
+
+--
+-- Volcado de datos para la tabla `tbl_eportafolio`
+--
+
+INSERT INTO `tbl_eportafolio` (`Id`, `Id_estudiante`, `Id_trabajo`, `trabajoTieneBadge`, `tipo_badge`, `id_competencia`, `tipo_competencia`, `eportafolioPublicado`, `linkPortafolioParaCompartir`) VALUES
+(1, 38, 1, 'No', '', 0, NULL, 'Si', NULL),
+(2, 38, 2, 'No', '', NULL, NULL, 'Si', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbl_evento`
 --
 
@@ -312,6 +363,7 @@ CREATE TABLE `tbl_usuario` (
   `pais` varchar(10) DEFAULT NULL,
   `ciudad` varchar(10) DEFAULT NULL,
   `direccion` varchar(50) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
   `correo_usuario` varchar(50) DEFAULT NULL,
   `foto_usuario` varchar(120) DEFAULT NULL,
   `descripcion` varchar(400) DEFAULT NULL,
@@ -322,21 +374,34 @@ CREATE TABLE `tbl_usuario` (
 -- Volcado de datos para la tabla `tbl_usuario`
 --
 
-INSERT INTO `tbl_usuario` (`id_usuario`, `nombres_usuario`, `apellidos_usuario`, `username`, `clave`, `pais`, `ciudad`, `direccion`, `correo_usuario`, `foto_usuario`, `descripcion`, `id_rol`) VALUES
-(26, 'Guiovanna Paola', 'Sabogal Alfaro', 'guiovanna', 'Password1*', 'Colombia', NULL, NULL, 'guiovannasabogal@unbosque.edu.co', NULL, NULL, 2),
-(27, 'Diana Marcela', 'Jimenez', 'dmajimenez', 'Password1*', 'Colombia', NULL, NULL, 'dmajimenezr@unbosque.edu.co', NULL, NULL, 2),
-(28, 'Frank Ernesto', 'Romero Alvarez', 'fromeroa', 'Password1*', 'Colombia', NULL, NULL, 'fromeroa@unbosque.edu.co', NULL, NULL, 2),
-(29, 'Miguel Alfonso', 'Feijoo Garcia', 'mfeijoog', 'Password1*', 'Colombia', NULL, NULL, 'mfeijoog@unbosque.edu.co', NULL, NULL, 2),
-(30, 'Ricardo', 'Camargo Lemos', 'rcamargol', 'Password1*', 'Colombia', NULL, NULL, 'rcamargol@unbosque.edu.co', NULL, NULL, 2),
-(31, 'Sandra Milena', 'Ayala Suarez', 'smayala', 'Password1*', 'Colombia', NULL, NULL, 'smayala@unbosque.edu.co', NULL, NULL, 3),
-(32, 'Laura', 'Peña', 'jaja', 'lalala', 'Colombia', NULL, NULL, 'prueba@email.com', NULL, NULL, 2),
-(33, 'Nestor yesid', 'Barrera', 'papito', 'soysexy123', 'Colombia', NULL, NULL, 'elpapirickie@gmail.com', NULL, NULL, 2),
-(36, 'Pepe', 'Pecas', 'pepe', '234', 'Colombia', NULL, NULL, 'Pepepercas@gmail.com', NULL, NULL, 2),
-(37, 'Elquesea123', 'Garcia', 'pepito', '12345', 'Colombia', NULL, NULL, 'prueba@unbosque.edu.co', NULL, NULL, 2);
+INSERT INTO `tbl_usuario` (`id_usuario`, `nombres_usuario`, `apellidos_usuario`, `username`, `clave`, `pais`, `ciudad`, `direccion`, `telefono`, `correo_usuario`, `foto_usuario`, `descripcion`, `id_rol`) VALUES
+(26, 'Guiovanna Paola', 'Sabogal Alfaro', 'guiovanna', 'Password1*', 'Colombia', NULL, NULL, '', 'guiovannasabogal@unbosque.edu.co', NULL, NULL, 2),
+(27, 'Diana Marcela', 'Jimenez', 'dmajimenez', 'Password1*', 'Colombia', NULL, NULL, '', 'dmajimenezr@unbosque.edu.co', NULL, NULL, 2),
+(28, 'Frank Ernesto', 'Romero Alvarez', 'fromeroa', 'Password1*', 'Colombia', NULL, NULL, '', 'fromeroa@unbosque.edu.co', NULL, NULL, 2),
+(29, 'Miguel Alfonso', 'Feijoo Garcia', 'mfeijoog', 'Password1*', 'Colombia', NULL, NULL, '', 'mfeijoog@unbosque.edu.co', NULL, NULL, 2),
+(30, 'Ricardo', 'Camargo Lemos', 'rcamargol', 'Password1*', 'Colombia', NULL, NULL, '', 'rcamargol@unbosque.edu.co', NULL, NULL, 2),
+(31, 'Sandra Milena', 'Ayala Suarez', 'smayala', 'Password1*', 'Colombia', NULL, NULL, '', 'smayala@unbosque.edu.co', NULL, NULL, 3),
+(32, 'Laura', 'Peña', 'jaja', 'lalala', 'Colombia', NULL, NULL, '', 'prueba@email.com', NULL, NULL, 2),
+(33, 'Nestor yesid', 'Barrera', 'papito', 'soysexy123', 'Colombia', NULL, NULL, '', 'elpapirickie@gmail.com', NULL, NULL, 2),
+(36, 'Pepe', 'Pecas', 'pepe', '234', 'Colombia', NULL, NULL, '', 'Pepepercas@gmail.com', NULL, NULL, 2),
+(37, 'Elquesea123', 'Garcia', 'pepito', '12345', 'Colombia', NULL, NULL, '', 'prueba@unbosque.edu.co', NULL, NULL, 2),
+(38, 'Luis Alejandro', 'Amaya Torres', 'lamayat', 'bosque2014', 'Colombia', 'Bogotá', 'Cra 7c # 182-27', '3334567', 'lamayat@unbosque.edu.co', NULL, NULL, 1);
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `tbl_aplicaciondetrabajos`
+--
+ALTER TABLE `tbl_aplicaciondetrabajos`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indices de la tabla `tbl_aplicacioneportafolio`
+--
+ALTER TABLE `tbl_aplicacioneportafolio`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Indices de la tabla `tbl_asignatura`
@@ -384,6 +449,12 @@ ALTER TABLE `tbl_convocatoriapracticas`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indices de la tabla `tbl_eportafolio`
+--
+ALTER TABLE `tbl_eportafolio`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indices de la tabla `tbl_evento`
 --
 ALTER TABLE `tbl_evento`
@@ -406,6 +477,18 @@ ALTER TABLE `tbl_usuario`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `tbl_aplicaciondetrabajos`
+--
+ALTER TABLE `tbl_aplicaciondetrabajos`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tbl_aplicacioneportafolio`
+--
+ALTER TABLE `tbl_aplicacioneportafolio`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_asignatura`
@@ -450,6 +533,12 @@ ALTER TABLE `tbl_convocatoriapracticas`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
+-- AUTO_INCREMENT de la tabla `tbl_eportafolio`
+--
+ALTER TABLE `tbl_eportafolio`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `tbl_evento`
 --
 ALTER TABLE `tbl_evento`
@@ -465,7 +554,7 @@ ALTER TABLE `tbl_rol`
 -- AUTO_INCREMENT de la tabla `tbl_usuario`
 --
 ALTER TABLE `tbl_usuario`
-  MODIFY `id_usuario` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_usuario` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Restricciones para tablas volcadas
