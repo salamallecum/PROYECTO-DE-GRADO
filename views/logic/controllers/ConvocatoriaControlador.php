@@ -547,5 +547,39 @@ class ConvocatoriaControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
+
+    //Funcion que nos permite identificar si una convocatoria practicas tiene eportafolios postulados
+    public function consultarSiConvocatoriaPracticasTieneEportafoliosPostulados(int $idConvPracti){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id_portafolioEstudiante from tbl_aplicacioneportafolio where id_convocatoria =".$idConvPracti;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }
+
+    //Funcion que permite consultar los ids de los eportafolios de los estudiantes que fueron postulados a una convocatoria
+    public function consultarIdsEportafoliosEstudiantilesPostuladosAUnaConvocatoria(int $idConPr){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id_portafolioEstudiante from tbl_aplicacioneportafolio where id_convocatoria =".$idConPr;
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsEportafolios = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsEportafolios[$contador] = $row['Id_portafolioEstudiante'];
+            $contador++;
+        }
+
+        return $emparrayIdsEportafolios;
+    }
 }
 ?>

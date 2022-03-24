@@ -1,3 +1,19 @@
+<?php
+
+include "EportafolioService/controllers/EstudianteControlador.php";
+include "EportafolioService/controllers/EportafolioControlador.php";
+
+
+$estudianteControla = new EstudianteControlador();
+$eportafolioControla = new EportafolioControlador();
+
+//Aqui capturamos el id del eportafolio seleccionado por el usuario enviado por el link
+if($_GET['Id_estudiante'] != 0){
+
+    $idEportafolioSeleccionado = $_GET['Id_estudiante'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -24,13 +40,13 @@
         <!--ENCABEZADO DE DATOS PERSONALES-->
         <div class="encabezado">
             <div class="cardEncabezado">
-                
+
                 <div class="cardImage">
                     <img class="imgEncabezadoInfoEstudiante" src="assets/images/uebAereaEportafolio.png" alt="">
                 </div>
 
                 <div class="card-Estudiante">
-                    
+                        
                     <div class="pnl-infoPersonal">
                         <div class="logoP">
                             <img class="logoPandora" src="assets/images/logo_pandora.PNG" alt="">
@@ -39,45 +55,69 @@
 
                     <div class="informacionPersonal">
 
-                        <div class="cardInfoPersonal"> 
-                            <img class="fotoDelEstudiante" src="assets/images/team/alejo.jpeg" alt="">                        
-                        </div>
+            <?php
+                //Consultamos los datos personales dele estudiante para su muestreo en el eportafolio online
+                $sqlDatEstudiante = "SELECT nombres_usuario, apellidos_usuario, ciudad, direccion, telefono, correo_usuario, foto_usuario, descripcion from tbl_usuario where id_usuario=".$idEportafolioSeleccionado;
+                $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+                foreach ($datosEstudiante as $key){
+            ?>
+                
+                    <?php 
+                        //Aqui se traen las imagenes de cada convocatoria
+                        $fotoDelEstudiante = $key['foto_usuario'];
+
+                        if($fotoDelEstudiante != null){
+                    ?>
+                            <div class="cardInfoPersonal">
+                                <img class="fotoDelEstudiante" src="<?php echo "userprofileImages/".$fotoDelEstudiante?>" alt="">
+                            </div>
+
+                    <?php
+                        }else{
+                    ?>
+
+                            <div class="cardInfoPersonal">
+                                <img class="fotoDelEstudiante" src="assets/images/imgPorDefecto.jpg" alt="">
+                            </div>
+                    <?php
+                        }
+                    ?>
         
                         <div class="cardInfoPersonal">
                         
                             <table class="tableDatosP">
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Nombres:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['nombres_usuario']; ?></label></td>
                                 </tr>
                                 
     
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Apellidos:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['apellidos_usuario']; ?></label></td>
                                 </tr>
     
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Dirección:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['direccion']; ?></label></td>
                                 </tr>
     
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Ciudad:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['ciudad']; ?></label></td>
                                 </tr>
     
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Teléfono:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['telefono']; ?></label></td>
                                 </tr>
     
                                 <tr class="casillaDato">
                                     <td><label class="lblDatos">Correo:</label></td>
-                                    <td><label class="txt_info">Fulanito de tal</label></td>
+                                    <td><label class="txt_info"><?php echo $key['correo_usuario']; ?></label></td>
                                 </tr>
                             </table>
-                            
+                           
                         </div>
                     </div>                  
                 </div>
@@ -90,11 +130,46 @@
                 <label class="tituloPerfProfesional">Perfil profesional</label>
                 <br>
                 <br>
-                <p class="descripPerfProfesional">Estudiante de Ingeniería de Sistemas con conocimientos sólidos de programación en lenguaje Java,
-                 Python; Desarrollo web mediante JavaScript, HTML5, CSS; Gestión de Bases de datos mediante MySQL, PostgreSQL, SQLite y Desarrollo de apps 
-                 móviles mediante Android Studio.</p>
+                <p class="descripPerfProfesional"><?php echo $key['descripcion']; ?></p>
             </div>
+            <?php
+                }  
+} 
+            ?> 
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!--GRAFICO DE PERFILAMIENTO PANDORA-->
         <div class="cardGraficoPerfilamiento">
@@ -165,7 +240,7 @@
                 <label class="tituloInsignias">Insignias</label>
                 <br>
                 <br>
-                <label class="tituloEvidencias">Haga click sobre cada uno de los íconos para ver las evidencias por las cuales fue certificado...</label>
+                <label class="tituloEvidencias">Haga click sobre cada uno de los íconos para ver las evidencias por las cuales fue certificado el trabajo...</label>
                 <br>
                 <br>
             </div>
@@ -331,5 +406,5 @@
                     .then(enviarCapturaAServidor); // Cuando se resuelva, enviarla al servidor
             });
         </script>
-</body>
+    </body>
 </html>

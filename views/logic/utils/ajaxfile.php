@@ -3,6 +3,7 @@ include "Conexion.php";
 include "../controllers/CompetenciaControlador.php";
 include "../controllers/ConvocatoriaControlador.php";
 include "../controllers/EventoControlador.php";
+include "../controllers/EstudianteControlador.php";
 
 
 //Este archivo se encarga de traer de base de datos los datos de los objetos del sistema (sea Eventos, Convocatorias, Eportafolios o Competencias) 
@@ -11,6 +12,7 @@ $conexion = $c->conexion();
 $competenciaControla = new CompetenciaControlador();
 $convocatoriaControla = new ConvocatoriaControlador();
 $eventoControla = new EventoControlador();
+$estudianteControla = new EstudianteControlador();
 
 
 //----------------------------------------------------------------------------------------------------------------------------//
@@ -658,6 +660,76 @@ if(isset($_POST['idConvPracticasEnunciado'])){
     if($laConvocatoriaTieneEnunciado != null){
         $botonDescargaEnunciado = '<a href="logic/utils/ajaxfile.php?download='.$laConvocatoriaTieneEnunciado.'" class="btn_descargarEnunciado" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
         echo $botonDescargaEnunciado;
+    }
+}
+
+//Capturamos el evento del id de una convocatoria con el fin de consultar los eportafolios que fueron aplicados a una convocatoria practicas
+if(isset($_POST['idConvPracticasEportafoliosAplicados'])){
+
+    $idConvPracticasEportafoliosAplicados = $_POST['idConvPracticasEportafoliosAplicados'];
+
+    //Evaluamos si la convocatoria tiene eportafolios aplicados para su revisión
+    $laConvocatoriaTieneEportafoliosPostulados = $convocatoriaControla->consultarSiConvocatoriaPracticasTieneEportafoliosPostulados($idConvPracticasEportafoliosAplicados);
+
+    if($laConvocatoriaTieneEportafoliosPostulados){
+
+        //Consultamos los Ids de los eportafolios de los estudiantes
+        $arrayIdsEportafoliosEstudiantes = $convocatoriaControla->consultarIdsEportafoliosEstudiantilesPostuladosAUnaConvocatoria($idConvPracticasEportafoliosAplicados);
+        //Pasamos el array de los id de eportafolios de los estudiantes a string
+        $stringIdsEportafoliosEstudiantes = implode(",", $arrayIdsEportafoliosEstudiantes);
+
+        $labelfotoEstudiante = "";
+
+        //Consultamos los datos personales de los estudiantes para su muestreo en la tabla de eportafolios
+        $sqlDatEstudiante = "SELECT id_usuario, nombres_usuario, apellidos_usuario, foto_usuario from tbl_usuario where id_usuario in($stringIdsEportafoliosEstudiantes)";
+        $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+        foreach ($datosEstudiante as $key){
+
+            $tableEportafoliosPostuladosP1 = '<label class="subtitulosInfo">E-portafolios postulados</label><br>
+
+                                            <div class="pnlTabla-eportafolios">
+
+                                                <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
+                                                <table id="table_eportafoliosPostuladosConv" class="tablaDeEportafoliosPostuladosConv">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="campoTabla">Foto</th>
+                                                            <th class="campoTabla">Nombres</th>
+                                                            <th class="campoTabla">Apellidos</th>
+                                                            <th class="campoTabla">Acciones</th>
+                                                        </tr>
+                                                    </thead>                                         
+            
+                                                    <tr class="filasDeDatosTablaEportafolios">';
+
+                                                        //Aqui traemos la foto de perfil del estudiante para la tabla de eportafolios postulados
+                                                        if($key['foto_usuario'] != null){
+                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="userprofileImages/"'.$key['foto_usuario'].'></td>';
+                                                        }else{
+                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                        }
+
+                                                        
+                       $tableEportafoliosPostuladosP2 = '<td class="datoTabla">'.$key['nombres_usuario'].'</td>
+                                                        <td class="datoTabla">'.$key['apellidos_usuario'].'</td>
+                                                        <td class="datoTabla"><div class="compEsp-edicion">
+                                                            <div class="col-botonesEdicion">
+                                                                <a href="template_Eportafolio.php?Id_estudiante='.$key['id_usuario'].'" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                            </div>
+
+                                                            <div id="col-botonesEdicion" class="col-botonesEdicion">
+                                                                <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="'.$key['id_usuario'].'" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                            </div>
+
+                                                        </div></td>
+                                                    </tr>
+                                                </table>
+                                            </div>';            
+        }
+
+        echo $tableEportafoliosPostuladosP1;
+        echo $labelfotoEstudiante;
+        echo $tableEportafoliosPostuladosP2;
     }
 }
 

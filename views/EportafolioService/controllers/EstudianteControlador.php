@@ -1,6 +1,6 @@
 <?php
 
-require_once "./utils/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/utils/Conexion.php";
 
 class EstudianteControlador{
 

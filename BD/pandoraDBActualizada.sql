@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-03-2022 a las 17:15:10
+-- Tiempo de generación: 24-03-2022 a las 01:27:59
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -34,6 +34,13 @@ CREATE TABLE `tbl_aplicaciondetrabajos` (
   `tipo_actividad` varchar(15) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de aplicacion de los trabajos a las actividades ';
 
+--
+-- Volcado de datos para la tabla `tbl_aplicaciondetrabajos`
+--
+
+INSERT INTO `tbl_aplicaciondetrabajos` (`Id`, `id_trabajo`, `id_actividad`, `tipo_actividad`) VALUES
+(1, 2, 82, 'EVENTO');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +52,13 @@ CREATE TABLE `tbl_aplicacioneportafolio` (
   `Id_portafolioEstudiante` int(11) NOT NULL,
   `id_convocatoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tablade aplicacion de eportafolios a convocatorias';
+
+--
+-- Volcado de datos para la tabla `tbl_aplicacioneportafolio`
+--
+
+INSERT INTO `tbl_aplicacioneportafolio` (`Id`, `Id_portafolioEstudiante`, `id_convocatoria`) VALUES
+(1, 38, 16);
 
 -- --------------------------------------------------------
 
@@ -221,7 +235,8 @@ INSERT INTO `tbl_contribcompgenerales_actividad` (`Id`, `id_actividad`, `tipo_ac
 (57, 82, 'EVENTO', '1,2'),
 (58, 2, 'CONVOCATORIA', '1'),
 (65, 92, 'EVENTO', '1'),
-(66, 93, 'EVENTO', '1,3');
+(66, 93, 'EVENTO', '1,3'),
+(68, 94, 'EVENTO', '1,2');
 
 -- --------------------------------------------------------
 
@@ -282,10 +297,6 @@ CREATE TABLE `tbl_eportafolio` (
   `Id` int(11) NOT NULL,
   `Id_estudiante` int(11) NOT NULL,
   `Id_trabajo` int(11) NOT NULL,
-  `trabajoTieneBadge` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `tipo_badge` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `id_competencia` int(11) DEFAULT NULL,
-  `tipo_competencia` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `eportafolioPublicado` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `linkPortafolioParaCompartir` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de eportafolios';
@@ -294,9 +305,9 @@ CREATE TABLE `tbl_eportafolio` (
 -- Volcado de datos para la tabla `tbl_eportafolio`
 --
 
-INSERT INTO `tbl_eportafolio` (`Id`, `Id_estudiante`, `Id_trabajo`, `trabajoTieneBadge`, `tipo_badge`, `id_competencia`, `tipo_competencia`, `eportafolioPublicado`, `linkPortafolioParaCompartir`) VALUES
-(1, 38, 1, 'No', '', 0, NULL, 'Si', NULL),
-(2, 38, 2, 'No', '', NULL, NULL, 'Si', NULL);
+INSERT INTO `tbl_eportafolio` (`Id`, `Id_estudiante`, `Id_trabajo`, `eportafolioPublicado`, `linkPortafolioParaCompartir`) VALUES
+(1, 38, 1, 'Si', NULL),
+(2, 38, 2, 'Si', NULL);
 
 -- --------------------------------------------------------
 
@@ -324,7 +335,8 @@ INSERT INTO `tbl_evento` (`id_evento`, `nombre_evento`, `descripcion_evento`, `f
 (81, 'EVENTO DE PRUEBA', 'evento', '2021-12-26', '2021-12-28', NULL, NULL, 28, 'Si'),
 (82, 'PILDORA', 'evento de prueba array', '2021-12-26', '2022-01-22', NULL, NULL, 26, 'Si'),
 (92, 'DEBO TERMINAR', 'evento definitivo', '2022-02-27', '2022-03-18', NULL, NULL, 29, 'Si'),
-(93, 'MARATON DE PROGRAMACION', 'Participar en las maratones de programación propuestas por el programa.', '2022-03-06', '2022-04-02', NULL, NULL, 28, 'Si');
+(93, 'MARATON DE PROGRAMACION', 'Participar en las maratones de programación propuestas por el programa.', '2022-03-06', '2022-04-02', NULL, NULL, 28, 'Si'),
+(94, 'COMPETENCIA LORE PRUEBA', 'copetencia de prueba no se que', '2022-02-27', '2022-03-25', NULL, NULL, 26, 'No');
 
 -- --------------------------------------------------------
 
@@ -351,6 +363,38 @@ INSERT INTO `tbl_rol` (`id_rol`, `nombre_rol`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbl_trabajodestacado`
+--
+
+CREATE TABLE `tbl_trabajodestacado` (
+  `Id` int(11) NOT NULL,
+  `Id_estudiante` int(11) NOT NULL,
+  `nombre_trabajo` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `descripcion` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre_imagentrabajo` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link_documento` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link_video` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link_repocodigo` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link_presentacion` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `trabajoTieneBadge` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `tipo_badge` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id_competencia` int(11) DEFAULT NULL,
+  `tipo_competencia` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `publicadoeneportafolio` varchar(2) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de trabajos destacados';
+
+--
+-- Volcado de datos para la tabla `tbl_trabajodestacado`
+--
+
+INSERT INTO `tbl_trabajodestacado` (`Id`, `Id_estudiante`, `nombre_trabajo`, `descripcion`, `nombre_imagentrabajo`, `link_documento`, `link_video`, `link_repocodigo`, `link_presentacion`, `trabajoTieneBadge`, `tipo_badge`, `id_competencia`, `tipo_competencia`, `publicadoeneportafolio`) VALUES
+(1, 38, 'TRABAJO DESTACADO DE PRUEBA', 'Trabajo destacado que gano una megainsignia', NULL, 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', 'Si', 'ORO', 3, 'GENERAL', 'Si'),
+(2, 38, 'TRABAJO DESTACADO DE PRUEBA 2', 'Ejemplo de trabajo destacado 2', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', '', NULL, NULL, NULL, 'No'),
+(3, 38, 'TRABAJO DESTACADO DE PRUEBA 3 ', 'trabajo destacado que gano un insignia', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', NULL, 'Si', 'BRONCE', 28, 'ESPECIFICA', 'Si');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbl_usuario`
 --
 
@@ -365,7 +409,7 @@ CREATE TABLE `tbl_usuario` (
   `direccion` varchar(50) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `correo_usuario` varchar(50) DEFAULT NULL,
-  `foto_usuario` varchar(120) DEFAULT NULL,
+  `foto_usuario` varchar(10) DEFAULT NULL,
   `descripcion` varchar(400) DEFAULT NULL,
   `id_rol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -385,7 +429,7 @@ INSERT INTO `tbl_usuario` (`id_usuario`, `nombres_usuario`, `apellidos_usuario`,
 (33, 'Nestor yesid', 'Barrera', 'papito', 'soysexy123', 'Colombia', NULL, NULL, '', 'elpapirickie@gmail.com', NULL, NULL, 2),
 (36, 'Pepe', 'Pecas', 'pepe', '234', 'Colombia', NULL, NULL, '', 'Pepepercas@gmail.com', NULL, NULL, 2),
 (37, 'Elquesea123', 'Garcia', 'pepito', '12345', 'Colombia', NULL, NULL, '', 'prueba@unbosque.edu.co', NULL, NULL, 2),
-(38, 'Luis Alejandro', 'Amaya Torres', 'lamayat', 'bosque2014', 'Colombia', 'Bogotá', 'Cra 7c # 182-27', '3334567', 'lamayat@unbosque.edu.co', NULL, NULL, 1);
+(38, 'Luis Alejandro', 'Amaya Torres', 'lamayat', 'bosque2014', 'Colombia', 'Bogotá', 'Cra 7c # 182-27', '3334567', 'lamayat@unbosque.edu.co', NULL, 'Estudiante de Ingeniería de Sistemas con conocimientos sólidos de programación en lenguaje Java, Python; Desarrollo web mediante JavaScript, HTML5, CSS; Gestión de Bases de datos mediante MySQL, PostgreSQL, SQLite y Desarrollo de apps móviles mediante Android Studio.', 1);
 
 --
 -- Índices para tablas volcadas
@@ -468,6 +512,12 @@ ALTER TABLE `tbl_rol`
   ADD PRIMARY KEY (`id_rol`);
 
 --
+-- Indices de la tabla `tbl_trabajodestacado`
+--
+ALTER TABLE `tbl_trabajodestacado`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indices de la tabla `tbl_usuario`
 --
 ALTER TABLE `tbl_usuario`
@@ -482,13 +532,13 @@ ALTER TABLE `tbl_usuario`
 -- AUTO_INCREMENT de la tabla `tbl_aplicaciondetrabajos`
 --
 ALTER TABLE `tbl_aplicaciondetrabajos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_aplicacioneportafolio`
 --
 ALTER TABLE `tbl_aplicacioneportafolio`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_asignatura`
@@ -518,7 +568,7 @@ ALTER TABLE `tbl_contribcompespecificas_actividad`
 -- AUTO_INCREMENT de la tabla `tbl_contribcompgenerales_actividad`
 --
 ALTER TABLE `tbl_contribcompgenerales_actividad`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_convocatoriacomite`
@@ -542,13 +592,19 @@ ALTER TABLE `tbl_eportafolio`
 -- AUTO_INCREMENT de la tabla `tbl_evento`
 --
 ALTER TABLE `tbl_evento`
-  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_rol`
 --
 ALTER TABLE `tbl_rol`
   MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `tbl_trabajodestacado`
+--
+ALTER TABLE `tbl_trabajodestacado`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuario`

@@ -1,12 +1,35 @@
 <?php
 
+include "utils/Conexion.php";
 include "controllers/EportafolioControlador.php";
 
+$c = new conectar();
+$conexion = $c->conexion();
 $eportafolioControla = new EportafolioControlador();
 
 //----------------------------------------------------------------------------------------------------------------------------//
 //---------------------------------------------------SECCION EPORTAFOLIOS----------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
+
+//Capturamos el evento del boton que abre el modal de compartir eporafolio con el fin de pasar el id de un eportafolio al modal
+if(isset($_POST['idEportafolioEstudianteSeleccionado'])){
+
+    //Aqui traemos el id del eportafolio estudiantil-----------------------------------
+    $idEportafolioEstudianteSeleccionado = $_POST['idEportafolioEstudianteSeleccionado'];
+
+    $sql = "select id_usuario from tbl_usuario where id_usuario=".$idEportafolioEstudianteSeleccionado;
+    $resultIdEportafolios = mysqli_query($conexion, $sql);
+
+    $emparrayIdsEportafoliosSeleccionados = array();
+    while($row =mysqli_fetch_assoc($resultIdEportafolios))
+    {
+        $emparrayIdsEportafoliosSeleccionados[] = $row;
+    }
+    echo json_encode($emparrayIdsEportafoliosSeleccionados);
+    exit;
+    
+}
+
 //Capturamos el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
 if(isset($_POST['emailDestinatario'])){
 

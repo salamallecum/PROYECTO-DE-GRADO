@@ -1,9 +1,9 @@
 <?php
 
-require_once "vendor/autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/vendor/autoload.php";
 require_once "template_Eportafolio.php";
-require_once "./utils/Conexion.php";
-require_once "./utils/generadorDeNombres.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/utils/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/utils/generadorDeNombres.php";
 
 //Cargamos las funciones del API de google
 include 'api-google/vendor/autoload.php';
@@ -105,7 +105,8 @@ class EportafolioControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
-
+    
+    /*
     //Funcion que permite subir el archivo PDF de un eportafolio a Google Drive para su divulgación
     public function subirArchivoPDFDeUnEportafolio(string $nombreDelArchivoPDFTemporalEportafolio){
 
@@ -158,7 +159,7 @@ class EportafolioControlador{
             echo $e->getMessage();
         }
     }
-
+    */
     //Funcion que permite consultar el link del arhivo PDF de un eportafolio en BD para su divulgación
     public function consultarLinkDeUnEportafolio(int $idEstudiante){
         $c = new conectar();
