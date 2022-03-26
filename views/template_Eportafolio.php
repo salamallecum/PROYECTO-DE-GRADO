@@ -492,7 +492,7 @@ if($_GET['Id_estudiante'] != 0){
         <div class="cardSelloPandora">
             <p class=selloPandora>© Pandora</p>
 
-            <a href="<?php echo "EportafolioService/generaPDF.php?Id_Eportafolio=".$idEportafolioSeleccionado;?> target="_blank" class="btn_descargarConvocatoria" title="Descargar E-portafolio">Descargar</a>
+            <a href="<?php echo 'EportafolioService/generaPDF.php?Id_Eportafolio='.$idEportafolioSeleccionado?>" target="_blank" class="btn_descargarConvocatoria" title="Descargar E-portafolio">Descargar</a>
         
         </div>
 

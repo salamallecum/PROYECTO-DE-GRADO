@@ -1,255 +1,446 @@
 <?php
 
-require_once "controllers/EstudianteControlador.php";
+include "controllers/EstudianteControlador.php";
+include "controllers/EportafolioControlador.php";
+include "controllers/TrabajoDestacadoControlador.php";
+include $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/controllers/CompetenciaControlador.php";
 
-    function getEportafolio(int $idDelEstudiante){
 
-        $userControla = new EstudianteControlador();
+function getEportafolio(int $idDelEstudiante){
 
-        $plantillaEportafolio = '<body>
+    $estudianteControla = new EstudianteControlador();
+    $eportafolioControla = new EportafolioControlador();
+    $trabajoDestControla = new TrabajoDestacadoControlador();
+    $competenciaControla = new CompetenciaControlador();
 
-                                    <!--ENCABEZADO DE DATOS PERSONALES-->
-                                    <div class="encabezado">
-                                        
-                                            
+    $userControla = new EstudianteControlador();
+
+    $plantillaEportafolio =    '<!--ENCABEZADO DE DATOS PERSONALES-->'.
+                                '<div class="encabezado">
+                                    <div class="cardEncabezado">
+
                                         <div class="cardImage">
-                                            <img class="imgEncabezadoInfoEstudiante" src="../assets/images/uebAereaEportafolio.png">
-                                        </div>';
+                                            <img class="imgEncabezadoInfoEstudiante" src="../assets/images/uebAereaEportafolio.png" alt="">
+                                        </div>
 
-                                        '<div class="card-Estudiante">
+                                        <div class="card-Estudiante">
                                                 
                                             <div class="pnl-infoPersonal">
                                                 <div class="logoP">
-                                                    <img class="logoPandora" src="../assets/images/logo_pandora.PNG" alt="Logo oficial Pandora">
+                                                    <img class="logoPandora" src="../assets/images/logo_pandora.PNG" alt="">
                                                 </div>
                                             </div>';
 
-                                        //Trae la informacion del estudiante al eportafolio     
-                                        $sql = "SELECT nombres_usuario, apellidos_usuario, ciudad, direccion, telefono, correo_usuario from tbl_usuario where id_usuario = $idDelEstudiante";
-                                        $datos = $userControla->mostrarDatosEstudiante($sql);
-                                        foreach ($datos as $key){
-
-                                            $plantillaEportafolio .= '<div class="informacionPersonal">
-
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td> <div class="cardInfoPersonal"> 
-                                                                                    <img class="fotoDelEstudiante" src="../assets/images/team/alejo.jpeg" alt="Foto de perfil estudiante">                        
-                                                                                </div></td>
-
-                                                                                <td> <div class="cardInfoPersonal">
-                                                                        
-                                                                                    <table class="tableDatosP">
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Nombres:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["nombres_usuario"] .'</p></td>
-                                                                                        </tr>
-                                                                                        
-                                                            
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Apellidos:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["apellidos_usuario"] .'</p></td>
-                                                                                        </tr>
-                                                            
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Dirección:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["direccion"] .'</p></td>
-                                                                                        </tr>
-                                                            
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Ciudad:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["ciudad"] .'</p></td>
-                                                                                        </tr>
-                                                            
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Teléfono:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["telefono"] .'</p></td>
-                                                                                        </tr>
-                                                            
-                                                                                        <tr class="casillaDato">
-                                                                                            <td><p class="lblDatos">Correo:</p></td>
-                                                                                            <td><p class="txt_info">'. $key["correo_usuario"] .'</p></td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div></td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </div>';                  
-                                                                
-                                        }
-
-                                        
+                                            //Consultamos los datos personales del estudiante para su muestreo en el eportafolio descargado
+                                            $sqlDatEstudiante = "SELECT nombres_usuario, apellidos_usuario, ciudad, direccion, telefono, correo_usuario, foto_usuario, descripcion from tbl_usuario where id_usuario=".$idDelEstudiante;
+                                            $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+                                            foreach ($datosEstudiante as $key){
                                     
-                                    $plantillaEportafolio .='</div>
-                                    </div><!--PERFIL PROFESIONAL-->
-                                    <div class="cardPerfProfesional">
-                                        <div class="perfProfesional">
-                                            <p class="tituloPerfProfesional">Perfil profesional</p>
-                                            
-                                            <p class="descripPerfProfesional">Estudiante de Ingeniería de Sistemas con conocimientos sólidos de programación en lenguaje Java,
-                                            Python; Desarrollo web mediante JavaScript, HTML5, CSS; Gestión de Bases de datos mediante MySQL, PostgreSQL, SQLite y Desarrollo de apps 
-                                            móviles mediante Android Studio.</p>
-                                        </div>
-                                    </div>
+                                                $plantillaEportafolio .= '<div class="informacionPersonal">
+                                                                                <table>
+                                                                                    <tr>';
 
-                                    <!--GRAFICO DE PERFILAMIENTO PANDORA-->
-                                    <div class="cardGraficoPerfilamiento">
-                                        <div class="grafPerfilamiento">
-                                            <p class="tituloGrafPerfilamiento">Gráfico de perfilamiento PANDORA</p>
+                                                                                    if($key['foto_usuario'] != null){
 
-                                            <table class="tablaGraficoPerfilamiento">
-                                                <tr>
-                                                    <td><img id="img_graficoRolDelEstudiante" class="grafPerfPandora" src="graficaRolScreenshots/captura_6232abd3bcc16.png" alt="Gráfico del rol"></td>
-                                                    <td><img id="img_rolDelEstudiante" class="img_perfRol" src="../assets/images/roles/noblider2.jpg" alt="Avatar del rol"></td>
-                                                </tr>
-                                            </table>
+                                                                                        $plantillaEportafolio .= '<td> <div class="cardInfoPersonal"> 
+                                                                                                                    <img class="fotoDelEstudiante" src="../assets/images/team/'.$key['foto_usuario'].'" alt="Foto de perfil estudiante">                        
+                                                                                                                </div></td>';
 
-                                        </div>
-                                    </div>
+                                                                                    }else{
 
-                                    <!--TRABAJOS DESTACADOS-->
-                                    <div class="cardTrabajosDestacados">
-                                        <div class="trabajosDestacados">
-                                            <p class="tituloTrabDestacados">Trabajos destacados</p>
-                                            <p class="tituloEvidencias">Haga click sobre cada uno de los iconos para ver las evidencias...</p>
-                                        </div>
+                                                                                        $plantillaEportafolio .= '<td> <div class="cardInfoPersonal"> 
+                                                                                                                    <img class="fotoDelEstudiante" src="../assets/images/imgPorDefecto.jpg" alt="Foto de perfil estudiante">                        
+                                                                                                                </div></td>';
 
-                                        <div class="cardTrabajoDestacado">
-                                            <div class="tituloTrabDestacado">
-                                                <p class="lblTituloTrabajo">TITULO TRABAJO DESTACADO</p>                    
-                                            </div>
-                                            
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <img class="imagenDelTrabajoDestacado" src="../assets/images/imgPorDefecto.jpg" alt="Imagen del trabajo destacado">    
-                                                    </td>
+                                                                                    }
+                                                                                        
+                                                                                    $plantillaEportafolio .= '<td> <div class="cardInfoPersonal">
+                                                                                
+                                                                                                                    <table class="tableDatosP">
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Nombres:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["nombres_usuario"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                                                        
+                                                                                            
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Apellidos:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["apellidos_usuario"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                            
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Dirección:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["direccion"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                            
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Ciudad:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["ciudad"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                            
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Teléfono:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["telefono"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                            
+                                                                                                                        <tr class="casillaDato">
+                                                                                                                            <td><p class="lblDatos">Correo:</p></td>
+                                                                                                                            <td><p class="txt_info">'. $key["correo_usuario"] .'</p></td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </div></td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </div>';                  
+                                                                
+                                            }
+                
+                                            $plantillaEportafolio .= '                          </div>
+                                                                                            </div>                  
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                            
+                                                                                <!--PERFIL PROFESIONAL-->
+                                                                                <div class="cardPerfProfesional">
+                                                                                    <div class="perfProfesional">
+                                                                                        <p class="tituloPerfProfesional">Perfil profesional</p>
+                                                                                        
+                                                                                        <p class="descripPerfProfesional">'. $key['descripcion']. '</p>
+                                                                                    </div>
+                                                                                </div>
 
-                                                    <td>
-                                                        <p class="tituloDescripcion">Descripción:</p>
-                                                        <!--La descripcion del trabajo no puede tener mas de 500 caracteres-->
-                                                        <p class="descripcionDelTrabajoDestacado">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, dicta dolor sit dignissimos corrupti accusamus dolorem quidem, earum excepturi voluptate officiis labore ipsam ratione repudiandae ad. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, dicta dolor sit dignissimos corrupti accusamus dolorem quidem, earum excep.</p>
-                                                    </td>
+                                                                                <!--GRAFICO DE PERFILAMIENTO PANDORA-->
+                                                                                <div class="cardGraficoPerfilamiento">
+                                                                                    <div class="grafPerfilamiento">
+                                                                                        <p class="tituloGrafPerfilamiento">Gráfico de perfilamiento PANDORA</p>
+                                                                                        <table class="tablaGraficoPerfilamiento">
+                                                                                            <tr>
+                                                                                                <td><img id="img_graficoRolDelEstudiante" class="grafPerfPandora" src="graficaRolScreenshots/captura_6232abd3bcc16.png" alt="Gráfico del rol"></td>
+                                                                                                <td><img id="img_rolDelEstudiante" class="img_perfRol" src="../assets/images/roles/noblider2.jpg" alt="Avatar del rol"></td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
 
-                                                    <td>
-                                                        <table class="tablaDeEvidencias"> 
-                                                            <tr>
-                                                                <td class="casillaEvidencia"><a href="https://www.w3schools.com/tags/att_a_target.asp" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG" alt="Icono evidencia documento"></a></td>
-                                                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png" alt="Icono evidencia codigo"></a></td>
-                                                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png" alt="Icono evidencia video"></a></td>
-                                                                <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png" alt="Icono evidencia presentacion"></a></td>
-                                                            </tr>
-                                                        </table>                
-                                                    </td>
-                                                </tr>
-                                            </table>                                                                                
-                                        </div>            
-                                    </div>
-                           
+                                                                                <!--TRABAJOS DESTACADOS-->
+                                                                                <div class="cardTrabajosDestacados">
+                                                                                    <div class="trabajosDestacados">
+                                                                                        <p class="tituloTrabDestacados">Trabajos destacados</p>
+                                                                                        <p class="tituloEvidencias">Haga click sobre cada uno de los iconos para ver las evidencias...</p>
+                                                                                    </div>';
 
-                                    <!--INSIGNIAS-->
-                                    <div class="cardInsignias">
-                                        <div class="insignias">
-                                            <p class="tituloInsignias">Insignias</p>
-                                            <p class="tituloEvidencias">Haga click sobre cada uno de los iconos para ver las evidencias...</p>
-                                        </div>
+                                                                                    //Consultamos los datos de los trabajos destacados para su muestreo en el eportafolio online
+                                                                                    $sqlDatTrabDestacados = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id_estudiante=$idDelEstudiante and trabajoTieneBadge='No' and publicadoeneportafolio = 'Si'";
+                                                                                    $datosTrabDestacados = $trabajoDestControla->mostrarTrabajosDestacados($sqlDatTrabDestacados);
+                                                                                    foreach ($datosTrabDestacados as $item){
+        
 
-                                        <div class="contenedorMegaInsignias">
-                                            <p class="tituloMegaInsignias">MegaInsignias obtenidas:</p>
-                                        
-                                            <div class="cardTrabajoDestacadoConMegainsig">
-                                                <div class="tituloTrabDestacado">
-                                                    <p class="lblTituloTrabajo">TITULO TRABAJO DESTACADO</p>                    
-                                                </div>  
-                                                
-                                                <table>
-                                                    <tr>
-                                                        
-                                                        <td>
-                                                            <img class="megaInsigDelTrabajo" src="../assets/images/badge_prueba muestreo.png" alt="Imagen trabajo destacado">
-                                                            <br>
-                                                            <br>
-                                                        </td>
-                                                    
-                                                        <td>
-                                                            <img class="imagenDelTrabajoDestacadoConInsig" src="../assets/images/imgPorDefecto.jpg" alt="Imagen trabajo destacado">
-                                                        </td>
+                                                                                        $plantillaEportafolio .= '<div class="cardTrabajoDestacado">
+                                                                                            
+                                                                                                                        <div class="tituloTrabDestacado">
+                                                                                                                            <p class="lblTituloTrabajo">'. $item['nombre_trabajo'] .'</p>                    
+                                                                                                                        </div>
+                                                                                                                        
+                                                                                                                        <table>
 
-                                                        <td>
-                                                            <p class="tituloDescripcionTrabajoConInsig">Descripción:</p>
-                                                            <!--La descripcion del trabajo no puede tener mas de 500 caracteres-->
-                                                            <p class="descripcionDelTrabajoDestacadoConMegaInsig">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, dicta dolor sit dignissimos corrupti accusamus dolorem quidem, earum excepturi voluptate officiis labore ipsam ratione repudiandae ad. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                                                        </td>
+                                                                                                                            <tr>';
 
-                                                        <td>
-                                                            <table class="tablaDeEvidencias"> 
-                                                                <tr>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG" alt="Icono evidencia documento"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png" alt="Icono evidencia codigo"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png" alt="Icono evidencia video"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png" alt="Icono evidencia presentacion"></a></td>
-                                                                </tr>
-                                                            </table>                
-                                                        </td>
-                                                    </tr>
-                                                </table>                                                                                        
-                                            </div>            
-                                        </div>
 
-                                        <br>
-                                        <br>                                        
+                                                                                            
+                                                                                             
+                                                                                            //Aqui se traen las imagenes de cada trabajo destacado
+                                                                                            $fotoDelTrabajoDestacado = $item['nombre_imagentrabajo'];
 
-                                        <div class="contenedorInsignias">
-                                            <p class="tituloMegaInsignias">Insignias obtenidas:</p>
+                                                                                            if($fotoDelTrabajoDestacado != null){
+                                                                                        
+                                                                                                $plantillaEportafolio .= '<td><img class="imagenDelTrabajoDestacado" src="trabajosImages/'. $item['nombre_imagentrabajo'] .'"></td>';
 
-                                            <div class="cardTrabajoDestacadoConInsig">
-                                            
-                                                <div class="tituloTrabDestacado">
-                                                    <p class="lblTituloTrabajo">TITULO TRABAJO DESTACADO</p>                    
-                                                </div>  
+                                                                                        
+                                                                                            }else{
+                                                                                        
+                                                                                                $plantillaEportafolio .= '<td><img class="imagenDelTrabajoDestacado" src="../assets/images/imgPorDefecto.jpg"></td>';    
+                                                                                                                         
+                                                                                            }
+                                                                                                                             
 
-                                                <table>
-                                                    <tr>
-                                                        <td> 
-                                                            <img class="insigDelTrabajo" src="../assets/images/badge_prueba muestreo.png" alt="Imagen trabajo destacado">
-                                                        </td>
+                                                                                        $plantillaEportafolio .= '<td class="columnDescTrabDestacado">
+                                                                                                                        <p class="tituloDescripcion">Descripción:</p>
+                                                                                                                        <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
+                                                                                                                        <p class="descripcionDelTrabajoDestacado">'. $item['descripcion'] .'</p>
+                                                                                                                   </td>
 
-                                                        <td> 
-                                                            <img class="imagenDelTrabajoDestacadoConInsig" src="../assets/images/imgPorDefecto.jpg" alt="Imagen trabajo destacado">
-                                                        </td>
+                                                                                                                    <td>
+                                                                                                                        <table class="tablaDeEvidencias"> 
+                                                                                                                            <tr>';
 
-                                                        <td>                 
-                                                            <p class="tituloDescripcionTrabajoConInsig">Descripción:</p>
-                                                            <!--La descripcion del trabajo no puede tener mas de 500 caracteres-->
-                                                            <p class="descripcionDelTrabajoDestacadoConInsig">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, dicta dolor sit dignissimos corrupti accusamus dolorem quidem, earum excepturi voluptate officiis labore ipsam ratione repudiandae ad. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum consequuntur magni aut ut, dicta dolor sit dignissimos corrupti accusamus dolorem quidem, earum excep.</p>
-                                                        </td>
+                                                                                                                                //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo alasque esten disponibles
+                                                                                                                                $linkDocumento = $item['link_documento'];
+                                                                                                                                $linkVideo = $item['link_video'];
+                                                                                                                                $linkRepoCodigo = $item['link_repocodigo'];
+                                                                                                                                $linkPresentacion = $item['link_presentacion'];
 
-                                                        <td>
-                                                            <table class="tablaDeEvidencias"> 
-                                                                <tr>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG" alt="Icono evidencia documento"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png" alt="Icono evidencia codigo"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png" alt="Icono evidencia video"></a></td>
-                                                                    <td class="casillaEvidencia"><a href="#" target="_blank" class="linkDeEvidencia"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png" alt="Icono evidencia presentacion"></a></td>
-                                                                </tr>
-                                                            </table>  
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                                       
-                                            </div>   
-                                        </div>
-                                    </div>
+                                                                                                                                if($linkDocumento != null){
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkDocumento .'" target="_blank" class="linkDeEvidencia" title="'. $linkDocumento .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG"></a></td>';
 
-                                    <!--PIE DE EPORTAFOLIO - SELLO PANDORA-->
-                                    <div class="cardSelloPandora">
-                                        <p class=selloPandora>© Pandora</p>                                        
-                                    </div>
+                                                                                                                                }if($linkVideo != null){
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkVideo .'" target="_blank" class="linkDeEvidencia" title="'. $linkVideo .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png"></a></td>';
+
+                                                                                                                                }if($linkRepoCodigo != null){
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkRepoCodigo .'" target="_blank" class="linkDeEvidencia" title="'. $linkRepoCodigo .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png"></a></td>';
+
+                                                                                                                                }if($linkPresentacion != null){
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkPresentacion .'" target="_blank" class="linkDeEvidencia" title="'. $linkPresentacion .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png"></a></td>';
+                                                                                                                                }
+                                                                                                                               
+                                                                                                    $plantillaEportafolio .= '</tr>
+                                                                                                                        </table>                
+                                                                                                                    </td>                          
+                                                                                                                </tr>
+                                                                                                            </table></div>';               
+        
+                                                                                    }
+                            
+                                                        $plantillaEportafolio .= '</div>
+
+                                                                                <!--INSIGNIAS-->
+                                                                                <div class="cardInsignias">
+                                                                                    <div class="insignias">
+                                                                                        <p class="tituloInsignias">Insignias</p>
+                                                                                        <p class="tituloEvidencias">Haga click sobre cada uno de los íconos para ver las evidencias por las cuales fue certificado el trabajo...</p>
+                                                                                    </div>
+
+                                                                                    <div class="contenedorMegaInsignias">
+                                                                                        <p class="tituloMegaInsignias">MegaInsignias obtenidas:</p>';
+                                                                                        
+                                                                                        //Consultamos los datos de las megainsignias ganadas por un trabajo destacado para su muestreo en el eportafolio online
+                                                                                        $sqlDatTrabDestacadosConMegaInsig = "SELECT id_trabajo, tipo_badge, id_competencia from tbl_insigniasganadastrabdestacado where codigo_estudiante=$idDelEstudiante and tipo_competencia='GENERAL'";
+                                                                                        $datosTrabDestacadosConMegaInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlDatTrabDestacadosConMegaInsig);
+                                                                                        foreach ($datosTrabDestacadosConMegaInsig as $point){
+
+                                                                                            //Consultamos los datos de los trabajos destacados que tienen megainsignia para su muestreo en el eportafolio online
+                                                                                            $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                                                                                            $datosTrabDestConMegaInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlInfoTrabDestacadosConMegaInsig);
+                                                                                            foreach ($datosTrabDestConMegaInsig as $lex){
+            
+                                                                                                $plantillaEportafolio .= '<div class="cardTrabajoDestacadoConMegainsig">
+                    
+                                                                                                                                <div class="tituloTrabDestacado">
+                                                                                                                                    <p class="lblTituloTrabajo">'. $lex['nombre_trabajo'] .'</p>                    
+                                                                                                                                </div>
+
+                                                                                                                                    <table>
+
+                                                                                                                                        <tr>
+
+                                                                                                                                    ';
+
+                                                                                                                                //Aqui traemos el nombre del badge de la competencia general para mostrar su insignia
+                                                                                                                                $nombreDeBadgeCG = $competenciaControla->consultarNombreBadgeCompGeneralParaEportafolio($point['id_competencia'], $point['tipo_badge']);
+                                                                                                                                
+                                                                                                                                
+                                                                                                                                $plantillaEportafolio .=   '<td><table>
+                                                                                                                                                                    <tr>                                                                                                                                                                                                                                                                
+                                                                                                                                                                        <td>
+                                                                                                                                                                            <img class="megaInsigDelTrabajo" src="../badgesImages/'.$nombreDeBadgeCG.'">
+                                                                                                                                                                        </td>';                                 
+                                                                                                                                    
+                                                                                                                                //Aqui se traen las imagenes de cada trabajo destacado con megainsignia
+                                                                                                                                $fotoDelTrabajoDestacadoConMega = $lex['nombre_imagentrabajo'];
+                                                                                                                                
+                                                                                                                                if($fotoDelTrabajoDestacadoConMega != null){
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td>
+                                                                                                                                                                  <img class="imagenDelTrabajoDestacadoConMegaInsig" src="../trabajosImages/'.$lex['nombre_imagentrabajo'].'">    
+                                                                                                                                                            </td>';
+
+                                                                                                                                }else{
+                                                                                                                            
+                                                                                                                                    $plantillaEportafolio .= '<td>
+                                                                                                                                                                <img class="imagenDelTrabajoDestacadoConMegaInsig" src="../assets/images/imgPorDefecto.jpg">
+                                                                                                                                                            </td>';
+                                                                                                                            
+                                                                                                                                }
+                        
+                            
+                                                                                                                                $plantillaEportafolio .= '</tr></table></td>
+                                                                                                                                    
+                                                                                                                                                            <td><table>
+                                                                                                                                                                <tr>
+                                                                                                                                                                    <td>
+                                                                                                                                                                        <p class="tituloDescripcion">Descripción:</p>
+                                                                                                                                                                        <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
+                                                                                                                                                                        <p class="descripcionDelTrabajoDestacadoConMegaInsig">'. $item['descripcion'] .'</p>
+                                                                                                                                                                    </td>
+                                                                                                                                                                    <td><table class="tablaDeEvidencias"> 
+                                                                                                                                                                        <tr>';
+
+                                                                                                                                                                            //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo alasque esten disponibles
+                                                                                                                                                                            $linkDocumentoTrabConMega = $lex['link_documento'];
+                                                                                                                                                                            $linkVideoTrabConMega = $lex['link_video'];
+                                                                                                                                                                            $linkRepoCodigoTrabConMega = $lex['link_repocodigo'];
+                                                                                                                                                                            $linkPresentacionTrabConMega = $lex['link_presentacion'];
+
+                                                                                                                                                                            if($linkDocumentoTrabConMega != null){
+                                                                                                                                                                            
+                                                                                                                                                                                $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkDocumentoTrabConMega .'" target="_blank" class="linkDeEvidencia" title="'. $linkDocumentoTrabConMega .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG"></a></td>';
+                                                                                                                                                                            
+                                                                                                                                                                            }if($linkVideoTrabConMega != null){
+                                                                                                                                                                    
+                                                                                                                                                                                $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkVideoTrabConMega .'" target="_blank" class="linkDeEvidencia" title="'. $linkVideoTrabConMega .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png"></a></td>';
+                                                                                                                                                                        
+                                                                                                                                                                            }if($linkRepoCodigoTrabConMega != null){
+                                                                                                                                                                        
+                                                                                                                                                                                $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkRepoCodigoTrabConMega .'" target="_blank" class="linkDeEvidencia" title="'. $linkRepoCodigoTrabConMega .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png"></a></td>';
+
+                                                                                                                                                                        
+                                                                                                                                                                            }if($linkPresentacionTrabConMega != null){
+                                                                                                                                                                        
+                                                                                                                                                                                $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkPresentacionTrabConMega .'" target="_blank" class="linkDeEvidencia" title="'. $linkPresentacionTrabConMega .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png"></a></td>';
+
+                                                                                                                                                                            }
+                                                                                                                                                                            
+                                                                                                                                              $plantillaEportafolio .= '</tr>
+                                                                                                                                                                    </table> </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </table></td>
+                                                                                                                                                            </tr></table>
+                                                                                                                                                                
+                                                                                                                                                            </div>                          
+                                                                                                                        </div>';
+                                                                                                                                            
+                                                                                            }
+                                                                                        }
+                                                                                                                
+                                                        $plantillaEportafolio .= '
+                                                                                    <br>
+                                                                                    <br> 
+
+                                                                                <div class="contenedorInsignias">
+                                                                                    <p class="tituloMegaInsignias">Insignias obtenidas:</p>';
+                                                                                                  
+                                                                                    //Consultamos los datos de las insignias ganadas por un trabajo destacado para su muestreo en el eportafolio online
+                                                                                    $sqlDatTrabDestacadosConInsig = "SELECT id_trabajo, tipo_badge, id_competencia from tbl_insigniasganadastrabdestacado where codigo_estudiante=$idDelEstudiante and tipo_competencia='ESPECIFICA'";
+                                                                                    $datosTrabDestacadosConInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlDatTrabDestacadosConInsig);
+                                                                                    foreach ($datosTrabDestacadosConInsig as $poi){
+
+                                                                                        //Consultamos los datos de los trabajos destacados que tienen insignia para su muestreo en el eportafolio online
+                                                                                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$poi['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                                                                                        $datosTrabDestConInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlInfoTrabDestacadosConInsig);
+                                                                                        foreach ($datosTrabDestConInsig as $lik){
+            
+                                                                                            $plantillaEportafolio .= '<div class="cardTrabajoDestacadoConInsig">
+                                                                                            
+                                                                                                                            <div class="tituloTrabDestacado">
+                                                                                                                                <p class="lblTituloTrabajo">'. $lik['nombre_trabajo'] .'</p>                    
+                                                                                                                            </div>
+                                                                                                                            
+                                                                                                                                <table>
+
+                                                                                                                                    <tr>
+
+                                                                                                                                    ';  
+                                                                                                
+                                                                                                                            //Aqui traemos el nombre del badge de la competencia especifica para mostrar su insignia                                                                                                
+                                                                                                                            $nombreDeBadgeCE = $competenciaControla->consultarNombreBadgeCompEspecificaParaEportafolio($poi['id_competencia'], $poi['tipo_badge']);
+                                                                                                
+                                                                                                                            $plantillaEportafolio .= '<td><table>
+                                                                                                                                                              <tr>
+                                                                                                                                                                  <td>
+                                                                                                                                                                        <img class="insigDelTrabajo" src="../badgesImages/'.$nombreDeBadgeCE.'">
+                                                                                                                                                                  </td>';                                                                                                                        
+
+                                                                                                                            //Aqui se traen las imagenes de cada trabajo destacado con insignia
+                                                                                                                            $fotoDelTrabajoDestacadoConInsig = $lik['nombre_imagentrabajo'];
+
+                                                                                                                            if($fotoDelTrabajoDestacadoConInsig != null){
+                                                                                                                                                                                            
+                                                                                                                                $plantillaEportafolio .= '<td">
+                                                                                                                                                            <img class="imagenDelTrabajoDestacadoConInsig" src="../trabajosImages/"'. $lik['nombre_imagentrabajo'] .'">    
+                                                                                                                                                        </td>';
+
+                                                                                                                            }else{
+                                                                                                                        
+                                                                                                                                $plantillaEportafolio .= '<td>
+                                                                                                                                                            <img class="imagenDelTrabajoDestacadoConInsig" src="../assets/images/imgPorDefecto.jpg">
+                                                                                                                                                        </td>';
+                                                                                                                            }
+                                                                                                                                                                     
+                                                                                
+                                                                                            $plantillaEportafolio .= '</tr></table></td>
+
+                                                                                                                        <td><table>
+                                                                                                                            <tr>
+                                                                                                                                <td>
+                                                                                                                                    <p class="tituloDescripcionTrabajoConInsig">Descripción:</p>
+                                                                                                                                    <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
+                                                                                                                                    <p class="descripcionDelTrabajoDestacadoConInsig">'. $lik['descripcion'] .'</p>
+                                                                                                                                </td>
+
+                                                                                                                                <td><table class="tablaDeEvidencias"> 
+                                                                                                                                    <tr>';
+                                                                                                                                        
+                                                                                                                                        //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo a las que esten disponibles
+                                                                                                                                        $linkDocumentoTrabConInsig = $lik['link_documento'];
+                                                                                                                                        $linkVideoTrabConInsig = $lik['link_video'];
+                                                                                                                                        $linkRepoCodigoTrabConInsig = $lik['link_repocodigo'];
+                                                                                                                                        $linkPresentacionTrabConInsig = $lik['link_presentacion'];
+
+                                                                                                                                        if($linkDocumentoTrabConInsig != null){
+                                                                                                                                        
+                                                                                                                                            $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkDocumentoTrabConInsig .'" target="_blank" class="linkDeEvidencia" title="'. $linkDocumentoTrabConInsig .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_documento.PNG"></a></td>';
+
+                                                                                                                                        
+                                                                                                                                        }if($linkVideoTrabConInsig != null){
+                                                                                                                                    
+                                                                                                                                            $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkVideoTrabConInsig .'" target="_blank" class="linkDeEvidencia" title="'. $linkVideoTrabConInsig .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_video.png"></a></td>';
+
+                                                                                                                                        
+                                                                                                                                        }if($linkRepoCodigoTrabConInsig != null){
+                                                                                                                                        
+                                                                                                                                            $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkRepoCodigoTrabConInsig .'" target="_blank" class="linkDeEvidencia" title="'. $linkRepoCodigoTrabConInsig .'"><img class="icoEvidencias" src="../assets/images/btn_evidenc_repocodigo.png"></a></td>';
+
+                                                                                                                                        }if($linkPresentacionTrabConInsig != null){
+                                                                                                                                        
+                                                                                                                                            $plantillaEportafolio .= '<td class="casillaEvidencia"><a href="'. $linkPresentacionTrabConInsig .'" target="_blank" class="linkDeEvidencia" title="'. $linkPresentacionTrabConInsig. '"><img class="icoEvidencias" src="../assets/images/btn_evidenc_presentacion.png"></a></td>';
+
+                                                                                                                                        }
+                                                                                                                                          
+
+                                                                                                        $plantillaEportafolio .= '</tr>
+                                                                                                                                </table></td>
+                                                                                                                            </tr>
+                                                                                                                          </table></td>
+                                                                                                                        </tr></table>
+                                                                                                                    </div>                          
+                                                                                </div>';   
+                
+                                                                                        }
+                                                                                    }
+            
+            
+                                                $plantillaEportafolio .= '</div>
+                                                                    </div>
+
+                                                                   <!--PIE DE EPORTAFOLIO - SELLO PANDORA-->
+                                                                   <div class="cardSelloPandora">
+                                                                   <p class=selloPandora>© Pandora</p>                                        
+                                                               </div>
+
+                                                        </div>
+                                                                    
+                                                        </body>';
+
+                                    
                                 
-                            </body>';
+                                
 
-        return $plantillaEportafolio;
-    }
+    return $plantillaEportafolio;
+}
 
     
 
