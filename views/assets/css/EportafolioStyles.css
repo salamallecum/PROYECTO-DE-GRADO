@@ -215,7 +215,9 @@
 
 .alineacionCompTrabajoDestacado{
     display: inline-block;
-    height: 270px;
+    height: 150px;
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 .imagenDelTrabajoDestacado{
@@ -239,6 +241,7 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20px;
+    margin-top: 10px;
 }
 
 .tituloEvidencias{
@@ -311,12 +314,26 @@
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-bottom: 50px;
+}
+
+.alineacionCompTrabajoDestacadoConMega{
+    display: inline-block;
+    height: 150px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.imagenDelTrabajoDestacadoConMegaInsig{
+    width: 200px;
+    height: 231px;
+    margin-bottom: 0px;
 }
 
 .imagenDelTrabajoDestacadoConInsig{
     width: 200px;
     height: 231px;
-    margin-bottom: 90px;
+    margin-bottom: 0px;
 }
 
 .tituloDescripcionTrabajoConInsig{
@@ -325,10 +342,8 @@
     padding-top: 10px;
 }
 
-.descripcionTrabajoConMegaInsig{
+.descripcionTrabajoMgInsig{
     width: 400px;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .descripcionDelTrabajoDestacadoConMegaInsig{
@@ -336,6 +351,7 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20px;
+    width: 400px;
 }
 
 .tituloEvidencias{
@@ -358,7 +374,6 @@
     margin-top: 20px;
     margin-left: 80px;
     margin-right: 20px;
-    /*box-shadow: 5px 0px 5px rgba(0,0,0,.7);*/
     padding-bottom: 20px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -373,10 +388,11 @@
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-bottom: 90px;
 }
 
 .descripcionTrabajoConInsig{
-    width: 500px;
+    width: 450px;
     padding-top: 10px;
     padding-bottom: 30px;
 }
@@ -387,7 +403,6 @@
     padding-right: 10px;  
     padding-bottom: 30px;  
 }
-
 
 
 /**********SELLO PANDORA***************/

@@ -705,5 +705,86 @@ class CompetenciaControlador{
         return $result = mysqli_query($conexion, $sql);
     }
 
+
+    //Funcion que permite consultar el nombre de un badge de una competencia general para el eportafolio
+    public function consultarNombreBadgeCompGeneralParaEportafolio(int $idCG, string $tipoBadge){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        if($tipoBadge == 'ORO'){
+
+            $sqlCGBadgOro = "SELECT nombre_badgeoro from tbl_competencia_general where id_comp_gral = $idCG";
+            $result = mysqli_query($conexion, $sqlCGBadgOro);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgeoro'];
+            }
+
+        }else if($tipoBadge == 'PLATA'){
+
+            $sqlCGBadgPlata = "SELECT nombre_badgeplata from tbl_competencia_general where id_comp_gral = $idCG";
+            $result = mysqli_query($conexion, $sqlCGBadgPlata);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgeplata'];
+            }
+
+        }else if($tipoBadge == 'BRONCE'){
+
+            $sqlCGBadgBronce = "SELECT nombre_badgebronce from tbl_competencia_general where id_comp_gral = $idCG";
+            $result = mysqli_query($conexion, $sqlCGBadgBronce);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgebronce'];
+            }
+        }
+    }
+
+    //Funcion que permite consultar el nombre de un badge de unacompetencia general para el eportafolio
+    public function consultarNombreBadgeCompEspecificaParaEportafolio(int $idCE, string $tipoBadge){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        if($tipoBadge == 'ORO'){
+
+            $sqlCEBadgOro = "SELECT nombre_badgeoro from tbl_competencia_especifica where id_comp_esp = $idCE";
+            $result = mysqli_query($conexion, $sqlCEBadgOro);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgeoro'];
+            }
+
+        }else if($tipoBadge == 'PLATA'){
+
+            $sqlCEBadgPlata = "SELECT nombre_badgeplata from tbl_competencia_especifica where id_comp_esp = $idCE";
+            $result = mysqli_query($conexion, $sqlCEBadgPlata);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgeplata'];
+            }
+
+        }else if($tipoBadge == 'BRONCE'){
+
+            $sqlCEBadgBronce = "SELECT nombre_badgebronce from tbl_competencia_especifica where id_comp_esp = $idCE";
+            $result = mysqli_query($conexion, $sqlCEBadgBronce);
+
+            while ($row = $result->fetch_assoc()) {
+                return $row['nombre_badgebronce'];
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
 }
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-03-2022 a las 01:27:59
+-- Tiempo de generación: 25-03-2022 a las 15:45:40
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -115,8 +115,8 @@ INSERT INTO `tbl_competencia_especifica` (`id_comp_esp`, `id_comp_gral`, `codigo
 (25, 2, 'b.2', 'Estará en la capacidad de llevar a cabo procesos de abstracción para identificar las variables y sus relaciones en los procesos.', 'Maestro de los procesos', '', '', ''),
 (26, 2, 'b.3', 'Estará en la capacidad de proponer modelos a partir de la identificación de las variables y sus relaciones para tener una visión sistémica del proceso y proponer oportunidades de negocio.', 'Virtuoso tecnologico', '', '', ''),
 (27, 2, 'b.4', 'Estará en la capacidad de traducir los modelos a lenguaje artificial para contribuir a la eficacia de los procesos organizacionales.', 'Virtuoso tecnologico', '', '', ''),
-(28, 3, 'c.1', 'Estará en la capacidad de utilizar herramientas para el diseño y modelado de software, utilizando patrones de diseño adecuados, garantizando el cumplimiento de estándares.', 'Virtuoso tecnologico', '', '', ''),
-(29, 3, 'c.2', 'Estará en la capacidad de utilizar ambientes de desarrollo integrados y lenguajes de programación para la construcción de software con base en diseños previamente elaborados, optimizando procesos.', 'Virtuoso tecnologico', '', '', ''),
+(28, 3, 'c.1', 'Estará en la capacidad de utilizar herramientas para el diseño y modelado de software, utilizando patrones de diseño adecuados, garantizando el cumplimiento de estándares.', 'Virtuoso tecnologico', '', '', 'bronce.PNG'),
+(29, 3, 'c.2', 'Estará en la capacidad de utilizar ambientes de desarrollo integrados y lenguajes de programación para la construcción de software con base en diseños previamente elaborados, optimizando procesos.', 'Virtuoso tecnologico', '', 'plata.PNG', ''),
 (30, 3, 'c.3', 'Estará en la capacidad de diseñar y construir bases de datos para la toma de decisiones, garantizando la consistencia y oportunidad de la información generada.', 'Virtuoso tecnologico', '', '', ''),
 (31, 3, 'c.4', 'Estará en la capacidad de proponer alternativas para procurar la disponibilidad y el alto grado de desempeño de un sistema de información a través del análisis de su contexto y evaluación de los elementos que conforman su infraestructura tecnológica.', 'Virtuoso tecnologico', '', '', ''),
 (32, 3, 'c.5', 'Estará en la capacidad de aplicar los criterios básicos de seguridad, en los sistemas de información para proteger la información y garantizar la continuidad del negocio.', 'Virtuoso tecnologico', '', '', ''),
@@ -175,7 +175,7 @@ CREATE TABLE `tbl_competencia_general` (
 INSERT INTO `tbl_competencia_general` (`id_comp_gral`, `codigo`, `nombre_comp_gral`, `rol`, `nombre_badgeoro`, `nombre_badgeplata`, `nombre_badgebronce`) VALUES
 (1, 'A', 'Formado dentro del enfoque biopsicosocial y cultural.', 'Maestro de los procesos', '', '', ''),
 (2, 'B', 'Profesional con sólidos conocimientos en informática.', 'Maestro de los procesos', '', '', ''),
-(3, 'C', 'Diseña y construye sistemas de información.', 'Virtuoso tecnologico', '', '', ''),
+(3, 'C', 'Diseña y construye sistemas de información.', 'Virtuoso tecnologico', 'oro.PNG', '', ''),
 (4, 'D', 'Está en la capacidad de ejercer su profesión en contextos locales y globales.', 'Noble lider', '', '', ''),
 (5, 'E', 'Propone y gestiona proyectos para la transferencia adecuada y responsable de las tecnologías de la información y las comunicaciones.', 'Noble lider', '', '', ''),
 (6, 'F', 'Posee actitud crítica e investigativa.', 'Maestro de los procesos', '', '', ''),
@@ -341,6 +341,30 @@ INSERT INTO `tbl_evento` (`id_evento`, `nombre_evento`, `descripcion_evento`, `f
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbl_insigniasganadastrabdestacado`
+--
+
+CREATE TABLE `tbl_insigniasganadastrabdestacado` (
+  `Id` int(11) NOT NULL,
+  `codigo_estudiante` int(11) NOT NULL,
+  `id_trabajo` int(11) NOT NULL,
+  `tipo_badge` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
+  `id_competencia` int(11) NOT NULL,
+  `tipo_competencia` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tablas de insigniasque gano un trabajo destacado';
+
+--
+-- Volcado de datos para la tabla `tbl_insigniasganadastrabdestacado`
+--
+
+INSERT INTO `tbl_insigniasganadastrabdestacado` (`Id`, `codigo_estudiante`, `id_trabajo`, `tipo_badge`, `id_competencia`, `tipo_competencia`) VALUES
+(1, 38, 1, 'ORO', 3, 'GENERAL'),
+(2, 38, 3, 'BRONCE', 28, 'ESPECIFICA'),
+(3, 38, 1, 'PLATA', 29, 'ESPECIFICA');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbl_rol`
 --
 
@@ -377,9 +401,6 @@ CREATE TABLE `tbl_trabajodestacado` (
   `link_repocodigo` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
   `link_presentacion` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
   `trabajoTieneBadge` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `tipo_badge` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `id_competencia` int(11) DEFAULT NULL,
-  `tipo_competencia` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `publicadoeneportafolio` varchar(2) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de trabajos destacados';
 
@@ -387,10 +408,11 @@ CREATE TABLE `tbl_trabajodestacado` (
 -- Volcado de datos para la tabla `tbl_trabajodestacado`
 --
 
-INSERT INTO `tbl_trabajodestacado` (`Id`, `Id_estudiante`, `nombre_trabajo`, `descripcion`, `nombre_imagentrabajo`, `link_documento`, `link_video`, `link_repocodigo`, `link_presentacion`, `trabajoTieneBadge`, `tipo_badge`, `id_competencia`, `tipo_competencia`, `publicadoeneportafolio`) VALUES
-(1, 38, 'TRABAJO DESTACADO DE PRUEBA', 'Trabajo destacado que gano una megainsignia', NULL, 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', 'Si', 'ORO', 3, 'GENERAL', 'Si'),
-(2, 38, 'TRABAJO DESTACADO DE PRUEBA 2', 'Ejemplo de trabajo destacado 2', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', '', NULL, NULL, NULL, 'No'),
-(3, 38, 'TRABAJO DESTACADO DE PRUEBA 3 ', 'trabajo destacado que gano un insignia', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', NULL, 'Si', 'BRONCE', 28, 'ESPECIFICA', 'Si');
+INSERT INTO `tbl_trabajodestacado` (`Id`, `Id_estudiante`, `nombre_trabajo`, `descripcion`, `nombre_imagentrabajo`, `link_documento`, `link_video`, `link_repocodigo`, `link_presentacion`, `trabajoTieneBadge`, `publicadoeneportafolio`) VALUES
+(1, 38, 'TRABAJO DESTACADO DE PRUEBA', 'Trabajo destacado que gano una megainsignia, esto lo escribo para probar que se arme el parrafo en el fragmento del eportafolio para tal fin.', NULL, 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://docs.google.com/spreadsheets/d/1xZyupSIyIx3eP6_ZT4g8fx3cXrY9epawO6OLNi86E68/edit?usp=sharing', 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', 'Si', 'Si'),
+(2, 38, 'TRABAJO DESTACADO DE PRUEBA 2', 'Ejemplo de trabajo destacado 2', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', 'https://docs.google.com/presentation/d/1yqIBCF8Pz2JExGyj5OtpS9dp41vvaIx0/edit?usp=sharing&ouid=103121222244404759390&rtpof=true&sd=true', 'No', 'Si'),
+(3, 38, 'TRABAJO DESTACADO DE PRUEBA 3 ', 'trabajo destacado que gano un insignia', NULL, NULL, NULL, 'https://github.com/salamallecum/PROYECTO-DE-GRADO', NULL, 'Si', 'Si'),
+(4, 38, 'PROYECTO DE CLASE', 'proyecto realizado parala clase de mamar gallo, fue con mucho esfuerzo, hubieron peleas entre mis compañeros pero todo salió bien jejeje. janmspcmspcmpclmdpcl,dcpld,cñld,cñdl,cdñlc,dñcl,dñcd jnwnsdksmdksmdlksmdksmdksmksmdksmdksmdksmdsskdmskdmsdkmskds', NULL, 'https://proyectogrado.atlassian.net/secure/RapidBoard.jspa?rapidView=1&projectKey=C', 'https://www.youtube.com/watch?v=fOQNW5IEvxo', NULL, NULL, 'No', 'Si');
 
 -- --------------------------------------------------------
 
@@ -506,6 +528,12 @@ ALTER TABLE `tbl_evento`
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
+-- Indices de la tabla `tbl_insigniasganadastrabdestacado`
+--
+ALTER TABLE `tbl_insigniasganadastrabdestacado`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indices de la tabla `tbl_rol`
 --
 ALTER TABLE `tbl_rol`
@@ -595,6 +623,12 @@ ALTER TABLE `tbl_evento`
   MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
+-- AUTO_INCREMENT de la tabla `tbl_insigniasganadastrabdestacado`
+--
+ALTER TABLE `tbl_insigniasganadastrabdestacado`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `tbl_rol`
 --
 ALTER TABLE `tbl_rol`
@@ -604,7 +638,7 @@ ALTER TABLE `tbl_rol`
 -- AUTO_INCREMENT de la tabla `tbl_trabajodestacado`
 --
 ALTER TABLE `tbl_trabajodestacado`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuario`

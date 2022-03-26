@@ -23,9 +23,6 @@
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ComiteStyles.css">
         
-        <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/dashboard_comite.js" type="module"></script>
-        <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
     <body>
@@ -227,4 +224,8 @@
             </main>
         </div>
     </body>
+
+    <!--Links scripts de eventos js-->
+    <script src="assets/js/dom/dashboard_comite.js" type="module"></script>
+    <script src="assets/js/jquery-3.6.0.js"></script>
 </html>

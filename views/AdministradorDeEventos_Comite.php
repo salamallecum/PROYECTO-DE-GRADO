@@ -21,11 +21,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
        
         <!--Links Scripts de estilos-->
-        <link rel="stylesheet" href="assets/css/ComiteStyles.css">
-
-        <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
-        <script src="assets/js/jquery-3.6.0.js"></script>       
+        <link rel="stylesheet" href="assets/css/ComiteStyles.css">   
 
     </head>
 
@@ -853,6 +849,10 @@
                     });
                 });
             </script>
+
+            <!--Links scripts de eventos js-->
+            <script src="assets/js/dom/funcionesBasicasPopUpEventos.js" type="module"></script>
+            <script src="assets/js/jquery-3.6.0.js"></script>    
             
     </body>
 </html>
