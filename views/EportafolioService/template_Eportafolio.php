@@ -1,9 +1,9 @@
 <?php
 
-include "controllers/EstudianteControlador.php";
-include "controllers/EportafolioControlador.php";
-include "controllers/TrabajoDestacadoControlador.php";
-include $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/controllers/CompetenciaControlador.php";
+require_once "controllers/EstudianteControlador.php";
+require_once "controllers/EportafolioControlador.php";
+require_once "controllers/TrabajoDestacadoControlador.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/controllers/CompetenciaControlador.php";
 
 
 function getEportafolio(int $idDelEstudiante){
@@ -34,6 +34,7 @@ function getEportafolio(int $idDelEstudiante){
                                             //Consultamos los datos personales del estudiante para su muestreo en el eportafolio descargado
                                             $sqlDatEstudiante = "SELECT nombres_usuario, apellidos_usuario, ciudad, direccion, telefono, correo_usuario, foto_usuario, descripcion from tbl_usuario where id_usuario=".$idDelEstudiante;
                                             $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+                                            $key = '';
                                             foreach ($datosEstudiante as $key){
                                     
                                                 $plantillaEportafolio .= '<div class="informacionPersonal">
@@ -91,11 +92,8 @@ function getEportafolio(int $idDelEstudiante){
                                                                                                                 </div></td>
                                                                                                             </tr>
                                                                                                         </table>
-                                                                                                    </div>';                  
-                                                                
-                                            }
-                
-                                            $plantillaEportafolio .= '                          </div>
+                                                                                                    </div>                  
+                                                                    </div>
                                                                                             </div>                  
                                                                                         </div>
                                                                                     </div>
@@ -106,11 +104,13 @@ function getEportafolio(int $idDelEstudiante){
                                                                                     <div class="perfProfesional">
                                                                                         <p class="tituloPerfProfesional">Perfil profesional</p>
                                                                                         
-                                                                                        <p class="descripPerfProfesional">'. $key['descripcion']. '</p>
+                                                                                        <p class="descripPerfProfesional">'. $key['descripcion'] .'</p>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div>';
 
-                                                                                <!--GRAFICO DE PERFILAMIENTO PANDORA-->
+                                            }
+
+                                            $plantillaEportafolio .= '          <!--GRAFICO DE PERFILAMIENTO PANDORA-->
                                                                                 <div class="cardGraficoPerfilamiento">
                                                                                     <div class="grafPerfilamiento">
                                                                                         <p class="tituloGrafPerfilamiento">Gráfico de perfilamiento PANDORA</p>

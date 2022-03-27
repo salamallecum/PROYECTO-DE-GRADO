@@ -352,7 +352,7 @@
                             <div class="formulario-comparitEportafolio">
                                
                                 <form id="formularioModalCompartirEportafolio">
-                                    <input type="text" name="id_usuario" value=""> 
+                                    <input type="text" id="idEport" name="id_usuario" value=""> 
                                 </form>
 
                                     <label class="camposFormulario">Correo electrónico</label>
@@ -536,7 +536,8 @@
         <script type='text/javascript'>
             
             function eventoCompartirEportafolio(){
-                               
+
+                                               
                var btnCompartirEportafolio = document.getElementById('btnCompartirEportafolio');
                var idEportafolioEstudianteSeleccionado = btnCompartirEportafolio.getAttribute('data-id');
 
@@ -662,8 +663,9 @@
                 
                 $('#enviarEportafolio').click(function(){
 
+                    var idEportafolioSeleccionado = document.getElementById('idEport').value;
                     var emailDestinatario = document.getElementById('correoDestino').value;
-
+                    
                     if (emailDestinatario != "") {
 
                         function compartirEportafolio() {
@@ -672,7 +674,7 @@
                                 $.ajax({
                                     url: 'EportafolioService/capturaDatEportafolio.php',
                                     type: 'post',
-                                    data: {'emailDestinatario': emailDestinatario},
+                                    data: {'idEportafolioSeleccionado': idEportafolioSeleccionado, 'emailDestinatario': emailDestinatario},
                                     success: function(response){
                                         resolve(response)
                                         $('#panelConfirmacionDeEnvio').html(response);

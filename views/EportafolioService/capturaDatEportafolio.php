@@ -1,7 +1,7 @@
 <?php
 
 include "utils/Conexion.php";
-include "controllers/EportafolioControlador.php";
+require_once "controllers/EportafolioControlador.php";
 
 $c = new conectar();
 $conexion = $c->conexion();
@@ -30,15 +30,16 @@ if(isset($_POST['idEportafolioEstudianteSeleccionado'])){
     
 }
 
-//Capturamos el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
-if(isset($_POST['emailDestinatario'])){
+//Capturamos el id del eportafolio y el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
+if(isset($_POST['idEportafolioSeleccionado']) && isset($_POST['emailDestinatario'])){
 
     //Capturamos los datos de los campos del formulario
+    $idEportafolioSelect = trim($_POST['idEportafolioSeleccionado']);
     $emailDestinatario = trim($_POST['emailDestinatario']);
     $confirmacionEnvioExitoso = '<p class="indicadorSatisfactorio">* E-portafolio compartido satisfactoriamente</p><br>';
 
     //Compartimos el eportafolio seleccionado
-    $elEportafolioFueCorrectamenteCompartido = $eportafolioControla->compartirEportafolio(0,$emailDestinatario);
+    $elEportafolioFueCorrectamenteCompartido = $eportafolioControla->compartirEportafolio($idEportafolioSelect, $emailDestinatario);
 
     if($elEportafolioFueCorrectamenteCompartido){
         echo $confirmacionEnvioExitoso;  

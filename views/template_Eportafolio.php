@@ -1,9 +1,9 @@
 <?php
 
-include "EportafolioService/controllers/EstudianteControlador.php";
-include "EportafolioService/controllers/EportafolioControlador.php";
-include "EportafolioService/controllers/TrabajoDestacadoControlador.php";
-include "logic/controllers/CompetenciaControlador.php";
+require_once "EportafolioService/controllers/EstudianteControlador.php";
+require_once "EportafolioService/controllers/EportafolioControlador.php";
+require_once "EportafolioService/controllers/TrabajoDestacadoControlador.php";
+require_once "logic/controllers/CompetenciaControlador.php";
 
 
 $estudianteControla = new EstudianteControlador();
