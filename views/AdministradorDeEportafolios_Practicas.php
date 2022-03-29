@@ -1,3 +1,9 @@
+<?php
+    require_once "logic/utils/Conexion.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/Eportafoliocontrolador.php";
+
+    $obj = new EportafolioControlador();
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -95,23 +101,63 @@
                                 <th class="campoTabla">Acciones</th>
                             </tr>
                         </thead>
+                        <tbody>
 
-                        <!--Aqui van los registros de la tabla de EPORTAFOLIOS-->
-                        <tr class="filasDeDatosTablaEportafolios">
-                            <td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla"src="assets/images/team/alejo.jpeg"></td>
-                            <td class="datoTabla">LUIS ALEJANDRO</td>
-                            <td class="datoTabla">AMAYA TORRES</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a href="template_Eportafolio.php?IdEportafolio=2?IdUsuario=33" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
+                        <!--Script para cargar datos en tabla de Eportafolios-->      
+                        <?php
 
-                                <div class="col-botonesEdicion">
-                                    <a class="btnVerEportafolioEstudiante" data-id="<?php //echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>   
-                                </div>
+                            //Consultamos los ids de los eportafolios que se encunetran publicados y los almacenamos en un array
+                            $arrayEpPublicados = $obj->consultarIdsEportafoliosEstudiantilesPublicados();
 
-                            </div></td>
-                        </tr>
+                            //Convertimos el array de ids recibidos a string
+                            $stringEpPublicados = implode(",", $arrayEpPublicados);
+
+                            //Buscamos los datos de esos eportafolios publicados
+                            $sql = "SELECT id_usuario, nombres_usuario, apellidos_usuario, foto_usuario from tbl_usuario where id_usuario in($stringEpPublicados)";
+                            $datos = $obj->mostrarDatosEportafolios($sql);
+                            foreach ($datos as $key){
+                        ?>
+                                <!--Aqui van los registros de la tabla de eportafolios-->
+                                <tr class="filasDeDatosTablaEportafolios">
+                                    <?php 
+                                    //Aqui se traen las imagenes de cada convocatoria
+                                    $fotoDePerfil = $key['foto_usuario'];
+
+                                    if($fotoDePerfil != null){
+
+                                    ?>
+
+                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='<?php echo "userprofileImages/".$fotoDePerfil?>'></td>
+
+                                    <?php
+                                    }else{
+                                    ?>
+                                    
+                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
+
+                                    <?php    
+                                    }                       
+                                    ?>
+                                            
+                                    <td class="datoTabla"><?php echo $key['nombres_usuario'];  ?></td>
+                                    <td class="datoTabla"><?php echo $key['apellidos_usuario'];  ?></td>
+                                    <td class="datoTabla"><div class="compEsp-edicion">
+                                        <div class="col-botonesEdicion">
+                                            <a href="<?php echo "template_Eportafolio.php?Id_estudiante=". $key['id_usuario']?>" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                        </div>
+
+                                        <div id="col-botonesEdicion" class="col-botonesEdicion">
+                                            <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="<?php echo $key['id_usuario']?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                        </div>
+
+                                    </div></td>
+                                                                    
+                                </tr>    
+                        <?php
+                            }
+                        ?>
+
+                        </tbody>
                     </table>
                 </div>               
 
@@ -127,16 +173,19 @@
 
                             <div class="formulario-comparitEportafolio">
                                
-                                <input type="text" name="Id" value=""> 
+                                <form id="formularioModalCompartirEportafolio">
+                                    <input type="hidden" id="idEport" name="id_usuario" value=""> 
+                                </form>
 
-                                <label class="camposFormulario">Correo electrónico</label>
-                                <input id="correoDestino" name="correoDestino" placeholder="" type="email" onclick="resetSpanShareEportafolio()" class="form-control" required="true">
-                                <br>
-                                <span id="panelConfirmacionDeEnvio"></span>  
-                                
-                                <button type="button" id="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
-                                <button id="btnCerrarModalCompartirEportafolio" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
-                                                                       
+                                    <label class="camposFormulario">Correo electrónico</label>
+                                    <input id="correoDestino" name="correoDestino" placeholder="" type="email" onclick="resetSpanShareEportafolio()" class="form-control" required="true">
+                                    <br>
+                                    
+                                    <span id="panelConfirmacionDeEnvio"></span>  
+
+                                    <button type="button" id="enviarEportafolio" class="btn_agregarConvocatoria" title="Enviar E-portafolio">Enviar</button>
+                                    <button id="btnCerrarModalCompartirEportafolio" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Cerrar">Cerrar</button>
+                                                                   
                             </div>
                         </div>
                         </div>
@@ -160,6 +209,48 @@
 
         </script>
 
+        <!--Script que permite pasar el id de un eportafolio de estudiante con el fin de utilizarlo como recurso en el modal de compartir eportafolios-->
+        <script type='text/javascript'>
+            
+            function eventoCompartirEportafolio(){
+
+                                               
+               var btnCompartirEportafolio = document.getElementById('btnCompartirEportafolio');
+               var idEportafolioEstudianteSeleccionado = btnCompartirEportafolio.getAttribute('data-id');
+
+               function consultarIdDeEportafolioEstudiante() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'EportafolioService/capturaDatEportafolio.php',
+                            type: 'post',
+                            data: {'idEportafolioEstudianteSeleccionado': idEportafolioEstudianteSeleccionado},
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+
+               consultarIdDeEportafolioEstudiante()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#formularioModalCompartirEportafolio';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
+            } 
+        
+        </script>
+
         <!--Script que permite pasar el correo electronico ingresado en el modal de compartir eportafolio para que el eportafolio sea compartido con el usuario-->
         <script type='text/javascript'>
 
@@ -167,8 +258,9 @@
                 
                 $('#enviarEportafolio').click(function(){
 
+                    var idEportafolioSeleccionado = document.getElementById('idEport').value;
                     var emailDestinatario = document.getElementById('correoDestino').value;
-
+                    
                     if (emailDestinatario != "") {
 
                         function compartirEportafolio() {
@@ -177,7 +269,7 @@
                                 $.ajax({
                                     url: 'EportafolioService/capturaDatEportafolio.php',
                                     type: 'post',
-                                    data: {emailDestinatario: emailDestinatario},
+                                    data: {'idEportafolioSeleccionado': idEportafolioSeleccionado, 'emailDestinatario': emailDestinatario},
                                     success: function(response){
                                         resolve(response)
                                         $('#panelConfirmacionDeEnvio').html(response);

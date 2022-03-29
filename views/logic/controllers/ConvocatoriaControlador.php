@@ -581,5 +581,24 @@ class ConvocatoriaControlador{
 
         return $emparrayIdsEportafolios;
     }
+
+    //Funcion que permite consultar el/los links de el/los arhivo/s PDF de el/los eportafolios que fue/fueron postulado/s a una convocatoria practicas
+    public function consultarLinksDeArchivosPDFEportafolios(string $stridsEportafoliosPostulados){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT linkPortafolioParaCompartir from tbl_eportafolio where Id_estudiante in ($stridsEportafoliosPostulados)";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayLinksEportafoliosPostulados = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayLinksEportafoliosPostulados[$contador] = $row['linkPortafolioParaCompartir'];
+            $contador++;
+        }
+
+        return $emparrayLinksEportafoliosPostulados;
+    }
 }
 ?>

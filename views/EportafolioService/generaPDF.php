@@ -1,7 +1,7 @@
 <?php
 
 require_once('vendor/autoload.php');
-require_once "utils/generadorDeNombres.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/generadorDeNombres.php";
 
 //Aqui capturamos el id del eportafolio seleccionado por el usuario enviado por el link
 if($_GET['Id_Eportafolio'] != 0){

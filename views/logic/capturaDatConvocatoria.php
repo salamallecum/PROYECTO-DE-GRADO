@@ -6,12 +6,15 @@
     require_once "model/ConvocatoriaComite.php";
     require_once "model/ConvocatoriaPracticas.php";
     require_once "utils/generadorDeNombres.php";
-
+    require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/Eportafoliocontrolador.php";
+    
     $generador = new generadorNombres();
 
     //Creamos los objetos controlador que invocarán los metodos CRUD
     $convocatoriaControla = new ConvocatoriaControlador();
     $competenciaControla = new CompetenciaControlador();
+    $eportafolioControla = new EportafolioControlador();
+    
 
     //Capturamos el evento del boton de registro de convocatorias del rol comite
     if(isset($_POST['guardarConvocatoriaComite'])){
@@ -362,6 +365,34 @@
 
         $idConvocatoriaPracticasAEliminar = trim($_POST['Id']);
         $convocatoriaControla->eliminarConvocatoriaPracticas($idConvocatoriaPracticasAEliminar);
+
+        //Evaluamos si la convocatoria practicas tiene eportafolios de estudiantes postulados
+        $eportafoliosAplicadosConvPracticas = $convocatoriaControla->consultarIdsEportafoliosEstudiantilesPostuladosAUnaConvocatoria($idConvocatoriaPracticasAEliminar);
+
+        if($eportafoliosAplicadosConvPracticas != null){
+
+            //Convertimos a string el array de ids de los eportafolios postulados a una Convocatoria practicas 
+            $stringIdsDeEportPostuladosAUnaConvPracticas = implode(",", $eportafoliosAplicadosConvPracticas);
+
+            //Consultamos el link de el/los archivo/s pdf de el/los eportafolio/s que fue/fueron postulado/s a la convocatoria practicas
+            $arrayLinksDeArchivosEportPostulados = $convocatoriaControla->consultarLinksDeArchivosPDFEportafolios($stringIdsDeEportPostuladosAUnaConvPracticas);
+
+            //Eliminamos uno por uno de Drive el/los archivo/s pdf cargado/s para esos eportafolios postulados
+            for ($contador=0; $contador<count($arrayLinksDeArchivosEportPostulados); $contador++) {
+                
+                $eportafolioControla->eliminarEportafolioDeDrive($arrayLinksDeArchivosEportPostulados[$contador]);
+            
+            }
+
+            //Eliminamos el/los nombre/s de el/los archivo/s pdf y el/los link/s de el/los eportafolio/s que habia/n sido postulado/s a la convocatoria practicas eliminada
+            $eportafolioControla->limpiarDatosDeDivulgacionDeEportafolios($stringIdsDeEportPostuladosAUnaConvPracticas);
+
+            //Eliminamos la/las aplicacion/es de el/los eportafolio/s a la convocatoria practicas eliminada
+            $eportafolioControla->eliminarAplicacionesDeEportafoliosAUnaConvPracticas($idConvocatoriaPracticasAEliminar);
+
+        }
+        
+
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 
     }

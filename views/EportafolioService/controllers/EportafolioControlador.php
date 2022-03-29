@@ -2,13 +2,23 @@
 
 require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/vendor/autoload.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/template_Eportafolio.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/utils/Conexion.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/utils/generadorDeNombres.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/generadorDeNombres.php";
 
 //Cargamos las funciones del API de google
 include 'api-google/vendor/autoload.php';
 
 class EportafolioControlador{
+
+    //Funcion que permite mostrar los eportafolios
+    public function mostrarDatosEportafolios($sql){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sql);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 
     //Funcion que permite enviar un correo con el link del eportafolio para que sea compartido a un usuario empleador
     public function compartirEportafolio(int $idDelEstudiante, string $destinatario){
@@ -17,13 +27,15 @@ class EportafolioControlador{
         $elEportafolioYaTieneUnLinkRegistradoConAnterioridad = $this->evaluarSiUnEportafolioTieneLink($idDelEstudiante);
 
         if($elEportafolioYaTieneUnLinkRegistradoConAnterioridad != null){
-            $linkDelEportafolio = $this->consultarLinkDeUnEportafolio($idDelEstudiante);
-            $this->enviarCorreo($destinatario, $linkDelEportafolio);
+
+            //Enviamos el correo al interesado con su respectivo link del eportafolio previamente generado para su acceso
+            $this->enviarCorreo($destinatario, $elEportafolioYaTieneUnLinkRegistradoConAnterioridad);
+
             return true;
             
         }else{
 
-            //Generamos el archivo pdf del eportafolio del estudiante (esta funcion crea un archivo pdf temporal en la carpeta tempEportafolio)
+            //Generamos el archivo pdf del eportafolio del estudiante (esta funcion crea un archivo pdf temporal en la carpeta EportafolioService)
             $nombreEportafolioPDFFile = $this->generarPDFDeUnEportafolio($idDelEstudiante);
 
             //Actualizamos el nombre del arhivo pdf generado para el eportafolio en BD
@@ -38,7 +50,7 @@ class EportafolioControlador{
             //Enviamos el correo al interesado con su respectivo link del eportafolio para su acceso
             $this->enviarCorreo($destinatario, $linkDelNvoEportafolio);
 
-            //Eliminamos el archivo PDF del eportafolio generado de la carpeta tempEportafolio
+            //Eliminamos el archivo PDF del eportafolio temporal generado de la carpeta EportafolioService
             $this->eliminarArchivoPDFTemporal($nombreEportafolioPDFFile);
             
             return true;
@@ -70,7 +82,25 @@ class EportafolioControlador{
         while ($row = $result->fetch_assoc()) {
             return $row['linkPortafolioParaCompartir'];
         }
+    }
 
+    //Funcion que permite eliminar un archivo pdf de un eportafolio de Drive
+    public function eliminarEportafolioDeDrive(string $idArchivoAEliminar){
+
+        //Cargamos el archivos json de credenciales
+        putenv('GOOGLE_APPLICATION_CREDENTIALS='. $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/proyectopandora-345323-5d2a7d831ff4.json");
+
+        $driveClient = new Google_Client();
+        $driveClient->useApplicationDefaultCredentials();
+        $driveClient->setScopes(['https://www.googleapis.com/auth/drive.file']);
+
+        $service = new Google_Service_Drive($driveClient);
+
+        try {
+            $service->files->delete($idArchivoAEliminar);
+        } catch (Exception $e) {
+            print "Error al intentar eliminar el archivo pdf de Google Drive: " . $e->getMessage();
+        }
     }
 
     //Funcion que permite generar el pdf de un eportafolio seleccionado para su divulgación
@@ -175,19 +205,6 @@ class EportafolioControlador{
         }
     }
     
-    //Funcion que permite consultar el link del arhivo PDF de un eportafolio en BD para su divulgación
-    public function consultarLinkDeUnEportafolio(int $idEstudiante){
-        $c = new conectar();
-        $conexion = $c->conexion();
-
-        $sql = "SELECT linkPortafolioParaCompartir from tbl_eportafolio where Id_estudiante = $idEstudiante";
-        $result = mysqli_query($conexion, $sql);
-
-        while ($row = $result->fetch_assoc()) {
-            return $row['linkPortafolioParaCompartir'];
-        }
-    }
-
     //Funcion que permite eliminar el archivo temporal de eportafolio de la carpeta tempEportafolio
     public function eliminarArchivoPDFTemporal(string $fileAEliminar){
 
@@ -221,6 +238,61 @@ class EportafolioControlador{
         mail($correoDestino, $asunto, $mensaje, $desde);
     }
 
+    //Actualizamos el/los nombre/s de el/los archivo/s pdf y el/los link/s de el/los eportafolio/s que habia/n sido postulado/s a la convocatoria practicas eliminada
+    public function limpiarDatosDeDivulgacionDeEportafolios(string $stringIdsDeEportPostuladosAUnaConvPracticas){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "UPDATE tbl_eportafolio SET nombreArchivoEportafolio='', linkPortafolioParaCompartir='' where Id_estudiante in ($stringIdsDeEportPostuladosAUnaConvPracticas)";
+              
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que permite eliminar una convocatoria comite
+    public function eliminarAplicacionesDeEportafoliosAUnaConvPracticas(int $idConvPracticasEliminada){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE  from tbl_aplicacioneportafolio where id_convocatoria = $idConvPracticasEliminada";
+      
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que clacula cuantos eportafolios aparecen publicos en el sistema
+    public function contadorDeEportafoliosPublicos(){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT COUNT(*) from tbl_eportafolio where eportafolioPublicado='Si'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['COUNT(*)'];
+        }
+    }
+
+    //Funcion que permite consultar los ids de los eportafolios de los estudiantes que fueron publicados
+    public function consultarIdsEportafoliosEstudiantilesPublicados(){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT DISTINCT Id_estudiante from tbl_eportafolio where eportafolioPublicado='Si'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsEportafoliosPublicados = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsEportafoliosPublicados[$contador] = $row['Id_estudiante'];
+            $contador++;
+        }
+
+        return $emparrayIdsEportafoliosPublicados;
+    }
 }
 
 ?>

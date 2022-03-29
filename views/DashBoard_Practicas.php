@@ -2,9 +2,11 @@
     require_once "logic/utils/Conexion.php";
     require_once "logic/controllers/EventoControlador.php";
     require_once "logic/controllers/ConvocatoriaControlador.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/Eportafoliocontrolador.php";
 
     $objEventoControla = new EventoControlador();
     $objConvocatoriaControla = new ConvocatoriaControlador();
+    $objEportafolioControla = new EportafolioControlador();
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +92,7 @@
                             <span><img src="assets/images/ico_eportafolios.PNG"></span>
                             <div>
                                 <h5 class="tituloBloque">E-portafolios públicos</h5>
-                                <h4 class="resultadoBloque">--P</h4>
+                                <h4 class="resultadoBloque"><?php echo $objEportafolioControla->contadorDeEportafoliosPublicos();?></h4>
                             </div>
                         </div>
                         <div class="card-footer">

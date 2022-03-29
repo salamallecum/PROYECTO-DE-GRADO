@@ -1,6 +1,6 @@
 <?php
 
-include "utils/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/Conexion.php";
 require_once "controllers/EportafolioControlador.php";
 
 $c = new conectar();
