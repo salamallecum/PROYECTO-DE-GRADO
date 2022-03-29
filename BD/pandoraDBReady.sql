@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-03-2022 a las 15:45:40
+-- Tiempo de generación: 29-03-2022 a las 03:13:06
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -58,7 +58,7 @@ CREATE TABLE `tbl_aplicacioneportafolio` (
 --
 
 INSERT INTO `tbl_aplicacioneportafolio` (`Id`, `Id_portafolioEstudiante`, `id_convocatoria`) VALUES
-(1, 38, 16);
+(2, 38, 17);
 
 -- --------------------------------------------------------
 
@@ -284,7 +284,6 @@ CREATE TABLE `tbl_convocatoriapracticas` (
 --
 
 INSERT INTO `tbl_convocatoriapracticas` (`Id`, `nombre_convocatoria`, `descripcion`, `fecha_inicio`, `fecha_fin`, `nombre_imagen`, `nombre_archivo`) VALUES
-(16, 'CONVOCATORIA DE PRUEBA', 'Se necesitan practicantes de ing de sistemas de ultimo semestre para mirar para el techo y matar moscas, postúlate ahora.', '2022-03-03', '2022-03-19', 'rUdtn9.jpg', NULL),
 (17, 'CONVOCATORIA SIN IMG', 'convocatoria sin imagen', '2022-02-27', '2022-03-12', NULL, 'WcT1oC.pdf');
 
 -- --------------------------------------------------------
@@ -298,16 +297,17 @@ CREATE TABLE `tbl_eportafolio` (
   `Id_estudiante` int(11) NOT NULL,
   `Id_trabajo` int(11) NOT NULL,
   `eportafolioPublicado` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `linkPortafolioParaCompartir` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL
+  `nombreArchivoEportafolio` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `linkPortafolioParaCompartir` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de eportafolios';
 
 --
 -- Volcado de datos para la tabla `tbl_eportafolio`
 --
 
-INSERT INTO `tbl_eportafolio` (`Id`, `Id_estudiante`, `Id_trabajo`, `eportafolioPublicado`, `linkPortafolioParaCompartir`) VALUES
-(1, 38, 1, 'Si', NULL),
-(2, 38, 2, 'Si', NULL);
+INSERT INTO `tbl_eportafolio` (`Id`, `Id_estudiante`, `Id_trabajo`, `eportafolioPublicado`, `nombreArchivoEportafolio`, `linkPortafolioParaCompartir`) VALUES
+(1, 38, 1, 'Si', 'EpeaMc.pdf', '1cHqwr5D_lhkp5vDauYmqBIMovMAjOXlM'),
+(2, 38, 2, 'Si', 'EpeaMc.pdf', '1cHqwr5D_lhkp5vDauYmqBIMovMAjOXlM');
 
 -- --------------------------------------------------------
 
@@ -566,7 +566,7 @@ ALTER TABLE `tbl_aplicaciondetrabajos`
 -- AUTO_INCREMENT de la tabla `tbl_aplicacioneportafolio`
 --
 ALTER TABLE `tbl_aplicacioneportafolio`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_asignatura`
