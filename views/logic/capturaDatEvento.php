@@ -112,7 +112,7 @@
                     //Eliminamos la imagen previa en servidor
                     if($nombreAntiguaImagen != null){
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $eventoControla->limpiarNombreImagenEvento($nombreAntiguaImagen);
+                       $eventoControla->limpiarNombreImagenEvento($idEventoAEditar, $nombreAntiguaImagen);
                        //Eliminamos la imagen previa en servidor del evento
                        $eventoControla->eliminarImagen($nombreAntiguaImagen);
 
@@ -137,7 +137,7 @@
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciado != null){
                         //Eliminamos el nombre del enunciado en base de datos 
-                       $eventoControla->limpiarNombreEnunciadoEvento($nombreAntiguoEnunciado);
+                       $eventoControla->limpiarNombreEnunciadoEvento($idEventoAEditar, $nombreAntiguoEnunciado);
                        //Eliminamos enunciado previo en servidor del evento
                        $eventoControla->eliminarEnunciado($nombreAntiguoEnunciado);
 

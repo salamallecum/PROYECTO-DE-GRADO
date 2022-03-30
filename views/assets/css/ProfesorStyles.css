@@ -50,6 +50,33 @@
     padding: 1rem;
 }
 
+#tituloPagPrincipal{
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.tituloBloque{
+    color: var(--text-grey);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.resultadoBloque{
+    color: #005e6e;
+    font-size: 1.1rem;
+    margin-top: .2rem;
+    font-weight: bold;
+}
+
+
+.indicadorSatisfactorio{
+    color: green;
+}
+
+.indicadorDeCamposIncompletos{
+    color: red
+}
+
 .sidebar-menu li{
     margin-bottom: 2rem;
 }
@@ -381,6 +408,8 @@ main{
 
 .titulo_seccion{
     color: #005e6e;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .card .card-header {
@@ -581,6 +610,13 @@ form-control[type=file]:not(:disabled):not([readonly]) {
 
 .card-user .card-centerProfile {
     min-height: 240px;
+}
+
+#txt_perfilProfesional{
+    width: 890px;
+    height: 90px;
+    resize: none;
+    overflow-y: scroll;
 }
 
 .card .card-centerProfile {

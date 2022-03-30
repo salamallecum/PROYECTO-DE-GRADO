@@ -257,23 +257,23 @@ class EventoControlador{
     }
 
     //Funcion que elimina de base de datos el nombre de una imagen de un evento
-    public function limpiarNombreImagenEvento($nombreImgEvento){
+    public function limpiarNombreImagenEvento(int $idEv, string $nombreImgEvento){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_evento SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgEvento'";
+        $sql = "UPDATE tbl_evento SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgEvento' and id_evento=".$idEv;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
     //Funcion que elimina de base de datos el nombre de un enunciado de un evento
-    public function limpiarNombreEnunciadoEvento($nombreEnunEvento){
+    public function limpiarNombreEnunciadoEvento(int $idEv, string $nombreEnunEvento){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_evento SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunEvento'";
+        $sql = "UPDATE tbl_evento SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunEvento' and id_evento=".$idEv;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

@@ -3,7 +3,7 @@
 class EstudianteControlador{
 
 //Funcion que permite mostrar los datos personales del estudiante
-public function mostrarDatosEstudiante($sql){
+public function mostrarDatosEstudiante(string $sql){
 
     $c = new conectar();
     $conexion = $c->conexion();

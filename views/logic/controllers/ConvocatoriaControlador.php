@@ -466,45 +466,45 @@ class ConvocatoriaControlador{
     }
 
     //Funcion que elimina de base de datos el nombre de una imagen de una convocatoria comite
-    public function limpiarNombreImagenConvocatoriaComite($nombreImgConCom){
+    public function limpiarNombreImagenConvocatoriaComite(int $idConvCom, string $nombreImgConCom){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriacomite SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConCom'";
+        $sql = "UPDATE tbl_convocatoriacomite SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConCom' and Id=".$idConvCom;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
     //Funcion que elimina de base de datos el nombre de un enunciado de una convocatoria comite
-    public function limpiarNombreEnunciadoConvocatoriaComite($nombreEnunConCom){
+    public function limpiarNombreEnunciadoConvocatoriaComite(int $idConv, string $nombreEnunConCom){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriacomite SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunConCom'";
+        $sql = "UPDATE tbl_convocatoriacomite SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunConCom' and Id=".$idConv;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
     //Funcion que elimina de base de datos el nombre de una imagen de una convocatoria practicas
-    public function limpiarNombreImagenConvocatoriaPracticas($nombreImgConPrac){
+    public function limpiarNombreImagenConvocatoriaPracticas(int $id, string $nombreImgConPrac){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConPrac'";
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgConPrac' and Id=".$id;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
     //Funcion que elimina de base de datos el nombre de un enunciado de una convocatoria practicas
-    public function limpiarNombreEnunciadoConvocatoriaPracticas($nombreEnunConPrac){
+    public function limpiarNombreEnunciadoConvocatoriaPracticas(int $id, $nombreEnunConPrac){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_archivo = null WHERE  nombre_archivo='$nombreEnunConPrac'";
+        $sql = "UPDATE tbl_convocatoriapracticas SET nombre_archivo = null WHERE  nombre_archivo='$nombreEnunConPrac'and Id=".$id;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

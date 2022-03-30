@@ -121,7 +121,7 @@
                     //Eliminamos la imagen previa en servidor
                     if($nombreAntiguaImagenConvComEdit != null){
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $convocatoriaControla->limpiarNombreImagenConvocatoriaComite($nombreAntiguaImagenConvComEdit);
+                       $convocatoriaControla->limpiarNombreImagenConvocatoriaComite($idDeConvComiteActualizar, $nombreAntiguaImagenConvComEdit);
                        //Eliminamos la imagen previa en servidor de la convocatoria
                        $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvComEdit);
 
@@ -145,9 +145,9 @@
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciadoConvComEdit != null){
                        //Eliminamos el nombre del enunciado en base de datos 
-                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaComite($nombreAntiguaImagenConvComEdit);
+                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaComite($idDeConvComiteActualizar, $nombreAntiguoEnunciadoConvComEdit);
                        //Eliminamos el enunciado previo en servidor de la convocatoria
-                       $convocatoriaControla->eliminarEnunciado($nombreAntiguaImagenConvComEdit);
+                       $convocatoriaControla->eliminarEnunciado($nombreAntiguoEnunciadoConvComEdit);
 
                        $nuevoNombreArchivoEnunciadoConvComAEditar = $generador->generadorDeNombres().".pdf";
                        $convocatoriaControla->subirEnunciadoConvocatoriaComite($rutaDeEnunciadoConvComEdit, $nuevoNombreArchivoEnunciadoConvComAEditar, $enunciadoEditDeConvComite, $nombreDeConvocatoriaComiteEdit);
@@ -280,7 +280,7 @@
                     if($nombreAntiguaImagenConvPracEdit != null){
                         
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $convocatoriaControla->limpiarNombreImagenConvocatoriaPracticas($nombreAntiguaImagenConvPracEdit);
+                       $convocatoriaControla->limpiarNombreImagenConvocatoriaPracticas($idDeConvPracticasActualizar, $nombreAntiguaImagenConvPracEdit);
                        //Eliminamos la imagen previa en servidor de la convocatoria
                        $convocatoriaControla->eliminarImagen($nombreAntiguaImagenConvPracEdit);
 
@@ -305,7 +305,7 @@
                     if($nombreAntiguoEnunciadoConvPracEdit != null){
                         
                         //Eliminamos el nombre del enunciado en base de datos 
-                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaPracticas($nombreAntiguoEnunciadoConvPracEdit);
+                       $convocatoriaControla->limpiarNombreEnunciadoConvocatoriaPracticas($idDeConvPracticasActualizar, $nombreAntiguoEnunciadoConvPracEdit);
                        //Eliminamos el enunciado previo en servidor de la convocatoria
                        $convocatoriaControla->eliminarEnunciado($nombreAntiguoEnunciadoConvPracEdit);
 
