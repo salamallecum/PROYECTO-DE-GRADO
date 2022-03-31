@@ -150,6 +150,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <br>
                             <?php include("logic/capturaDatProfesor.php") ?>
                         </div>  
                     

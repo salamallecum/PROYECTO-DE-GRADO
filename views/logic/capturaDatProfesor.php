@@ -93,35 +93,38 @@
                     $nombreAntiguaImagen = $profesorControla->consultarNombreImagenProfesor($idDelProfesor);
 
                     //Eliminamos la imagen previa en servidor
-                    if($nombreAntiguaImagen != null){
+                    if($nombreAntiguaImagen != null || $nombreAntiguaImagen != ''){
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $profesorControla->limpiarNombreImagenProfesor($nombreAntiguaImagen);
+                       $profesorControla->limpiarNombreImagenProfesor($idDelProfesor, $nombreAntiguaImagen);
                        //Eliminamos la imagen previa en servidor del evento
-                       $profesorControla->eliminarImagen($nombreAntiguaImagen);
+                       $profesorControla->eliminarImagenDePerfilProfesor($nombreAntiguaImagen);
 
                        $nuevoNombreArchivoImagenProfesorEdit = $generador->generadorDeNombres().".jpg";
-                       $profesorControla->subirImagenProfesor($rutaDeImagenEdit, $nuevoNombreArchivoImagenProfesorEdit, $imagenDelProfesor, $nombresEditProfesor);
+                       $profesorControla->subirImagenDePerfilProfesor($rutaDeImagenEdit, $nuevoNombreArchivoImagenProfesorEdit, $imagenDelProfesor, $nombresEditProfesor);
 
                     }
         
                     $nuevoNombreArchivoImagenProfesorEditado = $generador->generadorDeNombres().".jpg";
-                    $eventoControla->subirImagenEvento($rutaDeImagenEdit, $nuevoNombreArchivoImagenProfesorEditado, $imagenDelProfesor, $nombresEditProfesor);
+                    $profesorControla->subirImagenDePerfilProfesor($rutaDeImagenEdit, $nuevoNombreArchivoImagenProfesorEditado, $imagenDelProfesor, $nombresEditProfesor);
                     
                 }        
             
                 ?>
                 <h3 class="indicadorSatisfactorio">* Información actualizada exitosamente</h3>
                 <?php
+                
             }else{
                 ?>
                 <h3 class="indicadorDeCamposIncompletos">* Error al actualizar información</h3>
                 <?php
+                
             }  
         
         }else{
             ?>
             <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>
             <?php
+        
         }
     }
     

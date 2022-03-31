@@ -513,67 +513,67 @@ class CompetenciaControlador{
     }
 
     //Funcion que elimina de base de datos el nombre de un badge de oro de una competenecia general 
-    public function limpiarNombreBadgeOroCompGeneral($nombrebadgeOroCG){
+    public function limpiarNombreBadgeOroCompGeneral(int $idCompGral, string $nombrebadgeOroCG){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_general SET nombre_badgeoro = null WHERE  nombre_badgeoro='$nombrebadgeOroCG'";
+        $sql = "UPDATE tbl_competencia_general SET nombre_badgeoro = null WHERE  nombre_badgeoro='$nombrebadgeOroCG' and id_comp_gral=".$idCompGral;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
     //Funcion que elimina de base de datos el nombre de un badge de plata de una competenecia general 
-    public function limpiarNombreBadgePlataCompGeneral($nombrebadgePlataCG){
+    public function limpiarNombreBadgePlataCompGeneral(int $idCompGral, string $nombrebadgePlataCG){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_general SET nombre_badgeplata = null WHERE  nombre_badgeplata='$nombrebadgePlataCG'";
+        $sql = "UPDATE tbl_competencia_general SET nombre_badgeplata = null WHERE  nombre_badgeplata='$nombrebadgePlataCG' and id_comp_gral=".$idCompGral;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
     //Funcion que elimina de base de datos el nombre de un badge de bronce de una competenecia general
-    public function limpiarNombreBadgeBronceCompGeneral($nombrebadgeBronceCG){
+    public function limpiarNombreBadgeBronceCompGeneral(int $idCompGral, string $nombrebadgeBronceCG){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_general SET nombre_badgebronce = null WHERE  nombre_badgebronce='$nombrebadgeBronceCG'";
+        $sql = "UPDATE tbl_competencia_general SET nombre_badgebronce = null WHERE  nombre_badgebronce='$nombrebadgeBronceCG' and id_comp_gral=".$idCompGral;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
     //Funcion que elimina de base de datos el nombre de un badge de oro de una competenecia especifica 
-    public function limpiarNombreBadgeOroCompEspecifica($nombrebadgeOroCE){
+    public function limpiarNombreBadgeOroCompEspecifica(int $idCompEsp, string $nombrebadgeOroCE){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgeoro = null WHERE  nombre_badgeoro='$nombrebadgeOroCE'";
+        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgeoro = null WHERE  nombre_badgeoro='$nombrebadgeOroCE' and id_comp_esp=".$idCompEsp;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
     //Funcion que elimina de base de datos el nombre de un badge de plata de una competenecia especifica
-    public function limpiarNombreBadgePlataCompEspecifica($nombrebadgePlataCE){
+    public function limpiarNombreBadgePlataCompEspecifica(int $idCompEsp, string $nombrebadgePlataCE){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgeplata = null WHERE  nombre_badgeplata='$nombrebadgePlataCE'";
+        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgeplata = null WHERE  nombre_badgeplata='$nombrebadgePlataCE' and id_comp_esp=".$idCompEsp;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
 
     //Funcion que elimina de base de datos el nombre de un badge de bronce de una competenecia especifica
-    public function limpiarNombreBadgeBronceCompEspecifica($nombrebadgeBronceCE){
+    public function limpiarNombreBadgeBronceCompEspecifica(int $idCompEsp, string $nombrebadgeBronceCE){
 
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgebronce = null WHERE  nombre_badgebronce='$nombrebadgeBronceCE'";
+        $sql = "UPDATE tbl_competencia_especifica SET nombre_badgebronce = null WHERE  nombre_badgebronce='$nombrebadgeBronceCE' and id_comp_esp=".$idCompEsp;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 

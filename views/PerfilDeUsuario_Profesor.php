@@ -27,6 +27,10 @@ if($_GET['Id_profesor'] != 0){
         
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ProfesorStyles.css">
+
+        <!--Links scripts de eventos js-->
+        <script src="assets/js/jquery-3.6.0.js"></script>
+
     </head>
 
     <body>
@@ -113,7 +117,7 @@ if($_GET['Id_profesor'] != 0){
                                     foreach ($datosProfesor as $key){
                                 ?>
                                         <div class="card-center">
-                                            <form action="logic/capturaDatProfesor.php" method="POST" enctype="multipart/form-data">
+                                            <form method="POST" enctype="multipart/form-data">
                                                 
                                                 <div class="row">
                                                     <div class="pr-1 col-md-5">
@@ -212,10 +216,11 @@ if($_GET['Id_profesor'] != 0){
                                                     </div>
 
                                                     <div class="col">
-                                                        <a id="openModal" class="btn-fill pull-right btn btn-info" title="Cambiar contraseña">Cambiar Contraseña</a>
+                                                        <button id="btnCambiarClave" type="button" class="btn-fill pull-right btn btn-info" data-id="<?php echo $idProfesorLogueado;?>" data-bs-toggle="modal" data-bs-target="#modalCambiarClave" title="Cambiar contraseña">Cambiar Contraseña</button>
                                                     </div>
                                                 </div>
                                             </form>
+                                            <br>
                                             <!--Incluimos el archivo con la logica del formulario-->
                                             <?php include("logic/capturaDatProfesor.php") ?>
                                         </div>
@@ -240,7 +245,7 @@ if($_GET['Id_profesor'] != 0){
 
                                                             ?>
 
-                                                                <img id="lbl_fotoDePerfil" alt="..." class="avatar border-gray" src="<?php echo "userprofileImages/".$nombreDeImg; ?>">
+                                                                <img id="lbl_fotoDePerfil" alt="..." class="avatar border-gray" src="<?php echo "profileImages/".$nombreDeImg; ?>">
 
                                                             <?php
                                                             }else{
@@ -279,33 +284,103 @@ if($_GET['Id_profesor'] != 0){
 }
 ?>
 
+                        </div>                    
+
+                    <!--ESTRUCTURA DEL POPUP DE CAMBIO DE CONTRASEÑA-->                  
+                    <div class="modal fade" id="modalCambiarClave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Cambiar contraseña</h3>
                         </div>
-
-                    
-
-                    <!--ESTRUCTURA DEL POPUP DE CAMBIO DE CONTRASEÑA-->
-                    <div id="modal_container" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Cambiar contraseña</h3>
-                            <br>
-
-                            <div class="formulario-cambioDeContraseña">
-                                <form class="">
-                                    <label class="labelsPassword">Contraseña actual</label>
-                                    <input id="txt_contraseñaActual" name="txtContraseñaActual" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label class="labelsPassword">Contraseña nueva</label>
-                                    <input id="txt_contraseñaNueva" name="txtContraseñaNueva" placeholder="" type="text" class="form-control">
-                                    <br>
-                                </form>
-                            </div>
+                        <div class="modal-body">
                         
-                            <a id="btn_guardarContraseña" class="btn_agregarDesafio" title="Guardar">Guardar</a>
-                            <a id="btn_cancelar" class="btn_agregarDesafio" title="Cancelar">Cancelar</a>
+                            <form id="formularioModalCambioClave">
+                                <input type="hidden" id="idProfe" name="id_profe" value="<?php echo $idProfesorLogueado;?>"> 
+                            </form>
+                            <label class="labelsPassword">Contraseña actual</label>
+                            <input id="txt_contraseñaActual" name="txtContraseñaActual" placeholder="" type="password" onclick="resetSpanActualizarContraseña()" class="form-control" maxlength="10" required="true">
+                            <br>
+                            <label class="labelsPassword">Contraseña nueva</label>
+                            <input id="txt_contraseñaNueva" name="txtContraseñaNueva" placeholder="" type="password" onclick="resetSpanActualizarContraseña()" class="form-control" maxlength="10" required="true">
+                            <br>
+                        
+                            <span id="panelConfirmacionDeCambioDeClave"></span> 
+                            <br> 
+
+                            <button type="button" id="guardarCambioClave" class="btn_agregarDesafio" title="Guardar">Guardar</button>
+                            <button id="btnCerrarModalCambiarClave" onclick="limpiarFormularioCambiarContraseña()" type="button" class="btn btn-secondary" data-bs-toggle="modal" title="Cerrar">Cerrar</button>
+                                                                   
+                        </div>
                         </div>
                     </div>
+                    </div>
+
                 </div>
             </main>
         </div>
+
+        <!--FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO PARA COMPARTIR E-PORTAFOLIOS-->
+        <script type='text/javascript'>
+            
+            function limpiarFormularioCambiarContraseña(){
+                document.getElementById('txt_contraseñaActual').value="";
+                document.getElementById('txt_contraseñaNueva').value=""; 
+                document.getElementById('panelConfirmacionDeCambioDeClave').innerHTML="";               
+            }
+        </script>
+
+        <!--Funcion que resetea el span de confirmacion de actualizacion de contraseña exitoso-->
+        <script>
+            function resetSpanActualizarContraseña(){ 
+                document.getElementById('panelConfirmacionDeCambioDeClave').innerHTML="";
+            }            
+
+            //Asignamos elevento de reseteo al boton que cierrael modal de compartir eportafolios
+            $('#btnCerrarModalCambiarClave').click(function(){
+                resetSpanActualizarContraseña();
+            });
+        </script>
+
+        <!--Script que permite el cambio de contraseña para un profesor-->
+        <script type='text/javascript'>
+
+            $(document).ready(function(){
+                
+                $('#guardarCambioClave').click(function(){
+
+                    var idProfeLogueado = document.getElementById('idProfe').value;
+                    var claveActual = document.getElementById('txt_contraseñaActual').value;
+                    var claveNueva = document.getElementById('txt_contraseñaNueva').value;
+                    
+                    if (claveActual != "" && claveNueva != "") {
+
+                        function cambiarContraseña() {
+                            return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {'idProfeLogueado': idProfeLogueado, 'claveActual': claveActual, 'claveNueva':claveNueva},
+                                    success: function(response){
+                                        resolve(response)
+                                        $('#panelConfirmacionDeCambioDeClave').html(response);
+                                    },
+                                    error: function (error) {
+                                        reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        cambiarContraseña();
+                    
+                    }else{
+                        alert('Complete los datos solicitados.');
+                    }
+                    
+                });
+            });
+        </script>
+
     </body>
 </html>

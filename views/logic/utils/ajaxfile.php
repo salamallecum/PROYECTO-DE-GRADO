@@ -4,6 +4,7 @@ include "../controllers/CompetenciaControlador.php";
 include "../controllers/ConvocatoriaControlador.php";
 include "../controllers/EventoControlador.php";
 include "../controllers/EstudianteControlador.php";
+include "../controllers/ProfesorControlador.php";
 
 
 //Este archivo se encarga de traer de base de datos los datos de los objetos del sistema (sea Eventos, Convocatorias, Eportafolios o Competencias) 
@@ -13,6 +14,97 @@ $competenciaControla = new CompetenciaControlador();
 $convocatoriaControla = new ConvocatoriaControlador();
 $eventoControla = new EventoControlador();
 $estudianteControla = new EstudianteControlador();
+$profesorControla = new ProfesorControlador();
+
+
+//----------------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------SECCION PROFESOR---------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
+//Capturamos el id del eportafolio y el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
+if(isset($_POST['idProfeLogueado']) && isset($_POST['claveActual']) && isset($_POST['claveNueva'])){
+
+    //Capturamos los datos de los campos del formulario
+    $idProfeLogueado = trim($_POST['idProfeLogueado']);
+    $claveActual = trim($_POST['claveActual']);
+    $claveNueva = trim($_POST['claveNueva']);
+
+    $confirmacionActualizacionClaveExitosa = '<p class="indicadorSatisfactorio">* Contraseña actualizada satisfactoriamente</p>';
+    $confirmacionActualizacionClaveFallido = '<p class="indicadorDeCamposIncompletos">* Contraseña actual no valida</p>';
+
+    $antiguaContraseñaProfesor = $profesorControla->consultarAntiguaContraseña($idProfeLogueado);
+
+    if($antiguaContraseñaProfesor == $claveActual){
+
+        //Actualizamos la contraseña del profesor
+        $contraseñaActualizadaCorrectamente = $profesorControla->actualizarContraseña($idProfeLogueado, $claveNueva);
+
+        if($contraseñaActualizadaCorrectamente){
+            echo $confirmacionActualizacionClaveExitosa;  
+        }
+
+    }else{
+        echo $confirmacionActualizacionClaveFallido;
+    } 
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //----------------------------------------------------------------------------------------------------------------------------//

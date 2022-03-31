@@ -241,7 +241,7 @@
                 
                 if($nombreAntiguoBadgeOro != null){
                     //Eliminamos el nombre de la imagen en base de datos 
-                    $competenciaControla->limpiarNombreBadgeOroCompGeneral($nombreAntiguoBadgeOro);
+                    $competenciaControla->limpiarNombreBadgeOroCompGeneral($idCompGeneralEditada, $nombreAntiguoBadgeOro);
                     //Eliminamos la imagen previa en servidor del badge oro
                     $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeOro);
 
@@ -265,7 +265,7 @@
                 //Eliminamos la imagen previa en servidor del badge plata
                 if($nombreAntiguoBadgePlata != null){
                    //Eliminamos el nombre de la imagen en base de datos 
-                   $competenciaControla->limpiarNombreBadgePlataCompGeneral($nombreAntiguoBadgePlata);
+                   $competenciaControla->limpiarNombreBadgePlataCompGeneral($idCompGeneralEditada, $nombreAntiguoBadgePlata);
                    //Eliminamos la imagen previa en servidor del badge 
                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlata);
 
@@ -289,7 +289,7 @@
                 //Eliminamos la imagen previa en servidor del badge bronce
                 if($nombreAntiguoBadgePlata != null){
                     //Eliminamos el nombre de la imagen en base de datos 
-                   $competenciaControla->limpiarNombreBadgeBronceCompGeneral($nombreAntiguoBadgeBronce);
+                   $competenciaControla->limpiarNombreBadgeBronceCompGeneral($idCompGeneralEditada, $nombreAntiguoBadgeBronce);
                    //Eliminamos la imagen previa en servidor del badge 
                    $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronce);
 
@@ -357,7 +357,7 @@
                     //Eliminamos la imagen previa en servidor del badge oro
                     if($nombreAntiguoBadgeOroCompEsp != null){
                        //Eliminamos el nombre de la imagen en base de datos 
-                        $competenciaControla->limpiarNombreBadgeOroCompEspecifica($nombreAntiguoBadgeOroCompEsp);
+                        $competenciaControla->limpiarNombreBadgeOroCompEspecifica($idCompEspecificaAEditar, $nombreAntiguoBadgeOroCompEsp);
                         //Eliminamos la imagen previa en servidor del badge oro
                         $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeOroCompEsp);
 
@@ -381,7 +381,7 @@
                     //Eliminamos la imagen previa en servidor del badge plata
                     if($nombreAntiguoBadgePlataCompEsp != null){
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $competenciaControla->limpiarNombreBadgePlataCompEspecifica($nombreAntiguoBadgePlataCompEsp);
+                       $competenciaControla->limpiarNombreBadgePlataCompEspecifica($idCompEspecificaAEditar, $nombreAntiguoBadgePlataCompEsp);
                        //Eliminamos la imagen previa en servidor del badge plata
                        $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgePlataCompEsp);
 
@@ -405,7 +405,7 @@
                     //Eliminamos la imagen previa en servidor del badge bronce
                     if($nombreAntiguoBadgeBronceCompEsp != null){
                        //Eliminamos el nombre de la imagen en base de datos 
-                       $competenciaControla->limpiarNombreBadgeBronceCompEspecifica($nombreAntiguoBadgeBronceCompEsp);
+                       $competenciaControla->limpiarNombreBadgeBronceCompEspecifica($idCompEspecificaAEditar, $nombreAntiguoBadgeBronceCompEsp);
                        //Eliminamos la imagen previa en servidor del badge bronce
                        $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronceCompEsp);
 
