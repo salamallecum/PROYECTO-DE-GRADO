@@ -23,6 +23,13 @@
     cursor: pointer;
 }
 
+#txt_descripcion{
+    resize: none;
+    width: 455px;
+    height: 100px;
+    overflow-y: scroll;
+}
+
 .sidebar{
     height: 100%;
     width: 230px;
@@ -47,7 +54,7 @@
 }
 
 .sidebar-menu{
-    padding: 1rem;
+    padding: 2rem;
 }
 
 #tituloPagPrincipal{
@@ -117,6 +124,10 @@
 .items_menu{
     color: white;
     font-weight: bold;
+}
+
+.menuProfesor{
+    padding-left: 3px;
 }
 
 .sidebar a span:last-child{
@@ -551,6 +562,19 @@ form-control[type=file]:not(:disabled):not([readonly]) {
     flex-basis: 50%;
 }
 
+
+.compentenciasContent{
+    width: 450px;
+    height: 100px;
+    overflow-y: scroll; 
+    border: 1px #000;
+}
+
+.checkCompetenciaGeneral{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
 .col {
     flex: 1 0;
 }
@@ -817,6 +841,7 @@ img {
     font-weight: bold;
 }
 
+/*
 input[type="checkbox"]{
     position: relative;
     width: 40px;
@@ -827,8 +852,9 @@ input[type="checkbox"]{
     border-radius: 20px;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     /*transition: .5s;*/
-}
 
+
+/*
 input:checked[type="checkbox"]{
     background: #005e6e;
 }
@@ -850,6 +876,7 @@ input[type="checkbox"]:before{
 input:checked[type="checkbox"]:before{
     left: 20px;
 }
+*/
 
 .subtitulo_certificacion{
     font-style: oblique;
@@ -938,10 +965,10 @@ input:checked[type="checkbox"]:before{
 }
 
 /*  ESTILOS DE LAS TABLAS */
-.tablaDeDesafios{
+.tablaDeDesafios {
     margin-left: 50px;
     margin-top: 10px;
-    width: 1300px;
+    width: 90%;
     text-align: left;
     border-collapse: collapse;
     background-color: white;
@@ -994,6 +1021,27 @@ thead{
 
 #btn_openModal4{
     margin-left: 20px;
+}
+
+/*TABLA POPUP EVALUACION DE CONTRIBUCION A COMPETENCIAS*/
+.columnaNivelContribucion{
+    padding-left: 20px;
+}
+
+.contenedorCompeEspeciasAEvaluar{
+    overflow-y: scroll;
+    height: 200px;
+}
+
+.enunciadoCompEspecifica{
+    resize: none;
+    width: 400px;
+    height: 100px;
+}
+
+.enunciadoModalCompetencias{
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 

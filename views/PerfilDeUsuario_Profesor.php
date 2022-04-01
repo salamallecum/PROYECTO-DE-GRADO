@@ -5,8 +5,8 @@ require_once "logic/controllers/ProfesorControlador.php";
 
 $profeControla = new ProfesorControlador();
 
-//Aqui capturamos el id del eportafolio seleccionado por el usuario enviado por el link
-if($_GET['Id_profesor'] != 0){
+//Aqui capturamos el id del profesor logueado
+if(isset($_GET['Id_profesor']) != 0){
 
     $idProfesorLogueado = $_GET['Id_profesor'];
 

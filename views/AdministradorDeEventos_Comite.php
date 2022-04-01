@@ -271,11 +271,11 @@
                                 <input type="hidden" name="id_evento" value="">
 
                                 <label class="camposFormulario">Nombre del evento</label><br>
-                                <input id="txt_nombreEvento" name="nombre_evento" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
+                                <input id="txt_nombreEvento" name="nombre_evento"  maxlength="30" onblur="cambiarAMayuscula(this)" placeholder="" type="text" class="form-control" required="true">
                                 <br>
 
                                 <label class="camposFormulario">Descripción</label>
-                                <textarea id="txt_descripcion" name="descripcion_evento" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <textarea id="txt_descripcion" name="descripcion_evento" maxlength="250" cols="80" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
                                 <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>

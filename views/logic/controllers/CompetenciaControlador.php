@@ -641,6 +641,20 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que nos permite verificar si el desafio tiene un registro de competencias generales previo
+    public function verificarSiElDesafioTieneRegistroDeCompGenerales(int $idDelDesafio){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT compAContribuir from tbl_contribcompgenerales_actividad where id_actividad =".$idDelDesafio." and tipo_actividad = 'DESAFIO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }
+
     //Funcion que nos permite verificar si el evento tiene un registro de competencias especificas previo
     public function verificarSiElEventoTieneRegistroDeCompEspecificas(int $idDelEvento){
 
@@ -653,7 +667,21 @@ class CompetenciaControlador{
         while ($row = $result->fetch_assoc()) {
             return true;
         }
-    }    
+    }   
+    
+    //Funcion que nos permite verificar si el evento tiene un registro de competencias especificas previo
+    public function verificarSiElDesafioTieneRegistroDeCompEspecificas(int $idDelDes){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad =".$idDelDes." and tipo_actividad = 'DESAFIO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    } 
 
     //Funcion que nos permite verificar si la convocatoria tiene un registro de competencias generales previo
     public function verificarSiLaConvocatoriaTieneRegistroDeCompGenerales(int $idDeConvocatoria){

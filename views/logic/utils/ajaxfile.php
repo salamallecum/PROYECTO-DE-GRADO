@@ -5,6 +5,7 @@ include "../controllers/ConvocatoriaControlador.php";
 include "../controllers/EventoControlador.php";
 include "../controllers/EstudianteControlador.php";
 include "../controllers/ProfesorControlador.php";
+include "../controllers/DesafioControlador.php";
 
 
 //Este archivo se encarga de traer de base de datos los datos de los objetos del sistema (sea Eventos, Convocatorias, Eportafolios o Competencias) 
@@ -15,6 +16,7 @@ $convocatoriaControla = new ConvocatoriaControlador();
 $eventoControla = new EventoControlador();
 $estudianteControla = new EstudianteControlador();
 $profesorControla = new ProfesorControlador();
+$desafioControla = new DesafioControlador();
 
 
 //----------------------------------------------------------------------------------------------------------------------------//
@@ -46,6 +48,311 @@ if(isset($_POST['idProfeLogueado']) && isset($_POST['claveActual']) && isset($_P
         echo $confirmacionActualizacionClaveFallido;
     } 
 } 
+
+//----------------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------SECCION DESAFIOS----------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
+
+//Capturamos el evento del id de un desafio a editar
+if(isset($_POST['idDesafioEdit'])){
+
+    //Aqui traemos los datos de los eventos para su edición-----------------------------------
+    $idDesafioEdit = $_POST['idDesafioEdit'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioEdit;
+    $resultDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayDesafios = array();
+    while($row =mysqli_fetch_assoc($resultDesafio))
+    {
+        $emparrayDesafios[] = $row;
+    }
+    echo json_encode($emparrayDesafios);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio a eliminar
+if(isset($_POST['idDesafioElim'])){
+
+    //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
+    $idDesafioElim = $_POST['idDesafioElim'];
+
+    $sql = "select id_desafio, nombre_desafio from tbl_desafio where id_desafio=".$idDesafioElim;
+    $resultCompElimDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayElimDesafio = array();
+    while($row =mysqli_fetch_assoc($resultCompElimDesafio))
+    {
+        $emparrayElimDesafio[] = $row;
+    }
+    echo json_encode($emparrayElimDesafio);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio a asignar competencias
+if(isset($_POST['idDesafioAsigCompetencias'])){
+
+    //Aqui traemos el id del desafio para su asignacion de competencias-----------------------------------
+    $idDesafioAsigCompetencias = $_POST['idDesafioAsigCompetencias'];
+
+    //Query que trae los id de los desafios para su muestreo
+    $sql = "select id_desafio from tbl_desafio where id_desafio=".$idDesafioAsigCompetencias;
+    $resultCompAsigDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayAsigCompDesafio = array();
+
+    while($row =mysqli_fetch_assoc($resultCompAsigDesafio))
+    {
+        $emparrayAsigCompDesafio[] = $row;
+
+    }
+
+    echo json_encode($emparrayAsigCompDesafio);
+
+    exit;
+}
+
+//Capturamos el evento del id de un desafio a evaluar competencias
+if(isset($_POST['idDesafioEvaluacionCompetencias'])){
+
+    //Aqui traemos el id del desafio para su asignacion de competencias-----------------------------------
+    $idDesafioEvaluacionCompetencias = $_POST['idDesafioEvaluacionCompetencias'];
+
+    //Query que trae los id de los desafios para su muestreo
+    $sql = "select id_desafio from tbl_desafio where id_desafio=".$idDesafioEvaluacionCompetencias;
+    $resultCompEvaluaDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayEvaluacionCompDesafio = array();
+
+    while($row =mysqli_fetch_assoc($resultCompEvaluaDesafio))
+    {
+        $emparrayEvaluacionCompDesafio[] = $row;
+
+    }
+
+    echo json_encode($emparrayEvaluacionCompDesafio);
+
+    exit;
+}
+
+//Capturamos el evento que nos permite consultar las competencias generales previamente registradas como contribucion a un desafio 
+if(isset($_POST['idDesafioParaConsultarCompGeneralesRegistradasConAnterioridad'])){
+
+    //Aqui traemos el id del desafio para verificar si tiene una asignacion de competencias previa-----------------------------------
+    $idDesafioParaConsultarCompGeneralesRegistradasConAnterioridad = $_POST['idDesafioParaConsultarCompGeneralesRegistradasConAnterioridad'];
+
+    $sql = "select compAContribuir from tbl_contribcompgenerales_actividad where id_actividad=".$idDesafioParaConsultarCompGeneralesRegistradasConAnterioridad." and tipo_actividad = 'DESAFIO'";
+    $resultCompGeneralesPrevRegistradasDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayCompGeneralesPrevRegistradasDesafio = array();
+    while($row =mysqli_fetch_assoc($resultCompGeneralesPrevRegistradasDesafio))
+    {
+        $emparrayCompGeneralesPrevRegistradasDesafio[] = $row;
+    }
+    echo json_encode($emparrayCompGeneralesPrevRegistradasDesafio);
+    exit;
+
+}
+
+//Capturamos el evento del arreglo de competencias generales a las cuales se les evaluará sus competencias específicas para un desafio (boton analizar)
+if(isset($_POST['arrayCompetencias']) && isset($_POST['idDesafio'])){
+
+    $dataCompetenciasGenerales = json_decode(stripslashes($_POST['arrayCompetencias']));
+    $idDesafio = $_POST['idDesafio'];
+    $arrayCompGeneralesParaDesafio = implode(",", $dataCompetenciasGenerales);
+    $codigoHtml = "";
+    $codigoHtmlEdicion = "";
+
+    //Aqui verificamos si ya hay un registro de competencias generales con anterioridad
+    $elDesafioTieneRegistroDeCompGeneralesPrevio = $competenciaControla->verificarSiElDesafioTieneRegistroDeCompGenerales($idDesafio);
+
+    if($elDesafioTieneRegistroDeCompGeneralesPrevio){
+
+        //Actualizamos la seleccion de competencias generales en el registro previamente ingresado 
+        $sql = "UPDATE tbl_contribcompgenerales_actividad SET compAContribuir= '".$arrayCompGeneralesParaDesafio."' where id_actividad=".$idDesafio. " and tipo_actividad='DESAFIO'";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }else{
+
+        //Insertamos la seleccion de competencias generales a la BD
+        $sql = "INSERT INTO tbl_contribcompgenerales_actividad VALUES (0, $idDesafio, 'DESAFIO', '$arrayCompGeneralesParaDesafio')";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+        
+    }
+
+    //Aqui verificamos si ya hay un evaluacion de competencias especificas con anterioridad
+    $elDesafioTieneRegistroDeCompEspecificasPrevio = $competenciaControla->verificarSiElDesafioTieneRegistroDeCompEspecificas($idDesafio);
+
+    $arrayCodigosDeCompEspecificasImplicadas = $competenciaControla->consultarCodigosDeCompetenciasEspecificas($arrayCompGeneralesParaDesafio);
+    $stringCodigosDeCompEspecificasImplicadas = implode(",", $arrayCodigosDeCompEspecificasImplicadas);
+    $idDeSeleccionDeCompetenciasGenerales = $competenciaControla->consultarIdDeSeleccionDeCompetenciasGenerales($idDesafio, 'DESAFIO');
+    $stringIdesComGeneralesDeContribucionActualizadas = $competenciaControla->consultarCompetenciasGeneralesAlasQueContribuyeUnaActividad($idDesafio, 'DESAFIO');
+
+    if($elDesafioTieneRegistroDeCompEspecificasPrevio){
+
+        //Actualizamos la seleccion de competencias especificas en el registro previamente ingresado 
+        $sql = "UPDATE tbl_contribcompespecificas_actividad SET codigosCompEspecificas= '".$stringCodigosDeCompEspecificasImplicadas."' where id_actividad=".$idDesafio. " and tipo_actividad='DESAFIO'";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+        //Consultamos la nueva seleccion de competencias especificas para su evaluacion teniendo en cuenta el array de codigos obtenido
+        $sqlCompEspActualizacion = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$stringIdesComGeneralesDeContribucionActualizadas.")";
+        $resultCompEspActualizacion = mysqli_query($conexion, $sqlCompEspActualizacion);
+    
+        foreach($resultCompEspActualizacion as $ver)
+            {
+                $codigoHtmlEdicion = $codigoHtmlEdicion.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                        
+                                                '<table class="contenedorRespContribucionCompEsp" id="'.$ver['codigo'].'">
+                                                    <tr>
+                                                        <td><input type="radio" name="'.$ver['codigo'].'" value="BAJA">
+                                                        <label for="Baja">Baja</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="MEDIA">
+                                                        <label for="Media">Media</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="ALTA">
+                                                        <label for="Alta">Alta</label></td>
+        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="N/A">
+                                                        <label for="No aplica">No aplica</label></td>
+        
+                                                    </tr>
+                                                </table>
+                                                <br>';           
+            }
+            
+        echo $codigoHtmlEdicion;
+
+    }else{
+
+        //Cargamos el listado de competencias especificas como formulario en blanco si el evento no tiene evaluacion de comp especificas previa o con los datos de las evaluaciones de las comp especificas previamente realizadas mediante ajax
+        $sqlCompEspecificas = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_gral in(".$arrayCompGeneralesParaDesafio.")";
+        $resultCompEspecificasAEvaluar = mysqli_query($conexion, $sqlCompEspecificas);
+
+        foreach($resultCompEspecificasAEvaluar as $ver){
+                $codigoHtml = $codigoHtml.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                        
+                                                '<table class="contenedorRespContribucionCompEsp" id="'.$ver['codigo'].'">
+                                                    <tr>
+                                                        <td><input type="radio" name="'.$ver['codigo'].'" value="BAJA">
+                                                        <label for="Baja">Baja</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="MEDIA">
+                                                        <label for="Media">Media</label></td>
+                                                        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="ALTA">
+                                                        <label for="Alta">Alta</label></td>
+        
+                                                        <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="N/A">
+                                                        <label for="No aplica">No aplica</label></td>
+        
+                                                    </tr>
+                                                </table>
+                                                <br>';           
+            }
+            
+        echo $codigoHtml;
+        
+    }
+}
+
+//Capturamos los array para el registro de la evaluacion realizada a las competencias especificas que contribuyen a un desafio
+if(isset($_POST['idDesafioParaGuardarContribucionCompEspecificas']) && isset($_POST['arregloCodigosCompEspecificas']) && isset($_POST['arregloNivelesContribucionCompEspecificas'])) {
+
+    //Capturamos los datos de los campos del formulario
+    $idDesafioParaGuardarContribucionCompEspecificas = trim($_POST['idDesafioParaGuardarContribucionCompEspecificas']);
+    $arregloCodigosCompEspecificas = json_decode(stripslashes($_POST['arregloCodigosCompEspecificas']));
+    $arregloNivelesContribucionCompEspecificas = json_decode(stripslashes($_POST['arregloNivelesContribucionCompEspecificas']));
+    
+    $confirmacionEvaluacionCompetenciasExitosa = '<p class="indicadorSatisfactorio">* Evaluación de competencias registrada satisfactoriamente</p><br>';
+    $confirmacionEdicionEvaluacionCompetenciasExitosa = '<p class="indicadorSatisfactorio">* Evaluación de competencias actualizada satisfactoriamente</p><br>';
+
+    //Convertimos los arreglos de los codigos y los niveles de contribucion a string
+    $stringArregloCodigosCompEspecificas = implode(",", $arregloCodigosCompEspecificas);
+    $stringArregloNivelesContribucionCompEspecificas  = implode(",", $arregloNivelesContribucionCompEspecificas);
+
+    //Aqui verificamos si ya hay un registro de competencias especificas con anterioridad
+    $elDesafioTieneRegistroDeCompEspecificasPrevio = $competenciaControla->verificarSiElDesafioTieneRegistroDeCompEspecificas($idDesafioParaGuardarContribucionCompEspecificas);
+
+    if($elDesafioTieneRegistroDeCompEspecificasPrevio){
+
+        //Actualizamos la seleccion de competencias especificas en el registro previamente ingresado 
+        $sql = "UPDATE tbl_contribcompespecificas_actividad SET codigosCompEspecificas= '".$stringArregloCodigosCompEspecificas."', nivelesDeContribucion= '".$stringArregloNivelesContribucionCompEspecificas."' where id_actividad=".$idDesafioParaGuardarContribucionCompEspecificas. " and tipo_actividad='DESAFIO'";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion)); 
+        
+        echo $confirmacionEdicionEvaluacionCompetenciasExitosa;
+
+    }else{
+
+        //Consultamos el id del registro que contiene la seleccion de competencias generales realizada
+        $idSeleccionDeCompetenciasGenerales = $competenciaControla->consultarIdDeSeleccionDeCompetenciasGenerales($idDesafioParaGuardarContribucionCompEspecificas, 'DESAFIO');
+
+        //Insertamos la evaluacion de competencias especificas a la BD
+        $sql = "INSERT INTO tbl_contribcompespecificas_actividad VALUES (0, $idSeleccionDeCompetenciasGenerales, $idDesafioParaGuardarContribucionCompEspecificas, 'DESAFIO', '$stringArregloCodigosCompEspecificas', '$stringArregloNivelesContribucionCompEspecificas')";
+        mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+        //Ajustamos el atributo de publicacion del evento en la tabla eventos con el fin de que este quede publicado
+        $desafioControla->publicarDesafio($idDesafioParaGuardarContribucionCompEspecificas);
+
+        echo $confirmacionEvaluacionCompetenciasExitosa;
+
+    }
+}
+
+//Capturamos el evento que nos permite consultar los codigos de las competencias especificas previamente evaluadas como contribucion a un desafio
+if(isset($_POST['idDesafioParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad'])){
+
+    //Aqui traemos el id del evento para verificar si tiene una evaluación de competencias previa-----------------------------------
+    $idDesafioParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad = $_POST['idDesafioParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad'];
+
+    $sql = "select codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad=".$idDesafioParaConsultarCodigosCompetenciasEspecificasRegistradosConAnterioridad." and tipo_actividad = 'DESAFIO'";
+    $resultCodigosCompEspecificasPrevRegistradasDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayCodigosCompEspecificasPrevRegistradasDesafio = array();
+    while($row =mysqli_fetch_assoc($resultCodigosCompEspecificasPrevRegistradasDesafio))
+    {
+        $emparrayCodigosCompEspecificasPrevRegistradasDesafio[] = $row;
+    }
+    echo json_encode($emparrayCodigosCompEspecificasPrevRegistradasDesafio);
+    exit;
+
+}
+
+//Capturamos el evento que nos permite consultar los niveles de contribucion de las competencias especificas a un desafio
+if(isset($_POST['idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad'])){
+
+    //Aqui traemos el id del evento para verificar si tiene una evaluación de competencias previa-----------------------------------
+    $idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad = $_POST['idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad'];
+
+    $sql = "select nivelesDeContribucion from tbl_contribcompespecificas_actividad where id_actividad=".$idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegistradosConAnterioridad." and tipo_actividad = 'DESAFIO'";
+    $resultNivelesContribCompEspecificasPrevRegistradasDesafio = mysqli_query($conexion,$sql);
+
+    $emparrayNivelesContribCompEspecificasPrevRegistradasDesafio = array();
+    while($row =mysqli_fetch_assoc($resultNivelesContribCompEspecificasPrevRegistradasDesafio))
+    {
+        $emparrayNivelesContribCompEspecificasPrevRegistradasDesafio[] = $row;
+    }
+    echo json_encode($emparrayNivelesContribCompEspecificasPrevRegistradasDesafio);
+    exit;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
