@@ -46,6 +46,10 @@
     font-size: 18px;
 }
 
+.menuEstudiante {
+    padding-left: 1px;
+}
+
 .sidebar-menu{
     padding: 1rem;
 }
@@ -125,6 +129,11 @@
     transition: margin-left 500ms;
 }
 
+#tituloPagPrincipal{
+    font-weight: bold;
+    font-size: 22px;
+}
+
 /*ENCABEZADO PRINCIPAL*/
 header{
     position: fixed;
@@ -175,6 +184,19 @@ main{
     padding: 1.3rem 1rem;
     display: flex;
     align-items: center;
+}
+
+.tituloBloque{
+    color: var(--text-grey);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.resultadoBloque{
+    color: #005e6e;
+    font-size: 1.1rem;
+    margin-top: .2rem;
+    font-weight: bold;
 }
 
 .card-body span{

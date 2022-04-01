@@ -63,7 +63,7 @@
 
                     <li>
                         <a class="link_menu" href="./DesafiosPersonalizados_Profesor.php?Id_profesor=29">
-                            <span title="Profesores"><i class="bi bi-lightbulb"></i></span>
+                            <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
                         </a>
                     </li>

@@ -68,7 +68,7 @@
                                     <h1 class="home_descripcion">Organiza, almacena,<br>muestra y comparte<br>tus logros</h1>
                                     <p class="introduccion">En este espacio, podrás demostrar tus habilidades<br>mientras que obtienes insignias que certifican tus<br>trabajos académicos.</p>
                                     <br>
-                                    <a href="views/DashBoard_Profesor.php" class="button_comienza" title="Comienza">Comienza</a>
+                                    <a href="views/DashBoard_Estudiante.php" class="button_comienza" title="Comienza">Comienza</a>
                                 </div>
                             </div>
                             
@@ -95,7 +95,7 @@
                         <h1 class="comofunc_descripcion1">Lleva tus trabajos<br>academicos más alla<br>del aula</h1>
                         <p class="comofunc_descripcion2">En este espacio, podrás demostrar tus habilidades<br>mientras que obtienes insignias que certifican tus<br>trabajos académicos.</p>           
                         <br>
-                        <a href="views/DashBoard_Practicas.php" class="button_comienza" title="Comienza">Comienza</a>
+                        <a href="views/DashBoard_Profesor.php" class="button_comienza" title="Comienza">Comienza</a>
                     </div>                                   
                 </div>
             </section>
