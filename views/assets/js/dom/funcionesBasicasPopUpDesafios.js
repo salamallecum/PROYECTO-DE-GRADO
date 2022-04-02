@@ -9,14 +9,14 @@ botonCancelFormRegDesafio.addEventListener('click', (e) => {
 },false);
 
 //Asignamos la funcion de reseteo al boton cancelar del formulario asignacion de competencias generales
-/*
+
 const botonCancelAsigComp = document.getElementById('btn_cancelarAsigCompetencias');
 
 botonCancelAsigComp.addEventListener('click', (e) => {
     e.preventDefault();
     limpiarFormularioAsignacionDeCompetencias();
 },false);
-*/
+
 
 
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE DESAFIOS
@@ -26,12 +26,12 @@ function limpiarFormularioRegistroDeDesafios(){
     formRegistro.reset();
 }
 
-/*
+
 //FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO DE ASIGNACION DE COMPETENCIAS GENERALES
 function limpiarFormularioAsignacionDeCompetencias(){
     
     const formAsig = document.getElementById('formularioDeAsignacionDeCompetencias');
     formAsig.reset();
 }
-*/
+
 

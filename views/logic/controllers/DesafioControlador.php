@@ -201,7 +201,7 @@ class DesafioControlador{
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
-    //Funcion que permite eliminar el enunciado de un evento
+    //Funcion que permite eliminar el enunciado de un desafio
     public function eliminarEnunciado(string $nomEnun){
 
         $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
@@ -251,6 +251,225 @@ class DesafioControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
+
+    //Funcion que permite el registro de las propuestas o desafios personalizados
+    public function insertarPropuesta(DesafioPersonalizado $desafioPer){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idPropuesta = $desafioPer->getId();
+        $idDelEstudianteQPropone = $desafioPer->getIdEstudiante();
+        $nombrePropuesta = $desafioPer->getNombre();
+        $descripcionPropuesta = $desafioPer->getDescripcion();
+        $fechaProp = $desafioPer->getFechaPropuesta();
+        $idDesafioASustituir = $desafioPer->getIIdDesafioASustituir();
+        $estado = $desafioPer->getEstado();
+                
+        $sql = "INSERT INTO tbl_desafiopersonal (Id, Id_estudiante, nombre_desafioP, descripcion, fecha_propuesta, IdDesafioASustituir, estado)
+                            values ($idPropuesta, $idDelEstudianteQPropone, '$nombrePropuesta', '$descripcionPropuesta', '$fechaProp', $idDesafioASustituir, '$estado')";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+    }
+
+    //Funcion que permite cargar una imagen de propuesta o desafio personalizado
+    public function subirImagenPropuesta($rutaImg, $nombreImg, $imgPropuesta, $nomPropuesta){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Evaluamos si no existe la carpeta desafiosPerImages
+        if(!file_exists('../desafiosPerImages')){
+            mkdir('../desafiosPerImages', 0777, true);
+
+            if(file_exists('../desafiosPerImages')){
+                if(move_uploaded_file($rutaImg, '../desafiosPerImages/'. $imgPropuesta)){
+
+                    //Guardamos el nombre de la imagen en la base de datos
+                    $queryGuardarNombreImagenPropuesta = "UPDATE tbl_desafiopersonal SET nombre_imagen='$nombreImg' WHERE nombre_desafioP='$nomPropuesta'";
+                    $resultadoGuardaNombreImagenPropuesta = mysqli_query($conexion, $queryGuardarNombreImagenPropuesta);
+
+                    //Renombramos la imagen con el nombre guardado en bd 
+                    rename("../desafiosPerImages/".$imgPropuesta, "../desafiosPerImages/".$nombreImg);
+
+                }else{
+                    echo "La imagen del desafio personalizado no se pudo guardar";
+                }
+            }
+        }else{
+            if(move_uploaded_file($rutaImg, '../desafiosPerImages/'. $imgPropuesta)){
+
+                //Guardamos el nombre de la imagen en la base de datos
+                $queryGuardarNombreImagenPropuesta = "UPDATE tbl_desafiopersonal SET nombre_imagen='$nombreImg' WHERE nombre_desafioP='$nomPropuesta'";
+                $resultadoGuardaNombreImagenPropuesta = mysqli_query($conexion, $queryGuardarNombreImagenPropuesta);
+
+                //Renombramos la imagen con el nombre guardado en bd 
+                rename("../desafiosPerImages/".$imgPropuesta, "../desafiosPerImages/".$nombreImg);
+
+            }else{
+                echo "La imagen del desafio personalizado no se pudo guardar";
+            }
+        } 
+    }
+
+    //Funcion que permite cargar el enunciado de propuesta o desafio personalizado
+    public function subirEnunciadoPropuesta($rutaEnun, $nombreEnun, $archPropuesta, $nomProp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Evaluamos si no existe la carpeta desafiosFiles
+        if(!file_exists('../desafiosPerFiles')){
+            mkdir('../desafiosPerFiles', 0777, true);
+
+            if(file_exists('../desafiosPerFiles')){
+                if(move_uploaded_file($rutaEnun, '../desafiosPerFiles/'. $archPropuesta)){
+
+                    //Guardamos el nombre de la imagen en la base de datos
+                    $queryGuardarNombreEnunciadoPropuesta = "UPDATE tbl_desafiopersonal SET nombre_enunciado='$nombreEnun' WHERE nombre_desafioP='$nomProp'";
+                    $resultadoGuardaNombreEnunciadoPropuesta = mysqli_query($conexion, $queryGuardarNombreEnunciadoPropuesta);
+
+                    //Renombramos la imagen con el nombre guardado en bd 
+                    rename("../desafiosPerFiles/".$archPropuesta, "../desafiosPerFiles/".$nombreEnun);
+
+                }else{
+                    echo "El enunciado de la propuesta no se pudo guardar";
+                }
+            }
+        }else{
+            if(move_uploaded_file($rutaEnun, '../desafiosPerFiles/'. $archPropuesta)){
+
+                //Guardamos el nombre de la imagen en la base de datos
+                $queryGuardarNombreEnunciadoPropuesta = "UPDATE tbl_desafiopersonal SET nombre_enunciado='$nombreEnun' WHERE nombre_desafioP='$nomProp'";
+                $resultadoGuardaNombreEnunciadoPropuesta = mysqli_query($conexion, $queryGuardarNombreEnunciadoPropuesta);
+
+                //Renombramos la imagen con el nombre guardado en bd 
+                rename("../desafiosPerFiles/".$archPropuesta, "../desafiosPerFiles/".$nombreEnun);
+
+            }else{
+                echo "El enunciado de la propuesta no se pudo guardar";
+            }
+        }
+    }
+
+    //Funcion que permite actualizar la informacion de un desafio personalizado
+    public function actualizarPropuesta(int $idPropuesta, int $idEstudiante, string $nombrePropuesta, string $descripcionPropuesta, int $desafioContrib){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+                
+        $sql = "UPDATE tbl_desafiopersonal SET Id_estudiante=$idEstudiante, nombre_desafioP='$nombrePropuesta', descripcion='$descripcionPropuesta', idDesafioASustituir=$desafioContrib WHERE Id=$idPropuesta";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }
+
+    //Funcion que permite consultar el nombre de la imagen de un deasio personalizado
+    public function consultarNombreImagenPropuesta($idProp){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_imagen from tbl_desafiopersonal where Id = $idProp";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_imagen'];
+        }
+    }
+
+    //Funcion que elimina de base de datos el nombre de una imagen de un desafio personalizado
+    public function limpiarNombreImagenPropuesta(int $idProp, string $nombreImgPropuesta){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafiopersonal SET nombre_imagen = null WHERE  nombre_imagen='$nombreImgPropuesta' and Id=".$idProp;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    } 
+
+    //Funcion que permite consultar el nombre del enunciado de un desafio personalizado
+    public function consultarNombreEnunciadoPropuesta($idPr){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_enunciado from tbl_desafiopersonal where Id = $idPr";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_enunciado'];
+        }
+    }
+
+    //Funcion que elimina de base de datos el nombre de un enunciado de un desafio personalizado
+    public function limpiarNombreEnunciadoPropuesta(int $idProp, string $nombreEnunPropuesta){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafiopersonal SET nombre_enunciado = null WHERE  nombre_enunciado='$nombreEnunPropuesta' and Id=".$idProp;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que permite eliminar un desafio personalizado
+    public function eliminarPropuesta(int $idPropues){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE  from tbl_desafiopersonal where Id = $idPropues";
+
+        //Consultamos si tiene imagen o archivo almacenados en el servidor
+        $nombreImagenPr = (string) $this->consultarNombreImagenPropuesta($idPropues);
+        $nombreEnunciadoPr = (string) $this->consultarNombreEnunciadoPropuesta($idPropues);
+
+        //Validamos que el desafio personalizado tenga un nombre de imagen o un nombre de enunciado
+        if($nombreImagenPr != null){
+            $this->eliminarImagenPropuesta($nombreImagenPr);
+        }
+        
+        if($nombreEnunciadoPr != null){
+            $this->eliminarEnunciadoPropuesta($nombreEnunciadoPr);
+        }            
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que permite eliminar la imagen de un desafio personalizado
+    public function eliminarImagenPropuesta(string $nomImg){
+
+        $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
+        $archAEliminar = $base_dir."/MockupsPandora/views/desafiosPerImages/".$nomImg;
+
+        if(file_exists($archAEliminar)){
+
+            if(unlink($archAEliminar)){}else{
+                echo "La imagen ($nomImg) no se pudo eliminar";
+            }
+        
+        }else{
+            echo "No se encontró la imagen ($nomImg)";
+        }
+    }
+
+     //Funcion que permite eliminar el enunciado de un desafio
+     public function eliminarEnunciadoPropuesta(string $nomEnun){
+
+        $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
+        $archAEliminar = $base_dir."/MockupsPandora/views/desafiosPerFiles/".$nomEnun;
+
+        if(file_exists($archAEliminar)){
+
+            if(unlink($archAEliminar)){}else{
+                echo "El enunciado ($nomEnun) no se pudo eliminar";
+            }
+        
+        }else{
+            echo "No se encontró el enunciado ($nomEnun)";
+        }
+    }
+
 }
 
 ?>

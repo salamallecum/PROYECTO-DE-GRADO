@@ -368,9 +368,44 @@ if(isset($_POST['idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegi
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------SECCION DESAFIOS PERSONALIZADOS----------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
+//Capturamos el evento del id de un desafio personalizado a editar
+if(isset($_POST['idPropuestaEdit'])){
 
+    //Aqui traemos los datos de los eventos para su edición-----------------------------------
+    $idPropuestaEdit = $_POST['idPropuestaEdit'];
 
+    $sql = "select * from tbl_desafiopersonal where Id=".$idPropuestaEdit;
+    $resultDesafioPer = mysqli_query($conexion,$sql);
 
+    $emparrayDesafiosPersonales = array();
+    while($row =mysqli_fetch_assoc($resultDesafioPer))
+    {
+        $emparrayDesafiosPersonales[] = $row;
+    }
+    echo json_encode($emparrayDesafiosPersonales);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio a eliminar
+if(isset($_POST['idPropuestaElim'])){
+
+    //Aqui traemos los datos de las competencias generales para su eliminacion-----------------------------------
+    $idPropuestaElim = $_POST['idPropuestaElim'];
+
+    $sql = "select Id, nombre_desafioP from tbl_desafiopersonal where Id=".$idPropuestaElim;
+    $resultElimPropuesta = mysqli_query($conexion,$sql);
+
+    $emparrayPropuestasAEliminar = array();
+    while($row =mysqli_fetch_assoc($resultElimPropuesta))
+    {
+        $emparrayPropuestasAEliminar[] = $row;
+    }
+    echo json_encode($emparrayPropuestasAEliminar);
+    exit;
+}
 
 
 

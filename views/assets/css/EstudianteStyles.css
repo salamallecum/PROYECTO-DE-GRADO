@@ -1129,6 +1129,12 @@ h6 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#txt_descripcion{
+    resize: none;
+    width: 455px;
+    height: 100px;
+    overflow-y: scroll;
+}
 
 .camposFormulario{
     font-size: 12px;

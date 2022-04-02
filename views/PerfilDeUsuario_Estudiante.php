@@ -322,6 +322,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                             <form id="formularioModalCambioClave">
                                 <input type="hidden" id="idEstudiante" name="id_estudiante" value="<?php echo $idEstudianteLogueado;?>"> 
                             </form>
+                            
                             <label class="labelsPassword">Contraseña actual</label>
                             <input id="txt_contraseñaActual" name="txtContraseñaActual" placeholder="" type="password" onclick="resetSpanActualizarContraseña()" class="form-control" maxlength="10" required="true">
                             <br>

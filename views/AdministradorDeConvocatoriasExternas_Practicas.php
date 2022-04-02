@@ -147,7 +147,7 @@
                                         </div>
 
                                         <div class="col-botonesEdicion">
-                                        <a class="btnEliminarConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
+                                            <a class="btnEliminarConvPracticas" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
                                         </div>
                                     
                                     </div></td> 

@@ -4,12 +4,15 @@
     require_once "controllers/DesafioControlador.php";
     require_once "controllers/CompetenciaControlador.php";
     require_once "model/Desafio.php";
+    require_once "model/DesafioPersonalizado.php";
     require_once "utils/generadorDeNombres.php";
 
     //Creamos el objeto controlador que invocará los metodos CRUD
     $desafioControla = new DesafioControlador();
     $competenciaControla = new CompetenciaControlador();
     $generador = new generadorNombres();
+
+    //-------------------------------------------------------DESAFIOS----------------------------------------------------------------------
 
     //Capturamos el evento del boton de registro de desafio
     if(isset($_POST['guardarDesafio'])){
@@ -189,6 +192,169 @@
         if($elDesafioTieneRegCEPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idDesafioAEliminar, 'DESAFIO');
         }
+
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+    }
+
+//-------------------------------------------------------DESAFIOS PERSONALIZADOS(Propuesta)---------------------------------------------------------------------
+
+    //Capturamos el evento del boton de registro de desafio personalizado
+    if(isset($_POST['guardarPropuesta'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDelEstudiante = trim($_POST['idEst']);
+        $nombreDePropuesta = trim($_POST['nombrePropuesta']);
+        $descripcionPropuesta = trim($_POST['descripcionPropuesta']);
+        $fechaDePropuesta = date('Y-m-d');
+        $cmbDesafioASustituir = $_REQUEST['cmbDesafios'];
+
+        
+       //Validamos que los campos no se encuentren vacios
+        if(strlen($nombreDePropuesta) >= 1 && 
+        strlen($descripcionPropuesta) >= 1 && 
+        $cmbDesafioASustituir != 'seleccione'){ 
+
+            //Encapsulamos los datos obtenidos en un objeto de tipo Desafio
+            $nuevaPropuesta = new DesafioPersonalizado(0, $idDelEstudiante, $nombreDePropuesta, $descripcionPropuesta, $fechaDePropuesta, $cmbDesafioASustituir, 'Entregada');
+
+            if($desafioControla->insertarPropuesta($nuevaPropuesta) == 1){
+                
+                $imagenDePropuesta = $_FILES['imgParaPropuesta']['name'];
+                $enunciadoDePropuesta = $_FILES['archivoInfoDePropuesta']['name'];
+
+                //Verificamos si el usuario ha subido una imagen para la propuesta
+                if(strlen($imagenDePropuesta) >= 1){
+                    
+                    $rutaDeImagenPropuesta = $_FILES['imgParaPropuesta']['tmp_name'];
+                    $nuevoNombreArchivoImagenPropuesta = $generador->generadorDeNombres().".jpg";
+                    $desafioControla->subirImagenPropuesta($rutaDeImagenPropuesta, $nuevoNombreArchivoImagenPropuesta, $imagenDePropuesta, $nombreDePropuesta);
+                    
+                }
+                
+                //Verificamos si el usuario ha subido un archivo con el enunciado de la propuesta
+                if(strlen($enunciadoDePropuesta) >= 1){
+                    
+                    $rutaDeEnunciadoPropuesta = $_FILES['archivoInfoDePropuesta']['tmp_name'];
+                    $nuevoNombreArchivoEnunciadoPropuesta = $generador->generadorDeNombres().".pdf";
+                    $desafioControla->subirEnunciadoPropuesta($rutaDeEnunciadoPropuesta, $nuevoNombreArchivoEnunciadoPropuesta, $enunciadoDePropuesta, $nombreDePropuesta);
+                
+                }
+                
+                ?>
+                <h3 class="indicadorSatisfactorio">* Propuesta registrada satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+            }else{
+                ?>
+                <h3 class="indicadorDeCamposIncompletos">* Error al registrar Propuesta</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }        
+        
+        }else{
+            ?>
+            <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>  
+            <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+        }
+    }  
+
+    //Capturamos el evento del boton de actualizacion de Desafios
+    if(isset($_POST['actualizarPropuesta'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDelEstudianteEdit = trim($_POST['idEstEdit']);
+        $idPropuestaAEditar = trim($_POST['Id']);
+        $nombreDePropuestaAEdit = trim($_POST['nombre_desafioP']);
+        $descripcionPropuestaEdit = trim($_POST['descripcion']);
+        $cmbDesafioASustituirAEditar = $_REQUEST['idDesafioASustituir'];
+  
+       //Validamos que los campos no se encuentren vacios
+        if(strlen($nombreDePropuestaAEdit) >= 1 && 
+        strlen($descripcionPropuestaEdit) >= 1 && 
+        $cmbDesafioASustituirAEditar != 'seleccione'){ 
+
+            if($desafioControla->actualizarPropuesta($idPropuestaAEditar, $idDelEstudianteEdit, $nombreDePropuestaAEdit, $descripcionPropuestaEdit, $cmbDesafioASustituirAEditar) == 1){
+
+                $imagenEditDePropuesta = $_FILES['imagenActualizada']['name'];
+                $enunciadoEditDePropuesta = $_FILES['enunciadoActualizado']['name'];
+
+                //Verificamos si el usuario ha subido una imagen para el desafio personalizado
+                if(strlen($imagenEditDePropuesta) >= 1){
+                    
+                    $rutaDeImagenPropuestaEdit = $_FILES['imgParaPropuesta']['tmp_name'];
+
+                    //Consultamos si el desafio ya tiene una imagen previa en servidor
+                    $nombreAntiguaImagenPropuesta = $desafioControla->consultarNombreImagenPropuesta($idPropuestaAEditar);
+
+                    //Eliminamos la imagen previa en servidor
+                    if($nombreAntiguaImagenPropuesta != null){
+                       //Eliminamos el nombre de la imagen en base de datos 
+                       $desafioControla->limpiarNombreImagenPropuesta($idPropuestaAEditar, $nombreAntiguaImagenPropuesta);
+                       //Eliminamos la imagen previa en servidor del desafio personalizado
+                       $desafioControla->eliminarImagenPropuesta($nombreAntiguaImagenPropuesta);
+
+                       $nuevoNombreArchivoImagenPropuestaEdit = $generador->generadorDeNombres().".jpg";
+                       $desafioControla->subirImagenPropuesta($rutaDeImagenPropuestaEdit, $nuevoNombreArchivoImagenPropuestaEdit, $imagenEditDePropuesta, $nombreDePropuestaAEdit);
+
+                    }
+        
+                    $nuevoNombreArchivoImagenPropuestaEditado = $generador->generadorDeNombres().".jpg";
+                    $desafioControla->subirImagenPropuesta($rutaDeImagenPropuestaEdit, $nuevoNombreArchivoImagenPropuestaEditado, $imagenEditDePropuesta, $nombreDePropuestaAEdit);
+                    
+                }
+                
+                //Verificamos si el usuario ha subido un archivo con el enunciado del desafio personalizado
+                if(strlen($enunciadoEditDePropuesta) >= 1){
+                    
+                    $rutaDeEnunciadoPropuestaEdit = $_FILES['archivoInfoDePropuesta']['tmp_name'];
+
+                    //Consultamos si el desafio ya tiene un enunciado previo en servidor
+                    $nombreAntiguoEnunciadoPropuesta = $desafioControla->consultarNombreEnunciadoPropuesta($idPropuestaAEditar);
+
+                    //Eliminamos el enunciado previo en servidor
+                    if($nombreAntiguoEnunciadoPropuesta != null){
+                        //Eliminamos el nombre del enunciado en base de datos 
+                       $desafioControla->limpiarNombreEnunciadoPropuesta($idPropuestaAEditar, $nombreAntiguoEnunciadoPropuesta);
+                       //Eliminamos enunciado previo en servidor del desafio personalizado
+                       $desafioControla->eliminarEnunciadoPropuesta($nombreAntiguoEnunciadoPropuesta);
+
+                       $nuevoNombreArchivoEnunciadoPropuestaEdit = $generador->generadorDeNombres().".pdf";
+                       $desafioControla->subirEnunciadoPropuesta($rutaDeEnunciadoPropuestaEdit, $nuevoNombreArchivoEnunciadoPropuestaEdit, $enunciadoEditDePropuesta, $nombreDePropuestaAEdit);
+                    }
+                    
+                    $nuevoNombreArchivoEnunciadoPropuestaEditado = $generador->generadorDeNombres().".pdf";
+                    $desafioControla->subirEnunciadoPropuesta($rutaDeEnunciadoPropuestaEdit, $nuevoNombreArchivoEnunciadoPropuestaEditado, $enunciadoEditDePropuesta, $nombreDePropuestaAEdit);
+                
+                }
+                
+                ?>
+                <h3 class="indicadorSatisfactorio">* Propuesta actualizado satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+
+            }else{
+                ?>
+                <h3 class="indicadorDeCamposIncompletos">* Error al actualizar Propuesta</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }        
+        
+        }else{
+            ?>
+            <h3 class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</h3>  
+            <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    //Capturamos el evento del boton de eliminacion de desafios personalizados
+    if(isset($_POST['eliminarPropuesta'])){
+
+        $idPropuestaAEliminar = trim($_POST['Id']);
+        $desafioControla->eliminarPropuesta($idPropuestaAEliminar);
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 

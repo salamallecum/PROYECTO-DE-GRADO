@@ -465,7 +465,7 @@ require_once "logic/controllers/CompetenciaControlador.php";
 
         </script>
 
-        <!--Script que permite pasar los datos de un evento a la ventana modal de edicion del mismo-->
+        <!--Script que permite pasar los datos de un desafio a la ventana modal de edicion del mismo-->
         <script type='text/javascript'>
             $(document).ready(function(){
                 
@@ -616,7 +616,7 @@ require_once "logic/controllers/CompetenciaControlador.php";
                         }
                         getFormInfo()
                         .then((response) => {
-                            console.log(response);
+                            //console.log(response);
                             var data = $.parseJSON(response)[0];
                             var formId = '#formularioDeEvaluacionDeCompetenciasEspecificas';
                             $.each(data, function(key, value){
