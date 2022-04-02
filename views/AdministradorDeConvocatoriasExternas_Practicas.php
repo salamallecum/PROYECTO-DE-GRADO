@@ -98,7 +98,6 @@
                             <tr>
                                 <th class="campoTabla">Imagen</th>
                                 <th class="campoTabla">Nombre convocatoria</th>
-                                <th class="campoTabla">Descripción</th>
                                 <th class="campoTabla">Fecha inicio</th>
                                 <th class="campoTabla">Fecha fin</th>
                                 <th class="campoTabla">Acciones</th>
@@ -107,7 +106,7 @@
                         <tbody>
                         <!--Script para cargar datos en tabla de Convocatorias-->      
                         <?php
-                            $sql = "SELECT Id, nombre_convocatoria, descripcion, fecha_inicio, fecha_fin, nombre_imagen from tbl_convocatoriapracticas";
+                            $sql = "SELECT Id, nombre_convocatoria, fecha_inicio, fecha_fin, nombre_imagen from tbl_convocatoriapracticas";
                             $datos = $obj->mostrarDatosConvocatorias($sql);
                             foreach ($datos as $key){
                         ?>
@@ -134,7 +133,6 @@
                                     ?>
                                             
                                     <td class="datoTabla"><?php echo $key['nombre_convocatoria'];  ?></td>
-                                    <td class="datoTabla"><?php echo $key['descripcion'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">

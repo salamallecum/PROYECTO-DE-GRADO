@@ -13,8 +13,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -141,7 +139,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                         <tr>
                             <th class="campoTabla">Imagen</th>
                             <th class="campoTabla">Nombre propuesta</th>
-                            <th class="campoTabla">Descripción</th>
                             <th class="campoTabla">Desafio que reemplaza</th>
                             <th class="campoTabla">Estado</th>
                             <th class="campoTabla">Acciones</th>
@@ -152,7 +149,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
                     <!--Script para cargar datos en tabla de Desafios personalizados-->      
                     <?php
-                        $sql = "SELECT Id, nombre_desafioP, descripcion, nombre_imagen, idDesafioASustituir, estado from tbl_desafiopersonal where Id_estudiante=".$idEstudianteLogueado;
+                        $sql = "SELECT Id, nombre_desafioP, nombre_imagen, idDesafioASustituir, estado from tbl_desafiopersonal where Id_estudiante=".$idEstudianteLogueado;
                         $datosDesPersonal = $desafioPerControla->mostrarDatosDesafios($sql);
                         foreach ($datosDesPersonal as $key){
                     ?>
@@ -192,7 +189,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                                             ?>
                                                                             
                                             <td class="datoTabla"><?php echo $key['nombre_desafioP'];  ?></td>
-                                            <td class="datoTabla"><?php echo $key['descripcion'];  ?></td>
                                             <td class="datoTabla"><?php echo $point['nombre_desafio'];  ?></td>
                                             <td class="datoTabla">Aprobada</td>
                                             <td class="datoTabla"><div class="compEsp-edicion">
@@ -230,7 +226,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                                             ?>
                                                                      
                                             <td class="datoTabla"><?php echo $key['nombre_desafioP'];  ?></td>
-                                            <td class="datoTabla"><?php echo $key['descripcion'];  ?></td>
                                             <td class="datoTabla"><?php echo $point['nombre_desafio'];  ?></td>
                                             <td class="datoTabla">Rechazada</td>
                                             <td class="datoTabla"><div class="compEsp-edicion">
@@ -274,7 +269,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                                             ?>
                                         
                                             <td class="datoTabla"><?php echo $key['nombre_desafioP'];  ?></td>
-                                            <td class="datoTabla"><?php echo $key['descripcion'];  ?></td>
                                             <td class="datoTabla"><?php echo $point['nombre_desafio'];  ?></td>
                                             <td class="datoTabla">Entregada</td>
                                             <td class="datoTabla"><div class="compEsp-edicion">

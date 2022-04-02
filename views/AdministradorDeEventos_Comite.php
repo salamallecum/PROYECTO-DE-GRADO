@@ -120,7 +120,6 @@
                             <tr>
                                 <th class="campoTabla">Imagen</th>
                                 <th class="campoTabla">Nombre evento</th>
-                                <th class="campoTabla">Descripción</th>
                                 <th class="campoTabla">Fecha inicio</th>
                                 <th class="campoTabla">Fecha fin</th>
                                 <th class="campoTabla">Acciones</th>
@@ -132,7 +131,7 @@
                         <!--Script para cargar datos en tabla de Eventos-->      
                         <?php
                             $obj = new EventoControlador();
-                            $sql = "SELECT id_evento, nombre_evento, descripcion_evento, fecha_inicio, fecha_fin, nombre_imagen from tbl_evento";
+                            $sql = "SELECT id_evento, nombre_evento, fecha_inicio, fecha_fin, nombre_imagen from tbl_evento";
                             $datos = $obj->mostrarDatosEventos($sql);
                             foreach ($datos as $key){
                         ?>
@@ -158,7 +157,6 @@
                                     ?>
                                     
                                     <td class="datoTabla"><?php echo $key['nombre_evento'];  ?></td>
-                                    <td class="datoTabla"><?php echo $key['descripcion_evento'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">

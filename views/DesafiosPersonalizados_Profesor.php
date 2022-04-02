@@ -1,3 +1,18 @@
+<?php
+
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/DesafioControlador.php";
+
+$desafioPerControla = new DesafioControlador();
+
+
+//Aqui capturamos el id del profesor logueado
+if(isset($_GET['Id_profesor']) != 0){
+
+$idProfeLogueado = $_GET['Id_profesor'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -99,92 +114,91 @@
                             <tr>
                                 <th class="campoTabla">Imagen</th>
                                 <th class="campoTabla">Nombre propuesta</th>
-                                <th class="campoTabla">Descripción</th>
                                 <th class="campoTabla">Desafio que reemplaza</th>
                                 <th class="campoTabla">Estado</th>
                                 <th class="campoTabla">Acciones</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        
+                        <!--Script para cargar datos en tabla de Desafios personalizados-->  
+                        <!--Consultamos los id de los desafios que tiene el profesor -->    
+                        <?php
+                            $sql = "SELECT id_desafio from tbl_desafio where id_profesor=".$idProfeLogueado;
+                            $datosDesafios = $desafioPerControla->mostrarDatosDesafios($sql);
+                            foreach ($datosDesafios as $key){
+                        ?>
+                            <!--Consultamos los datos los desafios personalizados que apuntan a esos desafios que tiene el profesor --> 
+                            <?php
+                                $sqlDF = "SELECT Id, nombre_desafioP, nombre_imagen, idDesafioASustituir, estado from tbl_desafiopersonal where idDesafioASustituir=".$key['id_desafio'];
+                                $datosDesPersonal = $desafioPerControla->mostrarDatosDesafios($sqlDF);
+                                foreach ($datosDesPersonal as $point){
+                            ?>
+                                <!--Consultamos el nombre de los desafios del profesor que son contribuidos por las propuestas --> 
+                                <?php
+                                    $sqlNomDes = "SELECT nombre_desafio from tbl_desafio where id_desafio=".$point['idDesafioASustituir'];
+                                    $datosDesaf = $desafioPerControla->mostrarDatosDesafios($sqlNomDes);
+                                    foreach ($datosDesaf as $lex){
+                                ?>
+                                    <!--Aqui van los registros de la tabla de propuestas presentadas por los estudiantes para que el docente las revise-->
+                                    <?php
+                                        //Aqui hacemos el muestreo independiente para cada uno de los diferentes estados de un desafio personalizado
+                                        $estadoDesafioPer = $point['estado'];
 
-                        <!--Aqui van los registros de la tabla de propuestas presentadas por los estudiantes para que el docente las revise-->
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 1</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Aprobada</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal6" href="" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>
-                                </div>
-                            </div></td>
-                        </tr>
+                                        if($estadoDesafioPer == 'Aprobada'){
+                                    ?>
+                                            <tr class="filasDeDatosTablaDesafios">
+                                                <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                                <td class="datoTabla"><?php echo $point['nombre_desafioP'];  ?></td>
+                                                <td class="datoTabla"><?php echo $lex['nombre_desafio'];  ?></td>
+                                                <td class="datoTabla">Aprobada</td>
+                                                <td class="datoTabla"><div class="compEsp-edicion">
+                                                    
+                                                    <div class="col-botonesEdicion">
+                                                        <a class="btnEliminarPropuesta" data-id="<?php echo $point['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarPropuesta" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
+                                                    </div>
+                                                </div></td>
+                                            </tr>
+                                    
+                                    <?php
+                                        }else if($estadoDesafioPer == 'Rechazada'){
+                                    ?>
+                                            <tr class="filasDeDatosTablaDesafios">
+                                                <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                                <td class="datoTabla"><?php echo $point['nombre_desafioP'];  ?></td>
+                                                <td class="datoTabla"><?php echo $lex['nombre_desafio'];  ?></td>
+                                                <td class="datoTabla">Rechazada</td>
+                                                <td class="datoTabla"><div class="compEsp-edicion">
+                                                    <div class="col-botonesEdicion">
+                                                        <a class="btnDetallesPropuestaRechazada" data-id="<?php echo $point['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaRechazada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                                    </div>
+                                                </div></td>
+                                            </tr>
 
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 2</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Rechazada</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal8" href="" title="Ver propuesta"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
-                            </div></td>
-                        </tr>
+                                    <?php
+                                        }else if($estadoDesafioPer == 'Entregada'){
+                                    ?>
+                                            <tr class="filasDeDatosTablaDesafios">
+                                                <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
+                                                <td class="datoTabla"><?php echo $point['nombre_desafioP'];  ?></td>
+                                                <td class="datoTabla"><?php echo $lex['nombre_desafio'];  ?></td>
+                                                <td class="datoTabla">Por revisar</td>
+                                                <td class="datoTabla"><div class="compEsp-edicion">
+                                                    <div class="col-botonesEdicion">
+                                                        <a class="btnDetallesPropuestaPorRevisar" data-id="<?php echo $point['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaPorRevisar" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                                    </div>
+                                                </div></td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    }
+                                }
+                            }
+}
+                                    ?>
 
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 3</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Por revisar</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal9" href="" title="Ver propuesta"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
-                            </div></td>
-                        </tr>
-
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 4</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Por revisar</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal9" href="" title="Ver propuesta"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
-                            </div></td>
-                        </tr>
-
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 4</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Por revisar</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal9" href="" title="Ver propuesta"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
-                            </div></td>
-                        </tr>
-
-                        <tr class="filasDeDatosTablaDesafios">
-                            <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                            <td class="datoTabla">PROPUESTA DE PRUEBA 4</td>
-                            <td class="datoTabla">Propuesta creada para la construcción de la tabla</td>
-                            <td class="datoTabla">DESAFIO SUSTITUTO DE PRUEBA</td>
-                            <td class="datoTabla">Por revisar</td>
-                            <td class="datoTabla"><div class="compEsp-edicion">
-                                <div class="col-botonesEdicion">
-                                    <a name="openModal9" href="" title="Ver propuesta"><img src="assets/images/verDetallesActividad.png"></a>
-                                </div>
-                            </div></td>
-                        </tr>
+                        </tbody>
+  
                     </table>
                 
 

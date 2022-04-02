@@ -116,7 +116,6 @@ require_once "logic/controllers/CompetenciaControlador.php";
                             <tr>
                                 <th class="campoTabla">Imagen</th>
                                 <th class="campoTabla">Nombre desafio</th>
-                                <th class="campoTabla">Descripción</th>
                                 <th class="campoTabla">Fecha inicio</th>
                                 <th class="campoTabla">Fecha fin</th>
                                 <th class="campoTabla">Acciones</th>
@@ -127,7 +126,7 @@ require_once "logic/controllers/CompetenciaControlador.php";
 
                         <?php
                             $obj = new DesafioControlador();
-                            $sql = "SELECT id_desafio, nombre_desafio, descripcion_desafio, fecha_inicio, fecha_fin, nombre_imagen from tbl_desafio where id_profesor=".$idProfesorLogueado;
+                            $sql = "SELECT id_desafio, nombre_desafio, fecha_inicio, fecha_fin, nombre_imagen from tbl_desafio where id_profesor=".$idProfesorLogueado;
                             $datos = $obj->mostrarDatosDesafios($sql);
                             foreach ($datos as $key){
 
@@ -159,7 +158,6 @@ require_once "logic/controllers/CompetenciaControlador.php";
                                     ?>
 
                                     <td class="datoTabla"><?php echo $key['nombre_desafio'];  ?></td>
-                                    <td class="datoTabla"><?php echo $key['descripcion_desafio'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_inicio'];  ?></td>
                                     <td class="datoTabla"><?php echo $key['fecha_fin'];  ?></td>
                                     <td class="datoTabla"><div class="compEsp-edicion">
