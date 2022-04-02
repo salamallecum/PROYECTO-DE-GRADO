@@ -1,3 +1,17 @@
+<?php
+
+require_once "logic/controllers/EstudianteControlador.php";
+
+
+$estudianteControla = new EstudianteControlador();
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+    $idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -16,7 +30,7 @@
         <link rel="stylesheet" href="assets/css/EstudianteStyles.css">
 
         <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpPerfilDeUsuario.js" type="module"></script>
+        <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
     <body>
@@ -41,21 +55,21 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./PerfilDeUsuario_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./PerfilDeUsuario_Estudiante.php?Id_estudiante=38">
                             <span title="Perfil de usuario"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PERFIL DE USUARIO</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./TrabajosDestacados_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./TrabajosDestacados_Estudiante.php?Id_estudiante=38">
                             <span title="Trabajos destacados"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">TRABAJOS DESTACADOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./E-portafolio_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./E-portafolio_Estudiante.php?Id_estudiante=38">
                             <span title="E-portafolio"><i class="bi bi-folder-check"></i></span>
                             <span class="items_menu">E-PORTAFOLIO</span>
                         </a>
@@ -69,14 +83,14 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=38">
                             <span title="Insignias"><i class="bi bi-award"></i></span>
                             <span class="items_menu">INSIGNIAS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_=29">
+                        <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
                         </a>
@@ -102,7 +116,7 @@
                         <span>Perfil del estudiante</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -117,159 +131,279 @@
                                     <h3 class="titulo_seccion">Editar perfil</h3>
                                 </div>
 
-                                <div class="card-center">
-                                    <form class="">
-                                        <div class="row">
-                                            <div class="pr-1 col-md-5">
-                                                <div>
-                                                    <label>Programa (disabled)</label>
-                                                    <input id="txt_programa" name="programa" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
+                                <?php
+                                    //Consultamos los datos personales del estudiante para su muestreo en el formulario
+                                    $sqlDatEstudiante = "SELECT nombres_usuario, apellidos_usuario, username, pais, ciudad, direccion, telefono, correo_usuario, foto_usuario, descripcion from tbl_usuario where id_usuario=".$idEstudianteLogueado;
+                                    $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+                                    foreach ($datosEstudiante as $key){
+                                ?>
 
-                                            <div class="px-1 col-md-3">
-                                                <div>
-                                                    <label>Usuario</label>
-                                                    <input id="txt_usuario" name="usuario" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
+                                        <div class="card-center">
+                                            <form method="POST" enctype="multipart/form-data">
+                                                
+                                                <div class="row">
+                                                    <div class="pr-1 col-md-5">
 
-                                            <div class="pl-1 col-md-4">
-                                                <div>
-                                                    <label for="exampleInputEmail1">Correo Electrónico</label>
-                                                    <input id="txt_email" name="email" placeholder="" type="email" class="form-control">
+                                                        <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado; ?>">
+                                                        <div>
+                                                            <label>Programa (disabled)</label>
+                                                            <input id="txt_programa" name="programa" placeholder="" type="text" class="form-control" value="Ingeniería de Sistemas" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="px-1 col-md-3">
+                                                        <div>
+                                                            <label>Usuario</label>
+                                                            <input id="txt_usuario" name="usuario" placeholder="" type="text" value="<?php echo $key['username']; ?>" class="form-control" maxlength="10" required="true">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="pl-1 col-md-4">
+                                                        <div>
+                                                            <label for="exampleInputEmail1">Correo Electrónico</label>
+                                                            <input id="txt_email" name="email" placeholder="" type="email" value="<?php echo $key['correo_usuario']; ?>" class="form-control" maxlength="40" required="true">
+                                                        </div>
+                                                    </div>                                 
                                                 </div>
-                                            </div>                                 
+
+                                                <div class="row">
+                                                    <div class="pr-1 col-md-6">
+                                                        <div>
+                                                            <label>Nombres</label>
+                                                            <input id="txt_nombres" name="nombres" placeholder="" type="text" value="<?php echo $key['nombres_usuario']; ?>" class="form-control" maxlength="30" required="true">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="pl-1 col-md-6">
+                                                        <div>
+                                                            <label>Apellidos</label>
+                                                            <input id="txt_apellidos" name="apellidos" placeholder="" type="text" value="<?php echo $key['apellidos_usuario']; ?>" class="form-control" maxlength="30" required="true">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="pl-1 col-md-6">
+                                                        <div>
+                                                            <label>Dirección</label>
+                                                            <input id="txt_apellidos" name="direccion" placeholder="" type="text" value="<?php echo $key['direccion']; ?>" class="form-control" maxlength="20" required="true">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="pl-1 col-md-6">
+                                                        <div>
+                                                            <label>Telefono</label>
+                                                            <input id="txt_telefono" name="telefono" placeholder="" type="text" value="<?php echo $key['telefono']; ?>" class="form-control" maxlength="10" required="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="pr-1 col-md-4">
+                                                        <div>
+                                                            <label>Ciudad</label>
+                                                            <input id="txt_ciudad" name="ciudad" placeholder="" type="text" value="<?php echo $key['ciudad']; ?>" class="form-control" maxlength="10" required="true">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="px-1 col-md-4">
+                                                        <div>
+                                                            <label>País</label>
+                                                            <input  id="txt_pais" name="pais" placeholder="" type="text" value="<?php echo $key['pais']; ?>" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="px-1 col-md-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="foto">Opcional* - Seleccione una foto de perfil</label>
+                                                            <input  id="btn_fotoDePerfil" name="fotoDePerfilEstudiante" accept=".jpeg, .jpg, .png" type="file" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div>
+                                                            <label>Perfil profesional</label>
+                                                            <textarea id="txt_perfilProfesional" name="perfilProfesional" cols="80" placeholder="Agregue información sobre usted" rows="8" class="form-control" maxlength="250" required="true"><?php echo $key['descripcion']; ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="justify-content-md-center row">
+                                                    <div class="col">
+                                                        <button type="submit" name="ActualizarInfoEstudiante" id="btn_editarestudiante"  class="btn-fill pull-right btn btn-info" title="Actualizar perfil">Actualizar Perfil</button>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <button id="btnCambiarClave" type="button" class="btn-fill pull-right btn btn-info" data-id="<?php echo $idEstudianteLogueado;?>" data-bs-toggle="modal" data-bs-target="#modalCambiarClave" title="Cambiar contraseña">Cambiar Contraseña</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <br>
+                                            <!--Incluimos el archivo con la logica del formulario-->
+                                            <?php include("logic/capturaDatEstudiante.php") ?>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="pr-1 col-md-6">
-                                                <div>
-                                                    <label>Nombres</label>
-                                                    <input id="txt_nombres" name="nombres" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
 
-                                            <div class="pl-1 col-md-6">
-                                                <div>
-                                                    <label>Apellidos</label>
-                                                    <input id="txt_apellidos" name="apellidos" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div>
-                                                    <label>Dirección</label>
-                                                    <input id="txt_apellidos" name="apellidos" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="pr-1 col-md-4">
-                                                <div>
-                                                    <label>Ciudad</label>
-                                                    <input id="txt_ciudad" name="ciudad" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
-
-                                            <div class="px-1 col-md-4">
-                                                <div>
-                                                    <label>País</label>
-                                                    <input  id="txt_pais" name="pais" placeholder="" type="text" class="form-control">
-                                                </div>
-                                            </div>
-
-                                            <div class="px-1 col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="foto">Seleccione una foto de perfil</label>
-                                                    <input  id="btn_fotoDePerfil" name="fotoDePerfil" accept=".jpeg, .jpg, .png" type="file" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div>
-                                                    <label>Perfil profesional</label>
-                                                    <textarea id="txt_perfilProfesional" name="perfilProfesional" cols="80" placeholder="Agregue información sobre usted" rows="8" class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-
-                                        <div class="justify-content-md-center row">
-                                            <div class="col">
-                                                <a id="btn_actualizarPerfil" class="btn-fill pull-right btn btn-info" title="Actualizar perfil">Actualizar Perfil</a>
-                                            </div>
-
-                                            <div class="col">
-                                                <a id="openModal" class="btn-fill pull-right btn btn-info" title="Cambiar contraseña">Cambiar Contraseña</a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="card-user card">
-                                <div class="card-image">
-                                    <img class="imgEncabezadoInfoEstudiante" src="/assets/images/uebAerea.jpg" alt="">
-                                </div>
-                                <div class="card-centerProfile">
-                                    
-                                    <div class="author">
-                                        <a href="">
-                                            <img id="lbl_fotoDePerfil" alt="..." class="avatar border-gray" src="/assets/images/imgPorDefecto.jpg">
-                                            <h5 id=lbl_nombreDelEstudiante name="lblnombreEstudiante" class="nombreDelEstudiante"></h5>
-                                            <br>
-                                        </a>
-                                        <p class="description">Perfil profesional</p>
-                                    </div>
-                                    <p id="lbl_perfilProfesional" class="description text-center"></p>
-                                </div>
-                                
-                                <hr>
+                                                    
+                                        <div class="col-md-4">
+                                            <div class="card-user card">
+                                                <div class="card-image">
+                                                <img class="imgEncabezadoInfoEstudiante" src="assets/images/uebAerea.jpg" alt="">
+                                                </div>
+                                                <div class="card-centerProfile">
+                                                    
+                                                    <div class="author">
+                                                        <a href="">
 
-                                <div class="button-container mr-auto ml-auto">
-                                    <table>
-                                        <tr>
-                                            <td><a href="" ><li><i class="fa fa-facebook" aria-hidden="true"></i></li></a></td>                                           
-                                            <td><table><tr><td></td></tr><tr><td></td></tr></table></td>
-                                            <td><a href="#"><li><i class="fa fa-linkedin" aria-hidden="true"></i></li></a></td>
-                                        </tr>
-                                    </table> 
-                                </div>                          
-                            </div>                            
-                        </div>
+                                                        <?php 
+                                                            //Aqui se trae la foto de perfil del profesor
+                                                            $nombreDeImg = $key['foto_usuario'];
+
+                                                            if($nombreDeImg != null){
+
+                                                            ?>
+
+                                                                <img id="lbl_fotoDePerfil" alt="..." class="avatar border-gray" src="<?php echo "profileImages/".$nombreDeImg; ?>">
+
+                                                            <?php
+                                                            }else{
+                                                            ?>
+                                                            
+                                                                <img id="lbl_fotoDePerfil" alt="..." class="avatar border-gray" src="assets/images/imgPorDefecto.jpg">
+
+                                                            <?php    
+                                                            }                       
+                                                            ?>
+                                                            
+                                                            <h5 id=lbl_nombreDelEstudiante name="lblnombreEstudiante" class="nombreDelEstudiante"><?php echo $key['nombres_usuario']; ?> <?php echo $key['apellidos_usuario']; ?></h5>
+                                                            <br>
+                                                        </a>
+                                                        <p class="description">Perfil profesional</p>
+                                                    </div>
+                                                    <p id="lbl_perfilProfesional" class="description text-center"><?php echo $key['descripcion']; ?></p>
+                                                </div>
+                                                
+                                                <hr>
+
+                                                <div class="button-container mr-auto ml-auto">
+                                                    <table>
+                                                        <tr>
+                                                            <td><a href="" ><li><i class="bi bi-facebook"></i></li></a></td>                                           
+                                                            <td><table><tr><td></td></tr><tr><td></td></tr></table></td>
+                                                            <td><a href="#"><li><i class="bi bi-linkedin"></i></li></a></td>
+                                                        </tr>
+                                                    </table> 
+                                                </div>                          
+                                            </div>                            
+                                        </div>
+
+                                <?php
+                                    }
+}
+?>
                     </div>
 
-                    <!--ESTRUCTURA DEL POPUP DE CAMBIO DE CONTRASEÑA-->
-                    <div id="modal_container" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Cambiar contraseña</h3>
-                            <br>
-
-                            <div class="formulario-cambioDeContraseña">
-                                <form class="">
-                                    <label>Contraseña actual</label>
-                                    <input id="txt_contraseñaActual" name="txtContraseñaActual" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Contraseña nueva</label>
-                                    <input id="txt_contraseñaNueva" name="txtContraseñaNueva" placeholder="" type="text" class="form-control">
-                                    <br>
-                                </form>
-                            </div>
-                           
-                            <a id="btn_guardarContraseña" class="btn_agregarTrabajo" title="Guardar">Guardar</a>
-                            <a id="btn_cancelar" class="btn_agregarTrabajo" title="Cancelar">Cancelar</a>
+                    <!--ESTRUCTURA DEL POPUP DE CAMBIO DE CONTRASEÑA-->                  
+                    <div class="modal fade" id="modalCambiarClave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Cambiar contraseña</h3>
                         </div>
+                        <div class="modal-body">
+                        
+                            <form id="formularioModalCambioClave">
+                                <input type="hidden" id="idEstudiante" name="id_estudiante" value="<?php echo $idEstudianteLogueado;?>"> 
+                            </form>
+                            <label class="labelsPassword">Contraseña actual</label>
+                            <input id="txt_contraseñaActual" name="txtContraseñaActual" placeholder="" type="password" onclick="resetSpanActualizarContraseña()" class="form-control" maxlength="10" required="true">
+                            <br>
+                            <label class="labelsPassword">Contraseña nueva</label>
+                            <input id="txt_contraseñaNueva" name="txtContraseñaNueva" placeholder="" type="password" onclick="resetSpanActualizarContraseña()" class="form-control" maxlength="10" required="true">
+                            <br>
+                        
+                            <span id="panelConfirmacionDeCambioDeClave"></span> 
+                            <br> 
+
+                            <button type="button" id="guardarCambioClave" class="btn_agregarTrabajo" title="Guardar">Guardar</button>
+                            <button id="btnCerrarModalCambiarClave" onclick="limpiarFormularioCambiarContraseña()" type="button" class="btn btn-secondary" data-bs-toggle="modal" title="Cerrar">Cerrar</button>
+                                                                   
+                        </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </main>
         </div>
+
+        <!--FUNCION QUE RESETEA LOS CAMPOS DEL FORMULARIO PARA COMPARTIR E-PORTAFOLIOS-->
+        <script type='text/javascript'>
+            
+            function limpiarFormularioCambiarContraseña(){
+                document.getElementById('txt_contraseñaActual').value="";
+                document.getElementById('txt_contraseñaNueva').value=""; 
+                document.getElementById('panelConfirmacionDeCambioDeClave').innerHTML="";               
+            }
+        </script>
+
+        <!--Funcion que resetea el span de confirmacion de actualizacion de contraseña exitoso-->
+        <script>
+            function resetSpanActualizarContraseña(){ 
+                document.getElementById('panelConfirmacionDeCambioDeClave').innerHTML="";
+            }            
+
+            //Asignamos elevento de reseteo al boton que cierrael modal de compartir eportafolios
+            $('#btnCerrarModalCambiarClave').click(function(){
+                resetSpanActualizarContraseña();
+            });
+        </script>
+
+        <!--Script que permite el cambio de contraseña para un profesor-->
+        <script type='text/javascript'>
+
+            $(document).ready(function(){
+                
+                $('#guardarCambioClave').click(function(){
+
+                    var idEstudianteLogueado = document.getElementById('idEstudiante').value;
+                    var claveActual = document.getElementById('txt_contraseñaActual').value;
+                    var claveNueva = document.getElementById('txt_contraseñaNueva').value;
+                    
+                    if (claveActual != "" && claveNueva != "") {
+
+                        function cambiarContraseña() {
+                            return new Promise((resolve, reject) => {
+                                    // AJAX request
+                                $.ajax({
+                                    url: 'logic/utils/ajaxfile.php',
+                                    type: 'post',
+                                    data: {'idEstudianteLogueado': idEstudianteLogueado, 'claveActual': claveActual, 'claveNueva':claveNueva},
+                                    success: function(response){                                        
+                                        resolve(response)
+                                        $('#panelConfirmacionDeCambioDeClave').html(response);
+                                    },
+                                    error: function (error) {
+                                        reject(error)
+                                    },
+                                });
+                            })
+                        }
+                        cambiarContraseña();
+                    
+                    }else{
+                        alert('Complete los datos solicitados.');
+                    }
+                    
+                });
+            });
+        </script>
+
     </body>
 </html>

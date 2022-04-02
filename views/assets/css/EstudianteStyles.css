@@ -151,6 +151,14 @@ header{
     transition: left 500ms;
 }
 
+.indicadorSatisfactorio{
+    color: green;
+}
+
+.indicadorDeCamposIncompletos{
+    color: red
+}
+
 .social-icons{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -367,7 +375,17 @@ main{
 
 .titulo_seccion{
     color: #005e6e;
+    font-size: 18px;
+    font-weight: bold;
 }
+
+#txt_perfilProfesional{
+    width: 98%;
+    height: 90px;
+    resize: none;
+    overflow-y: scroll;
+}
+
 
 .card .card-header {
     padding: 15px 15px 0;
@@ -833,46 +851,6 @@ h6 {
     font-size: 2rem;
 }
 
-/*VENTANA POPUP - REGISTRO DE TRABAJOS DESTACADOS*/
-.modal_container{
-    display: flex;
-    background-color:rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    pointer-events: none;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-}
-
-.show{
-    pointer-events: auto;
-    opacity: 1;
-}
-
-.modal{
-    background: #fff;
-    width: 600px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.modal p{
-    opacity: 0.7;
-    font-size: 14px;
-    text-align: left;
-}
-
-.formulario-registroTrabDestacado{
-    text-align: left;
-}
-
 
 /*RESPONSIVE DESIGN*/
 @media screen and (max-width: 960px){
@@ -1217,42 +1195,6 @@ thead{
 
 #btn_openModal4{
     margin-left: 20px;
-}
-
-/*ESTILOS POPUPS*/
-.modal_container{
-    display: flex;
-    background-color:rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    pointer-events: none;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-}
-
-.show{
-    pointer-events: auto;
-    opacity: 1;
-}
-
-.modal{
-    background: #fff;
-    width: 600px;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.modal p{
-    opacity: 0.7;
-    font-size: 14px;
-    text-align: left;
 }
 
 /*--------------------------CONVOCATORIAS*--------------------------*/

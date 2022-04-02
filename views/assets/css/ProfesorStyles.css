@@ -631,7 +631,7 @@ form-control[type=file]:not(:disabled):not([readonly]) {
 }
 
 #txt_perfilProfesional{
-    width: 890px;
+    width: 98%;
     height: 90px;
     resize: none;
     overflow-y: scroll;

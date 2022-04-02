@@ -18,11 +18,41 @@ $estudianteControla = new EstudianteControlador();
 $profesorControla = new ProfesorControlador();
 $desafioControla = new DesafioControlador();
 
+//----------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------SECCION ESTUDIANTE-----------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
+//Capturamos el id del estudiante su clave actual y su clave nueva parahacer el cambio de contraseña
+if(isset($_POST['idEstudianteLogueado']) && isset($_POST['claveActual']) && isset($_POST['claveNueva'])){
+
+    //Capturamos los datos de los campos del formulario
+    $idEstudianteLogueado = trim($_POST['idEstudianteLogueado']);
+    $claveActualEst = trim($_POST['claveActual']);
+    $claveNuevaEst = trim($_POST['claveNueva']);
+
+    $confirmacionActualizacionClaveExitosa = '<p class="indicadorSatisfactorio">* Contraseña actualizada satisfactoriamente</p>';
+    $confirmacionActualizacionClaveFallido = '<p class="indicadorDeCamposIncompletos">* Contraseña actual no valida</p>';
+
+    $antiguaContraseñaEstudiante = $estudianteControla->consultarAntiguaContraseña($idEstudianteLogueado);
+
+    if($antiguaContraseñaEstudiante == $claveActualEst){
+
+        //Actualizamos la contraseña del profesor
+        $contraseñaActualizadaCorrectamenteEstudiante = $estudianteControla->actualizarContraseña($idEstudianteLogueado, $claveNuevaEst);
+
+        if($contraseñaActualizadaCorrectamenteEstudiante){
+            echo $confirmacionActualizacionClaveExitosa;  
+        }
+
+    }else{
+        echo $confirmacionActualizacionClaveFallido;
+    } 
+} 
+
 
 //----------------------------------------------------------------------------------------------------------------------------//
-//---------------------------------------------------SECCION PROFESOR---------------------------------------------------------//
+//-----------------------------------------------------SECCION PROFESOR-------------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
-//Capturamos el id del eportafolio y el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
+//Capturamos el id del profesor su clave actual y su clave nueva parahacer el cambio de contraseña
 if(isset($_POST['idProfeLogueado']) && isset($_POST['claveActual']) && isset($_POST['claveNueva'])){
 
     //Capturamos los datos de los campos del formulario

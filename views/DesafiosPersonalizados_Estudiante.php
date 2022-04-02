@@ -32,7 +32,7 @@
             </div>
 
             <div class="sidebar-menu">
-            <ul class="menuEstudiante">
+                <ul class="menuEstudiante">
                     <li>
                         <a class="link_menu-active" href="./DashBoard_Estudiante.php">
                             <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
@@ -41,21 +41,21 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./PerfilDeUsuario_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./PerfilDeUsuario_Estudiante.php?Id_estudiante=38">
                             <span title="Perfil de usuario"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PERFIL DE USUARIO</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./TrabajosDestacados_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./TrabajosDestacados_Estudiante.php?Id_estudiante=38">
                             <span title="Trabajos destacados"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">TRABAJOS DESTACADOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./E-portafolio_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./E-portafolio_Estudiante.php?Id_estudiante=38">
                             <span title="E-portafolio"><i class="bi bi-folder-check"></i></span>
                             <span class="items_menu">E-PORTAFOLIO</span>
                         </a>
@@ -69,14 +69,14 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=38">
                             <span title="Insignias"><i class="bi bi-award"></i></span>
                             <span class="items_menu">INSIGNIAS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=29">
+                        <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
                         </a>
@@ -102,7 +102,7 @@
                         <span>Administrador de desafios personalizados</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 

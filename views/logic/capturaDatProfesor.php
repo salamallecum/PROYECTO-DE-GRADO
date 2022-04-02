@@ -47,13 +47,6 @@
     }
 
 
-
-
-
-
-
-
-
     //Capturamos el evento del boton de actualizacion de perfil de profesor
     if(isset($_POST['ActualizarInfoProfesor'])){
 

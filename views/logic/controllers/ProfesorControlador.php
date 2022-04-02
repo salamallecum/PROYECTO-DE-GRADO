@@ -48,7 +48,7 @@ class ProfesorControlador{
     }
 
     //Funcion que permite actualizar la informacion de un profesor en base de datos
-    public function actualizarInformacionDeProfesor(string $idProf, string $usuarioProf, string $correoProf, string $nombresProf, string $apellidosProf, string $direccionProf, string $telefonoProf, string $ciudadProfe, string $perfilProf){
+    public function actualizarInformacionDeProfesor(int $idProf, string $usuarioProf, string $correoProf, string $nombresProf, string $apellidosProf, string $direccionProf, string $telefonoProf, string $ciudadProfe, string $perfilProf){
 
         $c = new conectar();
         $conexion = $c->conexion();
@@ -150,7 +150,7 @@ class ProfesorControlador{
         return true;
     }
 
-    //Funcion que permite consultar lacontraseña que tiene el profesor previamente registrada en el sistema
+    //Funcion que permite consultar lacontraseña que tiene el usuario previamente registrada en el sistema
     public function consultarAntiguaContraseña(int $idProf){
         $c = new conectar();
         $conexion = $c->conexion();
