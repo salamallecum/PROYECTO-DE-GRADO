@@ -74,7 +74,7 @@ if($_GET['Id_estudiante'] != 0){
                         if($fotoDelEstudiante != null){
                     ?>
                             <div class="cardInfoPersonal">
-                                <img class="fotoDelEstudiante" src="<?php echo "userprofileImages/".$fotoDelEstudiante?>" alt="">
+                                <img class="fotoDelEstudiante" src="<?php echo "profileImages/".$fotoDelEstudiante?>" alt="">
                             </div>
 
                     <?php

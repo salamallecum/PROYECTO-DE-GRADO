@@ -367,6 +367,106 @@ if(isset($_POST['idDesafioParaConsultarNivelesContribCompetenciasEspecificasRegi
 
 }
 
+//Capturamos el evento del id de un desafio para ver detalles
+if(isset($_POST['idDesafioDetalles'])){
+
+    //Aqui traemos los datos de los desafios para ver su informacion-----------------------------------
+    $idDesafioDetalles = $_POST['idDesafioDetalles'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioDetalles;
+    $resultDesafioDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayDesafioDetail = array();
+    while($row =mysqli_fetch_assoc($resultDesafioDetail))
+    {
+        $emparrayDesafioDetail[] = $row;
+    }
+
+    echo json_encode($emparrayDesafioDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio con el fin de mostrar su imagen en el modal de detalles del mismo 
+if(isset($_POST['idImagenDesafioPropuesta'])){
+
+    //Aqui traemos los datos del desafio para ver su informacion-----------------------------------
+    $idImagenDesafioPropuesta = $_POST['idImagenDesafioPropuesta'];
+
+    //Evaluamos si el desafio tiene imagen registrada en BD
+    $elDesafTieneImagen = $desafioControla->consultarNombreImagenDesafio($idImagenDesafioPropuesta);
+
+    if($elDesafTieneImagen != null){
+        $imagenGuardadaDeDesafio = '<img class="imgPropuestaDetalle" src="desafiosImages/'.$elDesafTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeDesafio;
+    }else{
+        $imagenPorDefectoDeDesafio = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeDesafio;
+    }  
+}
+
+//Capturamos el evento del id de un desafio con el fin de mostrar su enunciado en el modal de detalles del mismo 
+if(isset($_POST['idEnunciadoDesafioPropuesta'])){
+
+    //Aqui traemos los datos del desafio para ver su informacion-----------------------------------
+    $idEnunciadoDesafioPropuesta = $_POST['idEnunciadoDesafioPropuesta'];
+
+    //Evaluamos si el desafio tiene enunciado registrado en BD
+    $elDesafTieneEnunciado = $desafioControla->consultarNombreEnunciadoDesafio($idEnunciadoDesafioPropuesta);
+
+    if($elDesafTieneEnunciado != null){
+        $botonDescargaEnunciado = '<a href="logic/utils/ajaxfile.php?downloadEnunDesafio='.$elDesafTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciado;
+    }
+}
+
+//Capturamos el nombre del enunciado de un desafio para su descarga (boton descargar enunciado)
+if(isset($_REQUEST['downloadEnunDesafio'])){
+
+    $nombreEnunciadoDesafioDescarga = $_REQUEST['downloadEnunDesafio'];
+
+    $rutaBase = realpath($_SERVER["DOCUMENT_ROOT"]); 
+    $rutaArchivo = $rutaBase."/MockupsPandora/views/desafiosFiles/".$nombreEnunciadoDesafioDescarga ;
+    $type = '';
+
+    if (is_file($rutaArchivo)) {
+        
+        $size = filesize($rutaArchivo);
+
+        if (function_exists('mime_content_type')) {
+            $type = mime_content_type($rutaArchivo);
+        } else if (function_exists('finfo_file')) {
+            $info = finfo_open(FILEINFO_MIME);
+            $type = finfo_file($info, $rutaArchivo);
+            finfo_close($info);
+        } 
+
+        if ($type == '') {
+            $type = "application/force-download";
+        }
+
+        // Definir headers
+        header("Content-Type: $type");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Content-Disposition: attachment; filename=".$nombreEnunciadoDesafioDescarga."");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: " . $size);
+        // Descargar archivo
+        readfile($rutaArchivo);
+    } else {
+        die("El archivo ".$nombreEnunciadoDesafioDescarga ." no existe.");
+    }
+    
+}
+
+
+
+
+
+
+
+
+
 
 //----------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------SECCION DESAFIOS PERSONALIZADOS----------------------------------------------//
@@ -407,6 +507,153 @@ if(isset($_POST['idPropuestaElim'])){
     exit;
 }
 
+//Capturamos el evento del id de una propuesta para para ver sus detalles en estado "Por revisar"
+if(isset($_POST['idPropuestaDetallesModalPorRevisar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaDetallesModalPorRevisar = $_POST['idPropuestaDetallesModalPorRevisar'];
+
+    $sql = "select * from tbl_desafiopersonal where Id=".$idPropuestaDetallesModalPorRevisar;
+    $resultPropuestaDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayPropuestaDetail = array();
+    while($row =mysqli_fetch_assoc($resultPropuestaDetail))
+    {
+        $emparrayPropuestaDetail[] = $row;
+    }
+
+    echo json_encode($emparrayPropuestaDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una propuesta con el fin de mostrar su imagen en el modal de detalles (Estado por revisar)
+if(isset($_POST['idPropuestaImagenPorRevisar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaImagenPorRevisar = $_POST['idPropuestaImagenPorRevisar'];
+
+    //Evaluamos si la propuesta tiene una imagen registrada en BD
+    $laPropTieneImagen = $desafioControla->consultarSiLaPropuestaTieneImagen($idPropuestaImagenPorRevisar);
+
+    if($laPropTieneImagen != null){
+        $imagenGuardadaDeLaProp = '<img class="imgPropuestaDetalle" src="desafiosPerImages/'.$laPropTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaProp;
+    }else{
+        $imagenPorDefectoDeLaProp = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaProp;
+    }
+}
+
+//Capturamos el id de un estudiante que propone un desafio personalizado para ver su informacion personal en el modal de detalles de una propuesta en estado "Por revisar"
+if(isset($_POST['idEstudianteQProponeParaModalPorRevisar'])){
+
+    //Aqui traemos los datos del estudiante para ver su informacion-----------------------------------
+    $idEstudianteQProponeParaModalPorRevisar = $_POST['idEstudianteQProponeParaModalPorRevisar'];
+
+    $sql = "select * from tbl_usuario where id_usuario=".$idEstudianteQProponeParaModalPorRevisar;
+    $resultEstudiantePropuestaDetailPR = mysqli_query($conexion,$sql);   
+    
+    $emparrayEstudiantePropuestaDetailPR = array();
+    while($row =mysqli_fetch_assoc($resultEstudiantePropuestaDetailPR))
+    {
+        $emparrayEstudiantePropuestaDetailPR[] = $row;
+    }
+
+    echo json_encode($emparrayEstudiantePropuestaDetailPR);
+    exit;
+}
+
+//Capturamos el id del desafio que se pretende sustituir con el desafio personalizado y ver su informacion en el modal de detalles de una propuesta en estado "Por revisar"
+if(isset($_POST['idDesafioQSePretendeSustituirParaModalPorRevisar'])){
+
+    //Aqui traemos los datos del desafio para ver su informacion-----------------------------------
+    $idDesafioQSePretendeSustituirParaModalPorRevisar = $_POST['idDesafioQSePretendeSustituirParaModalPorRevisar'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioQSePretendeSustituirParaModalPorRevisar;
+    $resultDesafioPropuestaDetailPR = mysqli_query($conexion,$sql);   
+    
+    $emparrayDesafioPropuestaDetailPR = array();
+    while($row =mysqli_fetch_assoc($resultDesafioPropuestaDetailPR))
+    {
+        $emparrayDesafioPropuestaDetailPR[] = $row;
+    }
+
+    echo json_encode($emparrayDesafioPropuestaDetailPR);
+    exit;
+}
+
+//Capturamos el id del desafio que se pretende sustituir con el desafio personalizado y ver su informacion en el modal de detalles de desafio
+if(isset($_POST['idDesafioQSePretendeSustituirParaModalDetallesDesafio'])){
+
+    //Aqui traemos los datos del desafio para ver su informacion-----------------------------------
+    $idDesafioQSePretendeSustituirParaModalDetallesDesafio = $_POST['idDesafioQSePretendeSustituirParaModalDetallesDesafio'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioQSePretendeSustituirParaModalDetallesDesafio;
+    $resultDetallesDesafioDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayDetallesDesafioDetail = array();
+    while($row =mysqli_fetch_assoc($resultDetallesDesafioDetail))
+    {
+        $emparrayDetallesDesafioDetail[] = $row;
+    }
+
+    echo json_encode($emparrayDetallesDesafioDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio personalizado con el fin de mostrar el boton de descarga de enunciado en el modal de detalles de una propuesta en estado "Por revisar"
+if(isset($_POST['idPropuestaParaBuscarEnunciado'])){
+
+    $idPropuestaParaBuscarEnunciado = $_POST['idPropuestaParaBuscarEnunciado'];
+
+    //Evaluamos si el desafio personalizado tiene un enunciado registrado en BD
+    $laPropuestaTieneEnunciado = $desafioControla->consultarSiLaPropuestaTieneEnunciado($idPropuestaParaBuscarEnunciado);
+
+    if($laPropuestaTieneEnunciado != null){
+        $botonDescargaEnunciado = '<a href="logic/utils/ajaxfile.php?downloadEnunPropuesta='.$laPropuestaTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciado;
+    }
+}
+
+//Capturamos el nombre del enunciado de un desafio personalizado o propuesta para su descarga (boton descargar enunciado)
+if(isset($_REQUEST['downloadEnunPropuesta'])){
+
+    $nombreEnunciadoPropuestaDesPersonalizadoDescarga = $_REQUEST['downloadEnunPropuesta'];
+
+    $rutaBase = realpath($_SERVER["DOCUMENT_ROOT"]); 
+    $rutaArchivo = $rutaBase."/MockupsPandora/views/desafiosPerFiles/".$nombreEnunciadoPropuestaDesPersonalizadoDescarga;
+    $type = '';
+
+    if (is_file($rutaArchivo)) {
+        
+        $size = filesize($rutaArchivo);
+
+        if (function_exists('mime_content_type')) {
+            $type = mime_content_type($rutaArchivo);
+        } else if (function_exists('finfo_file')) {
+            $info = finfo_open(FILEINFO_MIME);
+            $type = finfo_file($info, $rutaArchivo);
+            finfo_close($info);
+        } 
+
+        if ($type == '') {
+            $type = "application/force-download";
+        }
+
+        // Definir headers
+        header("Content-Type: $type");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Content-Disposition: attachment; filename=".$nombreEnunciadoPropuestaDesPersonalizadoDescarga."");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: " . $size);
+        // Descargar archivo
+        readfile($rutaArchivo);
+    } else {
+        die("El archivo ".$nombreEnunciadoPropuestaDesPersonalizadoDescarga." no existe.");
+    }
+    
+}
 
 
 
@@ -1168,7 +1415,7 @@ if(isset($_POST['idConvPracticasEportafoliosAplicados'])){
 
                                                         //Aqui traemos la foto de perfil del estudiante para la tabla de eportafolios postulados
                                                         if($key['foto_usuario'] != null){
-                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="userprofileImages/"'.$key['foto_usuario'].'></td>';
+                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="profileImages/'.$key['foto_usuario'].'"></td>';
                                                         }else{
                                                             $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
                                                         }

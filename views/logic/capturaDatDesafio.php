@@ -137,12 +137,12 @@
                     $rutaDeEnunciadoEdit = $_FILES['enunciadoActualizado']['tmp_name'];
 
                     //Consultamos si el desafio ya tiene un enunciado previo en servidor
-                    $nombreAntiguoEnunciado = $desafioControla->consultarNombreEnunciadoDesafio($idEventoAEditar);
+                    $nombreAntiguoEnunciado = $desafioControla->consultarNombreEnunciadoDesafio($idDesafioAEditar);
 
                     //Eliminamos el enunciado previo en servidor
                     if($nombreAntiguoEnunciado != null){
                         //Eliminamos el nombre del enunciado en base de datos 
-                       $desafioControla->limpiarNombreEnunciadoDesafio($idEventoAEditar, $nombreAntiguoEnunciado);
+                       $desafioControla->limpiarNombreEnunciadoDesafio($idDesafioAEditar, $nombreAntiguoEnunciado);
                        //Eliminamos enunciado previo en servidor del desafio
                        $desafioControla->eliminarEnunciado($nombreAntiguoEnunciado);
 
@@ -278,8 +278,8 @@
 
             if($desafioControla->actualizarPropuesta($idPropuestaAEditar, $idDelEstudianteEdit, $nombreDePropuestaAEdit, $descripcionPropuestaEdit, $cmbDesafioASustituirAEditar) == 1){
 
-                $imagenEditDePropuesta = $_FILES['imagenActualizada']['name'];
-                $enunciadoEditDePropuesta = $_FILES['enunciadoActualizado']['name'];
+                $imagenEditDePropuesta = $_FILES['imgParaPropuesta']['name'];
+                $enunciadoEditDePropuesta = $_FILES['archivoInfoDePropuesta']['name'];
 
                 //Verificamos si el usuario ha subido una imagen para el desafio personalizado
                 if(strlen($imagenEditDePropuesta) >= 1){

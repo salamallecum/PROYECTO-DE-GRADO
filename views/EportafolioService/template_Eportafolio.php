@@ -44,7 +44,7 @@ function getEportafolio(int $idDelEstudiante){
                                                                                     if($key['foto_usuario'] != null){
 
                                                                                         $plantillaEportafolio .= '<td> <div class="cardInfoPersonal"> 
-                                                                                                                    <img class="fotoDelEstudiante" src="../assets/images/team/'.$key['foto_usuario'].'" alt="Foto de perfil estudiante">                        
+                                                                                                                    <img class="fotoDelEstudiante" src="../profileImages/'.$key['foto_usuario'].'" alt="Foto de perfil estudiante">                        
                                                                                                                 </div></td>';
 
                                                                                     }else{

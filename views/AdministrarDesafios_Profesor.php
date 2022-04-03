@@ -279,7 +279,7 @@ require_once "logic/controllers/CompetenciaControlador.php";
                                 <textarea id="txt_descripcion" name="descripcion_desafio" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
                                 <br>
 
-                                <label class="camposFormulario">Opcional* - Archivo PDF con info del evento</label><br>
+                                <label class="camposFormulario">Opcional* - Archivo PDF con info del desafio</label><br>
                                 <input  id="btn_cargaArchivoInfoDelDesafio" name="enunciadoActualizado" accept=".pdf" type="file" class="form-control">
                                 <br>
 

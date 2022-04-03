@@ -453,7 +453,7 @@ class DesafioControlador{
         }
     }
 
-     //Funcion que permite eliminar el enunciado de un desafio
+     //Funcion que permite eliminar el enunciado de un desafio personalizado
      public function eliminarEnunciadoPropuesta(string $nomEnun){
 
         $base_dir = realpath($_SERVER["DOCUMENT_ROOT"]); 
@@ -467,6 +467,34 @@ class DesafioControlador{
         
         }else{
             echo "No se encontró el enunciado ($nomEnun)";
+        }
+    }
+
+    //Funcion que nos permite identificar si un desafio personalizado tiene una imagen registrada
+    public function consultarSiLaPropuestaTieneImagen(int $idProp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_imagen from tbl_desafiopersonal where Id=".$idProp;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_imagen'];
+        }
+    }
+
+    //Funcion que nos permite identificar si una convocatoria practicas tiene un archivo de enunciado registrado
+    public function consultarSiLaPropuestaTieneEnunciado(int $idPropuest){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nombre_enunciado from tbl_desafiopersonal where Id=".$idPropuest;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nombre_enunciado'];
         }
     }
 
