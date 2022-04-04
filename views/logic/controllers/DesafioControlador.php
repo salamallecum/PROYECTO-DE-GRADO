@@ -26,9 +26,10 @@ class DesafioControlador{
         $fechaInicio = $desafio->getFechaInicio();
         $fechaFin = $desafio->getFechaFin();
         $materiaContribucion = $desafio->getMateriaDeContribucion();
+        $estadoDelDesafio = $desafio->getEstadoDelDesafio();
                 
-        $sql = "INSERT INTO tbl_desafio (id_desafio, id_profesor, nombre_desafio, descripcion_desafio, fecha_inicio, fecha_fin, id_asignatura, competenciasAsignadas)
-                            values ($idDesafio, $idDelProfesorEncargado, '$nombreDesafio', '$descripcionDesafio', '$fechaInicio', '$fechaFin', $materiaContribucion, 'No')";
+        $sql = "INSERT INTO tbl_desafio (id_desafio, id_profesor, nombre_desafio, descripcion_desafio, fecha_inicio, fecha_fin, id_asignatura, competenciasAsignadas, estado)
+                            values ($idDesafio, $idDelProfesorEncargado, '$nombreDesafio', '$descripcionDesafio', '$fechaInicio', '$fechaFin', $materiaContribucion, 'No', '$estadoDelDesafio')";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
     }
@@ -114,19 +115,10 @@ class DesafioControlador{
     }
 
     //Funcion que permite actualizar la informacion de un desafio
-    public function actualizarDesafio(Desafio $desafioEdit){
+    public function actualizarDesafio(int $idDesafioEdit, int $idProfesorEncargadoEdit, string $nombreDesafioAEditar, string $descripcionAEditar, $fechaInicioEdit, $fechaFinEdit, int $MateriaContribucionEdit){
 
         $c = new conectar();
-        $conexion = $c->conexion();
-
-        //Capturamos los datos del objeto
-        $idDesafioEdit = $desafioEdit->getId();
-        $idProfesorEncargadoEdit = $desafioEdit->getIdProfeEncargado();
-        $nombreDesafioAEditar = $desafioEdit->getNombre();
-        $descripcionAEditar = $desafioEdit->getDescripcion();
-        $fechaInicioEdit = $desafioEdit->getFechaInicio();
-        $fechaFinEdit = $desafioEdit->getFechaFin();
-        $MateriaContribucionEdit = $desafioEdit->getMateriaDeContribucion();
+        $conexion = $c->conexion();     
                 
         $sql = "UPDATE tbl_desafio SET id_profesor=$idProfesorEncargadoEdit, nombre_desafio='$nombreDesafioAEditar', descripcion_desafio='$descripcionAEditar', fecha_inicio='$fechaInicioEdit', fecha_fin='$fechaFinEdit', id_asignatura='$MateriaContribucionEdit'
                             WHERE  id_desafio=$idDesafioEdit";
@@ -247,7 +239,7 @@ class DesafioControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_desafio SET competenciasAsignadas = 'Si' WHERE id_desafio='$idDe'";
+        $sql = "UPDATE tbl_desafio SET competenciasAsignadas = 'Si', estado = 'Activo' WHERE id_desafio='$idDe'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
@@ -359,7 +351,7 @@ class DesafioControlador{
         $c = new conectar();
         $conexion = $c->conexion();
                 
-        $sql = "UPDATE tbl_desafiopersonal SET Id_estudiante=$idEstudiante, nombre_desafioP='$nombrePropuesta', descripcion='$descripcionPropuesta', idDesafioASustituir=$desafioContrib WHERE Id=$idPropuesta";
+        $sql = "UPDATE tbl_desafiopersonal SET Id_estudiante=$idEstudiante, nombre_desafioP='$nombrePropuesta', descripcion='$descripcionPropuesta', idDesafioASustituir=$desafioContrib, estado='Entregada' WHERE Id=$idPropuesta";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
@@ -496,6 +488,29 @@ class DesafioControlador{
         while ($row = $result->fetch_assoc()) {
             return $row['nombre_enunciado'];
         }
+    }
+
+    //Funcion que permite aprobar una propuesta de desafio personalizado
+    public function aprobarPropuesta(int $idPropAAprobar, string $comentarios){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafiopersonal SET estado = 'Aprobada', observaciones='$comentarios' WHERE Id=".$idPropAAprobar;
+        return $resultAprobacion = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+        
+
+    }
+
+    //Funcion que permite rechazar una propuesta de desafio personalizado
+    public function rechazarPropuesta(int $idPropARechazar, string $realimentacion){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafiopersonal SET estado = 'Rechazada', observaciones='$realimentacion' WHERE Id=".$idPropARechazar;
+        return $resultRechazo = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+       
     }
 
 }

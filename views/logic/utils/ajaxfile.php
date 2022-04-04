@@ -321,7 +321,7 @@ if(isset($_POST['idDesafioParaGuardarContribucionCompEspecificas']) && isset($_P
         $sql = "INSERT INTO tbl_contribcompespecificas_actividad VALUES (0, $idSeleccionDeCompetenciasGenerales, $idDesafioParaGuardarContribucionCompEspecificas, 'DESAFIO', '$stringArregloCodigosCompEspecificas', '$stringArregloNivelesContribucionCompEspecificas')";
         mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
-        //Ajustamos el atributo de publicacion del evento en la tabla eventos con el fin de que este quede publicado
+        //Ajustamos el atributo de publicacion del desafio en la tabla desafios con el fin de que este quede publicado
         $desafioControla->publicarDesafio($idDesafioParaGuardarContribucionCompEspecificas);
 
         echo $confirmacionEvaluacionCompetenciasExitosa;
@@ -652,10 +652,31 @@ if(isset($_REQUEST['downloadEnunPropuesta'])){
     } else {
         die("El archivo ".$nombreEnunciadoPropuestaDesPersonalizadoDescarga." no existe.");
     }
-    
 }
 
+//Capturamos el id de la propuesta a aprobar y sus comentarios (boton Aprobar - Modal Propuesta por revisar)
+if(isset($_POST['propuestaAAprobar']) && isset($_POST['observaciones'])){
 
+    //Capturamos los datos de los campos del formulario
+    $idPropuestaAAprobarSelect = trim($_POST['propuestaAAprobar']);
+    $observacionesAprobacion = trim($_POST['observaciones']);
+
+    //Aprobamos la propuesta 
+    $desafioControla->aprobarPropuesta($idPropuestaAAprobarSelect, $observacionesAprobacion);
+
+} 
+
+//Capturamos el id de la propuesta a rechazar y sus comentarios de realimentación (boton Rechazar - Modal Propuesta por revisar)
+if(isset($_POST['propuestaARechazar']) && isset($_POST['comentariosDeMejora'])){
+
+    //Capturamos los datos de los campos del formulario
+    $idPropuestaARechazarSelect = trim($_POST['propuestaARechazar']);
+    $observacionesDeMejora = trim($_POST['comentariosDeMejora']);
+
+    //Rechazamos la propuesta 
+    $desafioControla->rechazarPropuesta($idPropuestaARechazarSelect, $observacionesDeMejora);
+
+} 
 
 
 

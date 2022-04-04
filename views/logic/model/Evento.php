@@ -10,9 +10,10 @@ class Evento{
     private $nombreImagen;
     private $nombreEnunciado;
     private $profeEncargado;
+    private $estadoDelEvento;
 
     //Constructor
-    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $profeEncargado)
+    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $profeEncargado, $estadoDelEvento)
     {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -20,6 +21,7 @@ class Evento{
         $this->fechaInicio = $fechaInicio;
         $this->fechaFin = $fechaFin;
         $this->profeEncargado = $profeEncargado;
+        $this->estadoDelEvento = $estadoDelEvento;
     }
     
     //GETTER Y SETTER
@@ -85,6 +87,14 @@ class Evento{
 
     public function getProfeEncargado(){
         return $this->profeEncargado;
+    }
+
+    public function setEstadoDelEvento($estEvent){
+        $this->estadoDelEvento = $estEvent;
+    }
+
+    public function getEstadoDelEvento(){
+        return $this->estadoDelEvento;
     }
 }
 

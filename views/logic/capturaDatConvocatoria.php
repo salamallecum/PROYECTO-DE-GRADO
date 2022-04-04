@@ -35,7 +35,7 @@
         $cmbProfesorEncargado != 'seleccione'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo ConvocatoriaComite
-            $nuevaConvComite = new ConvocatoriaComite(0, $nombreDeConvocatoriaComite, $descripcionConvocatoriaComite, $fechaInicioConvComite, $fechaFinConvComite, $cmbProfesorEncargado);
+            $nuevaConvComite = new ConvocatoriaComite(0, $nombreDeConvocatoriaComite, $descripcionConvocatoriaComite, $fechaInicioConvComite, $fechaFinConvComite, $cmbProfesorEncargado, 'Inactivo');
 
             
             if($convocatoriaControla->insertarConvocatoriaComite($nuevaConvComite) == 1){
@@ -101,11 +101,8 @@
         strlen($fechaInicioConvComiteEdit) >= 1 &&
         strlen($fechaFinConvComiteEdit) >= 1 &&
         $profesorEncargadoEdit != 'seleccione'){ 
-
-            //Encapsulamos los datos obtenidos en un objeto de tipo ConvocatoriaComite
-            $convocatoriaComiteActualizar = new ConvocatoriaComite($idDeConvComiteActualizar, $nombreDeConvocatoriaComiteEdit, $descripcionConvocatoriaComiteEdit, $fechaInicioConvComiteEdit, $fechaFinConvComiteEdit, $profesorEncargadoEdit);
             
-            if($convocatoriaControla->actualizarConvocatoriaComite($convocatoriaComiteActualizar) == 1){
+            if($convocatoriaControla->actualizarConvocatoriaComite($idDeConvComiteActualizar, $nombreDeConvocatoriaComiteEdit, $descripcionConvocatoriaComiteEdit, $fechaInicioConvComiteEdit, $fechaFinConvComiteEdit, $profesorEncargadoEdit) == 1){
                 
                 $imagenEditDeConvComite = $_FILES['imgParaConvocatoriaEdit']['name'];
                 $enunciadoEditDeConvComite = $_FILES['archivoInfoDeConvocatoriaEdit']['name'];

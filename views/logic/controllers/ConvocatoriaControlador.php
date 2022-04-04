@@ -425,18 +425,10 @@ class ConvocatoriaControlador{
     }
 
     //Funcion que permite actualizar una convocatoria de tipo comite
-    public function actualizarConvocatoriaComite(ConvocatoriaComite $convComEdit){
+    public function actualizarConvocatoriaComite(int $idConvComiteAEditar, string $nombreConvComiteAEditar, string $descripcionConvComiteAEditar, $fechaInicioConvComiteAEditar, $fechaFinConvComiteAEditar, int $profeEncargadoConvComiteAEditar){
 
         $c = new conectar();
         $conexion = $c->conexion();
-
-        //Capturamos los datos del objeto
-        $idConvComiteAEditar = $convComEdit->getId();
-        $nombreConvComiteAEditar = $convComEdit->getNombre();
-        $descripcionConvComiteAEditar = $convComEdit->getDescripcion();
-        $fechaInicioConvComiteAEditar = $convComEdit->getFechaInicio();
-        $fechaFinConvComiteAEditar = $convComEdit->getFechaFin();
-        $profeEncargadoConvComiteAEditar = $convComEdit->getProfeEncargado();
                 
         $sql = "UPDATE tbl_convocatoriacomite SET nombre_convocatoria='$nombreConvComiteAEditar', descripcion_convocatoria='$descripcionConvComiteAEditar', fecha_inicio='$fechaInicioConvComiteAEditar', fecha_fin='$fechaFinConvComiteAEditar', id_usuario='$profeEncargadoConvComiteAEditar'
                             WHERE  Id=$idConvComiteAEditar";
@@ -543,7 +535,7 @@ class ConvocatoriaControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_convocatoriacomite SET competenciasAsignadas = 'Si' WHERE Id='$idConv'";
+        $sql = "UPDATE tbl_convocatoriacomite SET competenciasAsignadas = 'Si', estado = 'Activo' WHERE Id='$idConv'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

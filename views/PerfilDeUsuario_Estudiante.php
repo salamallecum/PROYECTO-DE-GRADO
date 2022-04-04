@@ -83,13 +83,6 @@ if(isset($_GET['Id_estudiante']) != 0){
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=38">
-                            <span title="Insignias"><i class="bi bi-award"></i></span>
-                            <span class="items_menu">INSIGNIAS</span>
-                        </a>
-                    </li>
-
-                    <li>
                         <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>

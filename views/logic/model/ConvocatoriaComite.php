@@ -10,9 +10,10 @@ class ConvocatoriaComite{
     private $nombreImagen;
     private $nombreEnunciado;
     private $profeEncargado;
+    private $estadoDeConvocatoria;
 
     //Constructor
-    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $profeEncargado)
+    function __construct($id, $nombre, $descripcion, $fechaInicio, $fechaFin, $profeEncargado, $estadoDeConvocatoria)
     {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -20,6 +21,7 @@ class ConvocatoriaComite{
         $this->fechaInicio = $fechaInicio;
         $this->fechaFin = $fechaFin;
         $this->profeEncargado = $profeEncargado;
+        $this->estadoDeConvocatoria = $estadoDeConvocatoria;
     }
     
     //GETTER Y SETTER
@@ -85,6 +87,14 @@ class ConvocatoriaComite{
 
     public function getProfeEncargado(){
         return $this->profeEncargado;
+    }
+
+    public function setEstadoDeConvocatoria($estConv){
+        $this->estadoDeConvocatoria= $estConv;
+    }
+
+    public function getEstadoDeConvocatoria(){
+        return $this->estadoDeConvocatoria;
     }
 }
 

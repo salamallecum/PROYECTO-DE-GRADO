@@ -210,18 +210,10 @@ class EventoControlador{
     }  
     
     //Funcion que permite actualizar la informacion de un evento
-    public function actualizarEvento(Evento $eventoEdit){
+    public function actualizarEvento(int $idEventoEdit, string $nombreEventoAEditar, string $descripcionAEditar, $fechaInicioEdit, $fechaFinEdit, int $profeEncargadoEdit){
 
         $c = new conectar();
         $conexion = $c->conexion();
-
-        //Capturamos los datos del objeto
-        $idEventoEdit = $eventoEdit->getId();
-        $nombreEventoAEditar = $eventoEdit->getNombre();
-        $descripcionAEditar = $eventoEdit->getDescripcion();
-        $fechaInicioEdit = $eventoEdit->getFechaInicio();
-        $fechaFinEdit = $eventoEdit->getFechaFin();
-        $profeEncargadoEdit = $eventoEdit->getProfeEncargado();
                 
         $sql = "UPDATE tbl_evento SET nombre_evento='$nombreEventoAEditar', descripcion_evento='$descripcionAEditar', fecha_inicio='$fechaInicioEdit', fecha_fin='$fechaFinEdit', id_usuario='$profeEncargadoEdit'
                             WHERE  id_evento=$idEventoEdit";
@@ -284,7 +276,7 @@ class EventoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_evento SET competenciasAsignadas = 'Si' WHERE id_evento='$idEv'";
+        $sql = "UPDATE tbl_evento SET competenciasAsignadas = 'Si', estado = 'Activo' WHERE id_evento='$idEv'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

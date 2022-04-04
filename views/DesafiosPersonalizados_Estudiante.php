@@ -84,13 +84,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=38">
-                            <span title="Insignias"><i class="bi bi-award"></i></span>
-                            <span class="items_menu">INSIGNIAS</span>
-                        </a>
-                    </li>
-
-                    <li>
                         <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
@@ -356,7 +349,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
                 <!--ESTRUCTURA DEL POPUP PARA LA ACTUALIZACION DE PROPUESTAS-->
                 <div class="modal fade" id="modalEditarPropuesta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar Propuesta</h3>

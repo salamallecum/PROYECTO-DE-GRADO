@@ -34,7 +34,7 @@
         $cmbAsignaturaContribucion != 'seleccione'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo Desafio
-            $nuevoDesafio = new Desafio(0, $idDelProfesor, $nombreDeDesafio, $descripcionDesafio, $fechaInicioDesafio, $fechaFinDesafio, $cmbAsignaturaContribucion);
+            $nuevoDesafio = new Desafio(0, $idDelProfesor, $nombreDeDesafio, $descripcionDesafio, $fechaInicioDesafio, $fechaFinDesafio, $cmbAsignaturaContribucion, 'Inactivo');
 
             if($desafioControla->insertarDesafio($nuevoDesafio) == 1){
                 
@@ -98,10 +98,8 @@
         strlen($fechaEditFinDesafio) >= 1 &&
         $editMateriaContribucion != 'seleccione'){ 
 
-            //Encapsulamos los datos obtenidos en un objeto de tipo Desafio
-            $desafioActualizado = new Desafio($idDesafioAEditar, $idDelProfesorEdit, $nombreEditDeDesafio, $descripcionEditDesafio, $fechaEditInicioDesafio, $fechaEditFinDesafio, $editMateriaContribucion);
-
-            if($desafioControla->actualizarDesafio($desafioActualizado) == 1){
+            
+            if($desafioControla->actualizarDesafio($idDesafioAEditar, $idDelProfesorEdit, $nombreEditDeDesafio, $descripcionEditDesafio, $fechaEditInicioDesafio, $fechaEditFinDesafio, $editMateriaContribucion) == 1){
 
                 $imagenEditDelDesafio = $_FILES['imagenActualizada']['name'];
                 $enunciadoEditDelDesafio = $_FILES['enunciadoActualizado']['name'];

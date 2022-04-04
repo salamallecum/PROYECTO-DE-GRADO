@@ -1,6 +1,3 @@
-<!--IMPORTANTE-->
-<!--Los botones que tienen la palabra openModal, modal-container o btn_cancelar como nombre o id, son botones de navegación y por lo tanto no se deben tocar porque si función es interactiva-->
-<!-- Los botones o componentes que tienen el prefijo lbl_ , txt_, date_ o btn_ son los que tu programas porque requieren manejo de datos con el backend-->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -70,13 +67,6 @@
                         <a class="link_menu" href="./DesafiosYEventos_Estudiante.php">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="link_menu" href="./Insignias_Estudiante.php?Id_estudiante=38">
-                            <span title="Insignias"><i class="bi bi-award"></i></span>
-                            <span class="items_menu">INSIGNIAS</span>
                         </a>
                     </li>
 

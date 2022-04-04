@@ -11,9 +11,10 @@ class Desafio{
     private $nombreImagen;
     private $nombreEnunciado;
     private $materiaDeContribucion;
+    private $estadoDelDesafio;
 
     //Constructor
-    function __construct($id, $idProfeEncargado, $nombre, $descripcion, $fechaInicio, $fechaFin, $materiaDeContribucion)
+    function __construct($id, $idProfeEncargado, $nombre, $descripcion, $fechaInicio, $fechaFin, $materiaDeContribucion, $estadoDelDesafio)
     {
         $this->id = $id;
         $this->idProfeEncargado = $idProfeEncargado;
@@ -22,6 +23,7 @@ class Desafio{
         $this->fechaInicio = $fechaInicio;
         $this->fechaFin = $fechaFin;
         $this->materiaDeContribucion = $materiaDeContribucion;
+        $this->estadoDelDesafio = $estadoDelDesafio;
     }
     
     //GETTER Y SETTER
@@ -95,6 +97,14 @@ class Desafio{
 
     public function getMateriaDeContribucion(){
         return $this->materiaDeContribucion;
+    }
+
+    public function setEstadoDelDesafio($estDesaf){
+        $this->estadoDelDesafio = $estDesaf;
+    }
+
+    public function getEstadoDelDesafio(){
+        return $this->estadoDelDesafio;
     }
 }
 

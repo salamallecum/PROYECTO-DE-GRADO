@@ -1046,6 +1046,12 @@ thead{
     outline: none;
 }
 
+.infoDetalleDesafio{
+    border: 0;
+    outline: none;
+    width: 450px;
+}
+
 .col-botonesEdicion{
     display: inline-block;
 }

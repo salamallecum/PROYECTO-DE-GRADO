@@ -30,7 +30,7 @@
         $cmbProfesorEncargado != 'seleccione'){ 
 
             //Encapsulamos los datos obtenidos en un objeto de tipo Evento
-            $nuevoEvento = new Evento(0, $nombreDeEvento, $descripcionEvento, $fechaInicioEvento, $fechaFinEvento, $cmbProfesorEncargado);
+            $nuevoEvento = new Evento(0, $nombreDeEvento, $descripcionEvento, $fechaInicioEvento, $fechaFinEvento, $cmbProfesorEncargado, 'Inactivo');
 
             if($eventoControla->insertarEvento($nuevoEvento) == 1){
                 
@@ -91,12 +91,9 @@
         strlen($descripcionEditEvento) >= 1 && 
         strlen($fechaEditInicioEvento) >= 1 &&
         strlen($fechaEditFinEvento) >= 1 &&
-        $editProfesorEncargado != 'seleccione'){ 
+        $editProfesorEncargado != 'seleccione'){           
 
-            //Encapsulamos los datos obtenidos en un objeto de tipo Evento
-            $eventoActualizado = new Evento($idEventoAEditar, $nombreEditDeEvento, $descripcionEditEvento, $fechaEditInicioEvento, $fechaEditFinEvento, $editProfesorEncargado);
-
-            if($eventoControla->actualizarEvento($eventoActualizado) == 1){
+            if($eventoControla->actualizarEvento($idEventoAEditar, $nombreEditDeEvento, $descripcionEditEvento, $fechaEditInicioEvento, $fechaEditFinEvento, $editProfesorEncargado) == 1){
 
                 $imagenEditDelEvento = $_FILES['imagenActualizada']['name'];
                 $enunciadoEditDelEvento = $_FILES['enunciadoActualizado']['name'];
