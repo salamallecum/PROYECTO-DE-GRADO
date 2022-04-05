@@ -1042,81 +1042,6 @@ h6 {
     font-weight: bold;
 }
 
-/*--------------------------INSIGNIAS*--------------------------*/
-.contenedorMegaInsignias{
-    height: 250px;
-    width: 1400px;
-    margin-top: 5px;
-    margin-left: 60px;
-    background: brown;
-    border-color: black;
-    box-shadow: 0px 4px 4px rgba(0,0,0,.7);
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;    
-}
-
-.card-megaInsig{
-    width: 200px;
-    height: 200px;
-    padding-left: 10px;
-    margin-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    box-sizing: border-box;
-    display: inline-block;
-}
-
-.imgMegaInsignia{
-    width: 200px;
-    height: 200px;
-    cursor: pointer;
-}
-
-.contenedorVacio{
-    text-align: center;
-    font-weight: bold;
-    color: white;
-}
-
-.contenedorInsignias{
-    height: 300px;
-    width: 1400px;
-    margin-top: 5px;
-    margin-left: 60px;
-    background: green;
-    border-color: black;
-    box-shadow: 0px 4px 4px rgba(0,0,0,.7);
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;    
-}
-
-.card-Insig{
-    width: 100px;
-    height: 100px;
-    padding-left: 10px;
-    margin-left: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    box-sizing: border-box;
-    display: inline-block;
-}
-
-.imgInsignia{
-    width: 100px;
-    height: 90px;
-    cursor: pointer;
-}
-
-.contenedorVacio{
-    text-align: center;
-    font-weight: bold;
-    color: white;
-}
-
 /*--------------------------DESAFIOS PERSONALIZADOS*--------------------------*/
 .btn_agregarPropuesta{
     color: #fff;
@@ -1127,6 +1052,42 @@ h6 {
     outline: none;
     border: none;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn_agregarDesafio{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn_detalleDesafioReferenciado{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.detalleNombrePropuesta {
+    width: 450px;
+    border: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #005e6e;
+    outline: none;
+}
+
+.imgPropuestaDetalle {
+    width: 450px;
+    height: 300px;
 }
 
 #txt_descripcion{
@@ -1144,11 +1105,35 @@ h6 {
     text-transform: uppercase;
 }
 
+.infoDetallePropuesta {
+    border: 0;
+    outline: none;
+}
+
+.infoDetalleDesafio {
+    border: 0;
+    outline: none;
+    width: 450px;
+}
+
+.textAreaDetalleDescripcionPropuesta {
+    width: 450px;
+    height: 150px;
+    resize: none;
+}
+
+.textAreaObservacionesPropuesta {
+    width: 450px;
+    height: 150px;
+    resize: none;
+    overflow-y: scroll;
+}
+
 /*  ESTILOS DE LAS TABLAS */
 .tablaDeDesafios{
     margin-left: 50px;
     margin-top: 10px;
-    width: 1300px;
+    width: 90%;
     text-align: left;
     border-collapse: collapse;
     background-color: white;

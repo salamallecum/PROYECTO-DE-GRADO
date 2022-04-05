@@ -513,6 +513,55 @@ class DesafioControlador{
        
     }
 
+    //Funcion que nos permite verificar si el desafio tiene un propuestas de desafios personalizados de estudiantes asociadas
+    public function verificarSiElDesafioTienePropuestasAsociadas(int $idDelDesafio){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id, Id_estudiante from tbl_desafiopersonal where idDesafioASustituir =".$idDelDesafio;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return true;
+        }
+    }
+
+    //Funcion que permite consultar los ids de las propuestas estudiantiles que estan involucradas con un desafio
+    public function consultarIdsDesafiosPersonalizadosRelacionadosConUnDesafio(int $idDesaf){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_desafiopersonal where idDesafioASustituir=".$idDesaf;
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsPropuestasRelacionadas = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsPropuestasRelacionadas[$contador] = $row['Id'];
+            $contador++;
+        }
+
+        return $emparrayIdsPropuestasRelacionadas;
+    }
+
+    //Funcion que nos permite verificar si el desafio tiene un propuestas de desafios personalizados de estudiantes asociadas
+    public function eliminarPropuestasRelacionadasConUnDesafio(int $idDelDesafio){
+
+        //Consultamos los ids de las propuestas que contribuyen al desafio a eliminar
+        $arrayPropuestasEstudiantes = $this->consultarIdsDesafiosPersonalizadosRelacionadosConUnDesafio($idDelDesafio);
+
+        //Recorremos el arreglo de ids de propuestas para eliminarlas
+        for($i=0; $i<count($arrayPropuestasEstudiantes); $i++){
+
+            $this->eliminarPropuesta($arrayPropuestasEstudiantes[$i]);
+
+        }
+    }
+
+
 }
 
 ?>

@@ -186,6 +186,10 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                                             <td class="datoTabla">Aprobada</td>
                                             <td class="datoTabla"><div class="compEsp-edicion">
                                                 <div class="col-botonesEdicion">
+                                                    <a class="btnDetallesPropuestaAprobada" data-id="<?php echo $key['Id'];?>" data-desafio="<?php echo $key['idDesafioASustituir'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaAprobada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                                </div>
+                                            
+                                                <div class="col-botonesEdicion">
                                                     <a class="btnEliminarPropuesta" data-id="<?php echo $key['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarPropuesta" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a>    
                                                 </div>
                                             </div></td>
@@ -436,6 +440,119 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     </div>
                     </div>
 
+                <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LAS PROPUESTAS APROBADAS-->
+                <div class="modal fade" id="modalDetallesDePropuestaAprobada" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDePropuestaAprobada" class="modal-body">
+                            
+                            <input type="hidden" id="idPropDetalles" name="Id">
+                            <input type="hidden" id="nombreEnunciadoPropDetalles" name="nombre_enunciado">
+                            <input type="hidden" id="nombreImagenPropDetalles" name="nombre_imagen">
+                            <input type="hidden" id="txt_idDesafioASustituir" name="idDesafioASustituir">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafioP" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen de la propuesta-->
+                            <span id="panelParaImagenDeLaPropuesta"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui construimos el link para la descarga del archivo de la propuesta-->
+                            <span id="panelParaBotonDescargaEnunciado"></span>
+
+                            <table>
+                                <tr>
+                                    <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha de propuesta:</label>
+                                    <td class="columnaInfoEnunciado"><input type="text" class="infoDetallePropuesta" name="fecha_propuesta" disabled></td>
+                                </tr>
+                            </table> 
+                            <br>
+                            
+                            <form id="infoDesafioAReemplazar">
+                                <label class="subtitulosInfo">Desafio que se quiere reemplazar:</label><br>
+                                <input type="text" class="infoDetalleDesafio" name="nombre_desafio">
+                            </form>
+                            <br>  
+                            
+                            <label class="subtitulosInfo">Observaciones</label>
+                            <textarea id="txt_ObservacionesALaPropuesta" name="observaciones" cols="80" placeholder="" rows="8" class="textAreaObservacionesPropuesta" maxlength="300" disabled></textarea>
+                            <br>
+                            <br>  
+                            
+                            <!--Aqui mostramos la confiramcion de quese aprobo o se rechazo la propuesta-->
+                            <span id="panelConfirmacionDeJuicio"></span>
+                            <br>
+ 
+                            <button id="btn_detalleDesafioReferenciado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafioASustituirAP" title="Ver desafio">Ver desafio</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS DESAFIOS REFERENCIADOS (PROPUESTA APROBADA)-->
+                    <div class="modal fade" id="modalDetallesDesafioASustituirAP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeDesafio" class="modal-body">
+                            
+                            <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen" value="">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafio" value="" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del desafio-->
+                            <span id="panelParaImagenDelDesafio"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_desafio" value="" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui colocamos el enunciado del desafio-->
+                            <span id="panelParaEnunciadoDelDesafio"></span>
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Estado de la actividad:</label>
+                                    <td class="columnaInfoEnunciado"><input type="text" class="infoDetallePropuesta" name="estado" disabled></td>
+                                </tr>
+                            </table> 
+                            <br>
+
+                            <button type="button" class="btn btn-secondary" onclick="" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaAprobada" title="Atras">Atrás</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
             </main>
         </div>
 
@@ -530,6 +647,295 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                 });
             });
         </script>
+
+        <!--Script que permite pasar los datos de una propuesta aprobada a la ventana modal de detalles de la misma para el estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idPropuestaDetallesModalAprobada = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaDetallesModalAprobada': idPropuestaDetallesModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDePropuestaAprobada';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una propuesta aprobada con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idPropuestaImagenAprobada = $(this).data('id');
+                    
+                    function verificacionDeImagenParaPropuestaModalAprobada() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaImagenAprobada': idPropuestaImagenAprobada},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaPropuesta').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaPropuestaModalAprobada();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalDetallesDesafio': idDesafioQSePretendeSustituirParaModalDetallesDesafio },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeDesafio';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite traer el nombre del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles de la misma en estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalAprobada': idDesafioQSePretendeSustituirParaModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#infoDesafioAReemplazar';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idPropuestaParaBuscarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaParaBuscarEnunciado': idPropuestaParaBuscarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciado').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Por revisar"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalDetallesDesafio': idDesafioQSePretendeSustituirParaModalDetallesDesafio },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeDesafio';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene imagen almacenada o no (Cuando la propuesta esta en estado por revisar)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idImagenDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeImagenParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idImagenDesafioPropuesta': idImagenDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDelDesafio').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene enunciado almacenado o no (Cuando la propuesta esta en estado por revisar)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idEnunciadoDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEnunciadoDesafioPropuesta': idEnunciadoDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaEnunciadoDelDesafio').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
 
     </body>
 </html>

@@ -544,22 +544,22 @@ if(isset($_POST['idPropuestaImagenPorRevisar'])){
     }
 }
 
-//Capturamos el id de un estudiante que propone un desafio personalizado para ver su informacion personal en el modal de detalles de una propuesta en estado "Por revisar"
-if(isset($_POST['idEstudianteQProponeParaModalPorRevisar'])){
+//Capturamos el id de un estudiante que propone un desafio personalizado para ver su informacion personal en el modal de detalles
+if(isset($_POST['idEstudianteQProponeParaModal'])){
 
     //Aqui traemos los datos del estudiante para ver su informacion-----------------------------------
-    $idEstudianteQProponeParaModalPorRevisar = $_POST['idEstudianteQProponeParaModalPorRevisar'];
+    $idEstudianteQProponeParaModal = $_POST['idEstudianteQProponeParaModal'];
 
-    $sql = "select * from tbl_usuario where id_usuario=".$idEstudianteQProponeParaModalPorRevisar;
-    $resultEstudiantePropuestaDetailPR = mysqli_query($conexion,$sql);   
+    $sql = "select * from tbl_usuario where id_usuario=".$idEstudianteQProponeParaModal;
+    $resultEstudiantePropuestaDetail = mysqli_query($conexion,$sql);   
     
-    $emparrayEstudiantePropuestaDetailPR = array();
-    while($row =mysqli_fetch_assoc($resultEstudiantePropuestaDetailPR))
+    $emparrayEstudiantePropuestaDetail = array();
+    while($row =mysqli_fetch_assoc($resultEstudiantePropuestaDetail))
     {
-        $emparrayEstudiantePropuestaDetailPR[] = $row;
+        $emparrayEstudiantePropuestaDetail[] = $row;
     }
 
-    echo json_encode($emparrayEstudiantePropuestaDetailPR);
+    echo json_encode($emparrayEstudiantePropuestaDetail);
     exit;
 }
 
@@ -678,9 +678,80 @@ if(isset($_POST['propuestaARechazar']) && isset($_POST['comentariosDeMejora'])){
 
 } 
 
+//Capturamos el evento del id de una propuesta para para ver sus detalles en estado "Aprobada"
+if(isset($_POST['idPropuestaDetallesModalAprobada'])){
 
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaDetallesModalAprobada = $_POST['idPropuestaDetallesModalAprobada'];
 
+    $sql = "select * from tbl_desafiopersonal where Id=".$idPropuestaDetallesModalAprobada;
+    $resultPropuestaAprobDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayPropuestaAprobDetail = array();
+    while($row =mysqli_fetch_assoc($resultPropuestaAprobDetail))
+    {
+        $emparrayPropuestaAprobDetail[] = $row;
+    }
 
+    echo json_encode($emparrayPropuestaAprobDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una propuesta con el fin de mostrar su imagen en el modal de detalles (Estado Aprobada)
+if(isset($_POST['idPropuestaImagenAprobada'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaImagenAprobada = $_POST['idPropuestaImagenAprobada'];
+
+    //Evaluamos si la propuesta tiene una imagen registrada en BD
+    $laPropTieneImagen = $desafioControla->consultarSiLaPropuestaTieneImagen($idPropuestaImagenAprobada);
+
+    if($laPropTieneImagen != null){
+        $imagenGuardadaDeLaProp = '<img class="imgPropuestaDetalle" src="desafiosPerImages/'.$laPropTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaProp;
+    }else{
+        $imagenPorDefectoDeLaProp = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaProp;
+    }
+}
+
+//Capturamos el id del desafio que se pretende sustituir con el desafio personalizado y ver su informacion en el modal de detalles de una propuesta en estado "Aprobada"
+if(isset($_POST['idDesafioQSePretendeSustituirParaModalAprobada'])){
+
+    //Aqui traemos los datos del desafio para ver su informacion-----------------------------------
+    $idDesafioQSePretendeSustituirParaModalAprobada = $_POST['idDesafioQSePretendeSustituirParaModalAprobada'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioQSePretendeSustituirParaModalAprobada;
+    $resultDesafioPropuestaAprobadaDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayDesafioPropuestaAprobadaDetail = array();
+    while($row =mysqli_fetch_assoc($resultDesafioPropuestaAprobadaDetail))
+    {
+        $emparrayDesafioPropuestaAprobadaDetail[] = $row;
+    }
+
+    echo json_encode($emparrayDesafioPropuestaAprobadaDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una propuesta para para ver sus detalles en estado "Rechazada"
+if(isset($_POST['idPropuestaDetallesModalRechazada'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaDetallesModalRechazada = $_POST['idPropuestaDetallesModalRechazada'];
+
+    $sql = "select * from tbl_desafiopersonal where Id=".$idPropuestaDetallesModalRechazada;
+    $resultPropuestaRechazDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayPropuestaRechazDetail = array();
+    while($row =mysqli_fetch_assoc($resultPropuestaRechazDetail))
+    {
+        $emparrayPropuestaRechazDetail[] = $row;
+    }
+
+    echo json_encode($emparrayPropuestaRechazDetail);
+    exit;
+}
 
 
 

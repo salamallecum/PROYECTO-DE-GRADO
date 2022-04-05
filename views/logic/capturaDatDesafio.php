@@ -183,12 +183,18 @@
 
         $elDesafioTieneRegCEPrevio = $competenciaControla->verificarSiElDesafioTieneRegistroDeCompEspecificas($idDesafioAEliminar);
 
+        $elDesafioTienePropuestasODesafPersonalizadosRelacionados = $desafioControla->verificarSiElDesafioTienePropuestasAsociadas($idDesafioAEliminar);
+
         if($elDesafioTieneRegCGPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idDesafioAEliminar, 'DESAFIO');
         }
 
         if($elDesafioTieneRegCEPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idDesafioAEliminar, 'DESAFIO');
+        }
+
+        if($elDesafioTienePropuestasODesafPersonalizadosRelacionados){
+            $desafioControla->eliminarPropuestasRelacionadasConUnDesafio($idDesafioAEliminar);
         }
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);

@@ -173,7 +173,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                                                 <td class="datoTabla"><div class="compEsp-edicion">
 
                                                     <div class="col-botonesEdicion">
-                                                        <a class="btnDetallesPropuestaRechazada" data-id="<?php echo $point['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaAprobada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                                        <a class="btnDetallesPropuestaAprobada" data-id="<?php echo $point['Id'];?>" data-estudiante="<?php echo $point['Id_estudiante'];?>" data-desafio="<?php echo $point['idDesafioASustituir'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaAprobada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
                                                     </div>
                                                     
                                                     <div class="col-botonesEdicion">
@@ -211,7 +211,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                                                 <td class="datoTabla">Rechazada</td>
                                                 <td class="datoTabla"><div class="compEsp-edicion">
                                                     <div class="col-botonesEdicion">
-                                                        <a class="btnDetallesPropuestaRechazada" data-id="<?php echo $point['Id'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaRechazada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
+                                                        <a class="btnDetallesPropuestaRechazada" data-id="<?php echo $point['Id'];?>" data-estudiante="<?php echo $point['Id_estudiante'];?>" data-desafio="<?php echo $point['idDesafioASustituir'];?>" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuestaRechazada" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a>
                                                     </div>
                                                 </div></td>
                                             </tr>
@@ -376,7 +376,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                                     <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
 
                                     <td><label class="subtitulosInfo">Fecha fin</label><br>
-                                    <input type="text" class="infoDetalleDesafio" name="fecha_fin" value="" disabled></td>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
                                 </tr>
                             </table>                           
                             <br>
@@ -403,7 +403,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         
-                        <div id="detallesDePropuestaPorRevisar" class="modal-body">
+                        <div id="detallesDePropuestaAprobada" class="modal-body">
                             
                             <input type="hidden" id="idPropDetalles" name="Id" value="">
                             <input type="hidden" id="nombreEnunciadoPropDetalles" name="nombre_enunciado">
@@ -415,11 +415,11 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos la imagen de la propuesta-->
-                            <span id="panelParaImagenDeLaPropuesta"></span>
+                            <span id="panelParaImagenDeLaPropuestaPA"></span>
                             <br>
                             <br>
 
-                            <form id="seccionDatosEstudiante">
+                            <form id="seccionDatosEstudiantePA">
                                 
                                 <table>
                                     <tr>
@@ -445,7 +445,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui construimos el link para la descarga del archivo de la propuesta-->
-                            <span id="panelParaBotonDescargaEnunciado"></span>
+                            <span id="panelParaBotonDescargaEnunciadoPA"></span>
 
                             <table>
                                 <tr>
@@ -455,14 +455,14 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             </table> 
                             <br>
                             
-                            <form id="infoDesafioAReemplazar">
+                            <form id="infoDesafioAReemplazarPA">
                                 <label class="subtitulosInfo">Desafio que se quiere reemplazar:</label><br>
                                 <input type="text" class="infoDetalleDesafio" name="nombre_desafio">
                             </form>
                             <br>  
                             
                             <label class="subtitulosInfo">Observaciones</label>
-                            <textarea id="txt_ObservacionesALaPropuesta" name="observacionesAPropuesta" cols="80" placeholder="Escriba sus comentarios aquí" rows="8" class="textAreaObservacionesPropuesta" maxlength="300"></textarea>
+                            <textarea id="txt_ObservacionesALaPropuesta" name="observaciones" cols="80" placeholder="" rows="8" class="textAreaObservacionesPropuesta" maxlength="300" disabled></textarea>
                             <br>
                             <br>  
                             
@@ -483,7 +483,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         
-                        <div id="detallesDeDesafio" class="modal-body">
+                        <div id="detallesDeDesafioPA" class="modal-body">
                             
                             <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
                             <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
@@ -493,7 +493,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos la imagen del desafio-->
-                            <span id="panelParaImagenDelDesafio"></span>
+                            <span id="panelParaImagenDelDesafioPA"></span>
                             <br>
                             <br>
                                                             
@@ -503,7 +503,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos el enunciado del desafio-->
-                            <span id="panelParaEnunciadoDelDesafio"></span>
+                            <span id="panelParaEnunciadoDelDesafioPA"></span>
                             <br>
 
                             <table>
@@ -537,7 +537,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         
-                        <div id="detallesDePropuestaPorRevisar" class="modal-body">
+                        <div id="detallesDePropuestaRechazadaPR" class="modal-body">
                             
                             <input type="hidden" id="idPropDetalles" name="Id" value="">
                             <input type="hidden" id="nombreEnunciadoPropDetalles" name="nombre_enunciado">
@@ -549,11 +549,11 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos la imagen de la propuesta-->
-                            <span id="panelParaImagenDeLaPropuesta"></span>
+                            <span id="panelParaImagenDeLaPropuestaPR"></span>
                             <br>
                             <br>
 
-                            <form id="seccionDatosEstudiante">
+                            <form id="seccionDatosEstudiantePR">
                                 
                                 <table>
                                     <tr>
@@ -579,7 +579,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui construimos el link para la descarga del archivo de la propuesta-->
-                            <span id="panelParaBotonDescargaEnunciado"></span>
+                            <span id="panelParaBotonDescargaEnunciadoPR"></span>
 
                             <table>
                                 <tr>
@@ -589,20 +589,16 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             </table> 
                             <br>
                             
-                            <form id="infoDesafioAReemplazar">
+                            <form id="infoDesafioAReemplazarPR">
                                 <label class="subtitulosInfo">Desafio que se quiere reemplazar:</label><br>
                                 <input type="text" class="infoDetalleDesafio" name="nombre_desafio">
                             </form>
                             <br>  
                             
                             <label class="subtitulosInfo">Observaciones</label>
-                            <textarea id="txt_ObservacionesALaPropuesta" name="observacionesAPropuesta" cols="80" placeholder="Escriba sus comentarios aquí" rows="8" class="textAreaObservacionesPropuesta" maxlength="300"></textarea>
+                            <textarea id="txt_ObservacionesALaPropuesta" name="observaciones" cols="80" placeholder="" rows="8" class="textAreaObservacionesPropuesta" maxlength="300"  disabled></textarea>
                             <br>
-                            <br>  
-                            
-                            <!--Aqui mostramos la confiramcion de quese aprobo o se rechazo la propuesta-->
-                            <span id="panelConfirmacionDeJuicio"></span>
-                            <br>
+                            <br>      
 
                             <button id="btn_detalleDesafioReferenciado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafioASustituirRE" title="Ver desafio">Ver desafio</button>   
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
@@ -619,7 +615,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                         
-                        <div id="detallesDeDesafio" class="modal-body">
+                        <div id="detallesDeDesafioPR" class="modal-body">
                             
                             <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
                             <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
@@ -629,7 +625,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos la imagen del desafio-->
-                            <span id="panelParaImagenDelDesafio"></span>
+                            <span id="panelParaImagenDelDesafioPR"></span>
                             <br>
                             <br>
                                                             
@@ -639,7 +635,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <br>
 
                             <!--Aqui colocamos el enunciado del desafio-->
-                            <span id="panelParaEnunciadoDelDesafio"></span>
+                            <span id="panelParaEnunciadoDelDesafioPR"></span>
                             <br>
 
                             <table>
@@ -666,21 +662,30 @@ $idProfeLogueado = $_GET['Id_profesor'];
                         </div>
                         </div>
                     </div>
-                    </div>
-        
+                    </div>        
                     
 
                     <!--ESTRUCTURA DEL POPUP DE ELIMINACIÓN DE PROPUESTAS DE DESAFIOS-->
-                    <div id="modal_container6" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Eliminar Propuesta</h3>
-                            <br>
-                            <p>¿Está seguro de que desea eliminar?</p>
-                            <br>
-                            <br>
-                            <a id="btn_eliminarPropuesta" class="btn_agregarDesafio" title="Si">Si</a>
-                            <a id="btn_cancelar6" class="btn_agregarDesafio" title="No">No</a>
+                    <div class="modal fade" id="modalEliminarPropuesta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar Propuesta</h3>
                         </div>
+                        <form id="formularioDeEliminacionDePropuestas" action="logic/capturaDatDesafio.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="Id" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarPropuesta" class="btn_detalleDesafioReferenciado" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatDesafio.php") ?>
+                        </div>
+                    </div>
                     </div>
 
                     
@@ -688,6 +693,48 @@ $idProfeLogueado = $_GET['Id_profesor'];
                 </div>
             </main>
         </div>
+
+         <!--Script que permite pasar los datos de un desafio personalizado desde la BD a su ventana modal de eliminacion correspondiente-->
+         <script type='text/javascript'>
+
+            //Aqui se pasan los datos para el caso de la propuesta aprobada
+            $(document).ready(function(){
+                
+                $('.btnEliminarPropuesta').click(function(){
+                    
+                    var idPropuestaElim = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaElim': idPropuestaElim},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeEliminacionDePropuestas';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                });
+            });
+        </script>
 
         <!--Script que permite pasar los datos de una propuesta por revisar a la ventana modal de detalles de la misma para el estado "Por revisar"-->
         <script type='text/javascript'>
@@ -767,7 +814,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                 
                 $('.btnDetallesPropuestaPorRevisar').click(function(){
                     
-                    var idEstudianteQProponeParaModalPorRevisar = $(this).data('estudiante');
+                    var idEstudianteQProponeParaModal = $(this).data('estudiante');
                    
                     function getFormInfo() {
                         return new Promise((resolve, reject) => {
@@ -775,7 +822,7 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',
-                                data: {'idEstudianteQProponeParaModalPorRevisar': idEstudianteQProponeParaModalPorRevisar },
+                                data: {'idEstudianteQProponeParaModal': idEstudianteQProponeParaModal},
                                 success: function(response){
                                     resolve(response)
                                 },
@@ -1058,6 +1105,687 @@ $idProfeLogueado = $_GET['Id_profesor'];
                 });
             });
         </script>
+
+        <!--Script que permite pasar los datos de una propuesta aprobada a la ventana modal de detalles de la misma para el estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idPropuestaDetallesModalAprobada = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaDetallesModalAprobada': idPropuestaDetallesModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDePropuestaAprobada';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una propuesta aprobada con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idPropuestaImagenAprobada = $(this).data('id');
+                    
+                    function verificacionDeImagenParaPropuestaModalAprobada() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaImagenAprobada': idPropuestaImagenAprobada},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaPropuestaPA').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaPropuestaModalAprobada();
+                            
+                });
+            });
+        </script>
+
+
+
+        <!--Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalDetallesDesafio': idDesafioQSePretendeSustituirParaModalDetallesDesafio },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeDesafioPA';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite traer el nombre del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles de la misma en estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalAprobada': idDesafioQSePretendeSustituirParaModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#infoDesafioAReemplazarPA';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idPropuestaParaBuscarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaParaBuscarEnunciado': idPropuestaParaBuscarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciadoPA').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene imagen almacenada o no (Cuando la propuesta esta en estado por revisar)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idImagenDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeImagenParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idImagenDesafioPropuesta': idImagenDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDelDesafioPA').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene enunciado almacenado o no (Cuando la propuesta esta en estado por revisar)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                        
+                    var idEnunciadoDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEnunciadoDesafioPropuesta': idEnunciadoDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaEnunciadoDelDesafioPA').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite traer los datos del estudiante que propuso el desafio personalizado a la ventana modal de detalles de la misma en estado "Aprobada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaAprobada').click(function(){
+                    
+                    var idEstudianteQProponeParaModal = $(this).data('estudiante');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEstudianteQProponeParaModal': idEstudianteQProponeParaModal},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#seccionDatosEstudiantePA';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--Script que permite pasar los datos de una propuesta  a la ventana modal de detalles de la misma para el estado "Rechazada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                    
+                    var idPropuestaDetallesModalRechazada = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaDetallesModalRechazada': idPropuestaDetallesModalRechazada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDePropuestaRechazadaPR';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una propuesta aprobada con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                        
+                    var idPropuestaImagenAprobada = $(this).data('id');
+                    
+                    function verificacionDeImagenParaPropuestaModalAprobada() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaImagenAprobada': idPropuestaImagenAprobada},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaPropuestaPR').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaPropuestaModalAprobada();
+                            
+                });
+            });
+        </script>
+
+
+
+        <!--Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Rechazada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalDetallesDesafio': idDesafioQSePretendeSustituirParaModalDetallesDesafio },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeDesafioPR';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite traer el nombre del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles de la misma en estado "Rechazada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalAprobada': idDesafioQSePretendeSustituirParaModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#infoDesafioAReemplazarPR';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                        
+                    var idPropuestaParaBuscarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaParaBuscarEnunciado': idPropuestaParaBuscarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciadoPR').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene imagen almacenada o no (Cuando la propuesta esta en estado Rechazada)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                        
+                    var idImagenDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeImagenParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idImagenDesafioPropuesta': idImagenDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDelDesafioPR').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene enunciado almacenado o no (Cuando la propuesta esta en estado Rechazada)-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                        
+                    var idEnunciadoDesafioPropuesta = $(this).data('desafio');
+                    
+                    function verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEnunciadoDesafioPropuesta': idEnunciadoDesafioPropuesta},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaEnunciadoDelDesafioPR').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite traer los datos del estudiante que propuso el desafio personalizado a la ventana modal de detalles de la misma en estado "Rechazada"-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnDetallesPropuestaRechazada').click(function(){
+                    
+                    var idEstudianteQProponeParaModal = $(this).data('estudiante');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEstudianteQProponeParaModal': idEstudianteQProponeParaModal},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#seccionDatosEstudiantePR';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+
 
     </body>
 </html>
