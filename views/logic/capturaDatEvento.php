@@ -177,12 +177,18 @@
 
         $elEventoTieneRegCEPrevio = $competenciaControla->verificarSiElEventoTieneRegistroDeCompEspecificas($idEventoAEliminar);
 
+        $elEventoTieneAplicacionesDeTrabajos = $eventoControla->verificarSiElEventoTieneAplicacionesDeTrabajosRelacionadas($idEventoAEliminar);
+
         if($elEventoTieneRegCGPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idEventoAEliminar, 'EVENTO');
         }
 
         if($elEventoTieneRegCEPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idEventoAEliminar, 'EVENTO');
+        }
+
+        if($elEventoTieneAplicacionesDeTrabajos != null){
+            $eventoControla->eliminarAplicacionesDeTrabajosAEvento($idEventoAEliminar);
         }
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);

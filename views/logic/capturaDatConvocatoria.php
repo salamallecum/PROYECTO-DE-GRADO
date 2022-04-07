@@ -345,12 +345,18 @@
 
         $laConvComiteTieneRegCEPrevio = $competenciaControla->verificarSiLaConvocatoriaTieneRegistroDeCompEspecificas($idConvocatoriaComiteAEliminar);
 
+        $laConvComiteTieneAplicacionesDeTrabajos = $convocatoriaControla->verificarSiLaConvocatoriaTieneAplicacionesDeTrabajosRelacionadas($idEventoAEliminar);
+
         if($laConvComiteTieneRegCGPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idConvocatoriaComiteAEliminar, 'CONVOCATORIA');
         }
 
         if($laConvComiteTieneRegCEPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasEspecificas($idConvocatoriaComiteAEliminar, 'CONVOCATORIA');
+        }
+
+        if($laConvComiteTieneAplicacionesDeTrabajos != null){
+            $convocatoriaControla->eliminarAplicacionesDeTrabajosAConvocatoria($idConvocatoriaComiteAEliminar);
         }
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);
@@ -388,7 +394,6 @@
             $eportafolioControla->eliminarAplicacionesDeEportafoliosAUnaConvPracticas($idConvocatoriaPracticasAEliminar);
 
         }
-        
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 

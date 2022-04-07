@@ -136,7 +136,7 @@ class EventoControlador{
     }
 
     //Funcion que permite consultar el nombre de la imagen de un evento
-    public function consultarNombreImagenEvento($idEv){
+    public function consultarNombreImagenEvento(int $idEv){
         $c = new conectar();
         $conexion = $c->conexion();
 
@@ -279,6 +279,31 @@ class EventoControlador{
         $sql = "UPDATE tbl_evento SET competenciasAsignadas = 'Si', estado = 'Activo' WHERE id_evento='$idEv'";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que nos permite verificar si un evento tenia aplicaciones de trabajos de estudiantes en la plataforma
+    public function verificarSiElEventoTieneAplicacionesDeTrabajosRelacionadas(int $idEv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where id_actividad = $idEv and tipo_actividad = 'EVENTO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que permite eliminar las aplicaciones de trabajos destacados realizadas por el estudiante para un evento
+    public function eliminarAplicacionesDeTrabajosAEvento(int $idEv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idEv and tipo_actividad='EVENTO'";     
+               
+        return $result = mysqli_query($conexion, $sql);
     }
 }
 

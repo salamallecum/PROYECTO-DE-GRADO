@@ -592,5 +592,30 @@ class ConvocatoriaControlador{
 
         return $emparrayLinksEportafoliosPostulados;
     }
+
+    //Funcion que nos permite verificar si un evento tenia aplicaciones de trabajos de estudiantes en la plataforma
+    public function verificarSiLaConvocatoriaTieneAplicacionesDeTrabajosRelacionadas(int $idConv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where id_actividad = $idConv and tipo_actividad = 'CONVOCATORIA'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que permite eliminar las aplicaciones de trabajos destacados realizadas por el estudiante para una convocatoria
+    public function eliminarAplicacionesDeTrabajosAConvocatoria(int $idConv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idConv and tipo_actividad='CONVOCATORIA'";     
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
 }
 ?>

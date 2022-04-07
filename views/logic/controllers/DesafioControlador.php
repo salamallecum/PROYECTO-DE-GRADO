@@ -561,6 +561,55 @@ class DesafioControlador{
         }
     }
 
+    //Funcion que nos permite verificar si una propuesta tenia aplicaciones de trabajos de estudiantes en la plataforma
+    public function verificarSiLaPropuestaTeniaAplicacionesDeTrabajos(int $idDeProp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where id_actividad = $idDeProp and tipo_actividad = 'DESAF PERSONAL'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que permite eliminar las aplicaciones de trabajos destacados realizadas por el estudiante para una propuesta
+    public function eliminarAplicacionesDeTrabajosAPropuesta(int $idTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idTrabajo and tipo_actividad='DESAF PERSONAL'";     
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que nos permite verificar si un desafio tenia aplicaciones de trabajos de estudiantes en la plataforma
+    public function verificarSiElDesafioTieneAplicacionesDeTrabajosRelacionadas(int $idDe){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where id_actividad = $idDe and tipo_actividad = 'DESAFIO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que permite eliminar las aplicaciones de trabajos destacados realizadas por el estudiante para un desafio
+    public function eliminarAplicacionesDeTrabajosADesafio(int $idDes){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idDes and tipo_actividad='DESAFIO'";     
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
 
 }
 

@@ -127,7 +127,7 @@
 
                                     ?>
 
-                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='<?php echo "userprofileImages/".$fotoDePerfil?>'></td>
+                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='<?php echo "profileImages/".$fotoDePerfil?>'></td>
 
                                     <?php
                                     }else{

@@ -1,4 +1,20 @@
 
+<?php
+
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/TrabajoControlador.php";
+
+$trabajoDestControla = new TrabajoControlador();
+
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+$idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -97,7 +113,7 @@
                         <span>Trabajos destacados</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="/index.html">Log out</a></span>
+                        <span><a href="../index.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -105,208 +121,381 @@
 
             <main>
                 <div class="card-header">
-                    <a id="openModal" class="btn_agregarTrabajo" title="Agregar trabajo destacado">Agregar trabajo</a>                   
+                    <button type="button" class="btn_agregarTrabajo" data-bs-toggle="modal" data-bs-target="#modalRegistrarTrabajoDestacado" title="Nuevo trabajo destacado">Nuevo trabajo</button>                  
                 </div>
 
-                <!--Estructura de targeta de trabajo destacado-->
-                <div class="dash-cards">
-                    <div class="card-trabajo">
-                        <div class="card-trabDestacadobody">
-                            <span><img id="lbl_imgTrabajoDestacado" class="imgTrabajoDestacado" src="assets/images/ImgTrabDestacadoPorDefecto.jpg"></span>
-                            <div>
-                                <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloTrabDestacado">TRABAJO DESTACADO 1</h4>
-                            </div>
-
-                            <div class="contenedorEstadoTrabDestacado">
-                                <div class="justificadorDeEstados filaEstadoTrabDestacado">
-                                    <div class="columna">
-                                        <h6>Se puede postular:</h6>
-                                    </div>
-
-                                    <!--En la carpeta images esta el icono de no se puede postular tambien-->
-                                    <div class="columna">
-                                        <img id="img_sePuedePostularTrabDestacado" src="/assets/images/indic_trabDestacado_sePuedePostular.PNG" alt="">
-                                    </div>
-                                </div>                                
-                            </div>
-
-                            <p id="lbl_descripcionTrabDestacado" name="lblDescripcionTrabajoDestacado" class="descripcionTrabDestacado">Este en un trabajo destacado</p>
-                            <br>
-                            
-                            <div class="contenedorBotones">
-                                <div class="filaBotonesTrabDestacado">
-                                    <div class="columnaBotonesEdicion">
-                                        <a name="openModal1" href="" title="Editar"><img src="/assets/images/btn_editar.PNG">Editar</a>
-                                    </div>
-    
-                                    <div class="columnaBotonesEdicion">
-                                        <a name="openModal2" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG">Eliminar</a>
-
+                <div class="container mt-3">
+                    <div class="row">
+                    
+                        <!--Script para cargar datos de los trabajos destacados en cards-->      
+                        <?php
+                            $sql = "SELECT Id, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion, fueAplicadoAActividad from tbl_trabajodestacado where trabajoTieneBadge = 'No' and Id_estudiante=".$idEstudianteLogueado;
+                            $resultDatosTrabDestacados = $trabajoDestControla->mostrarDatosTrabajosDestacados($sql);
+                            while ($row = mysqli_fetch_row($resultDatosTrabDestacados)){
+                        ?>
+                                                         
+                                <div class="col-lg-6 col-md-4 col-sm-12">
+                                    <div class="separador"></div>
+                                    <div class="tarjeta">
                                         
+                                        <?php 
+                                        //Aqui se traen las imagenes de cada trabajo destacado
+                                        $nombreDeImg = $row[3];
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="card-evidencias">
-                            <li><a id="link_evidenciaDocumento" href="" target="_blank"><img src="/assets/images/btn_evidenc_documento.PNG"></a></li>
-                            <li><a id="link_evidenciaVideo" href="" target="_blank"><img src="/assets/images/btn_evidenc_video.png"></a></li>
-                            <li><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="/assets/images/btn_evidenc_repocodigo.png"></a></li>
-                            <li><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="/assets/images/btn_evidenc_presentacion.png"></a></li>                            
-                        </ul>
-                    </div>
+                                        if($nombreDeImg != null){
 
+                                        ?>
 
+                                            <img src='<?php echo "trabajosImages/".$nombreDeImg?>' class="" alt="..."> 
 
-                    <!--Estructura de targeta de trabajo destacado 2-->
-                    <div class="card-trabajo">
-                        <div class="card-trabDestacadobody">
-                            <span><img id="lbl_imgTrabajoDestacado" class="imgTrabajoDestacado" src="assets/images/ImgTrabDestacadoPorDefecto.jpg"></span>
-                            <div>
-                                <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloTrabDestacado">TRABAJO DESTACADO 2</h4>
-                            </div>
-
-                            <div class="contenedorEstadoTrabDestacado">
-                                <div class="justificadorDeEstados filaEstadoTrabDestacado">
-                                    <div class="columna">
-                                        <h6>Se puede postular:</h6>
-                                    </div>
-
-                                    <!--En la carpeta images esta el icono de no se puede postular tambien-->
-                                    <div class="columna">
-                                        <img id="img_sePuedePostularTrabDestacado" src="/assets/images/indic_trabDestacado_sePuedePostular.PNG" alt="">
-                                    </div>
-                                </div>                                
-                            </div>
-
-                            <p id="lbl_descripcionTrabDestacado" name="lblDescripcionTrabajoDestacado" class="descripcionTrabDestacado">Este en un trabajo destacado</p>
-                            <br>
-                            
-                            <div class="contenedorBotones">
-                                <div class="filaBotonesTrabDestacado">
-                                    <div class="columnaBotonesEdicion">
-                                        <a name="openModal1" href="" title="Editar"><img src="/assets/images/btn_editar.PNG">Editar</a>
-                                    </div>
-    
-                                    <div class="columnaBotonesEdicion">
-                                        <a name="openModal2" href="" title="Eliminar"><img src="/assets/images/btn_eliminar.PNG">Eliminar</a>
-
+                                        <?php
+                                        }else{
+                                        ?>
                                         
+                                            <img src="assets/images/ImgTrabDestacadoPorDefecto.jpg" class="" alt="..."> 
+
+                                        <?php    
+                                        }                       
+                                        ?>                                
+                                        
+                                        <table>
+                                            <tr>
+                                                <td><h5 class="tituloTrabajo"><?php echo $row[1];?></h5></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="campoTabla"><textarea class="descripcionTrabDestacado" disabled><?php echo $row[2];?></textarea></td>
+                                            </tr>
+                                        </table>
+
+                                        <table>
+                                            <tr class="filaDePostulacion">
+                                                <td><label class="textoPostulacion">SE PUEDE POSTULAR:</label></td>
+
+                                                    <?php 
+                                                    //Aqui se traen las imagenes de cada trabajo destacado
+                                                    $disponibilidad = $row[8];
+
+                                                    if($disponibilidad == 'Si'){
+
+                                                    ?>
+
+                                                        <td><img src='assets/images/indic_trabDestacado_noSePuedePostular.PNG' title="Este trabajo destacado no se puede postular" alt="..."></td>
+
+                                                    <?php
+                                                    }else{
+                                                    ?>
+                                                    
+                                                        <td><img src="assets/images/indic_trabDestacado_sePuedePostular.PNG" title="Este trabajo destacado esta disponible para postular" alt="..."></td>
+
+                                                    <?php    
+                                                    }                       
+                                                    ?>
+                                            </tr>
+                                        </table>
+                                            
+                                        <table class="tablabotonesEdicion">
+                                            <tr>
+                                                <td class="colBotonesEdicion"><a class="btnEditarTrabajoDestacado" data-id="<?php echo $row[0];?>" data-bs-toggle="modal" data-bs-target="#modalEditarTrabajo" title="Editar"><img src="assets/images/btn_editar.PNG"></a></td>
+                                                <td class="colBotonesEdicion"><a class="btnEliminarTrabajoDestacado" data-id="<?php echo $row[0];?>" data-bs-toggle="modal" data-bs-target="#modalEliminarTrabajo" title="Eliminar"><img src="assets/images/btn_eliminar.PNG"></a></td>
+                                            </tr>
+                                        </table> 
+                                        
+                                        <label class="textoPostulacion">Evidencias:</label>
+
+                                        <div class="card-evidencias">
+
+                                            <?php
+                                                //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo alasque esten disponibles
+                                                $linkDocumento = $row[4];
+                                                $linkVideo = $row[5];
+                                                $linkRepoCodigo = $row[6];
+                                                $linkPresentacion = $row[7];
+
+                                                if($linkDocumento != null){
+                                            ?>
+                                                    <a href="<?php echo $linkDocumento; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkDocumento; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a>
+
+                                            <?php
+                                                }if($linkVideo != null){
+                                            ?>
+                                                    <a href="<?php echo $linkVideo; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkVideo; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a>
+
+                                            <?php
+                                                }if($linkRepoCodigo != null){
+                                            ?>
+                                                    <a href="<?php echo $linkRepoCodigo; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkRepoCodigo; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a>
+
+                                            <?php
+                                                }if($linkPresentacion != null){
+                                            ?>
+                                                    <a href="<?php echo $linkPresentacion; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkPresentacion; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a>
+
+                                            <?php
+                                                }
+                                            ?>  
+                                                                       
+                                        </div>
 
                                     </div>
+                                    <div class="separador"></div>
                                 </div>
-                            </div>
-                        </div>
-                        <ul class="card-evidencias">
-                            <li><a id="link_evidenciaDocumento" href="" target="_blank"><img src="/assets/images/btn_evidenc_documento.PNG"></a></li>
-                            <li><a id="link_evidenciaVideo" href="" target="_blank"><img src="/assets/images/btn_evidenc_video.png"></a></li>
-                            <li><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="/assets/images/btn_evidenc_repocodigo.png"></a></li>
-                            <li><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="/assets/images/btn_evidenc_presentacion.png"></a></li>                            
-                        </ul>
+
+                        <?php
+                                    
+                            }
+}
+                        ?>
+ 
                     </div>
 
 
                     <!--ESTRUCTURA DEL POPUP DE REGISTRO DE TRABAJOS DESTACADOS-->
-                    <div id="modal_container" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Nuevo trabajo destacado</h3>
-                            <br>
-                            
-                            <div class="formulario-registroTrabDestacado">
-                                <form class="">
-                                    <label>Titulo</label>
-                                    <input id="txt_tituloTrabDestacado" name="txtTituloTrabDestacado" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <input type="checkbox" id="check_publicarTrabajoEnEportafolio" value="check_trabajoEnEportafolio"> <label for="check_publicarTrabajoEnEportafolio">Publicar en E-portafolio</label>
-                                    <br>
-                                    <br>
-                                    <p>Opcional* - Seleccione una imagen que represente su trabajo destacado.</p>
-                                    <br>
-                                    <input  id="btn_fotoDeTrabDestacado" name="imgTrabDestacado" accept=".jpeg, .jpg, .png" type="file" id="foto" class="form-control">
-                                    <br>
-                                    <label>Descripción</label>
-                                    <textarea id="txt_descripcionTrabDestacado" name="descripcionTrabDestacado" cols="80" rows="8" name="about" class="form-control"></textarea>
-                                    <br>
-                                    <br>
-                                    <p>A continuación, ponga los enlaces en los cuales tiene las siguientes evidencias:</p>
-                                    <br>
-                                    <label>Documento</label>
-                                    <input id="txt_linkDocumento" name="linkDocumento" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Video</label>
-                                    <input id="txt_linkVideo" name="linkVideo" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Repositorio de código</label>
-                                    <input id="txt_linkRepoCodigo" name="linkRepoCodigo" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Presentación</label>
-                                    <input id="txt_linkPresentacion" name="linkPresentacion" placeholder="" type="text" class="form-control">
-                                    <br>
-
-                                    <a id="btn_guardarTrabajoDestacado" class="btn_agregarTrabajo" title="Guardar">Guardar</a>
-                                    <a id="btn_cancelar" class="btn_agregarTrabajo" title="Cancelar">Cancelar</a>
-                                </form>
-                            </div>
-                            
+                    <div class="modal fade" id="modalRegistrarTrabajoDestacado" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Nuevo Trabajo destacado</h3>
                         </div>
+                        <div class="modal-body">
+
+                            <form id="formularioDeRegTrabajos" action="logic/capturaDatTrabajo.php" method="POST" enctype="multipart/form-data">
+
+                                <input type="hidden" name="idEst" value="<?php echo $idEstudianteLogueado;?>">
+                            
+                                <label class="camposFormulario">Nombre del trabajo</label><br>
+                                <input name="nombreTrabajo" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
+                                <br>
+
+                                <input type="checkbox" name="publicarEnEportafolio"> <label for="check_publicarTrabajoEnEportafolio">Publicar en E-portafolio</label>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para el trabajo</label><br>
+                                <input  id="btn_imgParaElEvento" name="imgParaElTrabajo" accept=".jpeg, .jpg, .png" type="file" class="form-control">                   
+                                <br>
+
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea id="txt_descripcion" name="descripcionTrabajo" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
+
+                                <p>Indique los enlaces en los cuales tiene las siguientes evidencias:</p>
+
+                                <label class="camposFormulario">Documento</label><br>
+                                <input id="txt_linkDocumento" name="linkDocumento" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Video</label><br>
+                                <input id="txt_linkVideo" name="linkVideo" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Repositorio de codigo</label><br>
+                                <input id="txt_linkRepoCodigo" name="linkRepoCodigo" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Presentación</label><br>
+                                <input id="txt_linkPresentacion" name="linkPresentacion" placeholder="" type="text" class="form-control">
+                                <br>
+                                <br>
+                                <button type="submit" name="guardarTrabajoDestacado" class="btn_agregarTrabajo" title="Guardar">Guardar</button>
+                                <button id="btnCancelarRegistroTrabajo" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatTrabajo.php") ?>
+
+                        </div>
+                        </div>
+                    </div>
                     </div>
 
 
                     <!--ESTRUCTURA DEL POPUP DE ACTUALIZACION DE TRABAJOS DESTACADOS-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Actualizar trabajo destacado</h3>
-                            <br>
-                            <p>Diligencie la información propuesta:</p>
-                            <br>
+                    <div class="modal fade" id="modalEditarTrabajo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Actualizar Trabajo destacado</h3>
+                        </div>
+                        <div class="modal-body">
 
-                            <div class="formulario-registroTrabDestacado">
-                                <form class="">
-                                    <label>Titulo</label>
-                                    <input id="txt_tituloTrabDestacado" name="txtTituloTrabDestacado" disabled placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <p>Opcional* - Seleccione una imagen que represente su trabajo destacado.</p>
-                                    <input  id="btn_fotoDeTrabDestacado" name="imgTrabDestacado" accept=".jpeg, .jpg, .png" type="file" id="foto" class="form-control">
-                                    <br>
-                                    <label>Descripción</label>
-                                    <textarea id="txt_descripcionTrabDestacado" name="descripcionTrabDestacado" cols="80" rows="8" name="about" class="form-control"></textarea>
-                                    <br>
-                                    <p>A continuación, ponga los enlaces en los cuales tiene las siguientes evidencias:</p>
-                                    <br>
-                                    <label>Documento</label>
-                                    <input id="txt_linkDocumento" name="linkDocumento" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Video</label>
-                                    <input id="txt_linkVideo" name="linkVideo" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Repositorio de código</label>
-                                    <input id="txt_linkRepoCodigo" name="linkRepoCodigo" placeholder="" type="text" class="form-control">
-                                    <br>
-                                    <label>Presentación</label>
-                                    <input id="txt_linkPresentacion" name="linkPresentacion" placeholder="" type="text" class="form-control">
-                                    <br>
+                            <form id="formularioDeActualizacionDeTrabajos" action="logic/capturaDatTrabajo.php" method="POST" enctype="multipart/form-data">
 
-                                    <a id="btn_actualizarTrabajoDestacado" class="btn_agregarTrabajo" title="Guardar">Actualizar</a>
-                                    <a id="btn_cancelar1" class="btn_agregarTrabajo" title="Cancelar">Cancelar</a>
-                                </form>
-                            </div>
+                                <input type="hidden" name="Id">
+                            
+                                <label class="camposFormulario">Nombre del trabajo</label><br>
+                                <input name="nombre_trabajo" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
+                                <br>
+
+                                <input id="txt_eportafolioPublicado" type="hidden" name="publicadoeneportafolio">
+                                <input type="checkbox" id="check_publicarTrabajoEnEportafolio" name="publicadoeneportafolioEdit" value="Si"> <label for="check_publicarTrabajoEnEportafolio">Publicar en E-portafolio</label>
+                                <br>
+
+                                <label class="camposFormulario">Opcional* - Cargue una imagen para el trabajo</label><br>
+                                <input  id="btn_imgParaElEvento" name="imgParaElTrabajoEdit" accept=".jpeg, .jpg, .png" type="file" class="form-control">                   
+                                <br>
+
+                                <label class="camposFormulario">Descripción</label>
+                                <textarea id="txt_descripcion" name="descripcion" cols="80" maxlength="250" placeholder="" rows="8" class="form-control" required="true"></textarea>
+                                <br>
+
+                                <p>Indique los enlaces en los cuales tiene las siguientes evidencias:</p>
+
+                                <label class="camposFormulario">Documento</label><br>
+                                <input id="txt_linkDocumento" name="link_documento" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Video</label><br>
+                                <input id="txt_linkVideo" name="link_video" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Repositorio de codigo</label><br>
+                                <input id="txt_linkRepoCodigo" name="link_repocodigo" placeholder="" type="text" class="form-control">
+                                <br>
+
+                                <label class="camposFormulario">Presentación</label><br>
+                                <input id="txt_linkPresentacion" name="link_presentacion" placeholder="" type="text" class="form-control">
+                                <br>
+                                <br>
+                                <button type="submit" name="actualizarTrabajoDestacado" class="btn_agregarTrabajo" title="Actualizar">Actualizar</button>
+                                <button id="btn_cancelar" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                            </form>
+                            <!--Incluimos el archivo con la logica del formulario-->
+                            <?php include("logic/capturaDatTrabajo.php") ?>
+
+                        </div>
                         </div>
                     </div>
+                    </div>
+
 
                     <!--ESTRUCTURA DEL POPUP DE ELIMINACION DE TRABAJOS DESTACADOS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Eliminar trabajo destacado</h3>
-                            <br>
-                            <p>¿Está seguro de que desea eliminar?</p>
-                            <br>
-                            <br>
-                            <a id="btn_eliminarTrabajo" class="btn_agregarTrabajo" title="Si">Si</a>
-                            <a id="btn_cancelar2" class="btn_agregarTrabajo" title="No">No</a>
+                    <div class="modal fade" id="modalEliminarTrabajo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Eliminar Trabajo</h3>
+                        </div>
+                        <form id="formularioDeEliminacionDeTrabajos" action="logic/capturaDatTrabajo.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="Id" value="">
+                                <p>¿Esta seguro que desea eliminar?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="eliminarTrabajo" class="btn_agregarTrabajo" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("logic/capturaDatTrabajo.php") ?>
                         </div>
                     </div>
+                    </div>
+
                 </div>            
             </main>
         </div>
+
+        <!--Funcion que cambia a mayuscula lo ingresado en un input-->        
+        <script>
+            function cambiarAMayuscula(elemento){
+                let texto = elemento.value;
+                elemento.value = texto.toUpperCase();
+            }            
+
+        </script>
+
+        <!--Script que permite pasar los datos de un trabajo destacado a la ventana modal de edicion del mismo-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btnEditarTrabajoDestacado').click(function(){
+                                        
+                    var idTrabajoEdit = $(this).data('id');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                             // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idTrabajoEdit': idTrabajoEdit},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeActualizacionDeTrabajos';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+
+                            var eportPublicado = document.getElementById('txt_eportafolioPublicado').value;
+                            console.log(eportPublicado);
+
+                            if(eportPublicado == 'Si'){
+                                $("#check_publicarTrabajoEnEportafolio").prop("checked", true);
+                            }else{
+                                $("#check_publicarTrabajoEnEportafolio").prop("checked", false);
+                            }
+                            
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar los datos de un trabajo destacado desde la BD a su ventana modal de eliminacion correspondiente-->
+        <script type='text/javascript'>
+
+            //Aqui se pasan los datos para el caso de la competencia general
+            $(document).ready(function(){
+                
+                $('.btnEliminarTrabajoDestacado').click(function(){
+                    
+                    var idTrabajoElim = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idTrabajoElim': idTrabajoElim},
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formularioDeEliminacionDeTrabajos';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                    
+                });
+            });
+        </script>
     </body>
 </html>

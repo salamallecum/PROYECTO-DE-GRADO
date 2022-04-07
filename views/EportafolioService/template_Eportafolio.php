@@ -117,7 +117,7 @@ function getEportafolio(int $idDelEstudiante){
                                                                                         <table class="tablaGraficoPerfilamiento">
                                                                                             <tr>
                                                                                                 <td><img id="img_graficoRolDelEstudiante" class="grafPerfPandora" src="graficaRolScreenshots/captura_6232abd3bcc16.png" alt="Gráfico del rol"></td>
-                                                                                                <td><img id="img_rolDelEstudiante" class="img_perfRol" src="../assets/images/roles/noblider2.jpg" alt="Avatar del rol"></td>
+                                                                                                <td><img id="img_rolDelEstudiante" class="img_perfRol" src="../assets/images/roles/virtTecnologico1.png" alt="Avatar del rol"></td>
                                                                                             </tr>
                                                                                         </table>
                                                                                     </div>

@@ -755,8 +755,45 @@ if(isset($_POST['idPropuestaDetallesModalRechazada'])){
 
 
 
+//----------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------SECCION TRABAJOS DESTACADOS--------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
 
+//Capturamos el evento del id de un trabajo destacado a editar
+if(isset($_POST['idTrabajoEdit'])){
 
+    //Aqui traemos los datos de los eventos para su edición-----------------------------------
+    $idTrabajoEdit = $_POST['idTrabajoEdit'];
+
+    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoEdit;
+    $resultTrabajoDest = mysqli_query($conexion,$sql);
+
+    $emparrayTrabajos = array();
+    while($row =mysqli_fetch_assoc($resultTrabajoDest))
+    {
+        $emparrayTrabajos[] = $row;
+    }
+    echo json_encode($emparrayTrabajos);
+    exit;
+}
+
+//Capturamos el evento del id de un trabajo destacado a eliminar
+if(isset($_POST['idTrabajoElim'])){
+
+    //Aqui traemos los datos de los eventos para su edición-----------------------------------
+    $idTrabajoElim = $_POST['idTrabajoElim'];
+
+    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoElim;
+    $resultTrabajoDestEl = mysqli_query($conexion,$sql);
+
+    $emparrayTrabajos = array();
+    while($row =mysqli_fetch_assoc($resultTrabajoDestEl))
+    {
+        $emparrayTrabajos[] = $row;
+    }
+    echo json_encode($emparrayTrabajos);
+    exit;
+}
 
 
 

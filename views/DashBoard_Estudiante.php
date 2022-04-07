@@ -164,7 +164,7 @@
                         </div>
 
                         <div class="perfPandora">
-                            <img id="img_rolDelEstudiante" class="img_perfRol" src="assets/images/roles/noblider2.jpg" alt="">
+                            <img id="img_rolDelEstudiante" class="img_perfRol" src="assets/images/roles/virtTecnologico1.png" alt="">
                         </div>
                     </div>
                 </div>   

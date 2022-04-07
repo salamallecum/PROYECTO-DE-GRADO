@@ -185,6 +185,8 @@
 
         $elDesafioTienePropuestasODesafPersonalizadosRelacionados = $desafioControla->verificarSiElDesafioTienePropuestasAsociadas($idDesafioAEliminar);
 
+        $elDesafioTieneAplicacionesDeTrabajosDestRelacionadas = $desafioControla->verificarSiElDesafioTieneAplicacionesDeTrabajosRelacionadas($idDesafioAEliminar);
+
         if($elDesafioTieneRegCGPrevio){
             $competenciaControla->eliminarAsignacionDeCompetenciasGenerales($idDesafioAEliminar, 'DESAFIO');
         }
@@ -195,6 +197,10 @@
 
         if($elDesafioTienePropuestasODesafPersonalizadosRelacionados){
             $desafioControla->eliminarPropuestasRelacionadasConUnDesafio($idDesafioAEliminar);
+        }
+
+        if($elDesafioTieneAplicacionesDeTrabajosDestRelacionadas != null){
+            $desafioControla->eliminarAplicacionesDeTrabajosADesafio($idDesafioAEliminar);
         }
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);
@@ -358,6 +364,13 @@
     if(isset($_POST['eliminarPropuesta'])){
 
         $idPropuestaAEliminar = trim($_POST['Id']);
+
+        $laPropuestaTieneAplicacionesDeTrabajos = $desafioControla->verificarSiLaPropuestaTeniaAplicacionesDeTrabajos($idPropuestaAEliminar);
+
+        if($laPropuestaTieneAplicacionesDeTrabajos != null){
+            $desafioControla->eliminarAplicacionesDeTrabajosAPropuesta($idPropuestaAEliminar);
+        }
+
         $desafioControla->eliminarPropuesta($idPropuestaAEliminar);
 
         header("Location: " . $_SERVER["HTTP_REFERER"]);
