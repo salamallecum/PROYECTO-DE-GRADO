@@ -1,3 +1,18 @@
+<?php
+
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/DesafioControlador.php";
+require_once "logic/controllers/EventoControlador.php";
+
+$eventoControla = new EventoControlador();
+$desafioControla = new DesafioControlador();
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+    $idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -64,7 +79,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php">
+                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
                         </a>
@@ -104,32 +119,174 @@
             </header>
 
             <main>
-                <div class="dash-cards">
-                    <div class="card-desafioOEvento">
-                        <div class="card-desafioOEventobody">
-                            <span class="imgContent"><img class="imgDesafioOEvento" src="assets/images/imgPorDefecto.jpg"></span>
-                            <div>
-                                <h4 class="tituloDesafioOEvento">DESAFIO DE PRUEBA</h4>
-                                <br>
-                                <div class="contenedor_boton">
-                                    <a name="openModal" class="btn_agregarTrabajo" title="Ver detalles">Detalles</a>    
-                                </div>                             
-                            </div>
-                        </div>
-                    </div>
+            <div class="container mt-3">
+                    <div class="row">
+                    
+                        <!--Script para cargar datos de los desafios en cards-->      
+                        <?php
+                            $sql = "SELECT id_desafio, nombre_desafio, nombre_imagen from tbl_desafio where estado = 'Activo'";
+                            $resultDatosDesafios = $desafioControla->mostrarDatosDesafiosEnCards($sql);
+                            while ($row = mysqli_fetch_row($resultDatosDesafios)){
+                        ?>
+                                <?php
+                                    //Validamos si el desafio tiene un desafio personalizado previamente aprobado con anterioridad
+                                    $desafioEnCuestion = $row[0];
 
-                    <div class="card-desafioOEvento">
-                        <div class="card-desafioOEventobody">
-                            <span class="imgContent"><img class="imgDesafioOEvento" src="assets/images/imgPorDefecto.jpg"></span>
-                            <div>
-                                <h4 class="tituloDesafioOEvento">EVENTO DE PRUEBA</h4>
-                                <br>
-                                <div class="contenedor_boton">
-                                    <a name="openModal" class="btn_agregarTrabajo" title="Ver detalles">Detalles</a>    
-                                </div>                             
-                            </div>
-                        </div>
+                                    $elDesafioTieneUnaPropuestaAprobadaPorElProfesor = $desafioControla->verificarSiElEstudianteTienePropuestasAprobadaParaUnDesafio($idEstudianteLogueado, $desafioEnCuestion);
+
+                                    if($elDesafioTieneUnaPropuestaAprobadaPorElProfesor != null){
+                                ?>
+
+                                        <!--Script para cargar datos de los desafios personalizados del estudiante en cards-->      
+                                        <?php
+                                            $sqlDesPers = "SELECT Id, nombre_desafioP, nombre_imagen from tbl_desafiopersonal where idDesafioASustituir=$desafioEnCuestion and estado = 'Aprobada' and Id_estudiante=".$idEstudianteLogueado;
+                                            $resultDatosDesPers = $desafioControla->mostrarDatosPropuestasEnCards($sqlDesPers);
+                                            while ($lex = mysqli_fetch_row($resultDatosDesPers)){
+                                        ?>
+                                                                        
+                                                <div class="col-lg-6 col-md-4 col-sm-12">
+                                                    <div class="separador"></div>
+                                                    <div class="tarjetaDesafioPersonalizado">
+                                                        
+                                                        <?php 
+                                                        //Aqui se traen las imagenes de cada desafio personalizado
+                                                        $nombreDeImgDesPer = $lex[2];
+
+                                                        if($nombreDeImgDesPer != null){
+
+                                                        ?>
+
+                                                            <img src='<?php echo "desafiosPerImages/".$nombreDeImgEv?>' class="imgCard" alt="..."> 
+
+                                                        <?php
+                                                        }else{
+                                                        ?>
+                                                        
+                                                            <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                        <?php    
+                                                        }                       
+                                                        ?>                                
+                                                        
+                                                        <h5 class="tituloTrabajo"><?php echo $lex[1];?></h5>
+                                                                                                
+                                                        <button id="btn_detallesDesafioPer" data-id="<?php echo $lex[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles">Detalles</button>
+                                                        
+                                                    </div>
+                                                    <div class="separador"></div>
+                                                </div>
+
+                                        <?php                    
+                                            }
+                                    
+                                    }else{
+                                    ?>
+
+                                        <div class="col-lg-6 col-md-4 col-sm-12">
+                                            <div class="separador"></div>
+                                            <div class="tarjetaDesafio">
+                                                
+                                                <?php 
+                                                //Aqui se traen las imagenes de cada desafio
+                                                $nombreDeImg = $row[2];
+
+                                                if($nombreDeImg != null){
+
+                                                ?>
+
+                                                    <img src='<?php echo "desafiosImages/".$nombreDeImg?>' class="imgCard" alt="..."> 
+
+                                                <?php
+                                                }else{
+                                                ?>
+                                                
+                                                    <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                <?php    
+                                                }                       
+                                                ?>                                
+                                                
+                                                <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
+                                                
+                                                <button id="btn_detallesDesafio" data-id="<?php echo $row[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles">Detalles</button>
+                                                
+                                            </div>
+                                            <div class="separador"></div>
+                                        </div>
+
+                                    <?php
+                                    }
+                            }      
+                        ?>
+                                
+                                                        
+                        <!--Script para cargar datos de los eventos en cards-->      
+                        <?php
+                            $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen from tbl_evento where estado = 'Activo'";
+                            $resultDatosEventos = $eventoControla->mostrarDatosEventosEnCards($sqlEv);
+                            while ($row = mysqli_fetch_row($resultDatosEventos)){
+                        ?>
+                                                         
+                                <div class="col-lg-6 col-md-4 col-sm-12">
+                                    <div class="separador"></div>
+                                    <div class="tarjetaEvento">
+                                        
+                                        <?php 
+                                        //Aqui se traen las imagenes de cada evento
+                                        $nombreDeImgEv = $row[2];
+
+                                        if($nombreDeImgEv != null){
+
+                                        ?>
+
+                                            <img src='<?php echo "eventosImages/".$nombreDeImgEv?>' class="imgCard" alt="..."> 
+
+                                        <?php
+                                        }else{
+                                        ?>
+                                        
+                                            <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                        <?php    
+                                        }                       
+                                        ?>                                
+                                        
+                                        <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
+                                        
+                                        <div class="contentbtnDetalles">
+                                            <button id="btn_detallesEvento" data-id="<?php echo $row[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles">Detalles</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="separador"></div>
+                                </div>
+
+                        <?php                    
+                            }
+}
+                        ?>
+
                     </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE DESAFIOS O EVENTOS-->
                     <div id="modal_container1" class="modal_container" name="modal_container">

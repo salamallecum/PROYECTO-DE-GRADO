@@ -62,7 +62,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php">
+                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
                         </a>

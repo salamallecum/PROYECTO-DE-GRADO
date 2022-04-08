@@ -80,7 +80,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php">
+                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
                         </a>
@@ -228,13 +228,13 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
                                         ?>
 
-                                            <img src='<?php echo "trabajosImages/".$nombreDeImg?>' class="" alt="..."> 
+                                            <img src='<?php echo "trabajosImages/".$nombreDeImg?>' class="imgCard" alt="..."> 
 
                                         <?php
                                         }else{
                                         ?>
                                         
-                                            <img src="assets/images/ImgTrabDestacadoPorDefecto.jpg" class="" alt="..."> 
+                                            <img src="assets/images/ImgTrabDestacadoPorDefecto.jpg" class="imgCard" alt="..."> 
 
                                         <?php    
                                         }                       
@@ -515,35 +515,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     }
                     ?>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                       
                 <!-- ESTRUCTURA DEL POPUP PARA LA PUBLICACION DE UN EPORTAFOLIO -->
                 <div class="modal fade" id="modalPublicarEportafolio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -553,7 +525,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                         </div>
                         <form id="formularioDePublicacionEportafolio" action="EportafolioService/capturaDatEportafolio.php"  method="POST">
                             <div class="modal-body">
-                                <input type="text" name="IdEportafolioPublicar" value="<?php echo $idEstudianteLogueado;?>">
+                                <input type="hidden" name="IdEportafolioPublicar" value="<?php echo $idEstudianteLogueado;?>">
                                 <p>¿Desea publicar su eportafolio?</p>
                             </div>
                             <div class="modal-footer">
@@ -576,7 +548,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                         </div>
                         <form id="formularioDeOcultarEportafolio" action="EportafolioService/capturaDatEportafolio.php"  method="POST">
                             <div class="modal-body">
-                                <input type="text" name="IdEportafolioOcultar" value="<?php echo $idEstudianteLogueado;?>">
+                                <input type="hidden" name="IdEportafolioOcultar" value="<?php echo $idEstudianteLogueado;?>">
                                 <p>¿Desea ocultar su eportafolio?</p>
                             </div>
                             <div class="modal-footer">

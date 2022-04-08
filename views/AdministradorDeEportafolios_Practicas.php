@@ -89,7 +89,6 @@
                    <br>
                     <h3 class="titulo_seccion">E-portafolios publicados</h3>
                     <br>
-                    <br>
 
                     <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
                     <table id="table_eportafolios" class="tablaDeEportafolios">
@@ -109,54 +108,60 @@
                             //Consultamos los ids de los eportafolios que se encunetran publicados y los almacenamos en un array
                             $arrayEpPublicados = $obj->consultarIdsEportafoliosEstudiantilesPublicados();
 
-                            //Convertimos el array de ids recibidos a string
-                            $stringEpPublicados = implode(",", $arrayEpPublicados);
+                            if($arrayEpPublicados != null){
 
-                            //Buscamos los datos de esos eportafolios publicados
-                            $sql = "SELECT id_usuario, nombres_usuario, apellidos_usuario, foto_usuario from tbl_usuario where id_usuario in($stringEpPublicados)";
-                            $datos = $obj->mostrarDatosEportafolios($sql);
-                            foreach ($datos as $key){
+                                //Convertimos el array de ids recibidos a string
+                                $stringEpPublicados = implode(",", $arrayEpPublicados);
+
+                                //Buscamos los datos de esos eportafolios publicados
+                                $sql = "SELECT id_usuario, nombres_usuario, apellidos_usuario, foto_usuario from tbl_usuario where id_usuario in($stringEpPublicados)";
+                                $datos = $obj->mostrarDatosEportafolios($sql);
+                                foreach ($datos as $key){                       
                         ?>
-                                <!--Aqui van los registros de la tabla de eportafolios-->
-                                <tr class="filasDeDatosTablaEportafolios">
-                                    <?php 
-                                    //Aqui se traen las imagenes de cada convocatoria
-                                    $fotoDePerfil = $key['foto_usuario'];
+                                    <!--Aqui van los registros de la tabla de eportafolios-->
+                                    <tr class="filasDeDatosTablaEportafolios">
+                                        <?php 
+                                        //Aqui se traen las imagenes de cada convocatoria
+                                        $fotoDePerfil = $key['foto_usuario'];
 
-                                    if($fotoDePerfil != null){
+                                        if($fotoDePerfil != null){
 
-                                    ?>
+                                        ?>
 
-                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='<?php echo "profileImages/".$fotoDePerfil?>'></td>
+                                            <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='<?php echo "profileImages/".$fotoDePerfil?>'></td>
 
-                                    <?php
-                                    }else{
-                                    ?>
-                                    
-                                        <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
+                                        <?php
+                                        }else{
+                                        ?>
+                                        
+                                            <td class='datoTabla'><img class='imagenDeConvocatoriaEnTabla'src='assets/images/imgPorDefecto.jpg'></td> 
 
-                                    <?php    
-                                    }                       
-                                    ?>
-                                            
-                                    <td class="datoTabla"><?php echo $key['nombres_usuario'];  ?></td>
-                                    <td class="datoTabla"><?php echo $key['apellidos_usuario'];  ?></td>
-                                    <td class="datoTabla"><div class="compEsp-edicion">
-                                        <div class="col-botonesEdicion">
-                                            <a href="<?php echo "template_Eportafolio.php?Id_estudiante=". $key['id_usuario']?>" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                        </div>
+                                        <?php    
+                                        }                       
+                                        ?>
+                                                
+                                        <td class="datoTabla"><?php echo $key['nombres_usuario'];  ?></td>
+                                        <td class="datoTabla"><?php echo $key['apellidos_usuario'];  ?></td>
+                                        <td class="datoTabla"><div class="compEsp-edicion">
+                                            <div class="col-botonesEdicion">
+                                                <a href="<?php echo "template_Eportafolio.php?Id_estudiante=". $key['id_usuario']?>" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                            </div>
 
-                                        <div id="col-botonesEdicion" class="col-botonesEdicion">
-                                            <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="<?php echo $key['id_usuario']?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                        </div>
+                                            <div id="col-botonesEdicion" class="col-botonesEdicion">
+                                                <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="<?php echo $key['id_usuario']?>" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                            </div>
 
-                                    </div></td>
-                                                                    
-                                </tr>    
-                        <?php
+                                        </div></td>
+                                                                        
+                                    </tr> 
+
+
+                        <?php           
                             }
+                        }
+                        
                         ?>
-
+                                   
                         </tbody>
                     </table>
                 </div>               

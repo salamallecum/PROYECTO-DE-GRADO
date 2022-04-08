@@ -12,6 +12,26 @@ class DesafioControlador{
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
+    //Funcion que permite mostrar los desafios en cards paraque el estudiante pueda postularse
+    public function mostrarDatosDesafiosEnCards($sqlDes){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sqlDes);
+        return $result;
+    }
+
+    //Funcion que permite mostrar los desafios personalizados en cards paraque el estudiante pueda postularse
+    public function mostrarDatosPropuestasEnCards($sqlProp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sqlProp);
+        return $result;
+    }
+
     //Funcion que permite el registro de los desafios
     public function insertarDesafio(Desafio $desafio){
 
@@ -609,6 +629,20 @@ class DesafioControlador{
         $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idDes and tipo_actividad='DESAFIO'";     
                
         return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que nos permite verificar si un desafio tenia aplicaciones de trabajos de estudiantes en la plataforma
+    public function verificarSiElEstudianteTienePropuestasAprobadaParaUnDesafio(int $idStudent, int $idDes){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_desafiopersonal where Id_estudiante = $idStudent and idDesafioASustituir = $idDes and estado='Aprobada'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
     }
 
 }

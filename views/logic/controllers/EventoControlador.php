@@ -12,6 +12,16 @@ class EventoControlador{
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
+    //Funcion que permite mostrar los eventos en cards paraque el estudiante pueda postularse
+    public function mostrarDatosEventosEnCards($sql){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sql);
+        return $result;
+    }
+
     //Funcion que permite el registro de los eventos
     public function insertarEvento(Evento $evento){
 
