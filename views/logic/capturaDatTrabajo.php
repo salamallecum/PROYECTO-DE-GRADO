@@ -104,7 +104,7 @@
         strlen($descripcionTrabajoEdit) >= 1 ){
             
             //Validamos si el check de publicacion en el eportafolio esta activo
-            if(isset($_REQUEST['publicarEnEportafolioEdit'])){
+            if(isset($_REQUEST['publicadoeneportafolioEdit'])){
                 $sePublicaTrabajoEdit = "Si";
             }else{
                 $sePublicaTrabajoEdit = "No";

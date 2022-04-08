@@ -46,4 +46,28 @@ if(isset($_POST['idEportafolioSeleccionado']) && isset($_POST['emailDestinatario
     }
 } 
 
+//Capturamos el evento del boton que publica un eportafolio para que sea visible a la coordinacion de practicas
+if(isset($_POST['publicarEportafolio'])){
+
+    //Aqui traemos el id del eportafolio estudiantil-----------------------------------
+    $idEportafolioAPublicar = $_POST['IdEportafolioPublicar'];
+
+    //Publicamos el Eportafolio
+    $eportafolioControla->publicarEportafolio($idEportafolioAPublicar);
+
+    header("Location: " . $_SERVER["HTTP_REFERER"]);
+}
+
+//Capturamos el evento del boton que oculta un eportafolio para que no sea visible a la coordinacion de practicas
+if(isset($_POST['ocultarEportafolio'])){
+
+    //Aqui traemos el id del eportafolio estudiantil-----------------------------------
+    $idEportafolioAOcultar = $_POST['IdEportafolioOcultar'];
+
+    //Ocultamos el Eportafolio
+    $eportafolioControla->ocultarEportafolio($idEportafolioAOcultar);
+
+    header("Location: " . $_SERVER["HTTP_REFERER"]);
+}
+
 ?>

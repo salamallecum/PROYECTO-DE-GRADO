@@ -1,6 +1,6 @@
 <?php
 
-require_once "controllers/EstudianteControlador.php";
+require_once "controllers/StudentControlador.php";
 require_once "controllers/EportafolioControlador.php";
 require_once "controllers/TrabajoDestacadoControlador.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/controllers/CompetenciaControlador.php";
@@ -8,12 +8,12 @@ require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/controllers/
 
 function getEportafolio(int $idDelEstudiante){
 
-    $estudianteControla = new EstudianteControlador();
+    $estudianteControla = new StudentControlador();
     $eportafolioControla = new EportafolioControlador();
     $trabajoDestControla = new TrabajoDestacadoControlador();
     $competenciaControla = new CompetenciaControlador();
 
-    $userControla = new EstudianteControlador();
+    $userControla = new StudentControlador();
 
     $plantillaEportafolio =    '<!--ENCABEZADO DE DATOS PERSONALES-->'.
                                 '<div class="encabezado">

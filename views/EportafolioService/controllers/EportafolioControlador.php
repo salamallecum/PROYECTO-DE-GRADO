@@ -293,6 +293,28 @@ class EportafolioControlador{
 
         return $emparrayIdsEportafoliosPublicados;
     }
+
+    //Funcion que permite actualizar el estado de un eportafolio paraque sea publico a la coordinacion de practicas
+    public function publicarEportafolio(int $idEportafolioAPublic){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "UPDATE tbl_eportafolio SET eportafolioPublicado='Si' where Id_estudiante =".$idEportafolioAPublic;
+              
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que permite actualizar el estado de un eportafolio para que nosea visible a la coordinacion de practicas
+    public function ocultarEportafolio(int $idEportafolioAOcult){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "UPDATE tbl_eportafolio SET eportafolioPublicado='No' where Id_estudiante =".$idEportafolioAOcult;
+              
+        return $result = mysqli_query($conexion, $sql);
+    }
 }
 
 ?>

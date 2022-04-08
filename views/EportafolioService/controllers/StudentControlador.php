@@ -2,7 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/Conexion.php";
 
-class EstudianteControlador{
+class StudentControlador{
 
     //Funcion que permite mostrar los datos personales del estudiante
     public function mostrarDatosEstudiante($sql){

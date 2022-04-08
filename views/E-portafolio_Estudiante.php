@@ -1,3 +1,22 @@
+<?php
+
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/TrabajoControlador.php";
+require_once "logic/controllers/EstudianteControlador.php";
+require_once "EportafolioService/controllers/EportafolioControlador.php";
+require_once "logic/controllers/CompetenciaControlador.php";
+
+$estudianteControla = new EstudianteControlador();
+$trabajoDestControla = new TrabajoControlador();
+$competenciaControla = new CompetenciaControlador();
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+$idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -15,7 +34,6 @@
         <link rel="stylesheet" href="assets/css/EstudianteStyles.css">
 
         <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpEportafolio_Estudiante.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
@@ -107,76 +125,180 @@
                 <div class="perfil-card">
                     
                     <div class="card-header">
-                        <button id="openModal" class="btn_publicarEportafolio" disabled title="Publicar E-portafolio">Publicar e-portafolio</button>
-                        <button id="openModal3" class="btn_publicarEportafolio" title="Ocultar E-portafolio">Ocultar e-portafolio</button>                   
+
+                        <?php 
+                        //Consultamos el estado de un eportafolio
+                        $sqlEstadoEport = "SELECT DISTINCT eportafolioPublicado from tbl_eportafolio where Id_estudiante=".$idEstudianteLogueado;
+                        $datosEstEport = $estudianteControla->mostrarDatosEstudiante($sqlEstadoEport);
+                        foreach ($datosEstEport as $lex){
+                        
+                            $estadoEportafolio = $lex['eportafolioPublicado'];
+
+                        if($estadoEportafolio == 'Si'){
+
+                        ?>
+
+                            <button id="btn_ocultarEportafolio" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalOcultarEportafolio" title="Ocultar E-portafolio">Ocultar e-portafolio</button>
+                        <?php
+                        }else{
+                        ?>
+                        
+                            <button id="btn_publicarEportafolio" type="button" class="btn_publicarEportafolio" data-bs-toggle="modal" data-bs-target="#modalPublicarEportafolio" title="Publicar E-portafolio">Publicar e-portafolio</button>
+
+                        <?php    
+                        }}                      
+                        ?>
+
                     </div>
-                    
-                    <div class="card-user card">
-                        <div class="card-image">
-                            <img class="imgEncabezadoInfoEstudiante" src="/assets/images/uebAerea.jpg" alt="">
-                        </div>
-                        <div class="card-centerProfile">
-                            
-                            <div class="author">
-                                <a href="">
-                                    <img alt="..." class="avatar border-gray" src="/assets/images/imgPorDefecto.jpg">
-                                    <h5 class="nombreDelEstudiante">Luis Alejandro Amaya Torres</h5>
-                                    <br>
-                                </a>
-                                <p class="description">Perfil profesional</p>
+
+                    <?php
+                        //Consultamos los datos personales del estudiante para su muestreo en el panel de perfil
+                        $sqlDatEstudiante = "SELECT nombres_usuario, apellidos_usuario, foto_usuario, descripcion from tbl_usuario where id_usuario=".$idEstudianteLogueado;
+                        $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
+                        foreach ($datosEstudiante as $key){
+                    ?>
+                            <div class="card-user card">
+                                <div class="card-image">
+                                    <img class="imgEncabezadoInfoEstudiante" src="assets/images/uebAerea.jpg" alt="">
+                                </div>
+                                <div class="card-centerProfile">
+                                    
+                                    <div class="author">
+                                        <a href="">
+                                            
+                                            <?php 
+                                            //Aqui se trae la foto de perfil del estudiante
+                                            $nombreDeImg = $key['foto_usuario'];
+
+                                            if($nombreDeImg != null){
+
+                                            ?>
+
+                                                <img alt="..." class="avatar border-gray" src="<?php echo "profileImages/".$nombreDeImg; ?>">
+                                            <?php
+                                            }else{
+                                            ?>
+                                            
+                                                <img alt="..." class="avatar border-gray" src="assets/images/imgPorDefecto.jpg">
+
+                                            <?php    
+                                            }                       
+                                            ?>                                   
+                                        
+                                            <h5 class="nombreDelEstudiante"><?php echo $key['nombres_usuario']; ?> <?php echo $key['apellidos_usuario']; ?></h5>
+                                            <br>
+                                        </a>
+                                        <p class="description">Perfil profesional</p>
+                                        <br>
+                                    </div>
+                                    <p class="description-text-center"><?php echo $key['descripcion']; ?></p>
                                 <br>
+                                                                        
                             </div>
-                            <p class="description-text-center">Estudiante de último semestre de Ingeniería de Sistemas</p>
-                        <br>
-                                                                  
-                    </div>                            
+                    <?php
+                        }
+
+                    ?>                           
                 </div>
 
-                <!--SECCIÓN DE EVIDENCIAS-->
+                <!--SECCIÓN DE TRABAJOS DESTACADOS-->
                 <label class="lbl-titulosEportafolio">Mis trabajos</label>
                 <br>
 
                 <!--Estructura de targeta de trabajo destacado-->
-                <div class="dash-cards">
-                    <div class="card-trabajo">
-                        <div class="card-trabDestacadobody">
-                            <span><img id="lbl_imgTrabajoDestacado" class="imgTrabajoDestacado" src="assets/images/ImgTrabDestacadoPorDefecto.jpg"></span>
-                            <div>
-                                <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloTrabDestacado">TRABAJO DESTACADO 1</h4>
-                            </div>
+                <div class="container mt-3">
+                    <div class="row">
+                    
+                        <!--Script para cargar datos de los trabajos destacados en cards-->      
+                        <?php
+                            $sql = "SELECT Id, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where trabajoTieneBadge = 'No' and publicadoeneportafolio='Si' and Id_estudiante=".$idEstudianteLogueado;
+                            $resultDatosTrabDestacados = $trabajoDestControla->mostrarDatosTrabajosDestacados($sql);
+                            while ($row = mysqli_fetch_row($resultDatosTrabDestacados)){
+                        ?>
+                                                         
+                                <div class="col-lg-6 col-md-4 col-sm-12">
+                                    <div class="separador"></div>
+                                    <div class="tarjeta">
+                                        
+                                        <?php 
+                                        //Aqui se traen las imagenes de cada trabajo destacado
+                                        $nombreDeImg = $row[3];
 
-                            <p id="lbl_descripcionTrabDestacado" name="lblDescripcionTrabajoDestacado" class="descripcionTrabDestacado">Este en un trabajo destacado</p>
-                            <br>
-                        
-                        </div>
-                        <ul class="card-evidencias">
-                            <li><a id="link_evidenciaDocumento" href="" target="_blank"><img src="/assets/images/btn_evidenc_documento.PNG"></a></li>
-                            <li><a id="link_evidenciaVideo" href="" target="_blank"><img src="/assets/images/btn_evidenc_video.png"></a></li>
-                            <li><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="/assets/images/btn_evidenc_repocodigo.png"></a></li>
-                            <li><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="/assets/images/btn_evidenc_presentacion.png"></a></li>                            
-                        </ul>
-                    </div>
+                                        if($nombreDeImg != null){
 
-                    <!--Estructura de targeta de trabajo destacado 2-->
-                    <div class="card-trabajo">
-                        <div class="card-trabDestacadobody">
-                            <span><img id="lbl_imgTrabajoDestacado" class="imgTrabajoDestacado" src="assets/images/ImgTrabDestacadoPorDefecto.jpg"></span>
-                            <div>
-                                <h4 id="lbl_tituloTrabDestacado" name="nombreTrabajoDestacado" class="tituloTrabDestacado">TRABAJO DESTACADO 1</h4>
-                            </div>
+                                        ?>
 
-                            <p id="lbl_descripcionTrabDestacado" name="lblDescripcionTrabajoDestacado" class="descripcionTrabDestacado">Este en un trabajo destacado</p>
-                            <br>
-                        
-                        </div>
-                        <ul class="card-evidencias">
-                            <li><a id="link_evidenciaDocumento" href="" target="_blank"><img src="/assets/images/btn_evidenc_documento.PNG"></a></li>
-                            <li><a id="link_evidenciaVideo" href="" target="_blank"><img src="/assets/images/btn_evidenc_video.png"></a></li>
-                            <li><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="/assets/images/btn_evidenc_repocodigo.png"></a></li>
-                            <li><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="/assets/images/btn_evidenc_presentacion.png"></a></li>                            
-                        </ul>
+                                            <img src='<?php echo "trabajosImages/".$nombreDeImg?>' class="" alt="..."> 
+
+                                        <?php
+                                        }else{
+                                        ?>
+                                        
+                                            <img src="assets/images/ImgTrabDestacadoPorDefecto.jpg" class="" alt="..."> 
+
+                                        <?php    
+                                        }                       
+                                        ?>                                
+                                        
+                                        <table>
+                                            <tr>
+                                                <td><h5 class="tituloTrabajo"><?php echo $row[1];?></h5></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="campoTabla"><textarea class="descripcionTrabDestacado" disabled><?php echo $row[2];?></textarea></td>
+                                            </tr>
+                                        </table>
+                                            
+                                        
+                                        <label class="textoPostulacion">Evidencias:</label>
+
+                                        <div class="card-evidencias">
+
+                                            <?php
+                                                //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo alasque esten disponibles
+                                                $linkDocumento = $row[4];
+                                                $linkVideo = $row[5];
+                                                $linkRepoCodigo = $row[6];
+                                                $linkPresentacion = $row[7];
+
+                                                if($linkDocumento != null){
+                                            ?>
+                                                    <a href="<?php echo $linkDocumento; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkDocumento; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a>
+
+                                            <?php
+                                                }if($linkVideo != null){
+                                            ?>
+                                                    <a href="<?php echo $linkVideo; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkVideo; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a>
+
+                                            <?php
+                                                }if($linkRepoCodigo != null){
+                                            ?>
+                                                    <a href="<?php echo $linkRepoCodigo; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkRepoCodigo; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a>
+
+                                            <?php
+                                                }if($linkPresentacion != null){
+                                            ?>
+                                                    <a href="<?php echo $linkPresentacion; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkPresentacion; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a>
+
+                                            <?php
+                                                }
+                                            ?>  
+                                                                       
+                                        </div>
+
+                                    </div>
+                                    <div class="separador"></div>
+                                </div>
+
+                        <?php         
+                            }
+                        ?>
+ 
                     </div>
                 </div>
+
+
 
                 <!--SECCIÓN DE INSIGNIAS-->
                 <br>
@@ -185,112 +307,294 @@
                 <br>
                 <br>
                 <h4 class="subtitulosE-portafolio">Megainsignias obtenidas</h4>
-                <!--CODIGO DEL CONTENEDOR DE MEGAINSIGNIAS-->
-                <div class="contenedorMegaInsignias">
 
-                    <!--Asi se mostraria la insignia-->
-                    <div class="card-megaInsig">
-                        <a name="openModal2"><img class="imgMegaInsignia" src="/assets/images/badge_prueba muestreo.png" alt=""></a> 
-                    </div>
+                <?php
+                    //Consultamos los datos de las megainsignias ganadas por un trabajo destacado para su muestreo en el eportafolio online
+                    $sqlDatTrabDestacadosConMegaInsig = "SELECT id_trabajo, tipo_badge, id_competencia from tbl_insigniasganadastrabdestacado where codigo_estudiante=$idEstudianteLogueado and tipo_competencia='GENERAL'";
+                    $datosTrabDestacadosConMegaInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlDatTrabDestacadosConMegaInsig);
+                    foreach ($datosTrabDestacadosConMegaInsig as $key){
+
+                        //Consultamos los datos de los trabajos destacados que tienen megainsignia para su muestreo en el eportafolio online
+                        $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$key['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $datosTrabDestConMegaInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlInfoTrabDestacadosConMegaInsig);
+                        foreach ($datosTrabDestConMegaInsig as $item){
+                ?>
+                            <div class="cardTrabajoDestacadoConMegainsig">
+                        
+                                <div class="tituloTrabDestacado">
+                                    <label class="lblTituloTrabajo"><?php echo $item['nombre_trabajo']; ?></label>                    
+                                </div>  
+
+                                <!--Aqui traemos el nombre del badge de la competencia general para mostrar su insignia-->
+                                <?php 
+                                    $nombreDeBadgeCG = $competenciaControla->consultarNombreBadgeCompGeneralParaEportafolio($key['id_competencia'], $key['tipo_badge']);
+                                ?>
+                                
+                                <div class="alineacionCompTrabajoDestacadoConMega">
+                                    <img class="megaInsigDelTrabajo" src="<?php echo 'badgesImages/'.$nombreDeBadgeCG?>">
+                                </div>                                   
+                                    
+                            <?php 
+                                //Aqui se traen las imagenes de cada trabajo destacado con megainsignia
+                                $fotoDelTrabajoDestacadoConMega = $item['nombre_imagentrabajo'];
+                                if($fotoDelTrabajoDestacadoConMega != null){
+                            ?>
+                            
+                                    <div class="alineacionCompTrabajoDestacadoConMega">
+                                        <img class="imagenDelTrabajoDestacadoConMegaInsig" src="<?php echo "trabajosImages/".$item['nombre_imagentrabajo']?>">    
+                                    </div>
+
+                            <?php
+                                }else{
+                            ?>
+                                    <div class="alineacionCompTrabajoDestacadoConMega">
+                                        <img class="imagenDelTrabajoDestacadoConMegaInsig" src="assets/images/imgPorDefecto.jpg">
+                                    </div>
+                            <?php
+                                }
+                            ?> 
+                               
+                                <div class="alineacionCompTrabajoDestacadoConMega">
+                                    
+                                    <table>
+                                        <tr>
+                                            <td><div class="descripcionTrabajoMgInsig">
+                                                    <label class="tituloDescripcion">Descripción:</label>
+                                                    <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
+                                                    <p class="descripcionDelTrabajoDestacadoConMegaInsig"><?php echo $item['descripcion']; ?></p>
+                                            </div> </td>
+                                            <td><table class="tablaDeEvidencias"> 
+                                                <tr>
+
+                                                    <?php
+                                                        //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo alasque esten disponibles
+                                                        $linkDocumentoTrabConMega = $item['link_documento'];
+                                                        $linkVideoTrabConMega = $item['link_video'];
+                                                        $linkRepoCodigoTrabConMega = $item['link_repocodigo'];
+                                                        $linkPresentacionTrabConMega = $item['link_presentacion'];
+
+                                                        if($linkDocumentoTrabConMega != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkDocumentoTrabConMega; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkDocumentoTrabConMega; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a></td>
+
+                                                    <?php
+                                                        }if($linkVideoTrabConMega != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkVideoTrabConMega; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkVideoTrabConMega; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a></td>
+
+                                                    <?php
+                                                        }if($linkRepoCodigoTrabConMega != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkRepoCodigoTrabConMega; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkRepoCodigoTrabConMega; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a></td>
+
+                                                    <?php
+                                                        }if($linkPresentacionTrabConMega != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkPresentacionTrabConMega; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkPresentacionTrabConMega; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a></td>
+
+                                                    <?php
+                                                        }
+                                                    ?>  
+
+                                                </tr>
+                                            </table> </td>
+                                        </tr>
+                                    </table>
+                                   
+                                </div>                          
+                            </div> 
+                <?php
+                        }
+                    }
+                ?>
                 
-
-                    <!--Este texto aparece cuando no hay ninguna insignia en el contenedor-->
-                   <p id="lbl_contenedorMegaInsigniasVacio" class="contenedorVacio">Aún no tiene ninguna MegaInsignia para mostrar...</p>
-                </div>
 
                 <br>
                 <br>
                 <h4 class="subtitulosE-portafolio">Insignias obtenidas</h4>
-                <!--CODIGO DEL CONTENEDOR DE MEGAINSIGNIAS-->
-                <div class="contenedorInsignias">
+                
+                <?php
+                    //Consultamos los datos de las insignias ganadas por un trabajo destacado para su muestreo en el eportafolio online
+                    $sqlDatTrabDestacadosConInsig = "SELECT id_trabajo, tipo_badge, id_competencia from tbl_insigniasganadastrabdestacado where codigo_estudiante=$idEstudianteLogueado and tipo_competencia='ESPECIFICA'";
+                    $datosTrabDestacadosConInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlDatTrabDestacadosConInsig);
+                    foreach ($datosTrabDestacadosConInsig as $point){
 
-                    <div class="card-Insig">
-                        <a name="openModal2"><img class="imgInsignia" src="/assets/images/badge_prueba muestreo.png" alt=""></a>
-                    </div>
-
-                    <div class="card-Insig">
-                        <a name="openModal2"><img class="imgInsignia" src="/assets/images/badge_prueba muestreo.png" alt=""></a>
-                    </div>
-
-                    <div class="card-Insig">
-                        <a name="openModal2"><img class="imgInsignia" src="/assets/images/badge_prueba muestreo.png" alt=""></a>
-                    </div>
-                    
-                    <!--Este texto aparece cuando no hay ninguna insignia en el contenedor-->
-                    <p id=lbl_contenedorMegaInsigniasVacio" class="contenedorVacio">Aún no tiene ninguna Insignia para mostrar...</p>
-                </div>
-
-
-                <!--ESTRUCTURA DEL POPUP DE PUBLICACION DE E-PORTAFOLIO-->
-                 <div id="modal_container1" class="modal_container" name="modal_container">
-                    <div class="modal">
-                        <h3 class="titulo_seccion">Publicar e-portafolio</h3>
-                        <br>
-                        <p>¿Desea publicar su E-portafolio?</p>
-                        <br>
-                        <br>
-                        <a id="btn_publicarEportafolio" class="btn_publicarEportafolio" title="Si">Si</a>
-                        <a id="btn_cancelar1" class="btn_publicarEportafolio" title="No">No</a>
-                    </div>
-                </div>
-
-                <!--ESTRUCTURA DEL POPUP DE OCULTAR E-PORTAFOLIO-->
-                <div id="modal_container3" class="modal_container" name="modal_container">
-                    <div class="modal">
-                        <h3 class="titulo_seccion">Ocultar e-portafolio</h3>
-                        <br>
-                        <p>¿Desea ocultar su E-portafolio?</p>
-                        <br>
-                        <br>
-                        <a id="btn_ocultarEportafolio" class="btn_publicarEportafolio" title="Si">Si</a>
-                        <a id="btn_cancelar3" class="btn_publicarEportafolio" title="No">No</a>
-                    </div>
-                </div>
-
-                <!--ESTRUCTURA DEL POPUP PARA VER INFORMACION DEL TRABAJO CON EL QUE SE OBTUVO ESA MEGAINSIGNIA O INSIGNIA-->
-                <!--En esta ventana aparecerá la informacion del trabajo destacado que respalda la obtención de la insignia o Megainsignia-->
-                <div id="modal_container2" class="modal_container" name="modal_container">
-                    <div class="modal">
-                        
-                        <div class="imagenDelTrabajo">
-                            <img id=img_imagenDelTrabajo" class="imgEncabezadoInfoTrabajo" src="/assets/images/imgPorDefecto.jpg" alt="">
-                        </div>
-                        <br>
-
-                        <div class="modalBody">
-                            <h3 id="lbl_NombreDelTrabajo" class="titulo_seccion">TRABAJO RECONOCIDO DE PRUEBA 1</h3>
-                            <br>
+                        //Consultamos los datos de los trabajos destacados que tienen insignia para su muestreo en el eportafolio online
+                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $datosTrabDestConInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlInfoTrabDestacadosConInsig);
+                        foreach ($datosTrabDestConInsig as $like){
+                ?>
+                            <div class="cardTrabajoDestacadoConInsig">
                             
-                            <div class="informacionDelTrabajo">
-        
-                                <label class="subtitulosInfo">Descripción</label>
-                                <p id="lbl_descripcionDelTrabajo" class="descripcionDelTrabajo">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
-                                <br>
+                                <div class="tituloTrabDestacado">
+                                    <label class="lblTituloTrabajo"><?php echo $like['nombre_trabajo']; ?></label>                    
+                                </div>  
+                                
+                                <!--Aqui traemos el nombre del badge de la competencia especifica para mostrar su insignia-->
+                                <?php 
+                                    $nombreDeBadgeCE = $competenciaControla->consultarNombreBadgeCompEspecificaParaEportafolio($point['id_competencia'], $point['tipo_badge']);
+                                ?>
 
-                                <!-- Tabla con las evidencias del trabajo-->
-                                <table>
-                                    <tr>
-                                        <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Evidencias:</label></td>
-                                    </tr>
+                                <div class="alineacionCompTrabajoDestacado">
+                                    <img class="insigDelTrabajo" src="<?php echo 'badgesImages/'.$nombreDeBadgeCE?>">
+                                </div>
 
-                                    <tr>
-                                        <td><a id="link_evidenciaDocumento" href="" target="_blank"><img src="/assets/images/btn_evidenc_documento.PNG"></a></td>
-                                        <td class="columnaInfoEnunciado"><a id="link_evidenciaVideo" href="" target="_blank"><img src="/assets/images/btn_evidenc_video.png"></a></td>
-                                        <td class="columnaInfoEnunciado"><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="/assets/images/btn_evidenc_repocodigo.png"></a></td>
-                                        <td class="columnaInfoEnunciado"><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="/assets/images/btn_evidenc_presentacion.png"></a></td>                           
-                                        <td><label class="explicacionEvidencias">Haga click sobre cada uno de los iconos...</label></td>
-                                    </tr>
-                                </table>
-                                                    
-                                <br>
-                                <br>   
-                                <a id="btn_cancelar2" class="btn_agregarTrabajo" title="Evaluar trabajo">Atrás</a> 
+                                <?php 
+                                    //Aqui se traen las imagenes de cada trabajo destacado con insignia
+                                    $fotoDelTrabajoDestacadoConInsig = $like['nombre_imagentrabajo'];
+                                    if($fotoDelTrabajoDestacadoConInsig != null){
+                                ?>
+                            
+                                        <div class="alineacionCompTrabajoDestacadoConMega">
+                                            <img class="imagenDelTrabajoDestacadoConInsig" src="<?php echo "trabajosImages/".$like['nombre_imagentrabajo']?>">    
+                                        </div>
+
+                                <?php
+                                    }else{
+                                ?>
+                                        <div class="alineacionCompTrabajoDestacado">
+                                            <img class="imagenDelTrabajoDestacadoConInsig" src="assets/images/imgPorDefecto.jpg">
+                                        </div>
+                                <?php
+                                    }
+                                ?>                                              
+                
+                                <div class="alineacionCompTrabajoDestacado">
+
+                                    <table>
+                                        <tr>
+                                            <td><div class="descripcionTrabajoConInsig">
+                                                <label class="tituloDescripcionTrabajoConInsig">Descripción:</label>
+                                                <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
+                                                <p class="descripcionDelTrabajoDestacadoConInsig"><?php echo $like['descripcion'];?></p>
+                                            </div></td>
+
+                                            <td><table class="tablaDeEvidencias"> 
+                                                <tr>
+
+                                                    <?php
+                                                        //Aqui se traen los links de las evidencias que tiene el trabajo y se activan de acuerdo a las que esten disponibles
+                                                        $linkDocumentoTrabConInsig = $like['link_documento'];
+                                                        $linkVideoTrabConInsig = $like['link_video'];
+                                                        $linkRepoCodigoTrabConInsig = $like['link_repocodigo'];
+                                                        $linkPresentacionTrabConInsig = $like['link_presentacion'];
+
+                                                        if($linkDocumentoTrabConInsig != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkDocumentoTrabConInsig; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkDocumentoTrabConInsig; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_documento.PNG"></a></td>
+
+                                                    <?php
+                                                        }if($linkVideoTrabConInsig != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkVideoTrabConInsig; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkVideoTrabConInsig; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_video.png"></a></td>
+
+                                                    <?php
+                                                        }if($linkRepoCodigoTrabConInsig != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkRepoCodigoTrabConInsig; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkRepoCodigoTrabConInsig; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_repocodigo.png"></a></td>
+
+                                                    <?php
+                                                        }if($linkPresentacionTrabConInsig != null){
+                                                    ?>
+                                                            <td class="casillaEvidencia"><a href="<?php echo $linkPresentacionTrabConInsig; ?>" target="_blank" class="linkDeEvidencia" title="<?php echo $linkPresentacionTrabConInsig; ?>"><img class="icoEvidencias" src="assets/images/btn_evidenc_presentacion.png"></a></td>
+
+                                                    <?php
+                                                        }
+                                                    ?>  
+
+                                                </tr>
+                                            </table></td>
+                                        </tr>
+
+                                    </table>
+
+                                </div>                          
+                            </div>   
+                    <?php
+                        }
+                    }
+                    ?>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <!-- ESTRUCTURA DEL POPUP PARA LA PUBLICACION DE UN EPORTAFOLIO -->
+                <div class="modal fade" id="modalPublicarEportafolio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Publicar e-portafolio</h3>
+                        </div>
+                        <form id="formularioDePublicacionEportafolio" action="EportafolioService/capturaDatEportafolio.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="text" name="IdEportafolioPublicar" value="<?php echo $idEstudianteLogueado;?>">
+                                <p>¿Desea publicar su eportafolio?</p>
                             </div>
+                            <div class="modal-footer">
+                                <button id="PublicEport" type="submit" name="publicarEportafolio" class="btn_publicarEportafolio" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("EportafolioService/capturaDatEportafolio.php") ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESTRUCTURA DEL POPUP PARA OCULTAR UN EPORTAFOLIO -->
+                <div class="modal fade" id="modalOcultarEportafolio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Ocultar e-portafolio</h3>
+                        </div>
+                        <form id="formularioDeOcultarEportafolio" action="EportafolioService/capturaDatEportafolio.php"  method="POST">
+                            <div class="modal-body">
+                                <input type="text" name="IdEportafolioOcultar" value="<?php echo $idEstudianteLogueado;?>">
+                                <p>¿Desea ocultar su eportafolio?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="ocultEport" type="submit" name="ocultarEportafolio" class="btn_publicarEportafolio" title="Si">Si</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="No">No</button> 
+                            </div>
+                        </form>
+                        <!--Incluimos el archivo con la logica del formulario-->
+                        <?php include("EportafolioService/capturaDatEportafolio.php") ?>
                         </div>
                     </div>
                 </div>
 
             </main>
         </div>
+<?php
+}
+?>
+
     </body>
 </html>
