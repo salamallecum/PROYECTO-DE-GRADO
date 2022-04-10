@@ -211,4 +211,105 @@
         }
     }
 
+
+    //Capturamos el evento del boton de aplicacion de los trabajos destacados a propuestas
+    if(isset($_POST['aplicarAUnaPropuesta'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDeLaPropuesta= trim($_POST['Id']);
+        $idDelEstudianteQueAplicaPropuesta= trim($_POST['idEstudiante']);
+        $cmbTrabajoAAplicarPropuesta = $_REQUEST['cmbTrabajos'];
+        $fechaDeAplicacionAPropuesta = date('Y-m-d');  
+ 
+        //Validamos que los campos no se encuentren vacios
+        if($cmbTrabajoAAplicarPropuesta != 'seleccione'){
+
+            if($trabajoDestControla->aplicarTrabajoDestacado(0, $idDelEstudianteQueAplicaPropuesta, $cmbTrabajoAAplicarPropuesta, $idDeLaPropuesta,'DESAF PERSONAL', $fechaDeAplicacionAPropuesta) == 1){
+
+                //Le quitamos la disponibilidad al trabajo destacado postulado, paraque no se pueda volver a aplicar
+                $trabajoDestControla->quitarDisponibilidadATrabajoDestacado($cmbTrabajoAAplicarPropuesta);
+
+                ?>
+                <h3 class="indicadorSatisfactorio">* Trabajo aplicado satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    //Capturamos el evento del boton de aplicacion de los trabajos destacados a desafios
+    if(isset($_POST['aplicarAUnDesafio'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDelDesafio= trim($_POST['id_desafio']);
+        $idDelEstudianteQueAplicaDesafio= trim($_POST['idEstudiante']);
+        $cmbTrabajoAAplicarDesafio = $_REQUEST['cmbTrabajos'];
+        $fechaDeAplicacionADesafio = date('Y-m-d');  
+ 
+        //Validamos que los campos no se encuentren vacios
+        if($cmbTrabajoAAplicarDesafio != 'seleccione'){
+
+            if($trabajoDestControla->aplicarTrabajoDestacado(0, $idDelEstudianteQueAplicaDesafio, $cmbTrabajoAAplicarDesafio, $idDelDesafio,'DESAFIO', $fechaDeAplicacionADesafio) == 1){
+
+                //Le quitamos la disponibilidad al trabajo destacado postulado, paraque no se pueda volver a aplicar
+                $trabajoDestControla->quitarDisponibilidadATrabajoDestacado($cmbTrabajoAAplicarDesafio);
+
+                ?>
+                <h3 class="indicadorSatisfactorio">* Trabajo aplicado satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    //Capturamos el evento del boton de aplicacion de los trabajos destacados a eventos
+    if(isset($_POST['aplicarAUnEvento'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDelEvento= trim($_POST['id_evento']);
+        $idDelEstudianteQueAplicaEvento= trim($_POST['idEstudiante']);
+        $cmbTrabajoAAplicarEvento = $_REQUEST['cmbTrabajos'];
+        $fechaDeAplicacionAEvento = date('Y-m-d');  
+ 
+        //Validamos que los campos no se encuentren vacios
+        if($cmbTrabajoAAplicarEvento != 'seleccione'){
+
+            if($trabajoDestControla->aplicarTrabajoDestacado(0, $idDelEstudianteQueAplicaEvento, $cmbTrabajoAAplicarEvento, $idDelEvento,'EVENTO', $fechaDeAplicacionAEvento) == 1){
+
+                //Le quitamos la disponibilidad al trabajo destacado postulado, paraque no se pueda volver a aplicar
+                $trabajoDestControla->quitarDisponibilidadATrabajoDestacado($cmbTrabajoAAplicarEvento);
+
+                ?>
+                <h3 class="indicadorSatisfactorio">* Trabajo aplicado satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    //Capturamos el evento del boton de aplicacion de los trabajos destacados a convocatorias
+    if(isset($_POST['aplicarAUnaConvocatoria'])){
+
+        //Capturamos los datos de los campos del formulario
+        $idDeConvocatoria= trim($_POST['Id']);
+        $idDelEstudianteQueAplicaConvocatoria= trim($_POST['idEstudiante']);
+        $cmbTrabajoAAplicarConvocatoria = $_REQUEST['cmbTrabajos'];
+        $fechaDeAplicacionAConvocatoria = date('Y-m-d');  
+ 
+        //Validamos que los campos no se encuentren vacios
+        if($cmbTrabajoAAplicarConvocatoria != 'seleccione'){
+
+            if($trabajoDestControla->aplicarTrabajoDestacado(0, $idDelEstudianteQueAplicaConvocatoria, $cmbTrabajoAAplicarConvocatoria, $idDeConvocatoria,'CONVOCATORIA', $fechaDeAplicacionAConvocatoria) == 1){
+
+                //Le quitamos la disponibilidad al trabajo destacado postulado, paraque no se pueda volver a aplicar
+                $trabajoDestControla->quitarDisponibilidadATrabajoDestacado($cmbTrabajoAAplicarConvocatoria);
+
+                ?>
+                <h3 class="indicadorSatisfactorio">* Trabajo aplicado satisfactoriamente</h3>  
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
 ?>

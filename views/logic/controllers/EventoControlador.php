@@ -315,6 +315,20 @@ class EventoControlador{
                
         return $result = mysqli_query($conexion, $sql);
     }
+
+    //Funcion que nos permite verificar si un estudiante aplico a un evento con anterioridad
+    public function verificarSiElEstudianteYaAplicoAUnEvento(int $idStud, int $idEv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where Id_estudiante = $idStud and id_actividad = $idEv and tipo_actividad='EVENTO'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
 }
 
 ?>

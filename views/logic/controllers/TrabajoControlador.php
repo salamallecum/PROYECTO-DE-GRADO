@@ -259,5 +259,43 @@ class TrabajoControlador{
                
         return $result = mysqli_query($conexion, $sql);
     }
+
+    //Funcion que permite quitarle la disponibilidad a un trabajo destacado para que este no se pueda postular
+    public function quitarDisponibilidadATrabajoDestacado(int $idDelTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'Si' WHERE  Id=".$idDelTrabajo;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }
+
+    //Funcion que permite darle disponibilidad a un trabajo destacado para que este se pueda postular
+    public function darDisponibilidadATrabajoDestacado(int $idDelTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No' WHERE  Id=".$idDelTrabajo;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+
+    }
+
+    //Funcion que permite aplicar un trabajo destacado a una actividad
+    public function aplicarTrabajoDestacado(int $id, int $idDelEstudiante, int $idTrabajoAAplicar, int $idDeLaActividad, string $tipoActividad, $fechaDeAplicacion){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+        
+        $sql = "INSERT INTO tbl_aplicaciondetrabajos (Id, Id_estudiante, id_trabajo, id_actividad, tipo_actividad, fecha_aplicacion)
+                            values ($id, $idDelEstudiante, $idTrabajoAAplicar, $idDeLaActividad, '$tipoActividad', '$fechaDeAplicacion')";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+
+    }
+
 }
 ?>

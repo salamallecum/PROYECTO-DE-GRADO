@@ -459,6 +459,75 @@ if(isset($_REQUEST['downloadEnunDesafio'])){
     
 }
 
+//Capturamos el evento del id de un desafio para ver su informacion en modal de aplicacion de desafios"
+if(isset($_POST['idDesafioAAplicar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idDesafioAAplicar = $_POST['idDesafioAAplicar'];
+
+    $sql = "select * from tbl_desafio where id_desafio=".$idDesafioAAplicar;
+    $resultAplicacionDesafioDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayAplicacionDesafioDetail = array();
+    while($row =mysqli_fetch_assoc($resultAplicacionDesafioDetail))
+    {
+        $emparrayAplicacionDesafioDetail[] = $row;
+    }
+
+    echo json_encode($emparrayAplicacionDesafioDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un profesor para ver su informacion personal en modal de aplicacion de desafios"
+if(isset($_POST['idProfesorDesafioAAplicar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idProfesorDesafioAAplicar = $_POST['idProfesorDesafioAAplicar'];
+
+    $sql = "select * from tbl_usuario where id_usuario=".$idProfesorDesafioAAplicar;
+    $resultInfoProfesorDesafioDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayInfoProfesorDesafioDetail = array();
+    while($row =mysqli_fetch_assoc($resultInfoProfesorDesafioDetail))
+    {
+        $emparrayInfoProfesorDesafioDetail[] = $row;
+    }
+
+    echo json_encode($emparrayInfoProfesorDesafioDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un desafio con el fin de mostrar su imagen en el modal de alicacion a un desafio
+if(isset($_POST['idDesafioAAplicarImagen'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idDesafioAAplicarImagen = $_POST['idDesafioAAplicarImagen'];
+
+    //Evaluamos si la propuesta tiene una imagen registrada en BD
+    $elDesafioAplTieneImagen = $desafioControla->consultarNombreImagenDesafio($idDesafioAAplicarImagen);
+
+    if($elDesafioAplTieneImagen != null){
+        $imagenGuardadaDelDesafApl = '<img class="imgPropuestaDetalle" src="desafiosImages/'.$elDesafioAplTieneImagen.'" alt="">';
+        echo $imagenGuardadaDelDesafApl;
+    }else{
+        $imagenPorDefectoDeLaPropApl = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaPropApl;
+    }
+}
+
+if(isset($_POST['idDesafioAAplicarEnunciado'])){
+
+    $idDesafioAAplicarEnunciado = $_POST['idDesafioAAplicarEnunciado'];
+
+    //Evaluamos si el desafio personalizado tiene un enunciado registrado en BD
+    $elDesafioAplTieneEnunciado = $desafioControla->consultarNombreEnunciadoDesafio($idDesafioAAplicarEnunciado);
+
+    if($elDesafioAplTieneEnunciado  != null){
+        $botonDescargaEnunciadoAApl = '<a href="logic/utils/ajaxfile.php?downloadEnunDesafio='.$elDesafioAplTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciadoAApl;
+    }
+}
+
 
 
 
@@ -751,6 +820,56 @@ if(isset($_POST['idPropuestaDetallesModalRechazada'])){
 
     echo json_encode($emparrayPropuestaRechazDetail);
     exit;
+}
+
+//Capturamos el evento del id de una propuesta para ver su informacion en modal de aplicacion a propuestas"
+if(isset($_POST['idPropuestaAAplicar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaAAplicar = $_POST['idPropuestaAAplicar'];
+
+    $sql = "select * from tbl_desafiopersonal where Id=".$idPropuestaAAplicar;
+    $resultAplicacionPropuestaDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayAplicacionPropuestaDetail = array();
+    while($row =mysqli_fetch_assoc($resultAplicacionPropuestaDetail))
+    {
+        $emparrayAplicacionPropuestaDetail[] = $row;
+    }
+
+    echo json_encode($emparrayAplicacionPropuestaDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una propuesta con el fin de mostrar su imagen en el modal de alicacion a una propuesta
+if(isset($_POST['idPropuestaAAplicarImagen'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idPropuestaAAplicarImagen = $_POST['idPropuestaAAplicarImagen'];
+
+    //Evaluamos si la propuesta tiene una imagen registrada en BD
+    $laPropAplTieneImagen = $desafioControla->consultarSiLaPropuestaTieneImagen($idPropuestaAAplicarImagen);
+
+    if($laPropAplTieneImagen != null){
+        $imagenGuardadaDeLaPropApl = '<img class="imgPropuestaDetalle" src="desafiosPerImages/'.$laPropAplTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaPropApl;
+    }else{
+        $imagenPorDefectoDeLaPropApl = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaPropApl;
+    }
+}
+
+if(isset($_POST['idPropuestaAAplicarEnunciado'])){
+
+    $idPropuestaAAplicarEnunciado = $_POST['idPropuestaAAplicarEnunciado'];
+
+    //Evaluamos si el desafio personalizado tiene un enunciado registrado en BD
+    $laPropuestaAplTieneEnunciado = $desafioControla->consultarSiLaPropuestaTieneEnunciado($idPropuestaAAplicarEnunciado);
+
+    if($laPropuestaAplTieneEnunciado != null){
+        $botonDescargaEnunciadoAApl = '<a href="logic/utils/ajaxfile.php?downloadEnunPropuesta='.$laPropuestaAplTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciadoAApl;
+    }
 }
 
 
@@ -1141,6 +1260,76 @@ if(isset($_POST['idEventoParaConsultarNivelesContribCompetenciasEspecificasRegis
     echo json_encode($emparrayNivelesContribCompEspecificasPrevRegistradasEvento);
     exit;
 
+}
+
+//Capturamos el evento del id de un evento para ver su informacion en modal de aplicacion de eventos"
+if(isset($_POST['idEventoAAplicar'])){
+
+    //Aqui traemos los datos del evento para ver su informacion-----------------------------------
+    $idEventoAAplicar = $_POST['idEventoAAplicar'];
+
+    $sql = "select * from tbl_evento where id_evento=".$idEventoAAplicar;
+    $resultAplicacionEventoDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayAplicacionEventoDetail = array();
+    while($row =mysqli_fetch_assoc($resultAplicacionEventoDetail))
+    {
+        $emparrayAplicacionEventoDetail[] = $row;
+    }
+
+    echo json_encode($emparrayAplicacionEventoDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un profesor para ver su informacion personal en modal de aplicacion de eventos"
+if(isset($_POST['idProfesorEventoAAplicar'])){
+
+    //Aqui traemos los datos del evento para ver su informacion-----------------------------------
+    $idProfesorEventoAAplicar = $_POST['idProfesorEventoAAplicar'];
+
+    $sql = "select * from tbl_usuario where id_usuario=".$idProfesorEventoAAplicar;
+    $resultInfoProfesorEventoDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayInfoProfesorEventoDetail = array();
+    while($row =mysqli_fetch_assoc($resultInfoProfesorEventoDetail))
+    {
+        $emparrayInfoProfesorEventoDetail[] = $row;
+    }
+
+    echo json_encode($emparrayInfoProfesorEventoDetail);
+    exit;
+}
+
+//Capturamos el evento del id de un evento con el fin de mostrar su imagen en el modal de alicacion a un evento
+if(isset($_POST['idEventoAAplicarImagen'])){
+
+    //Aqui traemos los datos del evento para ver su informacion-----------------------------------
+    $idEventoAAplicarImagen = $_POST['idEventoAAplicarImagen'];
+
+    //Evaluamos si el evento tiene una imagen registrada en BD
+    $elEventoAplTieneImagen = $eventoControla->consultarNombreImagenEvento($idEventoAAplicarImagen);
+
+    if($elEventoAplTieneImagen != null){
+        $imagenGuardadaDelEvApl = '<img class="imgPropuestaDetalle" src="eventosImages/'.$elEventoAplTieneImagen.'" alt="">';
+        echo $imagenGuardadaDelEvApl;
+    }else{
+        $imagenPorDefectoDeLaPropApl = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaPropApl;
+    }
+}
+
+//Capturamos el evento del id de un evento con el fin de mostrar su enunciado en el modal de alicacion a un evento
+if(isset($_POST['idEventoAAplicarEnunciado'])){
+
+    $idEventoAAplicarEnunciado = $_POST['idEventoAAplicarEnunciado'];
+
+    //Evaluamos si el evento tiene un enunciado registrado en BD
+    $elEventoAplTieneEnunciado = $eventoControla->consultarNombreEnunciadoEvento($idEventoAAplicarEnunciado);
+
+    if($elEventoAplTieneEnunciado  != null){
+        $botonDescargaEnunciadoAApl = '<a href="logic/utils/ajaxfile.php?downloadEnunEvento='.$elEventoAplTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciadoAApl;
+    }
 }
 
 

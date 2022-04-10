@@ -64,7 +64,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php">
+                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php?Id_estudiante=38">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
                         </a>
@@ -106,33 +106,40 @@
             <main>
                 <div class="dash-cards">
                     
-                    <!--DISEÑO DE TARGETA DE CONVOCATORIA CREADA POR EL COMITE-->
-                    <div class="card-desafioOEvento">
-                        <div class="card-desafioOEventobody">
-                            <span class="imgContent"><img class="imgDesafioOEvento" src="assets/images/imgPorDefecto.jpg"></span>
-                            <div>
-                                <h4 class="tituloDesafioOEvento">CONVOCATORIA DE PRUEBA 1</h4>
-                                <br>
-                                <div class="contenedor_boton">
-                                    <a name="openModal" class="btn_agregarTrabajo" title="Ver detalles">Detalles</a>    
-                                </div>                             
-                            </div>
-                        </div>
-                    </div>
+                    
 
-                    <!--DISEÑO DE TARGETA DE CONVOCATORIA CREADA POR LA COORDINACIÓN DE PRÁCTICAS-->
-                    <div class="card-desafioOEvento">
-                        <div class="card-desafioOEventobody">
-                            <span class="imgContent"><img class="imgDesafioOEvento" src="assets/images/imgPorDefecto.jpg"></span>
-                            <div>
-                                <h4 class="tituloDesafioOEvento">CONVOCATORIA DE PRUEBA 2</h4>
-                                <br>
-                                <div class="contenedor_boton">
-                                    <a name="openModal2" class="btn_agregarTrabajo" title="Ver detalles">Detalles</a>    
-                                </div>                             
-                            </div>
-                        </div>
-                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
 
                     <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE CONVOCATORIAS CREADAS POR EL COMITE-->
                     <div id="modal_container1" class="modal_container" name="modal_container">

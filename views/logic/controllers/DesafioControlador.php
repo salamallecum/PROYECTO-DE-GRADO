@@ -631,13 +631,48 @@ class DesafioControlador{
         return $result = mysqli_query($conexion, $sql);
     }
 
-    //Funcion que nos permite verificar si un desafio tenia aplicaciones de trabajos de estudiantes en la plataforma
-    public function verificarSiElEstudianteTienePropuestasAprobadaParaUnDesafio(int $idStudent, int $idDes){
+    //Funcion que retorna un array con el listado de desafios con los que el estudiante tiene propuestas aprobadas
+    public function consultarDesafiosConLosQueElEstudianteTienePropuestasAprobadas(int $idStudent){
 
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT Id from tbl_desafiopersonal where Id_estudiante = $idStudent and idDesafioASustituir = $idDes and estado='Aprobada'";
+        $sql = "SELECT DISTINCT idDesafioASustituir from tbl_desafiopersonal where Id_estudiante = $idStudent and estado='Aprobada'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayDesafiosDelEstudianteConPropuestasAprobadas = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayDesafiosDelEstudianteConPropuestasAprobadas[$contador] = $row['idDesafioASustituir'];
+            $contador++;
+        }
+
+        return $emparrayDesafiosDelEstudianteConPropuestasAprobadas;
+    }
+
+    //Funcion que nos permite verificar si un estudiante aplico a un desafio personalizado con anterioridad
+    
+    public function verificarSiElEstudianteYaAplicoAUnaPropuesta(int $idStud, int $idProp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where Id_estudiante = $idStud and id_actividad = $idProp and tipo_actividad='DESAF PERSONAL'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que nos permite verificar si un estudiante aplico a un desafio con anterioridad
+    public function verificarSiElEstudianteYaAplicoAUnDesafio(int $idStud, int $idDes){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where Id_estudiante = $idStud and id_actividad = $idDes and tipo_actividad='DESAFIO'";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {

@@ -3,9 +3,11 @@
 require_once "logic/utils/Conexion.php";
 require_once "logic/controllers/DesafioControlador.php";
 require_once "logic/controllers/EventoControlador.php";
+require_once "logic/controllers/TrabajoControlador.php";
 
 $eventoControla = new EventoControlador();
 $desafioControla = new DesafioControlador();
+$trabajoControla = new TrabajoControlador();
 
 //Aqui capturamos el id del estudiante logueado
 if(isset($_GET['Id_estudiante']) != 0){
@@ -31,7 +33,6 @@ if(isset($_GET['Id_estudiante']) != 0){
         <link rel="stylesheet" href="assets/css/EstudianteStyles.css">
 
         <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpDesafiosOEventos.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
 
     </head>
@@ -121,74 +122,34 @@ if(isset($_GET['Id_estudiante']) != 0){
             <main>
             <div class="container mt-3">
                     <div class="row">
-                    
-                        <!--Script para cargar datos de los desafios en cards-->      
+                                            
                         <?php
-                            $sql = "SELECT id_desafio, nombre_desafio, nombre_imagen from tbl_desafio where estado = 'Activo'";
+
+                            //Consultamos los desafios con los que el estudiante tiene propuestas de desafios personalizadosaprobadas
+                            $arrayDesafiosEnLosQueElEstudianteTienePropAprobadas = $desafioControla->consultarDesafiosConLosQueElEstudianteTienePropuestasAprobadas($idEstudianteLogueado);
+
+                            //Convertimos el arreglo obtenido anteriormente a string
+                            $stringDesafiosEnLosQueElEstudianteTienePropAprobadas = implode(",", $arrayDesafiosEnLosQueElEstudianteTienePropAprobadas);
+
+                            $sql = "SELECT id_desafio, id_profesor, nombre_desafio, nombre_imagen from tbl_desafio where estado = 'Activo' and id_desafio not in ('$stringDesafiosEnLosQueElEstudianteTienePropAprobadas')";
                             $resultDatosDesafios = $desafioControla->mostrarDatosDesafiosEnCards($sql);
-                            while ($row = mysqli_fetch_row($resultDatosDesafios)){
+                            while ($point = mysqli_fetch_row($resultDatosDesafios)){    
                         ?>
                                 <?php
-                                    //Validamos si el desafio tiene un desafio personalizado previamente aprobado con anterioridad
-                                    $desafioEnCuestion = $row[0];
+                                    $desafioEnCuestion = $point[0];
 
-                                    $elDesafioTieneUnaPropuestaAprobadaPorElProfesor = $desafioControla->verificarSiElEstudianteTienePropuestasAprobadaParaUnDesafio($idEstudianteLogueado, $desafioEnCuestion);
-
-                                    if($elDesafioTieneUnaPropuestaAprobadaPorElProfesor != null){
-                                ?>
-
-                                        <!--Script para cargar datos de los desafios personalizados del estudiante en cards-->      
-                                        <?php
-                                            $sqlDesPers = "SELECT Id, nombre_desafioP, nombre_imagen from tbl_desafiopersonal where idDesafioASustituir=$desafioEnCuestion and estado = 'Aprobada' and Id_estudiante=".$idEstudianteLogueado;
-                                            $resultDatosDesPers = $desafioControla->mostrarDatosPropuestasEnCards($sqlDesPers);
-                                            while ($lex = mysqli_fetch_row($resultDatosDesPers)){
-                                        ?>
-                                                                        
-                                                <div class="col-lg-6 col-md-4 col-sm-12">
-                                                    <div class="separador"></div>
-                                                    <div class="tarjetaDesafioPersonalizado">
-                                                        
-                                                        <?php 
-                                                        //Aqui se traen las imagenes de cada desafio personalizado
-                                                        $nombreDeImgDesPer = $lex[2];
-
-                                                        if($nombreDeImgDesPer != null){
-
-                                                        ?>
-
-                                                            <img src='<?php echo "desafiosPerImages/".$nombreDeImgEv?>' class="imgCard" alt="..."> 
-
-                                                        <?php
-                                                        }else{
-                                                        ?>
-                                                        
-                                                            <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
-
-                                                        <?php    
-                                                        }                       
-                                                        ?>                                
-                                                        
-                                                        <h5 class="tituloTrabajo"><?php echo $lex[1];?></h5>
-                                                                                                
-                                                        <button id="btn_detallesDesafioPer" data-id="<?php echo $lex[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles">Detalles</button>
-                                                        
-                                                    </div>
-                                                    <div class="separador"></div>
-                                                </div>
-
-                                        <?php                    
-                                            }
+                                    //Consultamos si el estudiante ya aplicó con anterioridad a un desafio para no mostrarselo otra vez
+                                    $elDesafioYaTieneUnaAplicacionPrevia = $desafioControla->verificarSiElEstudianteYaAplicoAUnDesafio($idEstudianteLogueado, $desafioEnCuestion);
                                     
-                                    }else{
-                                    ?>
-
+                                    if($elDesafioYaTieneUnaAplicacionPrevia == null){     
+                                ?>
                                         <div class="col-lg-6 col-md-4 col-sm-12">
                                             <div class="separador"></div>
                                             <div class="tarjetaDesafio">
                                                 
                                                 <?php 
-                                                //Aqui se traen las imagenes de cada desafio
-                                                $nombreDeImg = $row[2];
+                                                //Aqui se traen las imagenes de cada desafio 
+                                                $nombreDeImg = $point[3];
 
                                                 if($nombreDeImg != null){
 
@@ -206,178 +167,976 @@ if(isset($_GET['Id_estudiante']) != 0){
                                                 }                       
                                                 ?>                                
                                                 
-                                                <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
+                                                <h5 class="tituloTrabajo"><?php echo $point[2];?></h5>
                                                 
-                                                <button id="btn_detallesDesafio" data-id="<?php echo $row[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles">Detalles</button>
+                                                <button class="btn_detallesDesafio" data-id="<?php echo $point[0];?>" data-profesor="<?php echo $point[1];?>" type="button"  data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles">Detalles</button>
                                                 
                                             </div>
                                             <div class="separador"></div>
                                         </div>
+                                <?php
+                                    } 
+                            }
+                       ?>
 
-                                    <?php
-                                    }
-                            }      
+
+                        <!--Script para cargar datos de los desafios personalizados en cards-->      
+                        <?php
+                            $sqlEv = "SELECT Id, nombre_desafioP, nombre_imagen, idDesafioASustituir from tbl_desafiopersonal where estado = 'Aprobada' and idDesafioASustituir in('$stringDesafiosEnLosQueElEstudianteTienePropAprobadas')";
+                            $resultDatosEventos = $eventoControla->mostrarDatosEventosEnCards($sqlEv);
+                            while ($jax = mysqli_fetch_row($resultDatosEventos)){
                         ?>
-                                
-                                                        
+                                <?php
+                                    $propuestaEnCuestion = $jax[0];
+
+                                    //Consultamos si el estudiante ya aplicó con anterioridad a un desafio personalizado para no mostrarselo otra vez
+                                    $laPropuestaYaTieneUnaAplicacionPrevia = $desafioControla->verificarSiElEstudianteYaAplicoAUnaPropuesta($idEstudianteLogueado, $propuestaEnCuestion);
+                                    
+                                    if($laPropuestaYaTieneUnaAplicacionPrevia == null){     
+                                ?>                      
+                                       
+                                       <div class="col-lg-6 col-md-4 col-sm-12">
+                                            <div class="separador"></div>
+                                            <div class="tarjetaDesafioPersonalizado">
+                                                
+                                                <?php 
+                                                //Aqui se traen las imagenes de cada propuesta
+                                                $nombreDeImgProp = $jax[2];
+
+                                                if($nombreDeImgProp != null){
+
+                                                ?>
+
+                                                    <img src='<?php echo "desafiosPerImages/".$nombreDeImgProp?>' class="imgCard" alt="..."> 
+
+                                                <?php
+                                                }else{
+                                                ?>
+                                                
+                                                    <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                <?php    
+                                                }                       
+                                                ?>                                
+                                                
+                                                <h5 class="tituloTrabajo"><?php echo $jax[1];?></h5>
+                                                
+                                                <div class="contentbtnDetalles">
+                                                    <button class="btn_detallesDesafioPer" data-id="<?php echo $jax[0];?>" data-desafio="<?php echo $jax[3];?>" type="button" data-bs-toggle="modal" data-bs-target="#modalDetallesPropuesta" title="Ver detalles">Detalles</button>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="separador"></div>
+                                        </div>
+                                                
+                        <?php                    
+                            }
+                        }
+
+                        ?>
+
+
+                         
                         <!--Script para cargar datos de los eventos en cards-->      
                         <?php
-                            $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen from tbl_evento where estado = 'Activo'";
+                            $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen, id_usuario from tbl_evento where estado = 'Activo'";
                             $resultDatosEventos = $eventoControla->mostrarDatosEventosEnCards($sqlEv);
                             while ($row = mysqli_fetch_row($resultDatosEventos)){
                         ?>
-                                                         
-                                <div class="col-lg-6 col-md-4 col-sm-12">
-                                    <div class="separador"></div>
-                                    <div class="tarjetaEvento">
-                                        
-                                        <?php 
-                                        //Aqui se traen las imagenes de cada evento
-                                        $nombreDeImgEv = $row[2];
+                                <?php
+                                    $eventoEnCuestion = $row[0];
 
-                                        if($nombreDeImgEv != null){
+                                    //Consultamos si el estudiante ya aplicó con anterioridad a un evento para no mostrarselo otra vez
+                                    $elEventoYaTieneUnaAplicacionPrevia = $eventoControla->verificarSiElEstudianteYaAplicoAUnEvento($idEstudianteLogueado, $eventoEnCuestion);
+                                    
+                                    if($elEventoYaTieneUnaAplicacionPrevia == null){     
+                                ?>                      
+                                       
+                                       <div class="col-lg-6 col-md-4 col-sm-12">
+                                            <div class="separador"></div>
+                                            <div class="tarjetaEvento">
+                                                
+                                                <?php 
+                                                //Aqui se traen las imagenes de cada evento
+                                                $nombreDeImgEv = $row[2];
 
-                                        ?>
+                                                if($nombreDeImgEv != null){
 
-                                            <img src='<?php echo "eventosImages/".$nombreDeImgEv?>' class="imgCard" alt="..."> 
+                                                ?>
 
-                                        <?php
-                                        }else{
-                                        ?>
-                                        
-                                            <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+                                                    <img src='<?php echo "eventosImages/".$nombreDeImgEv?>' class="imgCard" alt="..."> 
 
-                                        <?php    
-                                        }                       
-                                        ?>                                
-                                        
-                                        <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
-                                        
-                                        <div class="contentbtnDetalles">
-                                            <button id="btn_detallesEvento" data-id="<?php echo $row[0];?></h5>" type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles">Detalles</button>
+                                                <?php
+                                                }else{
+                                                ?>
+                                                
+                                                    <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                <?php    
+                                                }                       
+                                                ?>                                
+                                                
+                                                <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
+                                                
+                                                <div class="contentbtnDetalles">
+                                                    <button class="btn_detallesEvento" data-id="<?php echo $row[0];?>" data-profesor="<?php echo $row[3];?>" type="button" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles">Detalles</button>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="separador"></div>
                                         </div>
-                                        
-                                    </div>
-                                    <div class="separador"></div>
-                                </div>
-
+                                                
                         <?php                    
                             }
-}
+                        }
+
                         ?>
 
                     </div>
                 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE DESAFIOS O EVENTOS-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
+                <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE LOS DESAFIOS PERSONALIZADOS-->
+                <div class="modal fade" id="modalDetallesPropuesta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDePropuestaAAplicar" class="modal-body">
                             
-                            <div class="imagenDelDesafioOEvento">
-                                <img id=img_imagenDelDesafioOEvento" class="imgEncabezadoInfoActividad" src="/assets/images/imgPorDefecto.jpg" alt="">
-                            </div>
+                            <input type="hidden" id="idDesafioDetalles" name="Id" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen" value="">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafioP" value="" disabled>
                             <br>
 
-                            <div class="modalBody">
-                                <h3 id="lbl_NombreDelDesafioOEvento" class="titulo_seccion">DESAFIO DE PRUEBA</h3>
-                             
-                                <div class="informacionDelDesafioOEvento">
+                            <!--Aqui colocamos la imagen del desafio-->
+                            <span id="panelParaImagenDeLaPropuestaAAplicar"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" value="" disabled></textarea>
+                            <br>
+                            <br>
 
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Profesor:</label></td>
-                                            <td class="columnaInfoEnunciado"><p id="lbl_nombreDelEstudiante" class="enunciadoDesafioOEvento">PEPITO PEREZ</p></td>
-                                        </tr>
+                            <!--Aqui colocamos el enunciado del desafio-->
+                            <span id="panelParaEnunciadoDeLaPropuestaAAplicar"></span>
+                            <br>
 
-                                        <br>
+                            <table>
+                                <tr>
+                                    <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha de propuesta:</label>
+                                    <td class="columnaInfoEnunciado"><input type="text" class="infoDetallePropuesta" name="fecha_propuesta" disabled></td>
+                                </tr>
+                            </table> 
+                            <br>
 
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Correo:</label></td>
-                                            <td class="columnaInfoEnunciado"><p id="lbl_nombreDelEstudiante" class="enunciadoDesafioOEvento">pperez@unbosque.edu.co</p></td>
-                                        </tr>
+                            <table>
+                                <tr id="formFechasDeDesafioSustituido">
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
 
-                                    </table>
-                                    <br>
-            
-                                    <label class="subtitulosInfo">Descripción</label>
-                                    <p id="lbl_descripcionDelDesafioOEvento" class="enunciadoDesafioOEvento">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
-                                    <br>
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
 
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Enunciado:</label></td>
-                                            <td class="columnaInfoEnunciado"><a id="btn_descargarEnunciado" class="btn-fill pull-right btn btn-info" title="Descargar enunciado">Descargar</a></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha inicio:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                                
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha fin:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
-
-                                    <table>
-                                        <tr>
-                                            <td><label class="subtitulosInfo">Estado de la actividad:</label>  </td>
-                                            <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
-                                        </tr>
-
-                                    </table>
-                                                                
-                                    <br>
-                                    <br>    
-                                    <a id="btn_cancelar1" class="btn_agregarTrabajo" title="Atrás">Atrás</a>
-                                    <a id="openModal2" class="btn_agregarTrabajo" title="Aplicar">Aplicar</a>
-                                </div>
-                            </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atras">Atras</button> 
+                            <button type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalAplicarAPropuesta" title="Aplicar">Aplicar</button>
+                        
                         </div>
-                    </div>                    
-                    
-                    
-                    <!--ESTRUCTURA DEL POPUP DE APLICACION A DESAFIOS O EVENTOS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Aplicación a un Desafío o Evento</h3>
-                            <br>
-                            <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
-                            <br>
-                            <form class="">
-                                <select id="cmb_trabajosDestacadosDisponiblesParaAplicación" name="trabDispParaAplicación" class="form-control" name="cmb_semestre">
-                                    <option value="" selected>Seleccione</option>
-                                </select>
-                            </form>
-                            <br>
-                            <a id="btn_aplicarTrabajo" class="btn_agregarTrabajo" title="Aplicar trabajo">Aplicar</a>
-                            <a id="btn_cancelar2" class="btn_agregarTrabajo" title="Cancelar">Cancelar</a>
                         </div>
                     </div>
-                </div> 
+                    </div>
+
+                <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE LOS DESAFIOS-->
+                <div class="modal fade" id="modalDetallesDesafio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeDesafioAAplicar" class="modal-body">
+                            
+                            <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
+                            <input type="hidden" id="idprofeDesafio" name="id_profesor" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafio" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen de la propuesta-->
+                            <span id="panelParaImagenDelDesafio"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosProfesorDesafio">
+                                
+                                <label class="subtitulosInfo">Datos del profesor</label>
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_desafio" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui construimos el link para la descarga del archivo con el enunciado del desafio-->
+                            <span id="panelParaBotonDescargaEnunciadoDesafio"></span>
+                            <br>
+                            <br>
+                            
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
+                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atras">Atras</button> 
+                            <button type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalAplicarADesafio" title="Aplicar">Aplicar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE LOS EVENTOS-->
+                <div class="modal fade" id="modalDetallesEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeEventoAAplicar" class="modal-body">
+                            
+                            <input type="hidden" id="idDesafioDetalles" name="id_evento" value="">
+                            <input type="hidden" id="idprofeDesafio" name="id_usuario" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_evento" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del evento-->
+                            <span id="panelParaImagenDelEvento"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosProfesorEvento">
+                                
+                                <label class="subtitulosInfo">Datos del profesor</label>
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_evento" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui construimos el link para la descarga del archivo con el enunciado del evento-->
+                            <span id="panelParaBotonDescargaEnunciadoEvento"></span>
+                            <br>
+                            <br>
+                            
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
+                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atras">Atras</button> 
+                            <button type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalAplicarAEvento" title="Aplicar">Aplicar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--ESTRUCTURA DEL POPUP DE APLICACION A DESAFIOS PERSONALIZADOS-->
+                <div class="modal fade" id="modalAplicarAPropuesta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Aplicación a Desafio personalizado</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
+
+                            <div class="formulario-comparitEportafolio">
+                               
+                                <form id="formularioModalAplicarPropuesta" action="logic/capturaDatTrabajo.php" method="POST">
+                                    <input type="hidden" name="Id" value="">
+                                    <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado;?>">                                   
+                                
+                                    <select class="form-control" id="cmb_trabajosDestacados" name="cmbTrabajos" id="cmbtrabDestacados" required="true">
+                                        <option value="seleccione" selected>Seleccione</option>
+
+                                        <?php
+                                            
+                                            $obj = new TrabajoControlador();
+                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
+
+                                            foreach ($datosTrab as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                        
+                                    </select>                                    
+                                    <br>
+                                    
+                                    <span id="panelConfirmacionDeAplicación"></span>  
+
+                                    <button type="submit" name="aplicarAUnaPropuesta" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
+                                    <button id="btnCerrarModalAplicarAPropuesta" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesPropuesta" title="Cerrar">Cerrar</button>
+                                </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatTrabajo.php") ?>                                  
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--ESTRUCTURA DEL POPUP DE APLICACION A DESAFIOS -->
+                <div class="modal fade" id="modalAplicarADesafio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Aplicación a Desafio</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
+
+                            <div class="formulario-comparitEportafolio">
+                            
+                                <form id="formularioModalAplicarDesafio" action="logic/capturaDatTrabajo.php" method="POST">
+                                    <input type="hidden" name="id_desafio" value="">
+                                    <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado;?>"> 
+                                
+                                    <select class="form-control" id="cmb_trabajosDestacados" name="cmbTrabajos" required="true">
+                                        <option value="seleccione" selected>Seleccione</option>
+
+                                        <?php
+                                            
+                                            $obj = new TrabajoControlador();
+                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
+
+                                            foreach ($datosTrab as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                        
+                                    </select>                                    
+                                    <br>
+                                    
+                                    <span id="panelConfirmacionDeAplicación"></span>  
+
+                                    <button type="submit" name="aplicarAUnDesafio" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
+                                    <button id="btnCerrarModalAplicarAPropuesta" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Cerrar">Cerrar</button>
+                                </form>
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatTrabajo.php") ?>                                    
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+                <!--ESTRUCTURA DEL POPUP DE APLICACION A EVENTOS -->
+                <div class="modal fade" id="modalAplicarAEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="titulo_seccion" id="staticBackdropLabel">Aplicación a Evento</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
+
+                            <div class="formulario-comparitEportafolio">
+                            
+                                <form id="formularioModalAplicarEvento" action="logic/capturaDatTrabajo.php" method="POST">
+                                    <input type="hidden" name="id_evento" value="">
+                                    <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado;?>"> 
+                                
+                                    <select class="form-control" id="cmb_trabajosDestacados" name="cmbTrabajos" id="cmbtrabDestacados" required="true">
+                                        <option value="seleccione" selected>Seleccione</option>
+
+                                        <?php
+                                            
+                                            $obj = new TrabajoControlador();
+                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
+
+                                            foreach ($datosTrab as $key){
+                                        ?>
+
+                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                        
+                                    </select>                                    
+                                    <br>
+                                    
+                                    <span id="panelConfirmacionDeAplicación"></span>  
+
+                                    <button type="submit" name="aplicarAUnEvento" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
+                                    <button id="btnCerrarModalAplicarAPropuesta" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Cerrar">Cerrar</button>
+                                </form> 
+                                <!--Incluimos el archivo con la logica del formulario-->
+                                <?php include("logic/capturaDatTrabajo.php") ?>                                   
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                               
             </main>
         </div>
+<?php
+}
+?>
     </body>
+
+
+    <!--Script que permite pasar los datos de una propuesta  a la ventana modal Aplicacion a un desafio personalizado-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            
+            $('.btn_detallesDesafioPer').click(function(){
+                
+                var idPropuestaAAplicar = $(this).data('id');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idPropuestaAAplicar': idPropuestaAAplicar },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#detallesDePropuestaAAplicar';
+                    var modalShare = '#formularioModalAplicarPropuesta';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                        $('[name='+key+']', modalShare).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+        });
+    </script>
+
+    <!--Script que permite pasar el id de una propuesta con el fin de identificar si tiene imagen almacenada o no-->
+    <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesDesafioPer').click(function(){
+                        
+                    var idPropuestaAAplicarImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaPropuestaAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaAAplicarImagen': idPropuestaAAplicarImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaPropuestaAAplicar').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaPropuestaAAplicar();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesDesafioPer').click(function(){
+                        
+                    var idPropuestaAAplicarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaPropuestaAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idPropuestaAAplicarEnunciado': idPropuestaAAplicarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaEnunciadoDeLaPropuestaAAplicar').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaPropuestaAAplicar();                            
+                });
+            });
+        </script>
+
+         <!--Script que permite traer la fecha inicio y fecha fin del desafio al que contribuye una propuesta a aplicar-->
+         <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesDesafioPer').click(function(){
+                    
+                    var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data('desafio');
+                   
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioQSePretendeSustituirParaModalAprobada': idDesafioQSePretendeSustituirParaModalAprobada },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#formFechasDeDesafioSustituido';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--Script que permite pasar los datos de un desafio a la ventana modal Aplicacion a un desafio-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesDesafio').click(function(){
+                    
+                    var idDesafioAAplicar = $(this).data('id');
+                                    
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioAAplicar': idDesafioAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeDesafioAAplicar';
+                        var modalShare = '#formularioModalAplicarDesafio';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                            $('[name='+key+']', modalShare).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite traer los datos del profesor al modal de un desafio a aplicar-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesDesafio').click(function(){
+                    
+                    var idProfesorDesafioAAplicar = $(this).data('profesor');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idProfesorDesafioAAplicar': idProfesorDesafioAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#seccionDatosProfesorDesafio';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesDesafio').click(function(){
+                        
+                    var idDesafioAAplicarImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaDesafioAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioAAplicarImagen': idDesafioAAplicarImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDelDesafio').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaDesafioAAplicar();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un desafio con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesDesafio').click(function(){
+                        
+                    var idDesafioAAplicarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaDesafioAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDesafioAAplicarEnunciado': idDesafioAAplicarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciadoDesafio').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaDesafioAAplicar();                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar los datos de un evento a la ventana modal Aplicacion a un evento-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesEvento').click(function(){
+                    
+                    var idEventoAAplicar = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEventoAAplicar': idEventoAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeEventoAAplicar';
+                        var modalShare = '#formularioModalAplicarEvento';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                            $('[name='+key+']', modalShare).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite traer los datos del profesor al modal de un evento a aplicar-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesEvento').click(function(){
+                    
+                    var idProfesorEventoAAplicar = $(this).data('profesor');
+                                    
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idProfesorEventoAAplicar': idProfesorEventoAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#seccionDatosProfesorEvento';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un evento con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesEvento').click(function(){
+                        
+                    var idEventoAAplicarImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaEventoAAplicar() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEventoAAplicarImagen': idEventoAAplicarImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDelEvento').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaEventoAAplicar();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de un evento con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesEvento').click(function(){
+                        
+                    var idEventoAAplicarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaEventoAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idEventoAAplicarEnunciado': idEventoAAplicarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciadoEvento').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaEventoAAplicar();                            
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+        
 </html>

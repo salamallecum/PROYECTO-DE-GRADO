@@ -327,10 +327,6 @@ $idProfeLogueado = $_GET['Id_profesor'];
                             <textarea id="txt_ObservacionesALaPropuesta" name="observaciones" cols="80" placeholder="Escriba sus comentarios aquí" rows="8" class="textAreaObservacionesPropuesta" maxlength="300"></textarea>
                             <br>
                             <br>  
-                            
-                            <!--Aqui mostramos la confiramcion de quese aprobo o se rechazo la propuesta-->
-                            <span id="panelConfirmacionDeJuicio"></span>
-                            <br>
 
                             <button id="btn_detalleDesafioReferenciado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafioASustituirPR" title="Ver desafio">Ver desafio</button>   
                             <button id="btn_aprobarPropuesta" class="btn_agregarDesafio" title="Aprobar propuesta">Aprobar</button>
@@ -1395,105 +1391,6 @@ $idProfeLogueado = $_GET['Id_profesor'];
                 });
             });
         </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <!--Script que permite pasar los datos de una propuesta  a la ventana modal de detalles de la misma para el estado "Rechazada"-->
         <script type='text/javascript'>

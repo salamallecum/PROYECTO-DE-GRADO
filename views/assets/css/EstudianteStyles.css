@@ -1161,16 +1161,44 @@ img {
     box-sizing: border-box;
 }
 
-#btn_detallesDesafio{
+.btn_detallesDesafio{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
     margin-left: 36%;
 }
 
-#btn_detallesEvento{
+.btn_detallesEvento{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
     margin-left: 36%;
 }
 
-#btn_detallesDesafioPer{
+.btn_detallesDesafioPer{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
     margin-left: 36%;
+}
+
+.subtitulosInfo{
+    font-weight: bold;
 }
 
 .tarjetaEvento{
@@ -1251,6 +1279,12 @@ img {
 .infoDetallePropuesta {
     border: 0;
     outline: none;
+}
+
+.email_infoDetallePropuesta {
+    border: 0;
+    outline: none;
+    width: 70%;
 }
 
 .infoDetalleDesafio {
