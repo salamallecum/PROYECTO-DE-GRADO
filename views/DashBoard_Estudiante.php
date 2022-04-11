@@ -76,7 +76,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php">
+                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php?Id_estudiante=38">
                             <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>

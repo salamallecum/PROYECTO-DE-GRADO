@@ -70,4 +70,22 @@ if(isset($_POST['ocultarEportafolio'])){
     header("Location: " . $_SERVER["HTTP_REFERER"]);
 }
 
+//Capturamos el evento del boton de aplicacion del eportafolio a convocatorias
+if(isset($_POST['aplicarEportafolioAUnaConvocatoria'])){
+
+    //Capturamos los datos de los campos del formulario
+    $idDeConvocatoria= trim($_POST['Id']);
+    $idDelEstudianteQueAplicaConvocatoria= trim($_POST['idEstudiante']);
+    $fechaDeAplicacionAConvocatoria = date('Y-m-d');
+
+    if($eportafolioControla->aplicarEportafolio(0, $idDelEstudianteQueAplicaConvocatoria, $idDeConvocatoria, $fechaDeAplicacionAConvocatoria) == 1){
+
+        ?>
+        <h3 class="indicadorSatisfactorio">* Eportafolio aplicado satisfactoriamente</h3>  
+        <?php
+        header("Location: " . $_SERVER["HTTP_REFERER"]);
+    }
+    
+}
+
 ?>

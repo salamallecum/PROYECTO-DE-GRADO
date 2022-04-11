@@ -94,7 +94,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php">
+                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php?Id_estudiante=38">
                             <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
@@ -236,7 +236,6 @@ if(isset($_GET['Id_estudiante']) != 0){
                         ?>
 
 
-                         
                         <!--Script para cargar datos de los eventos en cards-->      
                         <?php
                             $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen, id_usuario from tbl_evento where estado = 'Activo'";
@@ -578,9 +577,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                                         
                                     </select>                                    
                                     <br>
-                                    
-                                    <span id="panelConfirmacionDeAplicación"></span>  
-
+                                
                                     <button type="submit" name="aplicarAUnDesafio" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
                                     <button id="btnCerrarModalAplicarAPropuesta" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Cerrar">Cerrar</button>
                                 </form>
@@ -630,8 +627,6 @@ if(isset($_GET['Id_estudiante']) != 0){
                                         
                                     </select>                                    
                                     <br>
-                                    
-                                    <span id="panelConfirmacionDeAplicación"></span>  
 
                                     <button type="submit" name="aplicarAUnEvento" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
                                     <button id="btnCerrarModalAplicarAPropuesta" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Cerrar">Cerrar</button>
@@ -1109,34 +1104,5 @@ if(isset($_GET['Id_estudiante']) != 0){
                 });
             });
         </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-        
+    
 </html>

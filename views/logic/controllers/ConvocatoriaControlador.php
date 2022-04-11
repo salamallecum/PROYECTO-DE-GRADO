@@ -12,6 +12,26 @@ class ConvocatoriaControlador{
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
+    //Funcion que permite mostrar las convocatorias comite en cards paraque el estudiante pueda postularse
+    public function mostrarDatosConvocatoriasComiteEnCards($sqlConvCom){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sqlConvCom);
+        return $result;
+    }
+
+    //Funcion que permite mostrar las convocatorias practicas en cards para que el estudiante pueda postularse
+    public function mostrarDatosConvocatoriasPracticasEnCards($sqlConvPrac){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $result = mysqli_query($conexion, $sqlConvPrac);
+        return $result;
+    }
+
     
     //Funcion que permite consultar una convocatoria practicas a editar
     public function consultarConvocatoriaPracticasAEditar($idConvocatoriaAEditar){
@@ -616,6 +636,34 @@ class ConvocatoriaControlador{
         $sql = "DELETE from tbl_aplicaciondetrabajos where id_actividad = $idConv and tipo_actividad='CONVOCATORIA'";     
                
         return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que nos permite verificar si un estudiante aplico a unaconvocatoria con anterioridad
+    public function verificarSiElEstudianteYaAplicoAUnaConvocatoriaComite(int $idStud, int $idConvCom){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicaciondetrabajos where Id_estudiante = $idStud and id_actividad = $idConvCom and tipo_actividad='CONVOCATORIA'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
+    }
+
+    //Funcion que nos permite verificar si un estudiante aplico a una convocatoria practicas con anterioridad
+    public function verificarSiElEstudianteYaAplicoAUnaConvocatoriaPracticas(int $idStud, int $idConvPrac){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT Id from tbl_aplicacioneportafolio where Id_portafolioEstudiante = $idStud and id_convocatoria = $idConvPrac";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['Id'];
+        }
     }
 }
 ?>

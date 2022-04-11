@@ -1843,6 +1843,126 @@ if(isset($_POST['idConvocatoriaAsigCompetencias'])){
     exit;
 }
 
+//Capturamos el evento del id de una convocatoria comite para ver su informacion en modal de aplicacion a convocatorias"
+if(isset($_POST['idConvComAAplicar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idConvComAAplicar = $_POST['idConvComAAplicar'];
+
+    $sql = "select * from tbl_convocatoriacomite where Id=".$idConvComAAplicar;
+    $resultAplicacionConvComDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayAplicacionConvComDetail = array();
+    while($row =mysqli_fetch_assoc($resultAplicacionConvComDetail))
+    {
+        $emparrayAplicacionConvComDetail[] = $row;
+    }
+
+    echo json_encode($emparrayAplicacionConvComDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria comite con el fin de mostrar su imagen en el modal de alicacion a una convocatoria
+if(isset($_POST['idConvComAAplicarImagen'])){
+
+    //Aqui traemos los datos de la convocatoria para ver su informacion-----------------------------------
+    $idConvComAAplicarImagen = $_POST['idConvComAAplicarImagen'];
+
+    //Evaluamos si la convocatoria tiene una imagen registrada en BD
+    $laConvComAplTieneImagen = $convocatoriaControla->consultarNombreImagenConvocatoriaComite($idConvComAAplicarImagen);
+
+    if($laConvComAplTieneImagen != null){
+        $imagenGuardadaDeLaConvComApl = '<img class="imgPropuestaDetalle" src="convocatoriasImages/'.$laConvComAplTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaConvComApl;
+    }else{
+        $imagenPorDefectoDeLaPropApl = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaPropApl;
+    }
+}
+
+if(isset($_POST['idConvComAAplicarEnunciado'])){
+
+    $idConvComAAplicarEnunciado = $_POST['idConvComAAplicarEnunciado'];
+
+    //Evaluamos si la convocatoria comite tiene un enunciado registrado en BD
+    $laConvComAplTieneEnunciado = $convocatoriaControla->consultarNombreEnunciadoConvocatoriaComite($idConvComAAplicarEnunciado);
+
+    if($laConvComAplTieneEnunciado != null){
+        $botonDescargaEnunciadoAApl = '<a href="logic/utils/ajaxfile.php?download='.$laConvComAplTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciadoAApl;
+    }
+}
+
+//Capturamos el evento del id de un profesor para ver su informacion personal en modal de aplicacion de convocatorias"
+if(isset($_POST['idProfesorConvocatoriaAAplicar'])){
+
+    //Aqui traemos los datos de la convocatoria para ver su informacion-----------------------------------
+    $idProfesorConvocatoriaAAplicar = $_POST['idProfesorConvocatoriaAAplicar'];
+
+    $sql = "select * from tbl_usuario where id_usuario=".$idProfesorConvocatoriaAAplicar;
+    $resultInfoProfesorConvocatoriaDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayInfoProfesorConvocatoriaDetail = array();
+    while($row =mysqli_fetch_assoc($resultInfoProfesorConvocatoriaDetail))
+    {
+        $emparrayInfoProfesorConvocatoriaDetail[] = $row;
+    }
+
+    echo json_encode($emparrayInfoProfesorConvocatoriaDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria practicas para ver su informacion en modal de aplicacion a convocatorias"
+if(isset($_POST['idConvPracticasAAplicar'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idConvPracticasAAplicar = $_POST['idConvPracticasAAplicar'];
+
+    $sql = "select * from tbl_convocatoriapracticas where Id=".$idConvPracticasAAplicar;
+    $resultAplicacionConvPracDetail = mysqli_query($conexion,$sql);   
+    
+    $emparrayAplicacionConvPracDetail = array();
+    while($row =mysqli_fetch_assoc($resultAplicacionConvPracDetail))
+    {
+        $emparrayAplicacionConvPracDetail[] = $row;
+    }
+
+    echo json_encode($emparrayAplicacionConvPracDetail);
+    exit;
+}
+
+//Capturamos el evento del id de una convocatoria practicas con el fin de mostrar su imagen en el modal de alicacion a una convocatoria
+if(isset($_POST['idConvPracticasAAplicarImagen'])){
+
+    //Aqui traemos los datos de la convocatoria para ver su informacion-----------------------------------
+    $idConvPracticasAAplicarImagen = $_POST['idConvPracticasAAplicarImagen'];
+
+    //Evaluamos si la convocatoria tiene una imagen registrada en BD
+    $laConvPracAplTieneImagen = $convocatoriaControla->consultarNombreImagenConvocatoriaPracticas($idConvPracticasAAplicarImagen);
+
+    if($laConvPracAplTieneImagen != null){
+        $imagenGuardadaDeLaConvPracApl = '<img class="imgPropuestaDetalle" src="convocatoriasImages/'.$laConvPracAplTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeLaConvPracApl;
+    }else{
+        $imagenPorDefectoDeLaPropApl = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeLaPropApl;
+    }
+}
+
+if(isset($_POST['idConvPracAAplicarEnunciado'])){
+
+    $idConvPracAAplicarEnunciado = $_POST['idConvPracAAplicarEnunciado'];
+
+    //Evaluamos si la convocatoria practicas tiene un enunciado registrado en BD
+    $laConvPracAplTieneEnunciado = $convocatoriaControla->consultarNombreEnunciadoConvocatoriaPracticas($idConvPracAAplicarEnunciado);
+
+    if($laConvPracAplTieneEnunciado != null){
+        $botonDescargaEnunciadoAApl = '<a href="logic/utils/ajaxfile.php?download='.$laConvPracAplTieneEnunciado.'" class="btn_agregarDesafio" title="Descargar enunciado">Descargar Enunciado</a><br><br>';
+        echo $botonDescargaEnunciadoAApl;
+    }
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------------//
 //---------------------------------------------------SECCION COMPETENCIAS----------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//

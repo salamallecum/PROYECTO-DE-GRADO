@@ -1213,6 +1213,12 @@ img {
     box-sizing: border-box;
 }
 
+.tarjetaConvocatoria{
+    height: 95%;
+    background: #99a9e8;
+    box-sizing: border-box;
+}
+
 /*--------------------------DESAFIOS PERSONALIZADOS*--------------------------*/
 .btn_agregarPropuesta{
     color: #fff;
@@ -1369,4 +1375,28 @@ thead{
 .descripcionConvocatoria{
     padding-right: 10px;
     padding-left: 10px;
+}
+
+.btn_detallesConvocatoria{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 36%;
+}
+
+.btn_detallesConvocatoriaPrac{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 36%;
 }

@@ -1,3 +1,19 @@
+<?php
+
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/ConvocatoriaControlador.php";
+require_once "logic/controllers/TrabajoControlador.php";
+
+$convocatoriaControla = new ConvocatoriaControlador();
+$trabajoControla = new TrabajoControlador();
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+    $idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -16,7 +32,6 @@
         <link rel="stylesheet" href="assets/css/EstudianteStyles.css">
 
         <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpAplicacionAConvocatorias_Estudiante.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
 
     </head>
@@ -78,7 +93,7 @@
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php">
+                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.phpId_estudiante=38">
                             <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
@@ -104,183 +119,580 @@
             </header>
 
             <main>
-                <div class="dash-cards">
-                    
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <div class="container mt-3">
+                    <div class="row">
                 
+                        <!--Script para cargar datos de las convocatorias comite en cards-->      
+                        <?php
+                            $sqlConvCom = "SELECT Id, nombre_convocatoria, nombre_imagen, id_usuario from tbl_convocatoriacomite where estado = 'Activo'";
+                            $resultDatosConvComite = $convocatoriaControla->mostrarDatosConvocatoriasComiteEnCards($sqlConvCom);
+                            while ($row = mysqli_fetch_row($resultDatosConvComite)){
+                        ?>
+                                <?php
+                                    $convocatoriaEnCuestion = $row[0];
 
-                    <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE CONVOCATORIAS CREADAS POR EL COMITE-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            
-                            <div class="imagenDelDesafioOEvento">
-                                <img id=img_imagenDelDesafioOEvento" class="imgEncabezadoInfoActividad" src="/assets/images/imgPorDefecto.jpg" alt="">
-                            </div>
-                            <br>
+                                    //Consultamos si el estudiante ya aplicó con anterioridad a una convocatoria comite para no mostrarselo otra vez
+                                    $laConvocatoriaComiteYaTieneUnaAplicacionPrevia = $convocatoriaControla->verificarSiElEstudianteYaAplicoAUnaConvocatoriaComite($idEstudianteLogueado, $convocatoriaEnCuestion );
+                                    
+                                    if($laConvocatoriaComiteYaTieneUnaAplicacionPrevia == null){     
+                                ?>                      
+                                        
+                                        <div class="col-lg-6 col-md-4 col-sm-12">
+                                            <div class="separador"></div>
+                                            <div class="tarjetaConvocatoria">
+                                                
+                                                <?php 
+                                                //Aqui se traen las imagenes de cada convocatoria
+                                                $nombreDeImgConvCom = $row[2];
 
-                            <div class="modalBody">
-                                <h3 id="lbl_NombreDelDesafioOEvento" class="titulo_seccion">CONVOCATORIA DE PRUEBA 1</h3>
-                             
-                                <div class="informacionDelDesafioOEvento">
+                                                if($nombreDeImgConvCom != null){
 
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Profesor:</label></td>
-                                            <td class="columnaInfoEnunciado"><p id="lbl_nombreDelEstudiante" class="enunciadoDesafioOEvento">PEPITO PEREZ</p></td>
-                                        </tr>
+                                                ?>
+
+                                                    <img src='<?php echo "convocatoriasImages/".$nombreDeImgConvCom?>' class="imgCard" alt="..."> 
+
+                                                <?php
+                                                }else{
+                                                ?>
+                                                
+                                                    <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                <?php    
+                                                }                       
+                                                ?>                                
+                                                
+                                                <h5 class="tituloTrabajo"><?php echo $row[1];?></h5>
+                                                
+                                                <div class="contentbtnDetalles">
+                                                    <button class="btn_detallesConvocatoria" data-id="<?php echo $row[0];?>" data-profesor="<?php echo $row[3];?>" type="button" data-bs-toggle="modal" data-bs-target="#modalDetallesConvComite" title="Ver detalles">Detalles</button>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="separador"></div>
+                                        </div>
+                                                
+                            <?php                    
+                                }
+                            }                    
+                            ?>
+
+                            <!--Script para cargar datos de las convocatorias practicas en cards-->      
+                            <?php
+                                $sqlConvPrac = "SELECT Id, nombre_convocatoria, nombre_imagen from tbl_convocatoriapracticas";
+                                $resultDatosConvPracticas = $convocatoriaControla->mostrarDatosConvocatoriasPracticasEnCards($sqlConvPrac);
+                                while ($lex = mysqli_fetch_row($resultDatosConvPracticas)){
+                            ?>
+                                    <?php
+                                        $convocatoriaPracEnCuestion = $lex[0];
+
+                                        //Consultamos si el estudiante ya aplicó con anterioridad a una convocatoria practicas para no mostrarsela otra vez
+                                        $laConvocatoriaPracticasYaTieneUnaAplicacionPrevia = $convocatoriaControla->verificarSiElEstudianteYaAplicoAUnaConvocatoriaPracticas($idEstudianteLogueado, $convocatoriaPracEnCuestion );
+                                        
+                                        if($laConvocatoriaPracticasYaTieneUnaAplicacionPrevia == null){     
+                                    ?>                      
+                                            
+                                            <div class="col-lg-6 col-md-4 col-sm-12">
+                                                <div class="separador"></div>
+                                                <div class="tarjetaConvocatoria">
+                                                    
+                                                    <?php 
+                                                    //Aqui se traen las imagenes de cada convocatoria
+                                                    $nombreDeImgConvPrac = $lex[2];
+
+                                                    if($nombreDeImgConvPrac != null){
+
+                                                    ?>
+
+                                                        <img src='<?php echo "convocatoriasImages/".$nombreDeImgConvPrac?>' class="imgCard" alt="..."> 
+
+                                                    <?php
+                                                    }else{
+                                                    ?>
+                                                    
+                                                        <img src="assets/images/imgPorDefecto.jpg" class="imgCard" alt="..."> 
+
+                                                    <?php    
+                                                    }                       
+                                                    ?>                                
+                                                    
+                                                    <h5 class="tituloTrabajo"><?php echo $lex[1];?></h5>
+                                                    
+                                                    <div class="contentbtnDetalles">
+                                                        <button class="btn_detallesConvocatoriaPrac" data-id="<?php echo $lex[0];?>" type="button" data-bs-toggle="modal" data-bs-target="#modalDetallesConvPracticas" title="Ver detalles">Detalles</button>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="separador"></div>
+                                            </div>
+                                                
+                                <?php                    
+                                    }
+                                }                    
+                                ?>
+
+                    
+
+                        <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE LAS CONVOCATORIAS DE COMITE-->
+                        <div class="modal fade" id="modalDetallesConvComite" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                
+                                <div id="detallesDeConvComAAplicar" class="modal-body">
+                                    
+                                    <input type="hidden" id="idConvocatoriaDetalles" name="Id" value="">
+                                    <input type="hidden" id="idprofeConvCom" name="id_usuario" value="">
+                                    <input type="hidden" id="nombreEnunciadoConvDetalles" name="nombre_enunciado">
+                                    <input type="hidden" id="nombreImagenConvDetalles" name="nombre_imagen">
+                                    
+                                    <input type="text" class="detalleNombrePropuesta" name="nombre_convocatoria" disabled>
+                                    <br>
+
+                                    <!--Aqui colocamos la imagen de la convocatoria-->
+                                    <span id="panelParaImagenDeConvocatoriaComite"></span>
+                                    <br>
+                                    <br>
+
+                                    <form id="seccionDatosProfesorConvocatoria">
+                                        
+                                        <label class="subtitulosInfo">Datos del profesor</label>
+                                        <table>
+                                            <tr>
+                                                <td><label class="subtitulosInfo">Nombres:</label><br>
+                                                <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                                <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                                <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                            </tr>
+                                        </table>
 
                                         <br>
 
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Correo:</label></td>
-                                            <td class="columnaInfoEnunciado"><p id="lbl_nombreDelEstudiante" class="enunciadoDesafioOEvento">pperez@unbosque.edu.co</p></td>
-                                        </tr>
+                                        <label class="subtitulosInfo">Correo:</label><br>
+                                        <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
 
-                                    </table>
+                                    </form>                       
                                     <br>
-            
-                                    <label class="subtitulosInfo">Descripción</label>
-                                    <p id="lbl_descripcionDelDesafioOEvento" class="enunciadoDesafioOEvento">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
+                                                                    
+                                    <label class="subtitulosInfo">Descripción</label><br>
+                                    <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_convocatoria" disabled></textarea>
+                                    <br>
                                     <br>
 
+                                    <!--Aqui construimos el link para la descarga del archivo con el enunciado de la convocatoria-->
+                                    <span id="panelParaBotonDescargaEnunciadoConvocatoria"></span>
+                                    <br>
+                                    
                                     <table>
                                         <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Enunciado:</label></td>
-                                            <td class="columnaInfoEnunciado"><a id="btn_descargarEnunciado" class="btn-fill pull-right btn btn-info" title="Descargar enunciado">Descargar</a></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha inicio:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                                
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha fin:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
+                                            <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                            <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
 
-                                    <table>
-                                        <tr>
-                                            <td><label class="subtitulosInfo">Estado de la actividad:</label>  </td>
-                                            <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
+                                            <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                            <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
                                         </tr>
-
-                                    </table>
-                                                                
+                                    </table>                           
                                     <br>
-                                    <br>    
-                                    <a id="btn_cancelar1" class="btn_agregarTrabajo" title="Atrás">Atrás</a>
-                                    <a id="openModal3" class="btn_agregarTrabajo" title="Aplicar">Aplicar</a>
+                                    
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atras">Atras</button> 
+                                    <button type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalAplicarAConvocatoriaComite" title="Aplicar">Aplicar</button>
+
+                                </div>
                                 </div>
                             </div>
                         </div>
-                    </div>     
-                    
-                    <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE CONVOCATORIAS CREADAS POR LA COORDINACIÓN DE PRACTICAS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            
-                            <div class="imagenDelDesafioOEvento">
-                                <img id=img_imagenDelDesafioOEvento" class="imgEncabezadoInfoActividad" src="/assets/images/imgPorDefecto.jpg" alt="">
-                            </div>
-                            <br>
 
-                            <div class="modalBody">
-                                <h3 id="lbl_NombreDelDesafioOEvento" class="titulo_seccion">CONVOCATORIA DE PRUEBA 2</h3>
-                                <br>
-                             
-                                <div class="informacionDelDesafioOEvento">
-          
-                                    <label class="subtitulosInfo">Descripción</label>
-                                    <p id="lbl_descripcionDelDesafioOEvento" class="enunciadoDesafioOEvento">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
+                        
+                        <!--ESTRUCTURA DEL POPUP PARA LA INFORMACION DE LAS CONVOCATORIAS DE COORD PRACTICAS-->
+                        <div class="modal fade" id="modalDetallesConvPracticas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                
+                                <div id="detallesDePropuestaAAplicar" class="modal-body">
+                                    
+                                    <input type="hidden" name="Id" value="">
+                                    <input type="hidden" name="nombre_archivo" value="">
+                                    <input type="hidden" name="nombre_imagen" value="">
+                                    
+                                    <input type="text" class="detalleNombrePropuesta" name="nombre_convocatoria" value="" disabled>
                                     <br>
+
+                                    <!--Aqui colocamos la imagen de la convpracticas-->
+                                    <span id="panelParaImagenDeLaConvPracticas"></span>
+                                    <br>
+                                    <br>
+                                                                    
+                                    <label class="subtitulosInfo">Descripción</label><br>
+                                    <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" value="" disabled></textarea>
+                                    <br>
+                                    <br>
+
+                                    <!--Aqui colocamos el enunciado de la convpractcas-->
+                                    <span id="panelParaEnunciadoDeLaConvPracticas"></span>
+                                    <br>
+
 
                                     <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Enunciado:</label></td>
-                                            <td class="columnaInfoEnunciado"><a id="btn_descargarEnunciado" class="btn-fill pull-right btn btn-info" title="Descargar enunciado">Descargar</a></td>
+                                        <tr id="formFechasDeDesafioSustituido">
+                                            <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                            <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                            <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                            <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
                                         </tr>
-                                    </table>
+                                    </table>                           
                                     <br>
-                                                                                                
-                                    <br>
-                                    <br>    
-                                    <a id="btn_cancelar2" class="btn_agregarTrabajo" title="Atrás">Atrás</a>
-                                    <a id="openModal4" class="btn_agregarTrabajo" title="Aplicar">Aplicar</a>
+
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atras">Atras</button> 
+                                    <button type="button" class="btn_agregarPropuesta" data-bs-toggle="modal" data-bs-target="#modalAplicarAConvPracticas" title="Aplicar">Aplicar</button>
+                                
+                                </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                    
 
+                        <!--ESTRUCTURA DEL POPUP DE APLICACION A CONVOCATORIAS COMITE -->
+                        <div class="modal fade" id="modalAplicarAConvocatoriaComite" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="titulo_seccion" id="staticBackdropLabel">Aplicación a Convocatoria</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
+
+                                    <div class="formulario-comparitEportafolio">
+                                    
+                                        <form id="formularioModalAplicarConvocatoriaComite" action="logic/capturaDatTrabajo.php" method="POST">
+                                            <input type="hidden" name="Id" value="">
+                                            <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado;?>"> 
                                         
-                    <!--ESTRUCTURA DEL POPUP DE APLICACION A UNA CONVOCATORIA ACADÉMICA (Generada por el comite)-->
-                    <div id="modal_container3" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Aplicación a una convocatoria</h3>
-                            <br>
-                            <p>Seleccione el trabajo destacado con el cual desea aplicar.</p>
-                            <br>
-                            <form class="">
-                                <select id="cmb_trabajosDestacadosDisponiblesParaAplicación" name="trabDispParaAplicación" class="form-control" name="cmb_semestre">
-                                    <option value="" selected>Seleccione</option>
-                                </select>
-                            </form>
-                            <br>
-                            <a id="btn_aplicarTrabajo" class="btn_agregarTrabajo" title="Aplicar trabajo">Aplicar</a>
-                            <a id="btn_cancelar3" class="btn_agregarTrabajo" title="Cancelar">Cancelar</a>
-                        </div>
-                    </div>
+                                            <select class="form-control" id="cmb_trabajosDestacados" name="cmbTrabajos" id="cmbtrabDestacados" required="true">
+                                                <option value="seleccione" selected>Seleccione</option>
 
-                    <!--ESTRUCTURA DEL POPUP DE APLICACION A UNA CONVOCATORIA ACADÉMICA (Generada por la coordinacion de practicas)-->
-                    <div id="modal_container4" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Convocatoria - compartir e-portafolio</h3>
-                            <br>
-                            <p>¿Está seguro de que desea compartir su e-portafolio?.</p>
-                            <br>
-                            
-                            <br>
-                            <a id="btn_aplicarTrabajo" class="btn_agregarTrabajo" title="Si">Si</a>
-                            <a id="btn_cancelar4" class="btn_agregarTrabajo" title="No">No</a>
+                                                <?php
+                                                    
+                                                    $obj = new TrabajoControlador();
+                                                    $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                                    $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
+
+                                                    foreach ($datosTrab as $key){
+                                                ?>
+
+                                                        <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+
+                                                <?php
+                                                    }
+                                                ?>
+                                                
+                                            </select>                                    
+                                            <br>
+                                            
+                                            <button type="submit" name="aplicarAUnaConvocatoria" class="btn_agregarPropuesta" title="Aplicar">Aplicar</button>
+                                            <button id="btnCerrarModalAplicarAConvocatoria" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvComite" title="Cerrar">Cerrar</button>
+                                        </form> 
+                                        <!--Incluimos el archivo con la logica del formulario-->
+                                        <?php include("logic/capturaDatTrabajo.php") ?>                                   
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!--ESTRUCTURA DEL POPUP DE APLICACION A CONVOCATORIAS PRACTICAS -->
+                        <div class="modal fade" id="modalAplicarAConvPracticas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="titulo_seccion" id="staticBackdropLabel">Aplicación a Convocatoria</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Desea aplicar su eportafolio a esta convocatoria?</p>
+
+                                    <div class="formulario-comparitEportafolio">
+                                    
+                                        <form id="formularioModalAplicarConvocatoriaPracticas" action="EportafolioService/capturaDatEportafolio.php" method="POST">
+                                            <input type="hidden" name="Id" value="">
+                                            <input type="hidden" name="idEstudiante" value="<?php echo $idEstudianteLogueado;?>"> 
+                                                                           
+                                            <br>
+                                            
+                                            <button type="submit" name="aplicarEportafolioAUnaConvocatoria" class="btn_agregarPropuesta" title="Si">Si</button>
+                                            <button id="btnCerrarModalAplicarAConvocatoria" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesConvPracticas" title="No">No</button>
+                                        </form> 
+                                        <!--Incluimos el archivo con la logica del formulario-->
+                                        <?php include("EportafolioService/capturaDatEportafolio.php") ?>                                   
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div> 
+                </div>
+             
             </main>
         </div>
+<?php
+}
+?>
     </body>
+
+        <!--Script que permite pasar los datos de una convocatoria comite  a la ventana modal Aplicacion a una convocatoria-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesConvocatoria').click(function(){
+                    
+                    var idConvComAAplicar = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvComAAplicar': idConvComAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDeConvComAAplicar';
+                        var modalShare = '#formularioModalAplicarConvocatoriaComite';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                            $('[name='+key+']', modalShare).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesConvocatoria').click(function(){
+                        
+                    var idConvComAAplicarImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaConvocatoriaComiteAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvComAAplicarImagen': idConvComAAplicarImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeConvocatoriaComite').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaConvocatoriaComiteAAplicar();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesConvocatoria').click(function(){
+                        
+                    var idConvComAAplicarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaConvocatoriaComiteAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvComAAplicarEnunciado': idConvComAAplicarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaBotonDescargaEnunciadoConvocatoria').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaConvocatoriaComiteAAplicar();                            
+                });
+            });
+        </script>
+
+         <!--Script que permite traer los datos del profesor al modal de una convocatoria a aplicar-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesConvocatoria').click(function(){
+                    
+                    var idProfesorConvocatoriaAAplicar = $(this).data('profesor');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idProfesorConvocatoriaAAplicar': idProfesorConvocatoriaAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#seccionDatosProfesorConvocatoria';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+        <!--Script que permite pasar los datos de una convocatoria practicas  a la ventana modal Aplicacion a una convocatoria practicas-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                
+                $('.btn_detallesConvocatoriaPrac').click(function(){
+                    
+                    var idConvPracticasAAplicar = $(this).data('id');
+                
+                    function getFormInfo() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvPracticasAAplicar': idConvPracticasAAplicar },
+                                success: function(response){
+                                    resolve(response)
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+                    getFormInfo()
+                    .then((response) => {
+                        var data = $.parseJSON(response)[0];
+                        var formId = '#detallesDePropuestaAAplicar';
+                        var modalShare = '#formularioModalAplicarConvocatoriaPracticas';
+                        $.each(data, function(key, value){
+                            $('[name='+key+']', formId).val(value);
+                            $('[name='+key+']', modalShare).val(value);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                        
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una convocatoria practicas con el fin de identificar si tiene imagen almacenada o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesConvocatoriaPrac').click(function(){
+                        
+                    var idConvPracticasAAplicarImagen = $(this).data('id');
+                    
+                    function verificacionDeImagenParaConvPracticasAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvPracticasAAplicarImagen': idConvPracticasAAplicarImagen},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaImagenDeLaConvPracticas').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeImagenParaConvPracticasAAplicar();
+                            
+                });
+            });
+        </script>
+
+        <!--Script que permite pasar el id de una convocatoria practicas con el fin de identificar si tiene enunciado almacenado o no-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btn_detallesConvocatoriaPrac').click(function(){
+                        
+                    var idConvPracAAplicarEnunciado = $(this).data('id');
+                    
+                    function verificacionDeEnunciadoParaConvPracticasAAplicar() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idConvPracAAplicarEnunciado': idConvPracAAplicarEnunciado},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelParaEnunciadoDeLaConvPracticas').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                    
+                    verificacionDeEnunciadoParaConvPracticasAAplicar();                            
+                });
+            });
+        </script>
+
+         
 </html>

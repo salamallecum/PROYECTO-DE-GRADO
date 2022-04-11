@@ -315,6 +315,19 @@ class EportafolioControlador{
               
         return $result = mysqli_query($conexion, $sql);
     }
+
+    //Funcion que permite aplicar un eportafolio destacado a una convocatoria
+    public function aplicarEportafolio(int $id, int $idDelEstudiante, int $idDeLaConv, $fechaDeAplicacion){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+        
+        $sql = "INSERT INTO tbl_aplicacioneportafolio (Id, Id_portafolioEstudiante, id_convocatoria, fecha_aplicacion)
+                            values ($id, $idDelEstudiante, $idDeLaConv, '$fechaDeAplicacion')";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
+
+    }
 }
 
 ?>
