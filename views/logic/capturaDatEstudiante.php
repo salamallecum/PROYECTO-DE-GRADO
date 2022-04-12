@@ -9,7 +9,50 @@ require_once "model/Usuario.php";
 $estudianteControla = new EstudianteControlador();
 $generador = new generadorNombres();
 
-//Capturamos el evento del boton de actualizacion de perfil de estudiante
+    //Capturamos el evento del boton de registro de estudiante
+    if(isset($_POST['registrarEstudiante'])){
+
+        //Capturamos los datos de los campos del formulario
+        $nombresDeEstudiante = trim($_POST['nombres']);
+        $apellidosDeEstudiante = trim($_POST['apellidos']);
+        $emailEstudiante = trim($_POST['email']);
+        $usernameEstudiante = trim($_POST['usuario']);
+        $claveEstudiante = trim($_POST['clave']);
+
+ 
+        //Validamos que los campos no se encuentren vacios
+        if(strlen($nombresDeEstudiante) >= 1 && 
+         strlen($apellidosDeEstudiante) >= 1 && 
+         strlen($emailEstudiante) >= 1 && 
+         strlen($usernameEstudiante) >= 1 && 
+         strlen($claveEstudiante) >= 1 ){ 
+
+            //Encapsulamos los datos obtenidos en un objeto de tipo Estudiante
+            $nuevoEstudiante = new Usuario(0, $nombresDeEstudiante, $apellidosDeEstudiante, $usernameEstudiante, $claveEstudiante, 'Colombia', $emailEstudiante, 1);
+
+            if($estudianteControla->insertarEstudiante($nuevoEstudiante) == 1){
+                ?>
+                <p class="indicadorSatisfactorio">* Registro exitoso</p>
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+                
+            }else{
+                ?>
+                <p class="indicadorDeCamposIncompletos">* Error al registrar un nuevo usuario</p>
+                <?php
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }  
+        
+        }else{
+            ?>
+            <p class="indicadorDeCamposIncompletos">* Por favor diligencie todos los campos</p>
+            <?php
+            header("Location: " . $_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+
+    //Capturamos el evento del boton de actualizacion de perfil de estudiante
     if(isset($_POST['ActualizarInfoEstudiante'])){
 
         //Validamos que los campos no se encuentren vacios

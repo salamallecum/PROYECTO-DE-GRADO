@@ -4,6 +4,28 @@ require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/logic/utils/Conexi
 
 class EstudianteControlador{
 
+    //Funcion que registra un nuevo estudiante en base de datos
+    public function insertarEstudiante(Usuario $est){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        //Capturamos los datos del objeto
+        $idEstudiante = $est->getId();
+        $nombreEstudiante = $est->getNombres();
+        $apellidosEstudiante = $est->getApellidos();
+        $usuarioEstudiante = $est->getUsername();
+        $claveEst = $est->getClave();
+        $paisEst = $est->getPais();
+        $emailEst = $est->getEmail();
+        $rolEst = $est->getRol();
+
+        $sql = "INSERT INTO tbl_usuario (id_usuario, nombres_usuario, apellidos_usuario, username, clave, pais, correo_usuario, id_rol)
+                            values ($idEstudiante, '$nombreEstudiante', '$apellidosEstudiante', '$usuarioEstudiante', '$claveEst', '$paisEst', '$emailEst', $rolEst)";
+
+        return $result = mysqli_query($conexion, $sql);
+    }
+
     //Funcion que permite mostrar los datos personales del estudiante
     public function mostrarDatosEstudiante(string $sql){
 
