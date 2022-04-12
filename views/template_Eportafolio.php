@@ -1,12 +1,12 @@
 <?php
 
-require_once "EportafolioService/controllers/EstudianteControlador.php";
+require_once "EportafolioService/controllers/StudentControlador.php";
 require_once "EportafolioService/controllers/EportafolioControlador.php";
 require_once "EportafolioService/controllers/TrabajoDestacadoControlador.php";
 require_once "logic/controllers/CompetenciaControlador.php";
 
 
-$estudianteControla = new EstudianteControlador();
+$estudianteControla = new StudentControlador();
 $eportafolioControla = new EportafolioControlador();
 $trabajoDestControla = new TrabajoDestacadoControlador();
 $competenciaControla = new CompetenciaControlador();

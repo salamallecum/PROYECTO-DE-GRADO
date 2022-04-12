@@ -115,7 +115,7 @@
                         
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG1.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -125,7 +125,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG2.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -135,7 +135,7 @@
                         
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG3.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -145,7 +145,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG4.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -155,7 +155,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG5.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -165,7 +165,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG6.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -175,7 +175,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG7.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -185,7 +185,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG8.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -195,7 +195,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG9.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -205,7 +205,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG10.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
@@ -215,7 +215,7 @@
 
                         <div class="slick">
                             <div class="contenedorImg">
-                                <img class="img_badge" src="views/assets/images/carruselBadges_img/badge_prueba muestreo.png" alt="">
+                                <img class="img_badge" src="views/assets/images/carruselBadges_img/CG11.png" alt="">
                             </div>
                             
                             <div class="contenedorDescripcion">
