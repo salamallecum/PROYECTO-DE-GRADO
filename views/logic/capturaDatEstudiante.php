@@ -125,5 +125,56 @@ $generador = new generadorNombres();
         
         }
     }
-    
+
+    //Capturamos el evento de logueo del usuario en la plataforma PANDORA
+    if(isset($_POST['autenticarUsuario'])){
+
+        //Iniciamos la creacion de sesiones
+        session_start();
+
+        //Capturamos los datos de los campos del formulario
+        $usuario = trim($_POST['user']);
+        $clave = trim($_POST['password']);
+
+        $validar_login = $estudianteControla->validarExistenciaDeUsuario($usuario, $clave);
+
+        if(mysqli_num_rows($validar_login) > 0){
+
+            $idUsuario = $estudianteControla->consultarIdUsuario($usuario);
+            $rolUsuario = $estudianteControla->consultarRolUsuario($usuario);
+
+            //Creamos la sesion de usuario
+            $_SESSION['usuario'] = $usuario;
+
+            if($rolUsuario == 1){
+                header("Location: ../DashBoard_Estudiante.php?Id_estudiante=".$idUsuario);
+                exit;
+            }
+
+            if($rolUsuario == 2){
+                header("Location: ../DashBoard_Profesor.php?Id_profesor=".$idUsuario);
+                exit;
+            }
+
+            if($rolUsuario == 3){
+                header("Location: ../DashBoard_Practicas.php");
+                exit;
+            }
+
+            if($rolUsuario == 4){
+                header("Location: ../DashBoard_Comite.php");
+                exit;
+            }
+
+        }else{
+            echo '
+                    <script>
+                        alert("Usuario no existe, por favor verifique los datos suministrados.");
+                        window.location = "../Login.php";
+                    </script>
+            ';
+            exit;
+        }
+    }
+
 ?>

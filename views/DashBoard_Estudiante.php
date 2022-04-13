@@ -1,3 +1,33 @@
+<?php
+
+require_once "logic/controllers/EstudianteControlador.php";
+
+session_start();
+
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
+
+$estudianteControla = new EstudianteControlador();
+
+//Aqui capturamos el id del estudiante logueado
+if(isset($_GET['Id_estudiante']) != 0){
+
+    $idEstudianteLogueado = $_GET['Id_estudiante'];
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -34,49 +64,49 @@
             <div class="sidebar-menu">
                 <ul class="menuEstudiante">
                     <li>
-                        <a class="link_menu-active" href="./DashBoard_Estudiante.php">
+                        <a class="link_menu-active" href="<?php echo "./DashBoard_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./PerfilDeUsuario_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./PerfilDeUsuario_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Perfil de usuario"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PERFIL DE USUARIO</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./TrabajosDestacados_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./TrabajosDestacados_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Trabajos destacados"><i class="bi bi-clipboard-check"></i></span>
                             <span class="items_menu">TRABAJOS DESTACADOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./E-portafolio_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./E-portafolio_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="E-portafolio"><i class="bi bi-folder-check"></i></span>
                             <span class="items_menu">E-PORTAFOLIO</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosYEventos_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./DesafiosYEventos_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Desafios y eventos"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">DESAFIOS Y EVENTOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosPersonalizados_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./DesafiosPersonalizados_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./ConvocatoriasExternas_Estudiante.php?Id_estudiante=38">
+                        <a class="link_menu" href="<?php echo "./ConvocatoriasExternas_Estudiante.php?Id_estudiante=".$idEstudianteLogueado;?>">
                             <span title="Convocatorias"><i class="bi bi-hand-index"></i></span>
                             <span class="items_menu">CONVOCATORIAS</span>
                         </a>
@@ -95,7 +125,7 @@
                         <span>Dashboard</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="../index.php">Log out</a></span>
+                        <span><a href="logout.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -171,4 +201,9 @@
             </main>
         </div>
     </body>
+<?php
+}
+}
+?>
+
 </html>

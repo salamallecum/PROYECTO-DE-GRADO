@@ -4,7 +4,21 @@ require_once "logic/controllers/DesafioControlador.php";
 require_once "logic/controllers/MateriaControlador.php";
 require_once "logic/controllers/CompetenciaControlador.php";
 
+session_start();
 
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
 
     //Capturamos el id del profesor logueado
     $idProfesorLogueado = $_GET['Id_profesor'];
@@ -47,36 +61,36 @@ require_once "logic/controllers/CompetenciaControlador.php";
             <div class="sidebar-menu">
                 <ul class="menuProfesor">
                     <li>
-                        <a class="link_menu-active" href="./DashBoard_Profesor.php">
+                        <a class="link_menu-active" href="<?php echo "./DashBoard_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
                             <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
                             <span class="items_menu">DASHBOARD</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./PerfilDeUsuario_Profesor.php?Id_profesor=29">
+                        <a class="link_menu" href="<?php echo "./PerfilDeUsuario_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
                             <span title="Perfil de usuario"><i class="bi bi-person-circle"></i></span>
                             <span class="items_menu">PERFIL DE USUARIO</span>
                         </a>
                     </li>
                     
                     <li>
-                        <a class="link_menu" href="./AdministrarDesafios_Profesor.php?Id_profesor=29">
+                        <a class="link_menu" href="<?php echo "./AdministrarDesafios_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
                             <span title="Administrador de desafios"><i class="bi bi-flag"></i></span>
                             <span class="items_menu">ADMINISTRAR DESAFIOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./EvaluarTrabajos_Profesor.php?Id_profesor=29">
+                        <a class="link_menu" href="<?php echo "./EvaluarTrabajos_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
                             <span title="Evaluar trabajos"><i class="bi bi-card-checklist"></i></span>
                             <span class="items_menu">EVALUAR TRABAJOS</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="link_menu" href="./DesafiosPersonalizados_Profesor.php?Id_profesor=29">
-                            <span title="Profesores"><i class="bi bi-lightbulb"></i></span>
+                        <a class="link_menu" href="<?php echo "./DesafiosPersonalizados_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
+                            <span title="Desafios personalizados"><i class="bi bi-lightbulb"></i></span>
                             <span class="items_menu">DES. PERSONALIZADOS</span>
                         </a>
                     </li>
@@ -94,7 +108,7 @@ require_once "logic/controllers/CompetenciaControlador.php";
                         <span>Administrador de Desafios</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="../index.php">Log out</a></span>
+                        <span><a href="logout.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -853,7 +867,10 @@ require_once "logic/controllers/CompetenciaControlador.php";
                     });
                 });
             </script>
-            
     </body>
+
+<?php
+}
+?>
 </html>
 

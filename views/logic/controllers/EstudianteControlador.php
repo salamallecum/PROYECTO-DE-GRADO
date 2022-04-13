@@ -151,5 +151,43 @@ class EstudianteControlador{
             
         }
     }
+
+    //Funcion que permite consultar el rol de un usuario en el sistema
+    public function validarExistenciaDeUsuario(string $user, string $password){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT * from tbl_usuario where username = '$user' and clave = '$password'";
+        $result = mysqli_query($conexion, $sql);
+
+        return $result;
+    }
+
+
+    //Funcion que permite consultar el rol de un usuario en el sistema
+    public function consultarRolUsuario(string $user){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_rol from tbl_usuario where username = '$user'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['id_rol'];
+        }
+    }
+
+    //Funcion que permite consultar el id de un usuario con el fin de pasarlo entre lasinterfaces de la plataforma
+    public function consultarIdUsuario(string $user){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_usuario from tbl_usuario where username = '$user'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['id_usuario'];
+        }
+    }
 }
 ?>

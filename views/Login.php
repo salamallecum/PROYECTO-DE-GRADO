@@ -56,9 +56,9 @@
                     <!--Login-->
                     <form action="logic/capturaDatEstudiante.php" class="formulario__login" method="POST">
                         <h2>Iniciar Sesión</h2>
-                        <input type="text" name="username" placeholder="Usuario" maxlength="10" required="true">
-                        <input type="password" name="contrasena" placeholder="Contraseña" maxlength="10" required="true">
-                        <button type="submit" name="Ingresar" title="Ingresar">Entrar</button>
+                        <input type="text" id="txt_usuario" name="user" placeholder="Usuario" maxlength="10">
+                        <input type="password" id="txt_clave" name="password" placeholder="Contraseña" maxlength="10">
+                        <button id="btnLogin" type="submit" name="autenticarUsuario" title="Ingresar">Entrar</button>
                     </form>
                     <?php include("logic/capturaDatEstudiante.php") ?>
 
@@ -70,10 +70,10 @@
                         <input type="email" id="txt_correo" name="email" placeholder="Correo Electronico" maxlength="40" required="true">
                         <input type="text" id="txt_user" name="usuario" placeholder="Usuario" maxlength="10" required="true">
                         <input type="password" id="txt_contraseña" name="clave" placeholder="Contraseña" maxlength="10" required="true">
-                        <button id="btnRegistro" type="submit" name="registrarEstudiante">Regístrarse</button>
+                        <button id="btnRegistro" type="submit" name="registrarEstudiante" title="Registrarse">Regístrarse</button>
                     </form>
-                    <br>
                     <?php include("logic/capturaDatEstudiante.php") ?>
+                    <br>
                 </div>
             </div>
 
