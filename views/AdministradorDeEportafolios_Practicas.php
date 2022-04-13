@@ -1,6 +1,22 @@
 <?php
-    require_once "logic/utils/Conexion.php";
-    require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/Eportafoliocontrolador.php";
+require_once "logic/utils/Conexion.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/Eportafoliocontrolador.php";
+
+session_start();
+
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
 
     $obj = new EportafolioControlador();
 ?>
@@ -76,7 +92,7 @@
                         <span>Administrador de e-portafolios</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="../index.php">Log out</a></span>
+                        <span><a href="logout.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -295,4 +311,7 @@
             });
         </script>
     </body>
+<?php
+}
+?>    
 </html>

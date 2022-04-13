@@ -1,7 +1,23 @@
 <?php
-    require_once "logic/utils/Conexion.php";
-    require_once "logic/controllers/MateriaControlador.php";
-    require_once "logic/controllers/ProfesorControlador.php";
+require_once "logic/utils/Conexion.php";
+require_once "logic/controllers/MateriaControlador.php";
+require_once "logic/controllers/ProfesorControlador.php";
+
+session_start();
+
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
 ?>
 
 <!DOCTYPE html>
@@ -119,7 +135,7 @@
                         <span>Administrador de materias</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="../index.php">Log out</a></span>
+                        <span><a href="logout.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -270,4 +286,7 @@
             </main>
         </div>
     </body>
+<?php
+}
+?>
 </html>

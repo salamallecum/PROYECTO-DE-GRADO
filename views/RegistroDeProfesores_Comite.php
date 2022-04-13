@@ -1,3 +1,21 @@
+<?php
+session_start();
+
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -85,7 +103,7 @@
                         <span>Registro de profesores</span>&nbsp;
                     </div>
                     <div class="link-logout">
-                        <span><a href="../index.php">Log out</a></span>
+                        <span><a href="logout.php">Log out</a></span>
                     </div>
                 </div>
                 
@@ -159,4 +177,7 @@
             </main>
         </div>
     </body>
+<?php
+}
+?>
 </html>
