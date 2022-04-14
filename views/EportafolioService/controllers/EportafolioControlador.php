@@ -88,7 +88,7 @@ class EportafolioControlador{
     public function eliminarEportafolioDeDrive(string $idArchivoAEliminar){
 
         //Cargamos el archivos json de credenciales
-        putenv('GOOGLE_APPLICATION_CREDENTIALS='. $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/proyectopandora-345323-5d2a7d831ff4.json");
+        putenv('GOOGLE_APPLICATION_CREDENTIALS='. $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/proyectopandora-347104-5be18113c849.json");
 
         $driveClient = new Google_Client();
         $driveClient->useApplicationDefaultCredentials();
@@ -156,7 +156,7 @@ class EportafolioControlador{
     public function subirArchivoPDFDeUnEportafolio(string $nombreDelArchivoPDFTemporalEportafolio){
 
         //Cargamos el archivos json de credenciales
-        putenv('GOOGLE_APPLICATION_CREDENTIALS='. $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/proyectopandora-345323-5d2a7d831ff4.json");
+        putenv('GOOGLE_APPLICATION_CREDENTIALS='. $_SERVER['DOCUMENT_ROOT']."/MockupsPandora/views/EportafolioService/controllers/proyectopandora-347104-5be18113c849.json");
 
         $client = new Google_Client();
         $client->useApplicationDefaultCredentials();
