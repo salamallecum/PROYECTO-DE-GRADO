@@ -266,7 +266,7 @@ class EportafolioControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT COUNT(*) from tbl_eportafolio where eportafolioPublicado='Si'";
+        $sql = "SELECT COUNT(*) from tbl_usuario where eportafolioPublicado='Si'";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -280,14 +280,14 @@ class EportafolioControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT DISTINCT Id_estudiante from tbl_eportafolio where eportafolioPublicado='Si'";
+        $sql = "SELECT DISTINCT id_usuario from tbl_usuario where eportafolioPublicado='Si'";
         $result = mysqli_query($conexion, $sql);
 
         $emparrayIdsEportafoliosPublicados = array();
 
         $contador = 0;
         while ($row = @mysqli_fetch_array($result)) {
-            $emparrayIdsEportafoliosPublicados[$contador] = $row['Id_estudiante'];
+            $emparrayIdsEportafoliosPublicados[$contador] = $row['id_usuario'];
             $contador++;
         }
 
@@ -300,7 +300,7 @@ class EportafolioControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "UPDATE tbl_eportafolio SET eportafolioPublicado='Si' where Id_estudiante =".$idEportafolioAPublic;
+        $sql = "UPDATE tbl_usuario SET eportafolioPublicado='Si' where id_usuario =".$idEportafolioAPublic;
               
         return $result = mysqli_query($conexion, $sql);
     }
@@ -311,7 +311,7 @@ class EportafolioControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "UPDATE tbl_eportafolio SET eportafolioPublicado='No' where Id_estudiante =".$idEportafolioAOcult;
+        $sql = "UPDATE tbl_usuario SET eportafolioPublicado='No' where id_usuario =".$idEportafolioAOcult;
               
         return $result = mysqli_query($conexion, $sql);
     }

@@ -1714,51 +1714,36 @@ if(isset($_POST['idConvPracticasEportafoliosAplicados'])){
         $datosEstudiante = $estudianteControla->mostrarDatosEstudiante($sqlDatEstudiante);
         foreach ($datosEstudiante as $key){
 
-            $tableEportafoliosPostuladosP1 = '<label class="subtitulosInfo">E-portafolios postulados</label><br>
+            $tableEportafoliosPostuladosP1 = '<table class="filasDeDatosTablaEportafolios">
+                                                <tr>';
 
-                                            <div class="pnlTabla-eportafolios">
+                                                    //Aqui traemos la foto de perfil del estudiante para la tabla de eportafolios postulados
+                                                    if($key['foto_usuario'] != null){
+                                                        $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="profileImages/'.$key['foto_usuario'].'"></td>';
+                                                    }else{
+                                                        $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                    }
 
-                                                <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
-                                                <table id="table_eportafoliosPostuladosConv" class="tablaDeEportafoliosPostuladosConv">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="campoTabla">Foto</th>
-                                                            <th class="campoTabla">Nombres</th>
-                                                            <th class="campoTabla">Apellidos</th>
-                                                            <th class="campoTabla">Acciones</th>
-                                                        </tr>
-                                                    </thead>                                         
-            
-                                                    <tr class="filasDeDatosTablaEportafolios">';
+                                                
+                    $tableEportafoliosPostuladosP2 = '<td class="datoTabla">'.$key['nombres_usuario'].'</td>
+                                                    <td class="datoTabla">'.$key['apellidos_usuario'].'</td>
+                                                    <td class="datoTabla"><div class="compEsp-edicion">
+                                                        <div class="col-botonesEdicion">
+                                                            <a href="template_Eportafolio.php?Id_estudiante='.$key['id_usuario'].'" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
+                                                        </div>
 
-                                                        //Aqui traemos la foto de perfil del estudiante para la tabla de eportafolios postulados
-                                                        if($key['foto_usuario'] != null){
-                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="profileImages/'.$key['foto_usuario'].'"></td>';
-                                                        }else{
-                                                            $labelfotoEstudiante = '<td class="datoTabla"><img class="imagenDeConvocatoriaEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
-                                                        }
+                                                        <div id="col-botonesEdicion" class="col-botonesEdicion">
+                                                            <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="'.$key['id_usuario'].'" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
+                                                        </div>
 
-                                                        
-                       $tableEportafoliosPostuladosP2 = '<td class="datoTabla">'.$key['nombres_usuario'].'</td>
-                                                        <td class="datoTabla">'.$key['apellidos_usuario'].'</td>
-                                                        <td class="datoTabla"><div class="compEsp-edicion">
-                                                            <div class="col-botonesEdicion">
-                                                                <a href="template_Eportafolio.php?Id_estudiante='.$key['id_usuario'].'" target="_blank" title="Ver E-portafolio"><img src="assets/images/verDetallesActividad.png"></a>
-                                                            </div>
-
-                                                            <div id="col-botonesEdicion" class="col-botonesEdicion">
-                                                                <a id="btnCompartirEportafolio" onclick="eventoCompartirEportafolio()" data-id="'.$key['id_usuario'].'" data-bs-toggle="modal" data-bs-target="#modalCompartirEportafolio" title="Compartir E-portafolio"><img src="assets/images/compartirEportafolio.png"></a>
-                                                            </div>
-
-                                                        </div></td>
-                                                    </tr>
-                                                </table>
-                                            </div>';            
+                                                    </div></td>
+                                                </tr>
+                                            </table>';   
+                                        
+            echo $tableEportafoliosPostuladosP1;
+            echo $labelfotoEstudiante;
+            echo $tableEportafoliosPostuladosP2;
         }
-
-        echo $tableEportafoliosPostuladosP1;
-        echo $labelfotoEstudiante;
-        echo $tableEportafoliosPostuladosP2;
     }
 }
 
@@ -2037,6 +2022,84 @@ if(isset($_POST['idCompetenciaEspEdit'])){
     echo json_encode($emparrayCompEspecificas);
     exit;
 }
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------//
+//--------------------------------------------------SECCION EVALUACION DE TRABAJOS-------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------//
+//Capturamos el evento del tipo de actividad para así mostrar las actividades del profesor existentes paraese tipo en la tabla de actividades
+if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
+
+    $comboTipoActividad = $_POST['comboTipoActividad'];
+    $idDelProfesor = $_POST['idDelProfesor'];
+
+    if($comboTipoActividad == 'desafio'){
+
+        $tableDesafiosConTrabajosP1 = "";
+        $labelImagenDelDesafio = "";
+        $tableDesafiosConTrabajosP2 = "";
+
+        //Consultamos los datos principales de los desafios para su muestreo en la tabla de actividades
+        $sqlDatDesafios = "SELECT id_desafio, nombre_desafio, nombre_imagen from tbl_desafio where id_profesor=".$idDelProfesor;
+        $datosDesafios = $desafioControla->mostrarDatosDesafios($sqlDatDesafios);
+        foreach ($datosDesafios as $key){
+
+            $datosConteoDesafios = $profesorControla->contadorDeAplicacionesAActividades($key['id_desafio'], 'DESAFIO');
+            
+            $tableDesafiosConTrabajosP1 = '<!--Aqui van los registros de la tabla de desafios eventos y convocatorias-->
+                                            <table class="filasDeDatosTablaDesafios">
+                                                <tr>';
+
+                                                    //Aqui traemos la imagen del desafio para la tabla de actividades
+                                                    if($key['nombre_imagen'] != null){
+                                                        $labelImagenDelDesafio = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="desafiosImages/'.$key['nombre_imagen'].'"></td>';
+                                                    }else{
+                                                        $labelImagenDelDesafio = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                    }
+
+                                        
+                        $tableDesafiosConTrabajosP2 = '<td class="datoTabla">'.$key['nombre_desafio'].'</td>
+                                                    <td class="datoTabla">'.$datosConteoDesafios.'</td>
+                                                    <td class="datoTabla"><div class="compEsp-edicion">
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a class="btnDetallesDesafio" data-id="'.$key['id_desafio'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                        </div>
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                        </div>
+                                                    </div></td>
+                                                </tr>
+                                            </table>';
+               
+            echo $tableDesafiosConTrabajosP1;
+            echo $labelImagenDelDesafio;
+            echo $tableDesafiosConTrabajosP2;
+        }
+        
+        
+    
+    } /*if($comboTipoActividad == 'despersonal'){}
+            
+    if($comboTipoActividad == 'evento'){}
+
+    if($comboTipoActividad == 'convocatoria'){}*/
+
+    
+}
+
+
+
+
+
+
 
 ?>
 

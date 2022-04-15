@@ -266,9 +266,24 @@ if(!isset($_SESSION['usuario'])){
                             <span id="panelParaBotonDescargaEnunciado"></span>
 
                             <!--Aqui pasamos la tabla de eportafolios postulados de la convocatoria-->
-                            <span id="panelParaTablaDeEportafoliosPostulados"></span>
-                            </table>
-                                
+                            <label class="subtitulosInfo">E-portafolios postulados</label><br>
+
+                            <div class="pnlTabla-eportafolios">
+
+                                <!--ESTRUCTURA DE TABLA DE EPORTAFOLIOS-->
+                                <table id="table_eportafoliosPostuladosConv" class="tablaDeEportafoliosPostuladosConv">
+                                    <thead>
+                                        <tr>
+                                            <th class="campoTabla">Foto</th>
+                                            <th class="campoTabla">Nombres</th>
+                                            <th class="campoTabla">Apellidos</th>
+                                            <th class="campoTabla">Acciones</th>
+                                        </tr>
+                                    </thead> 
+                                </table>
+                                <span id="panelParaTablaDeEportafoliosPostulados"></span>
+                            </div>
+                            
                             <br>        
 
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>

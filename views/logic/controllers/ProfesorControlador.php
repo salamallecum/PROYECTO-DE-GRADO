@@ -162,8 +162,19 @@ class ProfesorControlador{
             return $row['clave'];
         }
     }
+   
+    //Funcion que permite contar el numero de aplicaciones que tiene una actividad, sea desafio evento o convocatoria
+    public function contadorDeAplicacionesAActividades(int $idActividad, string $tipoAactividad){
+        $c = new conectar();
+        $conexion = $c->conexion();
 
+        $sql = "SELECT COUNT(*) from tbl_aplicaciondetrabajos where id_actividad = $idActividad and tipo_actividad ='$tipoAactividad'";
+        $result = mysqli_query($conexion, $sql);
 
+        while ($row = $result->fetch_assoc()) {
+            return $row['COUNT(*)'];
+        }
+    }
 }
 
 ?>

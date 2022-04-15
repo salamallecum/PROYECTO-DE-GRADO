@@ -1,3 +1,31 @@
+<?php
+
+require_once "logic/controllers/ProfesorControlador.php";
+
+session_start();
+
+//Validamos que haya una sesión iniciada
+if(!isset($_SESSION['usuario'])){
+    echo '
+        <script>
+            alert("Por favor, debes iniciar sesión");
+            window.location = "../index.php";
+        </script>
+    ';
+    header("Location: ../index.php");
+    session_destroy();
+    die();
+
+}else{
+
+$profeControla = new ProfesorControlador();
+
+//Aqui capturamos el id del profesor logueado
+if(isset($_GET['Id_profesor']) != 0){
+
+    $idProfesorLogueado = $_GET['Id_profesor'];
+
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -15,7 +43,6 @@
         <link rel="stylesheet" href="assets/css/ProfesorStyles.css">
 
         <!--Links scripts de eventos js-->
-        <script src="assets/js/dom/funcionesBasicasPopUpEvaluacionDeDesafioOEventoOConvocatoria.js" type="module"></script>
         <script src="assets/js/jquery-3.6.0.js"></script>
     </head>
 
@@ -93,15 +120,18 @@
                     <label class="comboDeDesafiosAEvaluar">Seleccione el tipo de actividad que desea evaluar</label>
                     <table>
                         <tr>
-                            <td><select class="form-control" id="cmb_tipoDeActividadAEvaluar" name="cmbTipoDeActividadAEvaluar">
-                                    <option value="" selected>Seleccione</option>
-                                    <option value="">Desafio</option>
-                                    <option value="">Desafio personalizado</option>
-                                    <option value="">Evento</option>
-                                    <option value="">Convocatoria externa</option>
-                                </select></td>
+                            <td><select class="form-control" id="cmb_tiposDeActividades" name="cmbTipoDeActividadAEvaluar">
+                                    <option value="seleccione" selected>Seleccione</option>
+                                    <option value="desafio">Desafio</option>
+                                    <option value="despersonal">Desafio personalizado</option>
+                                    <option value="evento">Evento</option>
+                                    <option value="convocatoria">Convocatoria externa</option>
+                                </select>
+                            
+                                <input type="hidden" id="idProfesor" value="<?php echo $idProfesorLogueado;?>">
+                            </td>
 
-                            <td> <a id="btn_filtrarActividades" class="btn_agregarDesafio" title="Filtrar">Filtrar</a></td>
+                            <td> <button class="btn_filtrarActividades" title="Filtrar">Filtrar</button></td>
                         </tr>
                     </table>
                     <br>                   
@@ -121,25 +151,12 @@
                                         <th class="campoTabla">Acciones</th>
                                     </tr>
                                 </thead>
-        
-                                <!--Aqui van los registros de la tabla de desafios eventos y convocatorias-->
-                                <tr class="filasDeDatosTablaDesafios">
-                                    <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                                    <td class="datoTabla">DESAFIO DE PRUEBA 1</td>
-                                    <td class="datoTabla">1</td>
-                                    <td class="datoTabla"><div class="compEsp-edicion">
-    
-                                        <div class="col-botonesEdicion">
-                                            <a name="openModal" class="iconosAccionesEvaluacion" title="Detalles"><img src="assets/images/verDetallesActividad.png"></a> 
-                                        </div>
-    
-                                        <div class="col-botonesEdicion">
-                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
-                                        </div>
-                                    </div></td>
-                                </tr>
                             </table>
+
+                            <span id="resultadosDeBusquedaTablaActividades"></span>
                         </div>
+                                
+
                     </div>
  
                     <div class="contenedorTabla">   
@@ -395,5 +412,61 @@
                 </div>
             </main>
         </div>
+<?php
+}
+}
+?>
     </body>
+
+    <!--Funcion que resetea el span de la tabla de actividades-->
+    <script>
+        function resetSpanTablaActividades(){
+            document.getElementById('resultadosDeBusquedaTablaActividades').innerHTML="";
+        }            
+
+        //Asignamos elevento de reseteo al boton que hace la busqueda de las actividades existentes
+        $('#btn_filtrarActividades').click(function(){
+            resetSpanTablaActividades();
+        });
+    </script>
+
+    <!--Script que permite pasar un tipo de actividad para así mostrar las actividades del profesor existentes paraese tipo en la tabla de actividades-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+
+            $('.btn_filtrarActividades').click(function(){
+                    
+                var comboTipoActividad = $('#cmb_tiposDeActividades').val();
+                var idDelprofesor = document.getElementById('idProfesor').value;
+
+                if(comboTipoActividad != 'seleccione'){
+
+                    function consultaDeActividadesDelProfesor() {
+                        return new Promise((resolve, reject) => {
+                                // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'comboTipoActividad': comboTipoActividad, 'idDelProfesor': idDelprofesor},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#resultadosDeBusquedaTablaActividades').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                
+                    consultaDeActividadesDelProfesor();
+                
+                }else{
+                    alert('Por favor seleccione un tipo de actividad.');
+                }
+                                       
+            });
+        });
+    </script>
+
 </html>

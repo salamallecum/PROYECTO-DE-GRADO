@@ -144,7 +144,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
                         <?php 
                         //Consultamos el estado de un eportafolio
-                        $sqlEstadoEport = "SELECT DISTINCT eportafolioPublicado from tbl_eportafolio where Id_estudiante=".$idEstudianteLogueado;
+                        $sqlEstadoEport = "SELECT eportafolioPublicado from tbl_usuario where id_usuario=".$idEstudianteLogueado;
                         $datosEstEport = $estudianteControla->mostrarDatosEstudiante($sqlEstadoEport);
                         foreach ($datosEstEport as $lex){
                         

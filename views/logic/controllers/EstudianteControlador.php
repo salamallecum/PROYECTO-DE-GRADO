@@ -189,5 +189,16 @@ class EstudianteControlador{
             return $row['id_usuario'];
         }
     }
+
+    //Funcion que inicializa el eportafolio deun estudiante dejandolo oculto por defecto
+    public function crearEportafolio(string $nombreEst){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_usuario SET eportafolioPublicado = 'No' WHERE  nombres_usuario='$nombreEst'";
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    } 
 }
 ?>

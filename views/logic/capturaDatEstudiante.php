@@ -31,6 +31,9 @@ $generador = new generadorNombres();
             $nuevoEstudiante = new Usuario(0, $nombresDeEstudiante, $apellidosDeEstudiante, $usernameEstudiante, $claveEstudiante, 'Colombia', $emailEstudiante, 1);
 
             if($estudianteControla->insertarEstudiante($nuevoEstudiante) == 1){
+
+                //Creamos el eportafolio para el estudiante, este estará oculto por defecto
+                $estudianteControla->crearEportafolio($nombresDeEstudiante);
                 ?>
                 <p class="indicadorSatisfactorio">* Registro exitoso</p>
                 <?php

@@ -455,6 +455,10 @@ thead{
     outline: none;
 }
 
+.tablaDeEportafoliosPostuladosConv{
+    width: 100%;
+}
+
 .infoDetalleConvEdit{
     border: 0;
     outline: none;

@@ -773,6 +773,17 @@ img {
     padding-right: 60px;
 }
 
+.btn_filtrarActividades{
+    color: #fff;
+    background-color: #005e6e;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 /*  TABLA DE MUESTREO DE DESAFIOS EXISTENTES */
 .pnl_TablaDeDesafiosEventosYConvocatorias{
     height: 600px;
@@ -803,6 +814,14 @@ img {
 }
 
 .tablaDeDesafiosAEvaluar{
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.resultadoTablaDeDesafiosAEvaluar{
     margin-top: 10px;
     width: 100%;
     text-align: left;
@@ -1054,6 +1073,11 @@ thead{
 
 .col-botonesEdicion{
     display: inline-block;
+}
+
+.filasDeDatosTablaDesafios{
+    padding: 15px;
+    width: 730px;
 }
 
 .filasDeDatosTablaDesafios:nth-child(even){
