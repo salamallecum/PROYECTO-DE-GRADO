@@ -2039,6 +2039,10 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
     $comboTipoActividad = $_POST['comboTipoActividad'];
     $idDelProfesor = $_POST['idDelProfesor'];
 
+    //obtenemos unarray con los desafios que hacreado un profesor
+    $arrayDesafiosQueTieneUnProfesor = $desafioControla->consultarDesafiosCreadosPorUnProfesor($idDelProfesor);
+    $stringDesafiosQueTieneUnProfesor = implode(",", $arrayDesafiosQueTieneUnProfesor);
+
     if($comboTipoActividad == 'desafio'){
 
         $tableDesafiosConTrabajosP1 = "";
@@ -2084,21 +2088,147 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
             echo $tableDesafiosConTrabajosP2;
         }
         
-        
-    
-    } /*if($comboTipoActividad == 'despersonal'){}
+    } if($comboTipoActividad == 'despersonal'){
+
+        $tableDesafiosPersonalConTrabajosP1 = "";
+        $labelImagenDelDesafioPersonal = "";
+        $tableDesafiosPersonalConTrabajosP2 = "";
+
+        //Consultamos los datos principales de los desafios personalizados para su muestreo en la tabla de actividades
+        $sqlDatDesafiosPer = "SELECT Id, nombre_desafioP, nombre_imagen from tbl_desafiopersonal where idDesafioASustituir in ($stringDesafiosQueTieneUnProfesor) and estado='Aprobada'";
+        $datosDesafiosPers = $desafioControla->mostrarDatosDesafios($sqlDatDesafiosPer);
+        foreach ($datosDesafiosPers as $key){
+
+            $datosConteoDesafiosPersonalizados = $profesorControla->contadorDeAplicacionesAActividades($key['Id'], 'DESAF PERSONAL');
             
-    if($comboTipoActividad == 'evento'){}
+            $tableDesafiosPersonalConTrabajosP1 = '<!--Aqui van los registros de la tabla de desafios eventos y convocatorias-->
+                                                    <table class="filasDeDatosTablaDesafios">
+                                                        <tr>';
 
-    if($comboTipoActividad == 'convocatoria'){}*/
+                                                            //Aqui traemos la imagen del desafio para la tabla de actividades
+                                                            if($key['nombre_imagen'] != null){
+                                                                $labelImagenDelDesafioPersonal = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="desafiosPerImages/'.$key['nombre_imagen'].'"></td>';
+                                                            }else{
+                                                                $labelImagenDelDesafioPersonal = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                            }
 
+                                                
+                                $tableDesafiosPersonalConTrabajosP2 = '<td class="datoTabla">'.$key['nombre_desafioP'].'</td>
+                                                            <td class="datoTabla">'.$datosConteoDesafiosPersonalizados.'</td>
+                                                            <td class="datoTabla"><div class="compEsp-edicion">
+
+                                                                <div class="col-botonesEdicion">
+                                                                    <a class="btnDetallesDesafio" data-id="'.$key['Id'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                </div>
+
+                                                                <div class="col-botonesEdicion">
+                                                                    <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                                </div>
+                                                            </div></td>
+                                                        </tr>
+                                                    </table>';
+               
+            echo $tableDesafiosPersonalConTrabajosP1;
+            echo $labelImagenDelDesafioPersonal;
+            echo $tableDesafiosPersonalConTrabajosP2;
+        }
+    }
+
+    if($comboTipoActividad == 'evento'){      
+    
+        $tableEventosConTrabajosP1 = "";
+        $labelImagenDelEvento = "";
+        $tableEventosConTrabajosP2 = "";
+
+        //Consultamos los datos principales de los eventos para su muestreo en la tabla de actividades
+        $sqlDatEventos = "SELECT id_evento, nombre_evento, nombre_imagen from tbl_evento where id_usuario=".$idDelProfesor;
+        $datosEventos = $eventoControla->mostrarDatosEventos($sqlDatEventos);
+        foreach ($datosEventos as $key){
+
+            $datosConteoEventos = $profesorControla->contadorDeAplicacionesAActividades($key['id_evento'], 'EVENTO');
+            
+            $tableEventosConTrabajosP1 = '<!--Aqui van los registros de la tabla de desafios eventos y convocatorias-->
+                                            <table class="filasDeDatosTablaDesafios">
+                                                <tr>';
+
+                                                    //Aqui traemos la imagen del desafio para la tabla de actividades
+                                                    if($key['nombre_imagen'] != null){
+                                                        $labelImagenDelEvento = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="eventosImages/'.$key['nombre_imagen'].'"></td>';
+                                                    }else{
+                                                        $labelImagenDelEvento = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                    }
+
+                                        
+                        $tableEventosConTrabajosP2 = '<td class="datoTabla">'.$key['nombre_evento'].'</td>
+                                                    <td class="datoTabla">'.$datosConteoEventos.'</td>
+                                                    <td class="datoTabla"><div class="compEsp-edicion">
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a class="btnDetallesDesafio" data-id="'.$key['id_evento'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                        </div>
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                        </div>
+                                                    </div></td>
+                                                </tr>
+                                            </table>';
+               
+            echo $tableEventosConTrabajosP1;
+            echo $labelImagenDelEvento;
+            echo $tableEventosConTrabajosP2;
+        }
+
+    }
+
+    if($comboTipoActividad == 'convocatoria'){      
+    
+        $tableConvocatoriaConTrabajosP1 = "";
+        $labelImagenDeConvocatoria = "";
+        $tableConvocatoriaConTrabajosP2 = "";
+
+        //Consultamos los datos principales de las convocatorias para su muestreo en la tabla de actividades
+        $sqlDatConvocatorias = "SELECT Id, nombre_convocatoria, nombre_imagen from tbl_convocatoriacomite where id_usuario=".$idDelProfesor;
+        $datosConvocatorias = $convocatoriaControla->mostrarDatosConvocatorias($sqlDatConvocatorias);
+        foreach ($datosConvocatorias as $key){
+
+            $datosConteoConvocatorias = $profesorControla->contadorDeAplicacionesAActividades($key['Id'], 'CONVOCATORIA');
+            
+            $tableConvocatoriaConTrabajosP1 = '<!--Aqui van los registros de la tabla de desafios eventos y convocatorias-->
+                                            <table class="filasDeDatosTablaDesafios">
+                                                <tr>';
+
+                                                    //Aqui traemos la imagen del desafio para la tabla de actividades
+                                                    if($key['nombre_imagen'] != null){
+                                                        $labelImagenDeConvocatoria = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="convocatoriasImages/'.$key['nombre_imagen'].'"></td>';
+                                                    }else{
+                                                        $labelImagenDeConvocatoria = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                    }
+
+                                        
+                        $tableConvocatoriaConTrabajosP2 = '<td class="datoTabla">'.$key['nombre_convocatoria'].'</td>
+                                                    <td class="datoTabla">'.$datosConteoConvocatorias.'</td>
+                                                    <td class="datoTabla"><div class="compEsp-edicion">
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a class="btnDetallesDesafio" data-id="'.$key['Id'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                        </div>
+
+                                                        <div class="col-botonesEdicion">
+                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                        </div>
+                                                    </div></td>
+                                                </tr>
+                                            </table>';
+               
+            echo $tableConvocatoriaConTrabajosP1;
+            echo $labelImagenDeConvocatoria;
+            echo $tableConvocatoriaConTrabajosP2;
+        }
+
+    }
     
 }
-
-
-
-
-
 
 
 ?>

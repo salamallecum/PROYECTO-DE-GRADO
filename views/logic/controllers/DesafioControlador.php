@@ -680,6 +680,27 @@ class DesafioControlador{
         }
     }
 
+    //Funcion que retorna un array con el listado de desafios que fueron creados por un profesor
+    public function consultarDesafiosCreadosPorUnProfesor(int $idProfe){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_desafio from tbl_desafio where id_profesor =". $idProfe;
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayDesafiosDelProfesor = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayDesafiosDelProfesor[$contador] = $row['id_desafio'];
+            $contador++;
+        }
+
+        return $emparrayDesafiosDelProfesor
+        ;
+    }
+
 }
 
 ?>
