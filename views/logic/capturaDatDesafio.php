@@ -207,6 +207,19 @@
 
     }
 
+
+    //Capturamos el evento del boton "Atras" del modal paraactivar o desactivar un desafio
+    if(isset($_POST['idDesafioAGestionar']) && isset($_POST['estadoDelDesafio'])){
+
+        $idDesafioAGestionar = trim($_POST['idDesafioAGestionar']);
+        $idDesafioGest = (int)$idDesafioAGestionar;
+        $estadoDelDesafio = trim($_POST['estadoDelDesafio']);
+
+        $desafioControla->gestionarDesafio($idDesafioGest, $estadoDelDesafio);
+
+    }
+
+
 //-------------------------------------------------------DESAFIOS PERSONALIZADOS(Propuesta)---------------------------------------------------------------------
 
     //Capturamos el evento del boton de registro de desafio personalizado

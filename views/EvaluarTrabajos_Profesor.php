@@ -38,7 +38,7 @@ if(isset($_GET['Id_profesor']) != 0){
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-        
+                
         <!--Links Scripts de estilos-->
         <link rel="stylesheet" href="assets/css/ProfesorStyles.css">
 
@@ -48,7 +48,7 @@ if(isset($_GET['Id_profesor']) != 0){
 
     <body>
 
-        <input type="checkbox" id="sidebar-toggle">
+    <input type="checkbox" id="sidebar-toggle">
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3 class="brand">
@@ -59,7 +59,7 @@ if(isset($_GET['Id_profesor']) != 0){
             </div>
 
             <div class="sidebar-menu">
-            <ul class="menuProfesor">
+                <ul class="menuProfesor">
                     <li>
                         <a class="link_menu-active" href="<?php echo "./DashBoard_Profesor.php?Id_profesor=".$idProfesorLogueado;?>">
                             <span title="Dashboard"><i class="bi bi-file-bar-graph"></i></span>
@@ -95,7 +95,7 @@ if(isset($_GET['Id_profesor']) != 0){
                         </a>
                     </li>
 
-                </ul>            
+                </ul>
             </div>
         </div>
 
@@ -192,223 +192,328 @@ if(isset($_GET['Id_profesor']) != 0){
                     </div>
 
 
-                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS DESAFIOS Y EVENTOS-->
-                    <div id="modal_container1" class="modal_container" name="modal_container">
-                        <div class="modal">
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS DESAFIOS-->
+                    <div class="modal fade" id="modalDetallesDesafio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeDesafio" class="modal-body">
                             
-                            <div class="imagenDelDesafioOEvento">
-                                <img id=img_imagenDelDesafioOEvento" class="imgEncabezadoInfoActividad" src="assets/images/imgPorDefecto.jpg" alt="">
-                            </div>
-                            <br>
-
-                            <div class="modalBody">
-                                <h3 id="lbl_NombreDelDesafioOEvento" class="titulo_seccion">DESAFIO DE PRUEBA 1</h3>
-                                <br>
-                             
-                                <div class="informacionDelDesafioOEvento">
-            
-                                    <label class="subtitulosInfo">Descripción</label>
-                                    <p id="lbl_descripcionDelDesafioOEvento" class="enunciadoDesafioOEvento">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
-                                    <br>
-
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Enunciado:</label></td>
-                                            <td class="columnaInfoEnunciado"><a id="btn_descargarEnunciado" class="btn-fill pull-right btn btn-info" title="Descargar enunciado">Descargar</a></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha inicio:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                                
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha fin:</label>
-                                                <label id="lbl_fechaInicioActividad">01/01/2021</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br>
-
-                                    <table>
-                                        <tr>
-                                            <td><label class="subtitulosInfo">Estado de la actividad:</label>  </td>
-                                            <td class="columnaInfoEnunciado"><div class="contenedor-switch">
-                                                <input type="checkbox" id="check_estadoActividad" name="openModal4">
-                                            </div></td>
-                                            <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
-                                        </tr>
-
-                                    </table>
-                                                                
-                                    <br>
-                                    <br>    
-                                    <a id="btn_cancelar1" class="btn_agregarDesafio" title="Cancelar">Atrás</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS TRABAJOS DESTACADOS-->
-                    <div id="modal_container2" class="modal_container" name="modal_container">
-                        <div class="modal">
+                            <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen" value="">
                             
-                            <div class="imagenDelTrabajo">
-                                <img id=img_imagenDelTrabajo" class="imgEncabezadoInfoTrabajo" src="assets/images/imgPorDefecto.jpg" alt="">
-                            </div>
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafio" value="" disabled>
                             <br>
 
-                            <div class="modalBody">
-                                <h3 id="lbl_NombreDelTrabajo" class="titulo_seccion">TRABAJO DE PRUEBA 1</h3>
-                                <br>
-                                
-                                <div class="informacionDelTrabajo">
-            
-                                    <label class="subtitulosInfo">Descripción</label>
-                                    <p id="lbl_descripcionDelTrabajo" class="descripcionDelTrabajo">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum? orem ipsum dolor sit amet consectetur, adipisicing elit. Labore ullam dicta id ea quibusdam. Mollitia, ipsa, voluptatum possimus sed delectus adipisci ut distinctio eligendi illum, et atque saepe explicabo eum?</p>
-                                    <br>
-
-                                    <!-- Tabla con las evidencias del trabajo-->
-                                    <table>
-                                        <tr>
-                                            <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Evidencias:</label></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><a id="link_evidenciaDocumento" href="" target="_blank"><img src="assets/images/btn_evidenc_documento.PNG"></a></td>
-                                            <td class="columnaInfoEnunciado"><a id="link_evidenciaVideo" href="" target="_blank"><img src="assets/images/btn_evidenc_video.png"></a></td>
-                                            <td class="columnaInfoEnunciado"><a id="link_evidenciaRepoCodigo" href="" target="_blank"><img src="assets/images/btn_evidenc_repocodigo.png"></a></td>
-                                            <td class="columnaInfoEnunciado"><a id="link_evidenciaPresentacion" href="" target="_blank"><img src="assets/images/btn_evidenc_presentacion.png"></a></td>                           
-                                            <td><label class="explicacionEvidencias">Haga click sobre todos los iconos antes de iniciar la evaluación...</label></td>
-                                        </tr>
-                                    </table>
-                                                        
-                                    <br>
-                                    <br>   
-                                    <a id="openModal3" class="btn_agregarDesafio" title="Evaluar trabajo">Evaluar</a> 
-                                    <a id="btn_cancelar2" class="btn_agregarDesafio" title="Cancelar">Cancelar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--POPUP PARA LA EVALUACIÓN DE COMPETENCIAS EN UN TRABAJO-->
-                    <div id="modal_container3" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Evaluación de competencias</h3>
+                            <!--Aqui colocamos la imagen del desafio-->
+                            <span id="panelParaImagenDelDesafio"></span>
                             <br>
-                            <p>Evalúe el nivel de competencia alcanzado por el trabajo presentado para las siguientes competencias específicas: </p>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_desafio" value="" disabled></textarea>
+                            <br>
                             <br>
 
-
-                            <div class="contenedor_compEspecificas">
-
-                                <form class="">
-                                    <!--Este es el código que contiene las competencias específicas a evaluar-->
-                                    <div class="contenedorCompeEspeciasAEvaluar">
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">1. Competencia específica 1.</p>
-                                        
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-                                               
-                                            </tr>
-                                        </table>
-
-                                        <br>
-
-                                        <p id="lbl_enunciadoCompetenciaEspecíficaAEvaluar" name="enunciadoCompetenciaEspecíficaAEvaluar" class="enunciadoCompetenciaEspecíficaAEvaluar">2. Competencia específica 2.</p>
-
-                                        <!--Tabla de radiobuttons para evaluar competencia específica-->
-                                        <table>
-                                            <tr>
-                                                <td><input type="radio" id="radio_contribucionBaja" name="contribucionBaja" value="">
-                                                <label for="Baja">Baja</label></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionMedia" name="contribucionMedia" value="">
-                                                <label for="Media">Media</label></td></td>
-                                                
-                                                <td class=columnaNivelContribucion><td><input type="radio" id="radio_contribucionAlta" name="contribucionAlta" value="">
-                                                <label for="Alta">Alta</label></td></td>
-                                            </tr>
-                                        </table>
-                                    </div>  
-
-                                    <br>
-                                    <br>
-                                    <a id="btn_guardarEvaluacion" class="btn_agregarDesafio" title="Guardar">Guardar</a>
-                                    <a id="btn_cancelar3" class="btn_agregarDesafio" title="Cancelar">Cancelar</a>
-
-                                </form>
-                            </div>                            
-                        </div>
-                    </div>  
-
-                    
-                    <!--POPUP PARA EL OTORGAMIENTO DE INSIGNIAS A UN TRABAJO QUE ES DESTACADO-->
-                    <div id="modal_container4" class="modal_container" name="modal_container">
-                        <div class="modal">
-                            <h3 class="titulo_seccion">Resultado de la evaluación:</h3>
+                            <!--Aqui colocamos el enunciado del desafio-->
+                            <span id="panelParaBotonDescargaEnunciadoDesafio"></span>
                             <br>
-                            <p>Insignias otorgadas al trabajo calificado: </p>
                             <br>
 
-                            <!--En esta sección se muestran las Megainsignias que se obtuvo en la evaluación -->
-                            <p class="subtitulo_certificacion">MegaInsignias:</p>
-                            <div class="seccionMegaInsignia">
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
 
-                                <div class="megaInsigOtorgada">
-                                    <img class="imgMegaInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-            
-                            </div>
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
 
+                            <form id="formularioDeGestionDesafios">
+                                <input id="txt_estadoDesafio" type="hidden" name="estado">
+                                <input type="hidden" id="txt_idDesafioAGestionar" name="id_desafio" value="">
+                                <tr>
+                                    <td><label class="subtitulosInfo">Estado de la actividad: </label></td>
+                                    <td class="columnaInfoEnunciado"><div class="contenedor-switch">
+                                        <input type="checkbox" id="check_estadoDesafio" name="estadoDesafio">
+                                    </div></td>
+                                    <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
+                                </tr>
+                            </table>                           
+                            <br>
                             <br>
 
-                            <!--En esta sección se muestran las Insignias que se obtuvo en la evaluación -->
-                            <p class="subtitulo_certificacion">Insignias:</p>
-                            <div class="seccionInsignias">
-
-                                <div class="insigOtorgada">
-                                    <img class="imgInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-            
-                                <div class="insigOtorgada">
-                                    <img class="imgInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-
-                                <div class="insigOtorgada">
-                                    <img class="imgInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-
-                                <div class="insigOtorgada">
-                                    <img class="imgInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-
-                                <div class="insigOtorgada">
-                                    <img class="imgInsigniaOtorgada" src="assets/images/badge_prueba muestreo.png" alt="">
-                                </div>
-
-                            </div> 
-                            <br>  
-                            <br>                       
-
-                            <form id="formularioDeOtrogamientoInsignias"class="">
-                                <a id="btn_finalizarEvaluacion" class="btn_agregarDesafio" title="Finalizar evaluación">Finalizar</a>
-                                <a id="btn_cancelar4" class="btn_agregarDesafio" title="Atrás">Atrás</a>
+                                <button type="button" id="gestionarDesafio" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
                             </form>
-                                                    
                         </div>
-                    </div>  
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS DESAFIOS PERSONALIZADOS-->
+                    <div class="modal fade" id="modalDetallesDePropuesta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDePropuestaAprobada" class="modal-body">
+                            
+                            <input type="hidden" id="idPropDetalles" name="Id" value="">
+                            <input type="hidden" id="nombreEnunciadoPropDetalles" name="nombre_enunciado">
+                            <input type="hidden" id="nombreImagenPropDetalles" name="nombre_imagen">
+                            <input type="hidden" id="idEstudianteQueProponePropuestaPorRevisar" name="Id_estudiante">
+                            <input type="hidden" id="txt_idDesafioASustituir" name="idDesafioASustituir">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafioP" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen de la propuesta-->
+                            <span id="panelParaImagenDeLaPropuesta"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosEstudiante">
+                                
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui construimos el link para la descarga del archivo de la propuesta-->
+                            <span id="panelParaBotonDescargaEnunciado"></span>
+
+                            <table>
+                                <tr>
+                                    <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Fecha de propuesta:</label>
+                                    <td class="columnaInfoEnunciado"><input type="text" class="infoDetallePropuesta" name="fecha_propuesta" disabled></td>
+                                </tr>
+                            </table> 
+                            <br>
+                            
+                            <form id="infoDesafioAReemplazar">
+                                <label class="subtitulosInfo">Desafio que se quiere reemplazar:</label><br>
+                                <input type="text" class="infoDetalleDesafio" name="nombre_desafio">
+                            </form>
+                            <br>  
+                            
+                            <label class="subtitulosInfo">Observaciones</label>
+                            <textarea id="txt_ObservacionesALaPropuesta" name="observaciones" cols="80" placeholder="" rows="8" class="textAreaObservacionesPropuesta" maxlength="300" disabled></textarea>
+                            <br>
+                            <br>  
+                            
+                            <!--Aqui mostramos la confiramcion de quese aprobo o se rechazo la propuesta-->
+                            <span id="panelConfirmacionDeJuicio"></span>
+                            <br>
+
+                            <button id="btn_detalleDesafioReferenciado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafioASustituir" title="Ver desafio">Ver desafio</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS DESAFIOS REFERENCIADOS POR UNA PROPUESTA-->
+                    <div class="modal fade" id="modalDetallesDesafioASustituir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeDesafioASustituir" class="modal-body">
+                            
+                            <input type="text" id="idDesafioDetalles" name="id_desafio" value="">
+                            <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen" value="">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_desafio" value="" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del desafio-->
+                            <span id="panelParaImagenDelDesafioASustituir"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_desafio" value="" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui colocamos el enunciado del desafio-->
+                            <span id="panelParaEnunciadoDelDesafioASustituir"></span>
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+                            </table>                           
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td class="columnaInfoEnunciado"><label class="subtitulosInfo">Estado de la actividad:</label>
+                                    <td class="columnaInfoEnunciado"><input type="text" class="infoDetallePropuesta" name="estado" disabled></td>
+                                </tr>
+                            </table> 
+                            <br>
+
+                            <button type="button" class="btn btn-secondary" onclick="" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuesta" title="Atras">Atrás</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS EVENTOS-->
+                    <div class="modal fade" id="modalDetallesEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeEvento" class="modal-body">
+                            
+                            <input type="hidden" id="idEventoDetalles" name="id_evento" value="">
+                            <input type="hidden" id="nombreEnunciadoEventDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenEventDetalles" name="nombre_imagen" value="">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_evento" value="" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del evento-->
+                            <span id="panelParaImagenDelEvento"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_evento" value="" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui colocamos el enunciado del evento-->
+                            <span id="panelParaEnunciadoDelEvento"></span>
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+
+                            <form id="formularioDeGestionEventos">
+                                <input id="txt_estadoEvento" type="hidden" name="estado">
+                                <input type="hidden" id="txt_idEventoAGestionar" name="id_evento" value="">
+                                <tr>
+                                    <td><label class="subtitulosInfo">Estado de la actividad: </label></td>
+                                    <td class="columnaInfoEnunciado"><div class="contenedor-switch">
+                                        <input type="checkbox" id="check_estadoEvento" name="estadoEvento">
+                                    </div></td>
+                                    <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
+                                </tr>
+                            </table>                           
+                            <br>
+                            <br>
+
+                                <button type="button" id="gestionarEvento" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LAS CONVOCATORIAS-->
+                    <div class="modal fade" id="modalDetallesConvocatoria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeConvocatoria" class="modal-body">
+                            
+                            <input type="hidden" id="idConvDetalles" name="id_evento" value="">
+                            <input type="hidden" id="nombreEnunciadoConvDetalles" name="nombre_enunciado" value="">
+                            <input type="hidden" id="nombreImagenConvDetalles" name="nombre_imagen" value="">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_convocatoria" value="" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen de convocatoria-->
+                            <span id="panelParaImagenDeConvocatoria"></span>
+                            <br>
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion_convocatoria" value="" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <!--Aqui colocamos el enunciado de convocatoria-->
+                            <span id="panelParaEnunciadoDeConvocatoria"></span>
+                            <br>
+
+                            <table>
+                                <tr>
+                                    <td> <label class="subtitulosInfo">Fecha inicio</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_inicio" value="" disabled></td>
+
+                                    <td><label class="subtitulosInfo">Fecha fin</label><br>
+                                    <input type="text" class="infoDetallePropuesta" name="fecha_fin" value="" disabled></td>
+                                </tr>
+
+                            <form id="formularioDeGestionConvocatorias">
+                                <input id="txt_estadoConvocatoria" type="hidden" name="estado">
+                                <input type="hidden" id="txt_idConvocatoriaAGestionar" name="Id" value="">
+                                <tr>
+                                    <td><label class="subtitulosInfo">Estado de la actividad: </label></td>
+                                    <td class="columnaInfoEnunciado"><div class="contenedor-switch">
+                                        <input type="checkbox" id="check_estadoConvocatoria" name="estadoConvocatoria">
+                                    </div></td>
+                                    <td class="columnaInfoEnunciado"><label id="lbl_estadoActividad">Activo</label></td>
+                                </tr>
+                            </table>                           
+                            <br>
+                            <br>
+
+                                <button type="button" id="gestionarConvocatoria" class="btn btn-secondary" data-bs-dismiss="modal" title="Atrás">Atrás</button>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    
+
+                                    
+                                                                
+                                
+         
                 </div>
             </main>
         </div>
@@ -418,15 +523,52 @@ if(isset($_GET['Id_profesor']) != 0){
 ?>
     </body>
 
-    <!--Funcion que resetea el span de la tabla de actividades-->
+    <!--Funcion que resetea el span de la tabla de actividades y el span de lalogica de las actividades-->
     <script>
         function resetSpanTablaActividades(){
             document.getElementById('resultadosDeBusquedaTablaActividades').innerHTML="";
-        }            
+        }   
+        
+        function resetSpanLogicaActividades(){
+            document.getElementById('panelCargaLogicaDeActividades').innerHTML="";
+        }
 
         //Asignamos elevento de reseteo al boton que hace la busqueda de las actividades existentes
         $('#btn_filtrarActividades').click(function(){
             resetSpanTablaActividades();
+            resetSpanLogicaActividades();
+        });
+    </script>
+
+    <!--Script que permite traer la logica relacionada con la gestion de las actividades-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+
+            $('.btn_filtrarActividades').click(function(){
+                    
+                var comboTipoActividadParaCargarLogica = $('#cmb_tiposDeActividades').val();
+
+                function cargarLogicaDeActividades() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'comboTipoActividadParaCargarLogica': comboTipoActividadParaCargarLogica},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelCargaLogicaDeActividades').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                cargarLogicaDeActividades();
+                              
+            });
         });
     </script>
 
@@ -468,5 +610,148 @@ if(isset($_GET['Id_profesor']) != 0){
             });
         });
     </script>
+
+    <!--Aqui cargamos la logica de las actividades-->
+    <span id="panelCargaLogicaDeActividades"></span>
+
+    
+    <!--Script que permite activar o inactivar un desafio-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+
+            $('#gestionarDesafio').click(function(){
+                    
+                var idDesafioGestionar= document.getElementById('txt_idDesafioAGestionar').value;
+                var estadoDelDesafio = '';
+                var checkEstadoDesafio = document.getElementById('check_estadoDesafio');
+
+                if(checkEstadoDesafio.checked){
+                    estadoDelDesafio = 'Activo'
+                }else{
+                    estadoDelDesafio = 'Inactivo';
+                }
+
+                function enviarEstadoDelDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/capturaDatDesafio.php',
+                            type: 'post',
+                            data: {'idDesafioAGestionar': idDesafioGestionar, 'estadoDelDesafio': estadoDelDesafio},
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                enviarEstadoDelDesafio();
+                              
+            });
+        });
+    </script>
+
+    <!--Script que permite activar o inactivar un evento-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+
+            $('#gestionarEvento').click(function(){
+                    
+                var idEventoGestionar= document.getElementById('txt_idEventoAGestionar').value;
+                var estadoDelEvento = '';
+                var checkEstadoEvento = document.getElementById('check_estadoEvento');
+
+                if(checkEstadoEvento.checked){
+                    estadoDelEvento = 'Activo'
+                }else{
+                    estadoDelEvento = 'Inactivo';
+                }
+
+                function enviarEstadoDelEvento() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/capturaDatEvento.php',
+                            type: 'post',
+                            data: {'idEventoAGestionar': idEventoGestionar, 'estadoDelEvento': estadoDelEvento},
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                enviarEstadoDelEvento();
+                              
+            });
+        });
+    </script>
+
+    <!--Script que permite activar o inactivar una convocatoria-->
+    <script type='text/javascript'>
+        $(document).ready(function(){
+
+            $('#gestionarConvocatoria').click(function(){
+                    
+                var idConvocatoriaGestionar= document.getElementById('txt_idConvocatoriaAGestionar').value;
+                var estadoDeConvocatoria = '';
+                var checkEstadoConvocatoria = document.getElementById('check_estadoConvocatoria');
+
+                if(checkEstadoConvocatoria.checked){
+                    estadoDeConvocatoria = 'Activo'
+                }else{
+                    estadoDeConvocatoria = 'Inactivo';
+                }
+
+                function enviarEstadoDeConvocatoria() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/capturaDatConvocatoria.php',
+                            type: 'post',
+                            data: {'idConvocatoriaAGestionar': idConvocatoriaGestionar, 'estadoDeConvocatoria': estadoDeConvocatoria},
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                enviarEstadoDeConvocatoria();
+                              
+            });
+        });
+    </script>
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 </html>

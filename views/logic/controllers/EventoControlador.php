@@ -329,6 +329,17 @@ class EventoControlador{
             return $row['Id'];
         }
     }
+
+    //Funcion que activa o desactiva un evento
+    public function gestionarEvento(int $idEv, string $estado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_evento SET estado = '$estado' WHERE id_evento=".$idEv;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
 }
 
 ?>

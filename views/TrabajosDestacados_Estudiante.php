@@ -453,7 +453,6 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                             $('[name='+key+']', formId).val(value);
 
                             var eportPublicado = document.getElementById('txt_eportafolioPublicado').value;
-                            console.log(eportPublicado);
 
                             if(eportPublicado == 'Si'){
                                 $("#check_publicarTrabajoEnEportafolio").prop("checked", true);

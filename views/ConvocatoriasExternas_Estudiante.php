@@ -140,7 +140,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                 
                         <!--Script para cargar datos de las convocatorias comite en cards-->      
                         <?php
-                            $sqlConvCom = "SELECT Id, nombre_convocatoria, nombre_imagen, id_usuario from tbl_convocatoriacomite where estado = 'Activo'";
+                            $sqlConvCom = "SELECT Id, nombre_convocatoria, nombre_imagen, id_usuario from tbl_convocatoriacomite where competenciasAsignadas= 'Si' and estado = 'Activo'";
                             $resultDatosConvComite = $convocatoriaControla->mostrarDatosConvocatoriasComiteEnCards($sqlConvCom);
                             while ($row = mysqli_fetch_row($resultDatosConvComite)){
                         ?>
@@ -558,7 +558,7 @@ if(isset($_GET['Id_estudiante']) != 0){
             });
         </script>
 
-         <!--Script que permite traer los datos del profesor al modal de una convocatoria a aplicar-->
+        <!--Script que permite traer los datos del profesor al modal de una convocatoria a aplicar-->
         <script type='text/javascript'>
             $(document).ready(function(){
                 

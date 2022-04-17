@@ -87,9 +87,10 @@ class ConvocatoriaControlador{
         $fechaInicioConvCom = $nvaConv->getFechaInicio();
         $fechaFinConvCom = $nvaConv->getFechaFin();
         $profeEncargadoConvCom = $nvaConv->getProfeEncargado();
+        $estadoConvComite = $nvaConv->getEstadoDeConvocatoria();
                 
-        $sql = "INSERT INTO tbl_convocatoriacomite (Id, nombre_convocatoria, descripcion_convocatoria, fecha_inicio, fecha_fin, id_usuario, competenciasAsignadas)
-                            values ($idConvocatoriaCom, '$nombreConvCom', '$descripcionConvCom', '$fechaInicioConvCom', '$fechaFinConvCom', $profeEncargadoConvCom, 'No')";
+        $sql = "INSERT INTO tbl_convocatoriacomite (Id, nombre_convocatoria, descripcion_convocatoria, fecha_inicio, fecha_fin, id_usuario, competenciasAsignadas, estado)
+                            values ($idConvocatoriaCom, '$nombreConvCom', '$descripcionConvCom', '$fechaInicioConvCom', '$fechaFinConvCom', $profeEncargadoConvCom, 'No', '$estadoConvComite')";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
     }
@@ -664,6 +665,17 @@ class ConvocatoriaControlador{
         while ($row = $result->fetch_assoc()) {
             return $row['Id'];
         }
+    }
+
+    //Funcion que activa o desactiva una convocatoria comite
+    public function gestionarConvocatoriaComite(int $idConv, string $estado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_convocatoriacomite SET estado = '$estado' WHERE Id=".$idConv;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 }
 ?>

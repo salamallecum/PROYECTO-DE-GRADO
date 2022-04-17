@@ -701,6 +701,28 @@ class DesafioControlador{
         ;
     }
 
+    //Funcion que activa o desactiva un desafio
+    public function gestionarDesafio(int $idDes, string $estado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafio SET estado = '$estado' WHERE id_desafio=".$idDes;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
+    //Funcion que activa o desactiva un desafio personalizado
+    public function gestionarPropuesta(int $idProp, string $estado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_desafiopersonal SET estado = '$estado' WHERE Id=".$idProp;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+    }
+
 }
 
 ?>

@@ -562,47 +562,70 @@ if(!isset($_SESSION['usuario'])){
             });
         </script>
 
-        <!--Script que permite pasar el id de un eportafolio de estudiante con el fin de utilizarlo como recurso en el modal de compartir eportafolios-->
-        <script type='text/javascript'>
-            
-            function eventoCompartirEportafolio(){
+        <!--Aqui cargamos la logica de los eportafolios-->
+        <span id="panelCargaLogicaDeEportafolios"></span>
 
-                                               
-               var btnCompartirEportafolio = document.getElementById('btnCompartirEportafolio');
-               var idEportafolioEstudianteSeleccionado = btnCompartirEportafolio.getAttribute('data-id');
-
-               function consultarIdDeEportafolioEstudiante() {
-                    return new Promise((resolve, reject) => {
-                        // AJAX request
-                        $.ajax({
-                            url: 'EportafolioService/capturaDatEportafolio.php',
-                            type: 'post',
-                            data: {'idEportafolioEstudianteSeleccionado': idEportafolioEstudianteSeleccionado},
-                            success: function(response){
-                                resolve(response)
-                            },
-                            error: function (error) {
-                            reject(error)
-                            },
-                        });
-                    })
-                }
-
-               consultarIdDeEportafolioEstudiante()
-                .then((response) => {
-                    var data = $.parseJSON(response)[0];
-                    var formId = '#formularioModalCompartirEportafolio';
-                    $.each(data, function(key, value){
-                        $('[name='+key+']', formId).val(value);
-                    });
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-
-            } 
         
+        <!--Script que permite traer la logica relacionada con el id del eportafolio para ser compartido-->
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                $('.btnDetallesConvPracticas').click(function(){
+                    
+                    var cargarLogica = 'Si';
+                   
+                    function cargarLogicaIdEp() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'EportafolioService/capturaDatEportafolio.php',
+                                type: 'post',
+                                data: {'cargarLogica': cargarLogica},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelCargaLogicaDeEportafolios').html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+
+                    cargarLogicaIdEp();
+                    
+                });
+            });
         </script>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
         <!--Script que permite pasar los datos de una convocatoria a la ventana modal de edicion de la misma-->
         <script type='text/javascript'>

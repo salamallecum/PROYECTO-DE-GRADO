@@ -194,5 +194,16 @@
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 
     }
+
+    //Capturamos el evento del boton "Atras" del modal para activar o desactivar un evento
+    if(isset($_POST['idEventoAGestionar']) && isset($_POST['estadoDelEvento'])){
+
+        $idEventoAGestionar = trim($_POST['idEventoAGestionar']);
+        $idEventoGest = (int)$idEventoAGestionar;
+        $estadoDelEvento = trim($_POST['estadoDelEvento']);
+
+        $eventoControla->gestionarEvento($idEventoGest, $estadoDelEvento);
+
+    }
     
 ?>

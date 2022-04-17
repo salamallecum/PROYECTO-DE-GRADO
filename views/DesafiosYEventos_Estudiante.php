@@ -147,7 +147,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                             //Convertimos el arreglo obtenido anteriormente a string
                             $stringDesafiosEnLosQueElEstudianteTienePropAprobadas = implode(",", $arrayDesafiosEnLosQueElEstudianteTienePropAprobadas);
 
-                            $sql = "SELECT id_desafio, id_profesor, nombre_desafio, nombre_imagen from tbl_desafio where estado = 'Activo' and id_desafio not in ('$stringDesafiosEnLosQueElEstudianteTienePropAprobadas')";
+                            $sql = "SELECT id_desafio, id_profesor, nombre_desafio, nombre_imagen from tbl_desafio where competenciasAsignadas = 'Si' and estado = 'Activo' and id_desafio not in ('$stringDesafiosEnLosQueElEstudianteTienePropAprobadas')";
                             $resultDatosDesafios = $desafioControla->mostrarDatosDesafiosEnCards($sql);
                             while ($point = mysqli_fetch_row($resultDatosDesafios)){    
                         ?>
@@ -254,7 +254,7 @@ if(isset($_GET['Id_estudiante']) != 0){
 
                         <!--Script para cargar datos de los eventos en cards-->      
                         <?php
-                            $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen, id_usuario from tbl_evento where estado = 'Activo'";
+                            $sqlEv = "SELECT id_evento, nombre_evento, nombre_imagen, id_usuario from tbl_evento where competenciasAsignadas = 'Si' and estado = 'Activo'";
                             $resultDatosEventos = $eventoControla->mostrarDatosEventosEnCards($sqlEv);
                             while ($row = mysqli_fetch_row($resultDatosEventos)){
                         ?>
@@ -955,7 +955,7 @@ if(isset($_GET['Id_estudiante']) != 0){
                     
                     function verificacionDeEnunciadoParaDesafioAAplicar() {
                         return new Promise((resolve, reject) => {
-                                // AJAX request
+                            // AJAX request
                             $.ajax({
                                 url: 'logic/utils/ajaxfile.php',
                                 type: 'post',

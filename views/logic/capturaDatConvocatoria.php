@@ -174,6 +174,17 @@
             header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
     } 
+
+    //Capturamos el evento del boton "Atras" del modal para activar o desactivar una convocatoria comite
+    if(isset($_POST['idConvocatoriaAGestionar']) && isset($_POST['estadoDeConvocatoria'])){
+
+        $idConvocatoriaAGestionar = trim($_POST['idConvocatoriaAGestionar']);
+        $idConvGest = (int)$idConvocatoriaAGestionar;
+        $estadoDeConvocatoria = trim($_POST['estadoDeConvocatoria']);
+
+        $convocatoriaControla->gestionarConvocatoriaComite($idConvGest, $estadoDeConvocatoria);
+
+    }
     
     //Capturamos el evento del boton de registro de convocatorias del rol practicas
     if(isset($_POST['guardarConvocatoriaPracticas'])){

@@ -30,7 +30,7 @@ if(isset($_POST['idEportafolioEstudianteSeleccionado'])){
     
 }
 
-//Capturamos el id del eportafolio y el email del destinatario de las ventanas modal para compartir un evento (boton enviar - Modal Compartir Eportafolio)
+//Capturamos el id del eportafolio y el email del destinatario de las ventanas modal para compartir un eportafolio (boton enviar - Modal Compartir Eportafolio)
 if(isset($_POST['idEportafolioSeleccionado']) && isset($_POST['emailDestinatario'])){
 
     //Capturamos los datos de los campos del formulario
@@ -84,6 +84,58 @@ if(isset($_POST['aplicarEportafolioAUnaConvocatoria'])){
         <h3 class="indicadorSatisfactorio">* Eportafolio aplicado satisfactoriamente</h3>  
         <?php
         header("Location: " . $_SERVER["HTTP_REFERER"]);
+    }  
+}
+
+//Capturamos el evento del boton que abre el modal de detalles conovcatoria conel fin de cargar la logicapara traer el id del eportafolio al modal de compartir eportafolio
+if(isset($_POST['cargarLogica'])){
+
+    $cargarLogica = $_POST['cargarLogica'];
+
+    if($cargarLogica == 'Si'){
+
+        $logicaParaPasarIdParaCompartirEportafolio = '<!--Script que permite pasar el id de un eportafolio de estudiante con el fin de utilizarlo como recurso en el modal de compartir eportafolios-->
+                                                <script type="text/javascript">
+                                                    
+                                                    $(".btnCompartirEportafolio").click(function(){
+                            
+                                                        var idEportafolioEstudianteSeleccionado = $(this).data("id");
+
+                                                        function consultarIdDeEportafolioEstudiante() {
+                                                            return new Promise((resolve, reject) => {
+                                                                // AJAX request
+                                                                $.ajax({
+                                                                    url: "EportafolioService/capturaDatEportafolio.php",
+                                                                    type: "post",
+                                                                    data: {"idEportafolioEstudianteSeleccionado": idEportafolioEstudianteSeleccionado},
+                                                                    success: function(response){
+                                                                        resolve(response)
+                                                                    },
+                                                                    error: function (error) {
+                                                                    reject(error)
+                                                                    },
+                                                                });
+                                                            })
+                                                        }
+
+                                                        consultarIdDeEportafolioEstudiante()
+                                                        .then((response) => {
+                                                            var data = $.parseJSON(response)[0];
+                                                            var formId = "#formularioModalCompartirEportafolio";
+                                                            $.each(data, function(key, value){
+                                                                $("[name="+key+"]", formId).val(value);
+                                                            });
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error)
+                                                        })
+
+                                                    });
+                                                
+                                                </script>';
+
+        echo $logicaParaPasarIdParaCompartirEportafolio;
+
     }
     
 }
