@@ -155,8 +155,7 @@ if(isset($_GET['Id_profesor']) != 0){
 
                             <span id="resultadosDeBusquedaTablaActividades"></span>
                         </div>
-                                
-
+                            
                     </div>
  
                     <div class="contenedorTabla">   
@@ -170,24 +169,12 @@ if(isset($_GET['Id_profesor']) != 0){
                                     <tr>
                                         <th class="campoTabla">Imagen</th>
                                         <th class="campoTabla">Nombre Trabajo</th>
-                                        <th class="campoTabla">Nombres</th>
-                                        <th class="campoTabla">Apellidos</th>
                                         <th class="campoTabla">Acciones</th>
                                     </tr>
                                 </thead>
-    
-                                <!--Aqui van los registros de la tabla de trabajos presentados-->
-                                <tr class="filasDeDatosTablaDesafios">
-                                    <td class="datoTabla"><img class="imagenDelDesafioEnTabla"src="assets/images/imgPorDefecto.jpg"></td>
-                                    <td class="datoTabla">TRABAJO DE PRUEBA 1</td>
-                                    <td class="datoTabla"> PEPITO </td>
-                                    <td class="datoTabla"> PEREZ</td>
-                                    <td class="datoTabla"><div class="col-botonesEdicion">
-                                            <a name="openModal2" class="iconosAccionesEvaluacion" title="Detalles"><img src="assets/images/verDetallesActividad.png"></a> 
-                                        </div>
-                                    </td>
-                                </tr>
                             </table> 
+
+                            <span id="resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar"></span>
                         </div>
                     </div>
 
@@ -523,7 +510,7 @@ if(isset($_GET['Id_profesor']) != 0){
 ?>
     </body>
 
-    <!--Funcion que resetea el span de la tabla de actividades y el span de lalogica de las actividades-->
+    <!--Funcion que resetea el span de la tabla de actividades y el span de la logica de las actividades-->
     <script>
         function resetSpanTablaActividades(){
             document.getElementById('resultadosDeBusquedaTablaActividades').innerHTML="";
@@ -540,24 +527,146 @@ if(isset($_GET['Id_profesor']) != 0){
         });
     </script>
 
-    <!--Script que permite traer la logica relacionada con la gestion de las actividades-->
-    <script type='text/javascript'>
-        $(document).ready(function(){
+    <!--Funcion que resetea el span de la tabla de trabajos aplicados-->
+    <script>
+        function resetSpanTablaTrabajosDestacados(){
+            document.getElementById('resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar').innerHTML="";
+        }   
+        
+        //Asignamos el evento de reseteo a los botones que hacen la busqueda de los trabajos destacados aplicados de los desafios, propuestas, eventos y convocatorias
+        $('.btnListarTrabajosDestacadosDesafio').click(function(){
+            resetSpanTablaTrabajosDestacados();
+        });
 
-            $('.btn_filtrarActividades').click(function(){
+        $('.btnListarTrabajosDestacadosPropuesta').click(function(){
+            resetSpanTablaTrabajosDestacados();
+        });
+
+        $('.btnListarTrabajosDestacadosEvento').click(function(){
+            resetSpanTablaTrabajosDestacados();
+        });
+
+        $('.btnListarTrabajosDestacadosConvocatoria').click(function(){
+            resetSpanTablaTrabajosDestacados();
+        });
+
+    </script>
+
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los desafios en la tabla actividades-->
+    <script>
+        function funcionesParaGestionDesafio(){
+
+            $(".btnDetallesDesafio").click(function(){
+                                            
+                var idDesafioAAplicar = $(this).data("id");
+                                
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioAAplicar": idDesafioAAplicar },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    console.log(response);
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeDesafio";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+
+                        var desafioActivo = document.getElementById("txt_estadoDesafio").value;
+
+                        if(desafioActivo == "Activo"){
+                            $("#check_estadoDesafio").prop("checked", true);
+                        }else{
+                            $("#check_estadoDesafio").prop("checked", false);
+                        }
+
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
                     
-                var comboTipoActividadParaCargarLogica = $('#cmb_tiposDeActividades').val();
-
-                function cargarLogicaDeActividades() {
+            });
+    
+            $(".btnDetallesDesafio").click(function(){
+                    
+                var idDesafioAAplicarImagen = $(this).data("id");
+                
+                function verificacionDeImagenParaDesafioAAplicar() {
                     return new Promise((resolve, reject) => {
                             // AJAX request
                         $.ajax({
-                            url: 'logic/utils/ajaxfile.php',
-                            type: 'post',
-                            data: {'comboTipoActividadParaCargarLogica': comboTipoActividadParaCargarLogica},
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioAAplicarImagen": idDesafioAAplicarImagen},
                             success: function(response){
                                 resolve(response)
-                                $('#panelCargaLogicaDeActividades').html(response);
+                                $("#panelParaImagenDelDesafio").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaDesafioAAplicar();
+                        
+            });
+                    
+
+            $(".btnDetallesDesafio").click(function(){
+                    
+                var idDesafioAAplicarEnunciado = $(this).data("id");
+                
+                function verificacionDeEnunciadoParaDesafioAAplicar() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioAAplicarEnunciado": idDesafioAAplicarEnunciado},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaBotonDescargaEnunciadoDesafio").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEnunciadoParaDesafioAAplicar();                            
+            });
+                     
+            
+            $(".btnListarTrabajosDestacadosDesafio").click(function(){
+                    
+                var idDesafioParaConsultarSusTrabajosAplicados = $(this).data("id");
+
+                function consultaDeTrabajosDestacadosAplicadosAUnDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioParaConsultarSusTrabajosAplicados": idDesafioParaConsultarSusTrabajosAplicados},
+                            success: function(response){
+                                resolve(response)
+                                $("#resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar").html(response);
                             },
                             error: function (error) {
                                 reject(error)
@@ -566,13 +675,693 @@ if(isset($_GET['Id_profesor']) != 0){
                     })
                 }
             
-                cargarLogicaDeActividades();
-                              
+                consultaDeTrabajosDestacadosAplicadosAUnDesafio();
+                                        
             });
-        });
+        }
     </script>
 
-    <!--Script que permite pasar un tipo de actividad para así mostrar las actividades del profesor existentes paraese tipo en la tabla de actividades-->
+
+
+
+
+
+
+
+
+
+
+
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de las propuestas en la tabla actividades-->
+    <script>
+        function funcionesParaGestionDesafiosPersonalizados(){
+
+            $(".btnDetallesPropuesta").click(function(){
+                                                
+                var idPropuestaDetallesModalAprobada = $(this).data("id");
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idPropuestaDetallesModalAprobada": idPropuestaDetallesModalAprobada },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDePropuestaAprobada";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+    
+       
+            //Script que permite pasar el id de una propuesta aprobada con el fin de identificar si tiene imagen almacenada o no
+            $(".btnDetallesPropuesta").click(function(){
+                    
+                var idPropuestaImagenAprobada = $(this).data("id");
+                
+                function verificacionDeImagenParaPropuestaModalAprobada() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idPropuestaImagenAprobada": idPropuestaImagenAprobada},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaImagenDeLaPropuesta").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaPropuestaModalAprobada();
+                        
+            });
+    
+
+            //Script que permite traer el nombre del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles de la misma en estado "Aprobada"-->
+            $(".btnDetallesPropuesta").click(function(){
+                
+                var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data("desafio");
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioQSePretendeSustituirParaModalAprobada": idDesafioQSePretendeSustituirParaModalAprobada },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#infoDesafioAReemplazar";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+            
+            //Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
+            $(".btnDetallesPropuesta").click(function(){
+                    
+                var idPropuestaParaBuscarEnunciado = $(this).data("id");
+                
+                function verificacionDeEnunciadoParaPropuesta() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idPropuestaParaBuscarEnunciado": idPropuestaParaBuscarEnunciado},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaBotonDescargaEnunciado").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEnunciadoParaPropuesta();
+                        
+            });
+        
+    
+            //Script que permite traer los datos del estudiante que propuso el desafio personalizado a la ventana modal de detalles de la misma"--> 
+            $(".btnDetallesPropuesta").click(function(){
+                
+                var idEstudianteQProponeParaModal = $(this).data("estudiante");
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEstudianteQProponeParaModal": idEstudianteQProponeParaModal},
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#seccionDatosEstudiante";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+
+    
+            //Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Aprobada"-->    
+            $(".btnDetallesPropuesta").click(function(){
+                
+                var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data("desafio");
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioQSePretendeSustituirParaModalDetallesDesafio": idDesafioQSePretendeSustituirParaModalDetallesDesafio },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeDesafioASustituir";
+
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+    
+            //Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene imagen almacenada o no (Cuando la propuesta esta en estado por revisar)-->
+            $(".btnDetallesPropuesta").click(function(){
+                    
+                var idImagenDesafioPropuesta = $(this).data("desafio");
+                
+                function verificacionDeImagenParaDesafioAfectadoPorPropuesta() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idImagenDesafioPropuesta": idImagenDesafioPropuesta},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaImagenDelDesafioASustituir").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaDesafioAfectadoPorPropuesta();
+                        
+            });
+            
+
+            //Script que permite pasar el id de un desafio a contribuir por una propuesta con el fin de identificar si tiene enunciado almacenado o no -->
+            $(".btnDetallesPropuesta").click(function(){
+                    
+                var idEnunciadoDesafioPropuesta = $(this).data("desafio");
+                
+                function verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEnunciadoDesafioPropuesta": idEnunciadoDesafioPropuesta},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaEnunciadoDelDesafioASustituir").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta();
+                        
+            });
+
+            //Script que permite mostrar en la tabla de trabajos los trabajos destacados que fueron aplicados a un desafio personalizado
+            $(".btnListarTrabajosDestacadosPropuesta").click(function(){
+                    
+                    var idPropuestaParaConsultarSusTrabajosAplicados = $(this).data("id");
+    
+                    function consultaDeTrabajosDestacadosAplicadosAUnDesafioPersonalizado() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: "logic/utils/ajaxfile.php",
+                                type: "post",
+                                data: {"idPropuestaParaConsultarSusTrabajosAplicados": idPropuestaParaConsultarSusTrabajosAplicados},
+                                success: function(response){
+                                    resolve(response)
+                                    $("#resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar").html(response);
+                                },
+                                error: function (error) {
+                                    reject(error)
+                                },
+                            });
+                        })
+                    }
+                
+                    consultaDeTrabajosDestacadosAplicadosAUnDesafioPersonalizado();
+                                            
+                });
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los eventos en la tabla actividades-->
+    <script>
+        function funcionesParaGestionEventos(){
+
+            //Script que permite pasar los datos de un evento a la ventana modal Aplicacion a un evento-->                         
+            $(".btnDetallesEvento").click(function(){
+                
+                var idEventoAAplicar = $(this).data("id");
+                                                        
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEventoAAplicar": idEventoAAplicar },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var modalShare = "#detallesDeEvento";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", modalShare).val(value);
+
+                        var eventoActivo = document.getElementById("txt_estadoEvento").value;
+
+                        if(eventoActivo == "Activo"){
+                            $("#check_estadoEvento").prop("checked", true);
+                        }else{
+                            $("#check_estadoEvento").prop("checked", false);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });                      
+                                
+            //Script que permite pasar el id de un evento con el fin de identificar si tiene imagen almacenada o no-->
+            $(".btnDetallesEvento").click(function(){
+                            
+                var idEventoAAplicarImagen = $(this).data("id");
+                
+                function verificacionDeImagenParaEventoAAplicar() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEventoAAplicarImagen": idEventoAAplicarImagen},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaImagenDelEvento").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaEventoAAplicar();
+                        
+            });
+                                 
+            //Script que permite pasar el id de un evento con el fin de identificar si tiene enunciado almacenado o no-->                 
+            $(".btnDetallesEvento").click(function(){
+                    
+                var idEventoAAplicarEnunciado = $(this).data("id");
+                
+                function verificacionDeEnunciadoParaEventoAAplicar() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEventoAAplicarEnunciado": idEventoAAplicarEnunciado},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaEnunciadoDelEvento").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEnunciadoParaEventoAAplicar();                            
+            });
+
+            //Script que permite consultar los trabajos destacados que han sido aplicados a un desafio personalizado
+            $(".btnListarTrabajosDestacadosPropuesta").click(function(){
+                    
+                var idPropuestaParaConsultarSusTrabajosAplicados = $(this).data("id");
+                console.log(idDesafioParaConsultarSusTrabajosAplicados);
+
+                function consultaDeTrabajosDestacadosAplicadosAUnDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idDesafioParaConsultarSusTrabajosAplicados": idDesafioParaConsultarSusTrabajosAplicados},
+                            success: function(response){
+                                console.log(response);
+                                resolve(response)
+                                $("#resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                consultaDeTrabajosDestacadosAplicadosAUnDesafio();
+                                        
+            });
+
+            //Script que permite mostrar en la tabla de trabajos los trabajos destacados que fueron aplicados a un evento
+            $(".btnListarTrabajosDestacadosEvento").click(function(){
+                    
+                var idEventoParaConsultarSusTrabajosAplicados = $(this).data("id");
+
+                function consultaDeTrabajosDestacadosAplicadosAUnEvento() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idEventoParaConsultarSusTrabajosAplicados": idEventoParaConsultarSusTrabajosAplicados},
+                            success: function(response){
+                                resolve(response)
+                                $("#resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                consultaDeTrabajosDestacadosAplicadosAUnEvento();
+                                        
+            });
+                          
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de las convocatorias en la tabla actividades-->
+    <script>
+        function funcionesParaGestionConvocatorias(){
+
+            //Script que permite pasar los datos de una convocatoria comite  a la ventana modal Aplicacion a una convocatoria-->                        
+            $(".btnDetallesConvocatoria").click(function(){
+                
+                var idConvComAAplicar = $(this).data("id");
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idConvComAAplicar": idConvComAAplicar },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeConvocatoria";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+
+                        var convActiva = document.getElementById("txt_estadoConvocatoria").value;
+
+                        if(convActiva == "Activo"){
+                            $("#check_estadoConvocatoria").prop("checked", true);
+                        }else{
+                            $("#check_estadoConvocatoria").prop("checked", false);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+                                        
+                                    
+            //Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene imagen almacenada o no-->
+            $(".btnDetallesConvocatoria").click(function(){
+                    
+                var idConvComAAplicarImagen = $(this).data("id");
+                
+                function verificacionDeImagenParaConvocatoriaComiteAAplicar() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idConvComAAplicarImagen": idConvComAAplicarImagen},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaImagenDeConvocatoria").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaConvocatoriaComiteAAplicar();
+                        
+            });
+                                        
+            //Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene enunciado almacenado o no-->
+            $(".btnDetallesConvocatoria").click(function(){
+                    
+                var idConvComAAplicarEnunciado = $(this).data("id");
+                
+                function verificacionDeEnunciadoParaConvocatoriaComiteAAplicar() {
+                    return new Promise((resolve, reject) => {
+                            // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idConvComAAplicarEnunciado": idConvComAAplicarEnunciado},
+                            success: function(response){
+                                resolve(response)
+                                $("#panelParaEnunciadoDeConvocatoria").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEnunciadoParaConvocatoriaComiteAAplicar();                            
+            });
+
+            //Script que permite mostrar en la tabla de trabajos los trabajos destacados que fueron aplicados a una convocatoria
+            $(".btnListarTrabajosDestacadosConvocatoria").click(function(){
+                    
+                var idConvocatoriaParaConsultarSusTrabajosAplicados = $(this).data("id");
+
+                function consultaDeTrabajosDestacadosAplicadosAUnaConvocatoria() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idConvocatoriaParaConsultarSusTrabajosAplicados": idConvocatoriaParaConsultarSusTrabajosAplicados},
+                            success: function(response){
+                                resolve(response)
+                                $("#resultadosDeBusquedaTablaTrabajosDestacadosPorEvaluar").html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+            
+                consultaDeTrabajosDestacadosAplicadosAUnaConvocatoria();
+                                        
+            });
+                                        
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--Script que permite pasar un tipo de actividad para así mostrar las actividades del profesor existentes para ese tipo en la tabla de actividades-->
     <script type='text/javascript'>
         $(document).ready(function(){
 
@@ -731,6 +1520,8 @@ if(isset($_GET['Id_profesor']) != 0){
             });
         });
     </script>
+
+    
 
 
     

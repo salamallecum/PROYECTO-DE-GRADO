@@ -677,5 +677,25 @@ class ConvocatoriaControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
+
+    //Funcion que retorna un array con el listado de trabajos que fueron aplicados a una convocatoria
+    public function consultarTrabajosDestacadosAplicadosAUnaConvocatoria(int $idConv){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_trabajo from tbl_aplicaciondetrabajos where id_actividad = $idConv and tipo_actividad='CONVOCATORIA'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayTrabajosAplicadosAConvocatoria = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayTrabajosAplicadosAConvocatoria[$contador] = $row['id_trabajo'];
+            $contador++;
+        }
+
+        return $emparrayTrabajosAplicadosAConvocatoria;
+    }
 }
 ?>

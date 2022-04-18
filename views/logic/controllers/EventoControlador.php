@@ -340,6 +340,26 @@ class EventoControlador{
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
+
+    //Funcion que retorna un array con el listado de trabajos que fueron aplicados a un evento
+    public function consultarTrabajosDestacadosAplicadosAUnEvento(int $idEvento){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_trabajo from tbl_aplicaciondetrabajos where id_actividad = $idEvento and tipo_actividad='EVENTO'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayTrabajosAplicadosAEvento = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayTrabajosAplicadosAEvento[$contador] = $row['id_trabajo'];
+            $contador++;
+        }
+
+        return $emparrayTrabajosAplicadosAEvento;
+    }
 }
 
 ?>

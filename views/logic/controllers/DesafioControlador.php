@@ -723,6 +723,45 @@ class DesafioControlador{
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 
+    //Funcion que retorna un array con el listado de trabajos que fueron aplicados a un desafio
+    public function consultarTrabajosDestacadosAplicadosAUnDesafio(int $idDesafio){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_trabajo from tbl_aplicaciondetrabajos where id_actividad = $idDesafio and tipo_actividad='DESAFIO'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayTrabajosAplicadosADesafio = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayTrabajosAplicadosADesafio[$contador] = $row['id_trabajo'];
+            $contador++;
+        }
+
+        return $emparrayTrabajosAplicadosADesafio;
+    }
+
+    //Funcion que retorna un array con el listado de trabajos que fueron aplicados a un desafio personalizado
+    public function consultarTrabajosDestacadosAplicadosAUnaPropuesta(int $idPropuesta){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_trabajo from tbl_aplicaciondetrabajos where id_actividad = $idPropuesta and tipo_actividad='DESAF PERSONAL'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayTrabajosAplicadosAPropuesta = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayTrabajosAplicadosAPropuesta[$contador] = $row['id_trabajo'];
+            $contador++;
+        }
+
+        return $emparrayTrabajosAplicadosAPropuesta;
+    }
 }
 
 ?>

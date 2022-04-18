@@ -6,6 +6,7 @@ include "../controllers/EventoControlador.php";
 include "../controllers/EstudianteControlador.php";
 include "../controllers/ProfesorControlador.php";
 include "../controllers/DesafioControlador.php";
+include "../controllers/TrabajoControlador.php";
 
 
 //Este archivo se encarga de traer de base de datos los datos de los objetos del sistema (sea Eventos, Convocatorias, Eportafolios o Competencias) 
@@ -17,6 +18,7 @@ $eventoControla = new EventoControlador();
 $estudianteControla = new EstudianteControlador();
 $profesorControla = new ProfesorControlador();
 $desafioControla = new DesafioControlador();
+$trabajoControla = new TrabajoControlador();
 
 //----------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------SECCION ESTUDIANTE-----------------------------------------------------//
@@ -913,47 +915,6 @@ if(isset($_POST['idTrabajoElim'])){
     echo json_encode($emparrayTrabajos);
     exit;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2033,13 +1994,13 @@ if(isset($_POST['idCompetenciaEspEdit'])){
 //----------------------------------------------------------------------------------------------------------------------------//
 //--------------------------------------------------SECCION EVALUACION DE TRABAJOS-------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
-//Capturamos el evento del tipo de actividad para así mostrar las actividades del profesor existentes paraese tipo en la tabla de actividades
+//Capturamos el evento del tipo de actividad para así mostrar las actividades del profesor existentes para ese tipo en la tabla de actividades
 if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
 
     $comboTipoActividad = $_POST['comboTipoActividad'];
     $idDelProfesor = $_POST['idDelProfesor'];
 
-    //obtenemos unarray con los desafios que hacreado un profesor
+    //obtenemos un array con los desafios que ha creado un profesor
     $arrayDesafiosQueTieneUnProfesor = $desafioControla->consultarDesafiosCreadosPorUnProfesor($idDelProfesor);
     $stringDesafiosQueTieneUnProfesor = implode(",", $arrayDesafiosQueTieneUnProfesor);
 
@@ -2073,11 +2034,11 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
                                                     <td class="datoTabla"><div class="compEsp-edicion">
 
                                                         <div class="col-botonesEdicion">
-                                                            <a class="btnDetallesDesafio" data-id="'.$key['id_desafio'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            <a class="btnDetallesDesafio" onclick="funcionesParaGestionDesafio()" data-id="'.$key['id_desafio'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                         </div>
 
                                                         <div class="col-botonesEdicion">
-                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                            <a class="btnListarTrabajosDestacadosDesafio" data-id="'.$key['id_desafio'].'" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
                                                         </div>
                                                     </div></td>
                                                 </tr>
@@ -2118,11 +2079,11 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
                                                             <td class="datoTabla"><div class="compEsp-edicion">
 
                                                                 <div class="col-botonesEdicion">
-                                                                    <a class="btnDetallesPropuesta" data-id="'.$key['Id'].'" data-desafio="'.$key['idDesafioASustituir'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuesta" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                    <a class="btnDetallesPropuesta" onclick="funcionesParaGestionDesafiosPersonalizados()" data-id="'.$key['Id'].'" data-desafio="'.$key['idDesafioASustituir'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDePropuesta" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                                 </div>
 
                                                                 <div class="col-botonesEdicion">
-                                                                    <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                                    <a class="btnListarTrabajosDestacadosPropuesta" data-id="'.$key['Id'].'" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
                                                                 </div>
                                                             </div></td>
                                                         </tr>
@@ -2164,11 +2125,11 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
                                                     <td class="datoTabla"><div class="compEsp-edicion">
 
                                                         <div class="col-botonesEdicion">
-                                                            <a class="btnDetallesEvento" data-id="'.$key['id_evento'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            <a class="btnDetallesEvento" onclick="funcionesParaGestionEventos()" data-id="'.$key['id_evento'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesEvento" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                         </div>
 
                                                         <div class="col-botonesEdicion">
-                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                            <a class="btnListarTrabajosDestacadosEvento" data-id="'.$key['id_evento'].'" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
                                                         </div>
                                                     </div></td>
                                                 </tr>
@@ -2211,11 +2172,11 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
                                                     <td class="datoTabla"><div class="compEsp-edicion">
 
                                                         <div class="col-botonesEdicion">
-                                                            <a class="btnDetallesConvocatoria" data-id="'.$key['Id'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            <a class="btnDetallesConvocatoria" onclick="funcionesParaGestionConvocatorias()" data-id="'.$key['Id'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesConvocatoria" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                         </div>
 
                                                         <div class="col-botonesEdicion">
-                                                            <a name="btn_listarTrabajos" class="iconosAccionesEvaluacion" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
+                                                            <a class="btnListarTrabajosDestacadosConvocatoria" data-id="'.$key['Id'].'" title="Ver trabajos"><img src="assets/images/folder_trabajosPresentados.png"></a> 
                                                         </div>
                                                     </div></td>
                                                 </tr>
@@ -2230,659 +2191,193 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
     
 }
 
+//Capturamos el id de un desafio con el fin de traer los trabajos destacados que fueron postulados al mismo a la tabla de trabajos
+if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
 
-//Capturamos el evento del tipo de actividad para así cargar la logica que sea necesario para la grstion de las actividades
-if(isset($_POST['comboTipoActividadParaCargarLogica'])){
+    $idDesafioParaConsultarSusTrabajosAplicados = $_POST['idDesafioParaConsultarSusTrabajosAplicados'];
 
-    $comboTipoActividad = $_POST['comboTipoActividadParaCargarLogica'];
+    //obtenemos un array con los id de los trabajos destacados que tiene postulado un desafio determinado
+    $arrayTrabajosQueTieneAplicadosUnDesafio = $desafioControla->consultarTrabajosDestacadosAplicadosAUnDesafio($idDesafioParaConsultarSusTrabajosAplicados);
+    $stringTrabajosQueTieneAplicadosUnDesafio = implode(",", $arrayTrabajosQueTieneAplicadosUnDesafio);
 
-    if($comboTipoActividad == 'desafio'){
+    //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
+    $sqlDatTrabajosDelDesafio = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnDesafio.")";
+    $datosTrabajosDelDesafio = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelDesafio);
 
-        $logicaDeLosDesafios = '<!--Script que permite pasar los datos de un desafio a la ventana modal de detalles de un desafio-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-                                        
-                                        $(".btnDetallesDesafio").click(function(){
-                                            
-                                            var idDesafioAAplicar = $(this).data("id");
-                                                            
-                                            function getFormInfo() {
-                                                return new Promise((resolve, reject) => {
-                                                    // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idDesafioAAplicar": idDesafioAAplicar },
-                                                        success: function(response){
-                                                            resolve(response)
-                                                        },
-                                                        error: function (error) {
-                                                        reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            getFormInfo()
-                                            .then((response) => {
-                                                console.log(response);
-                                                var data = $.parseJSON(response)[0];
-                                                var formId = "#detallesDeDesafio";
-                                                $.each(data, function(key, value){
-                                                    $("[name="+key+"]", formId).val(value);
+    if($datosTrabajosDelDesafio != null){
 
-                                                    var desafioActivo = document.getElementById("txt_estadoDesafio").value;
+        foreach ($datosTrabajosDelDesafio as $key){
 
-                                                    if(desafioActivo == "Activo"){
-                                                        $("#check_estadoDesafio").prop("checked", true);
-                                                    }else{
-                                                        $("#check_estadoDesafio").prop("checked", false);
-                                                    }
-
-                                                });
-                                            })
-                                            .catch((error) => {
-                                                console.log(error)
-                                            })
-                                                
-                                        });
-                                    });
-                                </script>
-                                
-                                <!--Script que permite pasar el id de un desafio con el fin de identificar si tiene imagen almacenada o no-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-
-                                        $(".btnDetallesDesafio").click(function(){
-                                                
-                                            var idDesafioAAplicarImagen = $(this).data("id");
-                                            
-                                            function verificacionDeImagenParaDesafioAAplicar() {
-                                                return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idDesafioAAplicarImagen": idDesafioAAplicarImagen},
-                                                        success: function(response){
-                                                            resolve(response)
-                                                            $("#panelParaImagenDelDesafio").html(response);
-                                                        },
-                                                        error: function (error) {
-                                                            reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            
-                                            verificacionDeImagenParaDesafioAAplicar();
-                                                    
-                                        });
-                                    });
-                                </script>
-                                
-                                <!--Script que permite pasar el id de un desafio con el fin de identificar si tiene enunciado almacenado o no-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-
-                                        $(".btnDetallesDesafio").click(function(){
-                                                
-                                            var idDesafioAAplicarEnunciado = $(this).data("id");
-                                            
-                                            function verificacionDeEnunciadoParaDesafioAAplicar() {
-                                                return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idDesafioAAplicarEnunciado": idDesafioAAplicarEnunciado},
-                                                        success: function(response){
-                                                            resolve(response)
-                                                            $("#panelParaBotonDescargaEnunciadoDesafio").html(response);
-                                                        },
-                                                        error: function (error) {
-                                                            reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            
-                                            verificacionDeEnunciadoParaDesafioAAplicar();                            
-                                        });
-                                    });
-                                </script>';  
-                                
-        echo $logicaDeLosDesafios;
-    }
-                                
-        
-    if($comboTipoActividad == 'despersonal'){
-
-        $logicaDeLasPropuestas = '<!--Script que permite pasar los datos de una propuesta aprobada a la ventana modal de detalles de la misma para el estado "Aprobada"-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                
-                                                var idPropuestaDetallesModalAprobada = $(this).data("id");
-                                            
-                                                function getFormInfo() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idPropuestaDetallesModalAprobada": idPropuestaDetallesModalAprobada },
-                                                            success: function(response){
-                                                                resolve(response)
-                                                            },
-                                                            error: function (error) {
-                                                            reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                getFormInfo()
-                                                .then((response) => {
-                                                    var data = $.parseJSON(response)[0];
-                                                    var formId = "#detallesDePropuestaAprobada";
-                                                    $.each(data, function(key, value){
-                                                        $("[name="+key+"]", formId).val(value);
-                                                    });
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                    
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite pasar el id de una propuesta aprobada con el fin de identificar si tiene imagen almacenada o no-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                    
-                                                var idPropuestaImagenAprobada = $(this).data("id");
-                                                
-                                                function verificacionDeImagenParaPropuestaModalAprobada() {
-                                                    return new Promise((resolve, reject) => {
-                                                            // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idPropuestaImagenAprobada": idPropuestaImagenAprobada},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaImagenDeLaPropuesta").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeImagenParaPropuestaModalAprobada();
-                                                        
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite traer el nombre del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles de la misma en estado "Aprobada"-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                
-                                                var idDesafioQSePretendeSustituirParaModalAprobada = $(this).data("desafio");
-                                            
-                                                function getFormInfo() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idDesafioQSePretendeSustituirParaModalAprobada": idDesafioQSePretendeSustituirParaModalAprobada },
-                                                            success: function(response){
-                                                                resolve(response)
-                                                            },
-                                                            error: function (error) {
-                                                            reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                getFormInfo()
-                                                .then((response) => {
-                                                    var data = $.parseJSON(response)[0];
-                                                    var formId = "#infoDesafioAReemplazar";
-                                                    $.each(data, function(key, value){
-                                                        $("[name="+key+"]", formId).val(value);
-                                                    });
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                    
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite pasar el id de un desafio personalizado con el fin de identificar si tiene enunciado almacenado o no-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                    
-                                                var idPropuestaParaBuscarEnunciado = $(this).data("id");
-                                                
-                                                function verificacionDeEnunciadoParaPropuesta() {
-                                                    return new Promise((resolve, reject) => {
-                                                            // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idPropuestaParaBuscarEnunciado": idPropuestaParaBuscarEnunciado},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaBotonDescargaEnunciado").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeEnunciadoParaPropuesta();
-                                                        
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite traer los datos del estudiante que propuso el desafio personalizado a la ventana modal de detalles de la misma"-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                
-                                                var idEstudianteQProponeParaModal = $(this).data("estudiante");
-                                            
-                                                function getFormInfo() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idEstudianteQProponeParaModal": idEstudianteQProponeParaModal},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                            },
-                                                            error: function (error) {
-                                                            reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                getFormInfo()
-                                                .then((response) => {
-                                                    var data = $.parseJSON(response)[0];
-                                                    var formId = "#seccionDatosEstudiante";
-                                                    $.each(data, function(key, value){
-                                                        $("[name="+key+"]", formId).val(value);
-                                                    });
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                    
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite traer el Id del desafio que se pretende reemplazar con el desafio personalizado propuesto a la ventana modal de detalles del mismo para el estado "Aprobada"-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                
-                                                var idDesafioQSePretendeSustituirParaModalDetallesDesafio = $(this).data("desafio");
-                                            
-                                                function getFormInfo() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idDesafioQSePretendeSustituirParaModalDetallesDesafio": idDesafioQSePretendeSustituirParaModalDetallesDesafio },
-                                                            success: function(response){
-                                                                resolve(response)
-                                                            },
-                                                            error: function (error) {
-                                                            reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                getFormInfo()
-                                                .then((response) => {
-                                                    var data = $.parseJSON(response)[0];
-                                                    var formId = "#detallesDeDesafioASustituir";
-
-                                                    $.each(data, function(key, value){
-                                                        $("[name="+key+"]", formId).val(value);
-                                                    });
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                    
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite pasar el id de un desafio a contribuir por una propuesta por revisar con el fin de identificar si tiene imagen almacenada o no (Cuando la propuesta esta en estado por revisar)-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                    
-                                                var idImagenDesafioPropuesta = $(this).data("desafio");
-                                                
-                                                function verificacionDeImagenParaDesafioAfectadoPorPropuesta() {
-                                                    return new Promise((resolve, reject) => {
-                                                            // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idImagenDesafioPropuesta": idImagenDesafioPropuesta},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaImagenDelDesafioASustituir").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeImagenParaDesafioAfectadoPorPropuesta();
-                                                        
-                                            });
-                                        });
-                                    </script>
-
-                                    <!--Script que permite pasar el id de un desafio a contribuir por una propuesta con el fin de identificar si tiene enunciado almacenado o no -->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-
-                                            $(".btnDetallesPropuesta").click(function(){
-                                                    
-                                                var idEnunciadoDesafioPropuesta = $(this).data("desafio");
-                                                
-                                                function verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idEnunciadoDesafioPropuesta": idEnunciadoDesafioPropuesta},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaEnunciadoDelDesafioASustituir").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeEnunciadoParaDesafioAfectadoPorPropuesta();
-                                                        
-                                            });
-                                        });
-                                    </script>';
-
-        echo $logicaDeLasPropuestas;
-
-    }
+            $tableTrabajosDelDesafioP1 = '<!--Aqui van los registros de la tabla de trabajos para los desafios-->
+                                                <table class="filasDeDatosTablaTrabajos">
+                                                    <tr>';
     
-    if($comboTipoActividad == 'evento'){
-
-        $logicaDeLosEventos = '<!--Script que permite pasar los datos de un evento a la ventana modal Aplicacion a un evento-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-                                        
-                                        $(".btnDetallesEvento").click(function(){
-                                            
-                                            var idEventoAAplicar = $(this).data("id");
-                                                                                    
-                                            function getFormInfo() {
-                                                return new Promise((resolve, reject) => {
-                                                    // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idEventoAAplicar": idEventoAAplicar },
-                                                        success: function(response){
-                                                            resolve(response)
-                                                        },
-                                                        error: function (error) {
-                                                        reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            getFormInfo()
-                                            .then((response) => {
-                                                var data = $.parseJSON(response)[0];
-                                                var modalShare = "#detallesDeEvento";
-                                                $.each(data, function(key, value){
-                                                    $("[name="+key+"]", modalShare).val(value);
-
-                                                    var eventoActivo = document.getElementById("txt_estadoEvento").value;
-
-                                                    if(eventoActivo == "Activo"){
-                                                        $("#check_estadoEvento").prop("checked", true);
-                                                    }else{
-                                                        $("#check_estadoEvento").prop("checked", false);
-                                                    }
-                                                });
-                                            })
-                                            .catch((error) => {
-                                                console.log(error)
-                                            })
-                                                
-                                        });
-                                    });
-                                </script>
-                                
-                                <!--Script que permite pasar el id de un evento con el fin de identificar si tiene imagen almacenada o no-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-
-                                        $(".btnDetallesEvento").click(function(){
-                                                
-                                            var idEventoAAplicarImagen = $(this).data("id");
-                                            
-                                            function verificacionDeImagenParaEventoAAplicar() {
-                                                return new Promise((resolve, reject) => {
-                                                    // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idEventoAAplicarImagen": idEventoAAplicarImagen},
-                                                        success: function(response){
-                                                            resolve(response)
-                                                            $("#panelParaImagenDelEvento").html(response);
-                                                        },
-                                                        error: function (error) {
-                                                            reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            
-                                            verificacionDeImagenParaEventoAAplicar();
-                                                    
-                                        });
-                                    });
-                                </script>
-
-                                <!--Script que permite pasar el id de un evento con el fin de identificar si tiene enunciado almacenado o no-->
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-
-                                        $(".btnDetallesEvento").click(function(){
-                                                
-                                            var idEventoAAplicarEnunciado = $(this).data("id");
-                                            
-                                            function verificacionDeEnunciadoParaEventoAAplicar() {
-                                                return new Promise((resolve, reject) => {
-                                                    // AJAX request
-                                                    $.ajax({
-                                                        url: "logic/utils/ajaxfile.php",
-                                                        type: "post",
-                                                        data: {"idEventoAAplicarEnunciado": idEventoAAplicarEnunciado},
-                                                        success: function(response){
-                                                            resolve(response)
-                                                            $("#panelParaEnunciadoDelEvento").html(response);
-                                                        },
-                                                        error: function (error) {
-                                                            reject(error)
-                                                        },
-                                                    });
-                                                })
-                                            }
-                                            
-                                            verificacionDeEnunciadoParaEventoAAplicar();                            
-                                        });
-                                    });
-                                </script>';
-
-        echo $logicaDeLosEventos;
-
-    } 
-
-    if($comboTipoActividad == 'convocatoria'){
-
-        $logicaDeLasConvocatorias = '<!--Script que permite pasar los datos de una convocatoria comite  a la ventana modal Aplicacion a una convocatoria-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            
-                                            $(".btnDetallesConvocatoria").click(function(){
-                                                
-                                                var idConvComAAplicar = $(this).data("id");
-                                            
-                                                function getFormInfo() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idConvComAAplicar": idConvComAAplicar },
-                                                            success: function(response){
-                                                                resolve(response)
-                                                            },
-                                                            error: function (error) {
-                                                            reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                getFormInfo()
-                                                .then((response) => {
-                                                    var data = $.parseJSON(response)[0];
-                                                    var formId = "#detallesDeConvocatoria";
-                                                    $.each(data, function(key, value){
-                                                        $("[name="+key+"]", formId).val(value);
-
-                                                        var convActiva = document.getElementById("txt_estadoConvocatoria").value;
-
-                                                        if(convActiva == "Activo"){
-                                                            $("#check_estadoConvocatoria").prop("checked", true);
+                                                        //Aqui traemos la imagen del trabajo para la tabla de trabajos
+                                                        if($key['nombre_imagentrabajo'] != null){
+                                                            $labelImagenDelTrabajoDelDesafio = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="trabajosImages/'.$key['nombre_imagentrabajo'].'"></td>';
                                                         }else{
-                                                            $("#check_estadoConvocatoria").prop("checked", false);
+                                                            $labelImagenDelTrabajoDelDesafio = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
                                                         }
-                                                    });
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error)
-                                                })
-                                                    
-                                            });
-                                        });
-                                    </script>
-                                    
-                                    <!--Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene imagen almacenada o no-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
+                            
+                          $tableTrabajosDelDesafioP2 = '<td class="datoTabla">'.$key['nombre_trabajo'].'</td>
+                                                        <td class="datoTabla"><div class="compEsp-edicion">
+    
+                                                            <div class="col-botonesEdicion">
+                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            </div>
+    
+                                                        </div></td>
+                                                    </tr>
+                                                </table>';
+    
+            echo $tableTrabajosDelDesafioP1;
+            echo $labelImagenDelTrabajoDelDesafio;
+            echo $tableTrabajosDelDesafioP2;
+    
+        }
+    }
+}
 
-                                            $(".btnDetallesConvocatoria").click(function(){
-                                                    
-                                                var idConvComAAplicarImagen = $(this).data("id");
-                                                
-                                                function verificacionDeImagenParaConvocatoriaComiteAAplicar() {
-                                                    return new Promise((resolve, reject) => {
-                                                        // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idConvComAAplicarImagen": idConvComAAplicarImagen},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaImagenDeConvocatoria").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeImagenParaConvocatoriaComiteAAplicar();
-                                                        
-                                            });
-                                        });
-                                    </script>
 
-                                    <!--Script que permite pasar el id de una convocatoria comite con el fin de identificar si tiene enunciado almacenado o no-->
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
+//Capturamos el id de un desafio personalizado con el fin de traer los trabajos destacados que fueron postulados al mismo a la tabla de trabajos
+if(isset($_POST['idPropuestaParaConsultarSusTrabajosAplicados'])){
 
-                                            $(".btnDetallesConvocatoria").click(function(){
-                                                    
-                                                var idConvComAAplicarEnunciado = $(this).data("id");
-                                                
-                                                function verificacionDeEnunciadoParaConvocatoriaComiteAAplicar() {
-                                                    return new Promise((resolve, reject) => {
-                                                            // AJAX request
-                                                        $.ajax({
-                                                            url: "logic/utils/ajaxfile.php",
-                                                            type: "post",
-                                                            data: {"idConvComAAplicarEnunciado": idConvComAAplicarEnunciado},
-                                                            success: function(response){
-                                                                resolve(response)
-                                                                $("#panelParaEnunciadoDeConvocatoria").html(response);
-                                                            },
-                                                            error: function (error) {
-                                                                reject(error)
-                                                            },
-                                                        });
-                                                    })
-                                                }
-                                                
-                                                verificacionDeEnunciadoParaConvocatoriaComiteAAplicar();                            
-                                            });
-                                        });
-                                    </script>';
+    $idPropuestaParaConsultarSusTrabajosAplicados = $_POST['idPropuestaParaConsultarSusTrabajosAplicados'];
 
-        echo $logicaDeLasConvocatorias;
+    //obtenemos un array con los id de los trabajos destacados que tiene postulado un desafio personalizado determinado
+    $arrayTrabajosQueTieneAplicadosUnaPropuesta= $desafioControla->consultarTrabajosDestacadosAplicadosAUnaPropuesta($idPropuestaParaConsultarSusTrabajosAplicados);
+    $stringTrabajosQueTieneAplicadosUnaPropuesta = implode(",", $arrayTrabajosQueTieneAplicadosUnaPropuesta);
 
-    } 
+    //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
+    $sqlDatTrabajosDeLaPropuesta = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnaPropuesta.")";
+    $datosTrabajosDeLaPropuesta = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaPropuesta);
+
+    if($datosTrabajosDeLaPropuesta != null){
+
+        foreach ($datosTrabajosDeLaPropuesta as $key){
+
+            $tableTrabajosDePropuestaP1 = '<!--Aqui van los registros de la tabla de trabajos para los desafios-->
+                                                <table class="filasDeDatosTablaTrabajos">
+                                                    <tr>';
+    
+                                                        //Aqui traemos la imagen del trabajo para la tabla de trabajos
+                                                        if($key['nombre_imagentrabajo'] != null){
+                                                            $labelImagenDelTrabajoDeLaPropuesta = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="trabajosImages/'.$key['nombre_imagentrabajo'].'"></td>';
+                                                        }else{
+                                                            $labelImagenDelTrabajoDeLaPropuesta = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                        }
+                            
+                          $tableTrabajosDePropuestaP2 = '<td class="datoTabla">'.$key['nombre_trabajo'].'</td>
+                                                        <td class="datoTabla"><div class="compEsp-edicion">
+    
+                                                            <div class="col-botonesEdicion">
+                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            </div>
+    
+                                                        </div></td>
+                                                    </tr>
+                                                </table>';
+    
+            echo $tableTrabajosDePropuestaP1;
+            echo $labelImagenDelTrabajoDeLaPropuesta;
+            echo $tableTrabajosDePropuestaP2;
+    
+        }
+    }
+}
+
+//Capturamos el id de un evento con el fin de traer los trabajos destacados que fueron postulados al mismo a la tabla de trabajos
+if(isset($_POST['idEventoParaConsultarSusTrabajosAplicados'])){
+
+    $idEventoParaConsultarSusTrabajosAplicados = $_POST['idEventoParaConsultarSusTrabajosAplicados'];
+
+    //obtenemos un array con los id de los trabajos destacados que tiene postulado un evento determinado
+    $arrayTrabajosQueTieneAplicadosUnEvento= $eventoControla->consultarTrabajosDestacadosAplicadosAUnEvento($idEventoParaConsultarSusTrabajosAplicados);
+    $stringTrabajosQueTieneAplicadosUnEvento = implode(",", $arrayTrabajosQueTieneAplicadosUnEvento);
+
+    //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
+    $sqlDatTrabajosDelEvento = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnEvento.")";
+    $datosTrabajosDelEvento = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelEvento);
+
+    if($datosTrabajosDelEvento != null){
+
+        foreach ($datosTrabajosDelEvento as $key){
+
+            $tableTrabajosDeEventoP1 = '<!--Aqui van los registros de la tabla de trabajos para los desafios-->
+                                                <table class="filasDeDatosTablaTrabajos">
+                                                    <tr>';
+    
+                                                        //Aqui traemos la imagen del trabajo para la tabla de trabajos
+                                                        if($key['nombre_imagentrabajo'] != null){
+                                                            $labelImagenDelTrabajoDelEvento = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="trabajosImages/'.$key['nombre_imagentrabajo'].'"></td>';
+                                                        }else{
+                                                            $labelImagenDelTrabajoDelEvento = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                        }
+                            
+                          $tableTrabajosDeEventoP2 = '<td class="datoTabla">'.$key['nombre_trabajo'].'</td>
+                                                        <td class="datoTabla"><div class="compEsp-edicion">
+    
+                                                            <div class="col-botonesEdicion">
+                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            </div>
+    
+                                                        </div></td>
+                                                    </tr>
+                                                </table>';
+    
+            echo $tableTrabajosDeEventoP1;
+            echo $labelImagenDelTrabajoDelEvento;
+            echo $tableTrabajosDeEventoP2;
+    
+        }
+    }
+}
+
+//Capturamos el id de una convocatoria con el fin de traer los trabajos destacados que fueron postulados al mismo a la tabla de trabajos
+if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
+
+    $idConvocatoriaParaConsultarSusTrabajosAplicados = $_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'];
+
+    //obtenemos un array con los id de los trabajos destacados que tiene postulada una convocatoria determinada
+    $arrayTrabajosQueTieneAplicadosUnaConvocatoria = $convocatoriaControla->consultarTrabajosDestacadosAplicadosAUnaConvocatoria($idConvocatoriaParaConsultarSusTrabajosAplicados);
+    $stringTrabajosQueTieneAplicadosUnaConvocatoria = implode(",", $arrayTrabajosQueTieneAplicadosUnaConvocatoria);
+
+    //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
+    $sqlDatTrabajosDeLaConvocatoria = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnaConvocatoria.")";
+    $datosTrabajosDeLaConvocatoria = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaConvocatoria);
+
+    if($datosTrabajosDeLaConvocatoria != null){
+
+        foreach ($datosTrabajosDeLaConvocatoria as $key){
+
+            $tableTrabajosDeConvocatoriaP1 = '<!--Aqui van los registros de la tabla de trabajos para los desafios-->
+                                                <table class="filasDeDatosTablaTrabajos">
+                                                    <tr>';
+    
+                                                        //Aqui traemos la imagen del trabajo para la tabla de trabajos
+                                                        if($key['nombre_imagentrabajo'] != null){
+                                                            $labelImagenDelTrabajoDeLaConvocatoria = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="trabajosImages/'.$key['nombre_imagentrabajo'].'"></td>';
+                                                        }else{
+                                                            $labelImagenDelTrabajoDeLaConvocatoria = '<td class="datoTabla"><img class="imagenDelDesafioEnTabla" src="assets/images/imgPorDefecto.jpg"></td>';
+                                                        }
+                            
+                          $tableTrabajosDeConvocatoriaP2 = '<td class="datoTabla">'.$key['nombre_trabajo'].'</td>
+                                                        <td class="datoTabla"><div class="compEsp-edicion">
+    
+                                                            <div class="col-botonesEdicion">
+                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            </div>
+    
+                                                        </div></td>
+                                                    </tr>
+                                                </table>';
+    
+            echo $tableTrabajosDeConvocatoriaP1;
+            echo $labelImagenDelTrabajoDeLaConvocatoria;
+            echo $tableTrabajosDeConvocatoriaP2;
+    
+        }
+    }
 }
 
 
