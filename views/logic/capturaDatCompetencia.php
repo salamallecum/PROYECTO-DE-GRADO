@@ -373,7 +373,7 @@
                 //Verificamos si el usuario ha subido una imagen del badge plata para la competencia especifica
                 if(strlen($cargaBadgePlataEspEdit) >= 1){
                         
-                    $rutaDeBadgePlataCompEspEdit = $_FILES['img_insigPlataCompGeneralEdit']['tmp_name'];
+                    $rutaDeBadgePlataCompEspEdit = $_FILES['img_insigPlataCompEspEdit']['tmp_name'];
 
                     //Consultamos si el evento ya tiene una imagen previa en servidor
                     $nombreAntiguoBadgePlataCompEsp = $competenciaControla->consultarNombreBadgePlataCompEspecifica($idCompEspecificaAEditar);
@@ -397,7 +397,7 @@
                 //Verificamos si el usuario ha subido una imagen del badge bronce para la competencia especifica
                 if(strlen($cargaBadgeBronceEspEdit) >= 1){
                         
-                    $rutaDeBadgeBronceCompEspEdit = $_FILES['img_insigBronceCompGeneralEdit']['tmp_name']; 
+                    $rutaDeBadgeBronceCompEspEdit = $_FILES['img_insigBronceCompEspEdit']['tmp_name']; 
 
                     //Consultamos si el evento ya tiene una imagen previa en servidor
                     $nombreAntiguoBadgeBronceCompEsp = $competenciaControla->consultarNombreBadgeBronceCompEspecifica($idCompEspecificaAEditar);

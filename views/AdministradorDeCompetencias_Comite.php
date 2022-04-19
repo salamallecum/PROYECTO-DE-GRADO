@@ -163,7 +163,7 @@ if(!isset($_SESSION['usuario'])){
                                             $nombreBadgePlataCompGeneral = $key['nombre_badgeplata'];
                                             $nombreBadgeBronceCompGeneral = $key['nombre_badgebronce'];
 
-                                            if($nombreBadgeOroCompGeneral != null && $nombreBadgePlataCompGeneral != null && $nombreBadgeBronceCompGeneral != null
+                                            if($nombreBadgeOroCompGeneral != null || $nombreBadgePlataCompGeneral != null || $nombreBadgeBronceCompGeneral != null
                                             ){
 
                                             ?>
