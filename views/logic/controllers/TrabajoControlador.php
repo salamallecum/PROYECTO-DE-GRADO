@@ -297,5 +297,56 @@ class TrabajoControlador{
 
     }
 
+    //Funcion que permite consultar el link de un documento de un trabajo destacado
+    public function consultarLinkDocumentoTrabajoDestacado(int $idTrab){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT link_documento from tbl_trabajodestacado where Id = $idTrab";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['link_documento'];
+        }
+    }
+
+    //Funcion que permite consultar el link de un video de un trabajo destacado
+    public function consultarLinkVideoTrabajoDestacado(int $idTrab){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT link_video from tbl_trabajodestacado where Id = $idTrab";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['link_video'];
+        }
+    }
+
+    //Funcion que permite consultar el link de un repositorio de un trabajo destacado
+    public function consultarLinkRepoCodigoTrabajoDestacado(int $idTrab){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT link_repocodigo from tbl_trabajodestacado where Id = $idTrab";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['link_repocodigo'];
+        }
+    }
+
+    //Funcion que permite consultar el link de un repositorio de un trabajo destacado
+    public function consultarLinkPresentacionTrabajoDestacado(int $idTrab){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT link_presentacion from tbl_trabajodestacado where Id = $idTrab";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['link_presentacion'];
+        }
+    }
 }
 ?>

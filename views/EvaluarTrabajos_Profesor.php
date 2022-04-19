@@ -327,7 +327,7 @@ if(isset($_GET['Id_profesor']) != 0){
                         
                         <div id="detallesDeDesafioASustituir" class="modal-body">
                             
-                            <input type="text" id="idDesafioDetalles" name="id_desafio" value="">
+                            <input type="hidden" id="idDesafioDetalles" name="id_desafio" value="">
                             <input type="hidden" id="nombreEnunciadoDesafDetalles" name="nombre_enunciado" value="">
                             <input type="hidden" id="nombreImagenDesafDetalles" name="nombre_imagen" value="">
                             
@@ -495,6 +495,251 @@ if(isset($_GET['Id_profesor']) != 0){
                     </div>
                     </div>
 
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS TRABAJOS DESTACADOS APLICADOS A DESAFIOS-->
+                    <div class="modal fade" id="modalDetallesDeTrabajoAplicadoADesafio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeTrabDestacadoDesafio" class="modal-body">
+                            
+                            <input type="hidden" name="Id" value="">
+                            <input type="hidden" name="nombre_imagentrabajo">
+                            <input type="hidden" name="Id_estudiante">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_trabajo" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del trabajo-->
+                            <span id="panelParaImagenDelTrabajoAplicadoDesafio"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosDelEstudianteAplicaDesafio">
+                                
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <label class="subtitulosInfo">Evidencias</label><br>
+                            <span id="panelDeEvidenciasTrabajoAplicadoADesafio"></span>
+                            <br>
+                            <br>
+                           
+                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS TRABAJOS DESTACADOS APLICADOS A DESAFIOS PERSONALIZADOS-->
+                    <div class="modal fade" id="modalDetallesDeTrabajoAplicadoAPropuesta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeTrabDestacadoPropuesta" class="modal-body">
+                            
+                            <input type="hidden" name="Id" value="">
+                            <input type="hidden" name="nombre_imagentrabajo">
+                            <input type="hidden" name="Id_estudiante">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_trabajo" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del trabajo-->
+                            <span id="panelParaImagenDelTrabajoAplicadoPropuesta"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosDelEstudianteAplicaPropuesta">
+                                
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <label class="subtitulosInfo">Evidencias</label><br>
+                            <span id="panelDeEvidenciasTrabajoAplicadoAPropuesta"></span>
+                            <br>
+                            <br>
+                           
+                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS TRABAJOS DESTACADOS APLICADOS A EVENTOS-->
+                    <div class="modal fade" id="modalDetallesDeTrabajoAplicadoAEvento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeTrabDestacadoEvento" class="modal-body">
+                            
+                            <input type="hidden" name="Id" value="">
+                            <input type="hidden" name="nombre_imagentrabajo">
+                            <input type="hidden" name="Id_estudiante">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_trabajo" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del trabajo-->
+                            <span id="panelParaImagenDelTrabajoAplicadoEvento"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosDelEstudianteAplicaEvento">
+                                
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <label class="subtitulosInfo">Evidencias</label><br>
+                            <span id="panelDeEvidenciasTrabajoAplicadoAEvento"></span>
+                            <br>
+                            <br>
+                           
+                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+                    <!--ESTRUCTURA DEL POPUP PARA EL DETALLE DE LOS TRABAJOS DESTACADOS APLICADOS A CONVOCATORIAS-->
+                    <div class="modal fade" id="modalDetallesDeTrabajoAplicadoAConvocatoria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                        
+                        <div id="detallesDeTrabDestacadoConvocatoria" class="modal-body">
+                            
+                            <input type="hidden" name="Id" value="">
+                            <input type="hidden" name="nombre_imagentrabajo">
+                            <input type="hidden" name="Id_estudiante">
+                            
+                            <input type="text" class="detalleNombrePropuesta" name="nombre_trabajo" disabled>
+                            <br>
+
+                            <!--Aqui colocamos la imagen del trabajo-->
+                            <span id="panelParaImagenDelTrabajoAplicadoConvocatoria"></span>
+                            <br>
+                            <br>
+
+                            <form id="seccionDatosDelEstudianteAplicaConvocatoria">
+                                
+                                <table>
+                                    <tr>
+                                        <td><label class="subtitulosInfo">Nombres:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="nombres_usuario" disabled></td>
+
+                                        <td><label class="subtitulosInfo">Apellidos:</label><br>
+                                        <input type="text" class="infoDetallePropuesta" name="apellidos_usuario" disabled></td>
+                                    </tr>
+                                </table>
+
+                                <br>
+
+                                <label class="subtitulosInfo">Correo:</label><br>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
+
+                            </form>                       
+                            <br>
+                                                            
+                            <label class="subtitulosInfo">Descripción</label><br>
+                            <textarea type="text" class="textAreaDetalleDescripcionPropuesta" name="descripcion" disabled></textarea>
+                            <br>
+                            <br>
+
+                            <label class="subtitulosInfo">Evidencias</label><br>
+                            <span id="panelDeEvidenciasTrabajoAplicadoAConvocatoria"></span>
+                            <br>
+                            <br>
+                           
+                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     
 
                                     
@@ -552,6 +797,9 @@ if(isset($_GET['Id_profesor']) != 0){
 
     </script>
 
+
+    <!-----------------------------------------------------TABLA DE ACTIVIDADES------------------------------------------------------------------------------>
+
     <!--Aqui declaramos las funciones para la visualizacion y gestion de los desafios en la tabla actividades-->
     <script>
         function funcionesParaGestionDesafio(){
@@ -578,7 +826,6 @@ if(isset($_GET['Id_profesor']) != 0){
                 }
                 getFormInfo()
                 .then((response) => {
-                    console.log(response);
                     var data = $.parseJSON(response)[0];
                     var formId = "#detallesDeDesafio";
                     $.each(data, function(key, value){
@@ -680,16 +927,6 @@ if(isset($_GET['Id_profesor']) != 0){
             });
         }
     </script>
-
-
-
-
-
-
-
-
-
-
 
 
     <!--Aqui declaramos las funciones para la visualizacion y gestion de las propuestas en la tabla actividades-->
@@ -978,52 +1215,6 @@ if(isset($_GET['Id_profesor']) != 0){
 
         }
     </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     
     <!--Aqui declaramos las funciones para la visualizacion y gestion de los eventos en la tabla actividades-->
@@ -1335,20 +1526,539 @@ if(isset($_GET['Id_profesor']) != 0){
 
 
 
+    <!-----------------------------------------------------TABLA DE TRABAJOS------------------------------------------------------------------------------>
 
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los trabajos que son aplicados a un desafio determinado en la tabla de trabajos-->
+    <script>
+        function funcionesParaRevisionDeTrabajosAplicadosADesafios(){
 
+            //Este script permite cargar la informacion de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoADesafio").click(function(){
+                                            
+                var idTrabajoAEvaluarDesafio = $(this).data("id");
+                                
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idTrabajoAEvaluar": idTrabajoAEvaluarDesafio },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeTrabDestacadoDesafio";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
 
+                        
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
 
+           
+            //Este script permite cargar la imagen de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoADesafio").click(function(){
+                                            
+                var idImagenTrabajoAEvaluarDesafio = $(this).data("id");
+                    
+                function verificacionDeImagenParaTrabajoAplicadoDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idImagenTrabajoAEvaluar': idImagenTrabajoAEvaluarDesafio},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelParaImagenDelTrabajoAplicadoDesafio').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaTrabajoAplicadoDesafio();
+                    
+            });
 
+            //Este script permite cargar las evidencias de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoADesafio").click(function(){
+                                            
+                var idEvidenciasTrabajoAEvaluarDesafio = $(this).data("id");
+                    
+                function verificacionDeEvidenciasParaTrabajoAplicadoDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEvidenciasTrabajoAEvaluar': idEvidenciasTrabajoAEvaluarDesafio},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelDeEvidenciasTrabajoAplicadoADesafio').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEvidenciasParaTrabajoAplicadoDesafio();
+                    
+            });
 
+            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un desafio
+            $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
+                    
+                var idEstudianteTrabajoAplicadoDesafio = $(this).data('estudiante');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEstudianteTrabajoAplicado': idEstudianteTrabajoAplicadoDesafio },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#seccionDatosDelEstudianteAplicaDesafio';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
 
+        }
 
+    </script>
 
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los trabajos que son aplicados a un desafio personalizado determinado en la tabla de trabajos-->
+    <script>
+        function funcionesParaRevisionDeTrabajosAplicadosAPropuestas(){
 
+            //Este script permite cargar la informacion de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAPropuesta").click(function(){
+                                            
+                var idTrabajoAEvaluarPropuesta = $(this).data("id");
+                                
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idTrabajoAEvaluar": idTrabajoAEvaluarPropuesta },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeTrabDestacadoPropuesta";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
 
+                        
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+                                                       
+            //Este script permite cargar la imagen de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAPropuesta").click(function(){
+                                            
+                var idImagenTrabajoAEvaluarPropuesta = $(this).data("id");
+                    
+                function verificacionDeImagenParaTrabajoAplicadoPropuesta() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idImagenTrabajoAEvaluar': idImagenTrabajoAEvaluarPropuesta},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelParaImagenDelTrabajoAplicadoPropuesta').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaTrabajoAplicadoPropuesta();
+                    
+            });
+                            
+            //Este script permite cargar las evidencias de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAPropuesta").click(function(){
+                                            
+                var idEvidenciasTrabajoAEvaluarPropuesta = $(this).data("id");
+                    
+                function verificacionDeEvidenciasParaTrabajoAplicadoPropuesta() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEvidenciasTrabajoAEvaluar': idEvidenciasTrabajoAEvaluarPropuesta},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelDeEvidenciasTrabajoAplicadoAPropuesta').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEvidenciasParaTrabajoAplicadoPropuesta();
+                    
+            });
+                            
+            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un desafio personalizado
+            $('.btnDetallesTrabajoAplicadoAPropuesta').click(function(){
+                    
+                var idEstudianteTrabajoAplicadoPropuesta = $(this).data('estudiante');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEstudianteTrabajoAplicado': idEstudianteTrabajoAplicadoPropuesta },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#seccionDatosDelEstudianteAplicaPropuesta';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+        }
 
+    </script>
 
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los trabajos que son aplicados a un evento determinado en la tabla de trabajos-->
+    <script>
+        function funcionesParaRevisionDeTrabajosAplicadosAEventos(){
 
+            //Este script permite cargar la informacion de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAEvento").click(function(){
+                                            
+                var idTrabajoAEvaluarEvento = $(this).data("id");
+                                
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idTrabajoAEvaluar": idTrabajoAEvaluarEvento },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeTrabDestacadoEvento";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+  
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+                                                                                   
+            //Este script permite cargar la imagen de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAEvento").click(function(){
+                                            
+                var idImagenTrabajoAEvaluarEvento = $(this).data("id");
+                    
+                function verificacionDeImagenParaTrabajoAplicadoEvento() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idImagenTrabajoAEvaluar': idImagenTrabajoAEvaluarEvento},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelParaImagenDelTrabajoAplicadoEvento').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaTrabajoAplicadoEvento();
+                    
+            });
+                                                        
+            //Este script permite cargar las evidencias de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAEvento").click(function(){
+                                            
+                var idEvidenciasTrabajoAEvaluarEvento = $(this).data("id");
+                    
+                function verificacionDeEvidenciasParaTrabajoAplicadoEvento() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEvidenciasTrabajoAEvaluar': idEvidenciasTrabajoAEvaluarEvento},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelDeEvidenciasTrabajoAplicadoAEvento').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEvidenciasParaTrabajoAplicadoEvento();
+                    
+            });
+                                                        
+            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un evento
+            $('.btnDetallesTrabajoAplicadoAEvento').click(function(){
+                    
+                var idEstudianteTrabajoAplicadoEvento = $(this).data('estudiante');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEstudianteTrabajoAplicado': idEstudianteTrabajoAplicadoEvento },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#seccionDatosDelEstudianteAplicaEvento';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+        }
+
+    </script>
+
+    <!--Aqui declaramos las funciones para la visualizacion y gestion de los trabajos que son aplicados a una convocatoria determinado en la tabla de trabajos-->
+    <script>
+        function funcionesParaRevisionDeTrabajosAplicadosAConvocatorias(){
+
+            //Este script permite cargar la informacion de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAConvocatoria").click(function(){
+                                            
+                var idTrabajoAEvaluarConvocatoria = $(this).data("id");
+                                
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: "logic/utils/ajaxfile.php",
+                            type: "post",
+                            data: {"idTrabajoAEvaluar": idTrabajoAEvaluarConvocatoria },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = "#detallesDeTrabDestacadoConvocatoria";
+                    $.each(data, function(key, value){
+                        $("[name="+key+"]", formId).val(value);
+    
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+                                                                                                               
+            //Este script permite cargar la imagen de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAConvocatoria").click(function(){
+                                            
+                var idImagenTrabajoAEvaluarConvocatoria = $(this).data("id");
+                    
+                function verificacionDeImagenParaTrabajoAplicadoConvocatoria() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idImagenTrabajoAEvaluar': idImagenTrabajoAEvaluarConvocatoria},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelParaImagenDelTrabajoAplicadoConvocatoria').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeImagenParaTrabajoAplicadoConvocatoria();
+                    
+            });
+                                                                                    
+            //Este script permite cargar las evidencias de un trabajo destacado en el modal de detalles 
+            $(".btnDetallesTrabajoAplicadoAConvocatoria").click(function(){
+                                            
+                var idEvidenciasTrabajoAEvaluarConvocatoria = $(this).data("id");
+                    
+                function verificacionDeEvidenciasParaTrabajoAplicadoConvocatoria() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEvidenciasTrabajoAEvaluar': idEvidenciasTrabajoAEvaluarConvocatoria},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelDeEvidenciasTrabajoAplicadoAConvocatoria').html(response);
+                            },
+                            error: function (error) {
+                                reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                verificacionDeEvidenciasParaTrabajoAplicadoConvocatoria();
+                    
+            });
+                                                                                    
+            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un evento
+            $('.btnDetallesTrabajoAplicadoAConvocatoria').click(function(){
+                    
+                var idEstudianteTrabajoAplicadoConvocatoria = $(this).data('estudiante');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idEstudianteTrabajoAplicado': idEstudianteTrabajoAplicadoConvocatoria },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    var data = $.parseJSON(response)[0];
+                    var formId = '#seccionDatosDelEstudianteAplicaConvocatoria';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', formId).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                    
+            });
+        }
+
+    </script>
 
 
 
@@ -1400,9 +2110,7 @@ if(isset($_GET['Id_profesor']) != 0){
         });
     </script>
 
-    <!--Aqui cargamos la logica de las actividades-->
-    <span id="panelCargaLogicaDeActividades"></span>
-
+    
     
     <!--Script que permite activar o inactivar un desafio-->
     <script type='text/javascript'>

@@ -446,7 +446,7 @@ $idProfesorLogueado = $_GET['Id_profesor'];
                                 <br>
 
                                 <label class="subtitulosInfo">Correo:</label><br>
-                                <input type="text" class="infoDetallePropuesta" name="correo_usuario" disabled>
+                                <input type="text" class="email_infoDetallePropuesta" name="correo_usuario" disabled>
 
                             </form>                       
                             <br>

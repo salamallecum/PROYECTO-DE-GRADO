@@ -916,7 +916,100 @@ if(isset($_POST['idTrabajoElim'])){
     exit;
 }
 
+//Capturamos el evento del id de un trabajo destacado para ver sus detalles al momento de evaluarlo
+if(isset($_POST['idTrabajoAEvaluar'])){
 
+    //Aqui traemos los datos de los eventos para su edición-----------------------------------
+    $idTrabajoAEvaluar = $_POST['idTrabajoAEvaluar'];
+
+    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoAEvaluar;
+    $resultTrabajoDestEv = mysqli_query($conexion,$sql);
+
+    $emparrayDatosTrabajoAEvaluar = array();
+    while($row =mysqli_fetch_assoc($resultTrabajoDestEv))
+    {
+        $emparrayDatosTrabajoAEvaluar[] = $row;
+    }
+    echo json_encode($emparrayDatosTrabajoAEvaluar);
+    exit;
+}
+
+//Capturamos el evento del id de un trabajo con el fin de mostrar su imagen en el modal de detalles del mismo 
+if(isset($_POST['idImagenTrabajoAEvaluar'])){
+
+    //Aqui traemos los datos del trabajo para ver su informacion-----------------------------------
+    $idImagenTrabajoAEvaluar = $_POST['idImagenTrabajoAEvaluar'];
+
+    //Evaluamos si el trabajo tiene imagen registrada en BD
+    $elTrabajoTieneImagen = $trabajoControla->consultarNombreImagenTrabajoDestacado($idImagenTrabajoAEvaluar);
+
+    if($elTrabajoTieneImagen != null){
+        $imagenGuardadaDeTrabajo = '<img class="imgPropuestaDetalle" src="trabajosImages/'.$elTrabajoTieneImagen.'" alt="">';
+        echo $imagenGuardadaDeTrabajo;
+    }else{
+        $imagenPorDefectoDeTrabajo = '<img class="imgPropuestaDetalle" src="assets/images/imgPorDefecto.jpg" alt="">';
+        echo $imagenPorDefectoDeTrabajo;
+    }  
+}
+
+//Capturamos el evento del id de un trabajo con el fin de mostrar sus evidencias en el modal de detalles del mismo 
+if(isset($_POST['idEvidenciasTrabajoAEvaluar'])){
+
+    //Aqui traemos los datos del trabajo para ver su informacion-----------------------------------
+    $idEvidenciasTrabajoAEvaluar = $_POST['idEvidenciasTrabajoAEvaluar'];
+
+    //Evaluamos si el trabajo tiene un link de documento registrado en BD
+    $elTrabajoTieneLinkDeDocumento = $trabajoControla->consultarLinkDocumentoTrabajoDestacado($idEvidenciasTrabajoAEvaluar);
+
+    //Evaluamos si el trabajo tiene un link de video registrado en BD
+    $elTrabajoTieneLinkDeVideo = $trabajoControla->consultarLinkVideoTrabajoDestacado($idEvidenciasTrabajoAEvaluar);
+
+    //Evaluamos si el trabajo tiene un link de repositorio registrado en BD
+    $elTrabajoTieneLinkDeRepositorio = $trabajoControla->consultarLinkRepoCodigoTrabajoDestacado($idEvidenciasTrabajoAEvaluar);
+
+    //Evaluamos si el trabajo tiene un link de presentacion registrado en BD
+    $elTrabajoTieneLinkDePresentacion = $trabajoControla->consultarLinkPresentacionTrabajoDestacado($idEvidenciasTrabajoAEvaluar);
+
+    if($elTrabajoTieneLinkDeDocumento != null){
+        $linkDeDocumento = '<a href="'.$elTrabajoTieneLinkDeDocumento.'" target="_blank" title="'.$elTrabajoTieneLinkDeDocumento.'"><img src="assets/images/btn_evidenc_documento.PNG"></a>';
+        echo $linkDeDocumento;
+    }
+
+    if($elTrabajoTieneLinkDeVideo != null){
+        $linkDeVideo = '<a href="'.$elTrabajoTieneLinkDeVideo.'" target="_blank" title="'.$elTrabajoTieneLinkDeVideo.'"><img src="assets/images/btn_evidenc_video.png"></a>';
+        echo $linkDeVideo;
+    }   
+
+    if($elTrabajoTieneLinkDeRepositorio != null){
+        $linkDeRepositorio = '<a href="'.$elTrabajoTieneLinkDeRepositorio.'" target="_blank" title="'.$elTrabajoTieneLinkDeRepositorio.'"><img src="assets/images/btn_evidenc_repocodigo.png"></a>';
+        echo $linkDeRepositorio;
+    }
+
+    if($elTrabajoTieneLinkDePresentacion != null){
+        $linkDePresentacion = '<a href="'.$elTrabajoTieneLinkDePresentacion.'" target="_blank" title="'.$elTrabajoTieneLinkDePresentacion.'"><img src="assets/images/btn_evidenc_presentacion.png"></a>';
+        echo $linkDePresentacion;
+    }
+
+}
+
+//Capturamos el evento del id de un estudiante para ver su informacion personal en modal del trabajo aplicado"
+if(isset($_POST['idEstudianteTrabajoAplicado'])){
+
+    //Aqui traemos los datos de la propuesta para ver su informacion-----------------------------------
+    $idEstudianteTrabajoAplicado = $_POST['idEstudianteTrabajoAplicado'];
+
+    $sql = "select * from tbl_usuario where id_usuario=".$idEstudianteTrabajoAplicado;
+    $resultInfoEstudianteTrabajoAplicado = mysqli_query($conexion,$sql);   
+    
+    $emparrayInfoDelEstudianteQueAplicoTrabajo = array();
+    while($row =mysqli_fetch_assoc($resultInfoEstudianteTrabajoAplicado))
+    {
+        $emparrayInfoDelEstudianteQueAplicoTrabajo[] = $row;
+    }
+
+    echo json_encode($emparrayInfoDelEstudianteQueAplicoTrabajo);
+    exit;
+}
 
 
 
@@ -2223,7 +2316,7 @@ if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoADesafio" onclick="funcionesParaRevisionDeTrabajosAplicadosADesafios()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-desafioInvolucrado="'.$idDesafioParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2271,7 +2364,7 @@ if(isset($_POST['idPropuestaParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoAPropuesta" onclick="funcionesParaRevisionDeTrabajosAplicadosAPropuestas()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-propuestaInvolucrada="'.$idPropuestaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAPropuesta" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2318,7 +2411,7 @@ if(isset($_POST['idEventoParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoAEvento" onclick="funcionesParaRevisionDeTrabajosAplicadosAEventos()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-eventoInvolucrado="'.$idEventoParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAEvento" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2365,7 +2458,7 @@ if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajo" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-bs-toggle="modal" data-bs-target="#modalDetallesDelTrabajo" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            <a class="btnDetallesTrabajoAplicadoAConvocatoria" onclick="funcionesParaRevisionDeTrabajosAplicadosAConvocatorias()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-convocatoriaInvolucrada="'.$idConvocatoriaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAConvocatoria" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>

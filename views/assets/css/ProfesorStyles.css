@@ -1048,6 +1048,12 @@ thead{
     width: 600px;
 }
 
+.email_infoDetallePropuesta {
+    border: 0;
+    outline: none;
+    width: 70%;
+}
+
 .filasDeDatosTablaDesafios:nth-child(even){
     background-color: #ddd;
 }
