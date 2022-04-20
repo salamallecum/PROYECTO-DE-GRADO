@@ -410,7 +410,7 @@
                        $competenciaControla->eliminarImagenBadge($nombreAntiguoBadgeBronceCompEsp);
 
                        $nuevoNombreBadgeBronceCompEspEdit = $generador->generadorDeNombres().".jpg";
-                       $competenciaControla->subirBadgePlataCompEspecifica($rutaDeBadgeBronceCompEspEdit, $nuevoNombreBadgeBronceCompEspEdit, $cargaBadgeBronceEspEdit, $nombreCompEspecificaEdit);
+                       $competenciaControla->subirBadgeBronceCompEspecifica($rutaDeBadgeBronceCompEspEdit, $nuevoNombreBadgeBronceCompEspEdit, $cargaBadgeBronceEspEdit, $nombreCompEspecificaEdit);
                     }
 
                     $nuevoNombreBadgeBronceCompEspEditado = $generador->generadorDeNombres().".jpg";
