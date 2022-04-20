@@ -1,5 +1,7 @@
 /*ESTILOS DE LA PLANTILLA DE VISUALIZACION DE LOS E-PORTAFOLIOS*/
 
+/*ESTILOS DE LA PLANTILLA DE VISUALIZACION DE LOS E-PORTAFOLIOS*/
+
 /*ESTILOS TEMPLATE E-PORTAFOLIO*/
 *{
     font-family: Arial, Helvetica, sans-serif;
@@ -203,7 +205,8 @@
 }
 
 .imagenDelTrabajoDestacado{
-    width: 200px;
+    width: 250px;
+    height: 250px;
 }
 
 .tituloDescripcion{
@@ -290,10 +293,11 @@
 
 .imagenDelTrabajoDestacadoConMegaInsig{
     width: 200px;
+    height: 200px;
 }
 
 .imagenDelTrabajoDestacadoConInsig{
-    width: 200px;
+    width: 230px;
 }
 
 .tituloDescripcionTrabajoConInsig{
@@ -341,7 +345,7 @@
 }
 
 .insigDelTrabajo{
-    width: 90px;
+    width: 230px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
@@ -378,6 +382,15 @@
     font-weight: bold;
     color: #fff;
 }
+
+
+
+
+
+
+
+
+
 
 
 

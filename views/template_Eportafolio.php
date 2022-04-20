@@ -191,7 +191,7 @@ if($_GET['Id_estudiante'] != 0){
                         if($fotoDelTrabajoDestacado != null){
                         ?>
                             
-                            <div class="alineacionCompTrabajoDestacado">
+                            <div class="alineacionTrabajoDestacado">
                                 <img class="imagenDelTrabajoDestacado" src="<?php echo "trabajosImages/".$key['nombre_imagentrabajo']?>">    
                             </div>
 
@@ -199,14 +199,14 @@ if($_GET['Id_estudiante'] != 0){
                         }else{
                     ?>
 
-                            <div class="alineacionCompTrabajoDestacado">
+                            <div class="alineacionTrabajoDestacado">
                                 <img class="imagenDelTrabajoDestacado" src="assets/images/imgPorDefecto.jpg">    
                             </div>
                     <?php
                         }
                     ?>                                      
 
-                        <div class="alineacionCompTrabajoDestacado">
+                        <div class="alineacionTrabajoDestacado">
                             <div class="descripcionTrabajo">
                                 <label class="tituloDescripcion">Descripción:</label>
                                 <!--La descripcion del trabajo no puede tener mas de 250 caracteres-->
@@ -214,7 +214,7 @@ if($_GET['Id_estudiante'] != 0){
                             </div>
                         </div>
 
-                        <div class="alineacionCompTrabajoDestacado">
+                        <div class="alineacionTrabajoDestacado">
                             <table class="tablaDeEvidencias"> 
                                 <tr>
 

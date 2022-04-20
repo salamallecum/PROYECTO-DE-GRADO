@@ -154,7 +154,7 @@ function getEportafolio(int $idDelEstudiante){
 
                                                                                             if($fotoDelTrabajoDestacado != null){
                                                                                         
-                                                                                                $plantillaEportafolio .= '<td><img class="imagenDelTrabajoDestacado" src="trabajosImages/'. $item['nombre_imagentrabajo'] .'"></td>';
+                                                                                                $plantillaEportafolio .= '<td><img class="imagenDelTrabajoDestacado" src="../trabajosImages/'. $item['nombre_imagentrabajo'] .'"></td>';
 
                                                                                         
                                                                                             }else{

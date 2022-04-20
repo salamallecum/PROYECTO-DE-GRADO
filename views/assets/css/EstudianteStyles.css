@@ -1068,14 +1068,14 @@ img {
 
 .imagenDelTrabajoDestacadoConMegaInsig{
     width: 200px;
-    height: 231px;
+    height: 226px;
     margin-bottom: 90px;
 }
 
 .imagenDelTrabajoDestacadoConInsig{
-    width: 200px;
-    height: 231px;
-    margin-bottom: 90px;
+    width: 300px;
+    height: 295px;
+    margin-bottom: 100px;
 }
 
 .tituloDescripcionTrabajoConInsig{
@@ -1111,10 +1111,10 @@ img {
 
 .cardTrabajoDestacadoConInsig{
     background-color: #eecc41;
-    width: 1100px;
-    height: 270px;
+    width: 1200px;
+    height: 340px;
     margin-top: 20px;
-    margin-left: 80px;
+    margin-left: 40px;
     margin-right: 20px;
     padding-bottom: 20px;
     border-top-left-radius: 10px;
@@ -1124,17 +1124,17 @@ img {
 }
 
 .insigDelTrabajo{
-    width: 90px;
-    height: 90px;
+    width: 300px;
+    height: 300px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
+    padding-top: 0px;
     padding-bottom: 10px;
     margin-bottom: 90px;
 }
 
 .descripcionTrabajoConInsig{
-    width: 450px;
+    width: 300px;
     padding-top: 10px;
     padding-bottom: 30px;
 }
