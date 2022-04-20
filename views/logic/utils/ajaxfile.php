@@ -136,7 +136,6 @@ if(isset($_POST['idDesafioAsigCompetencias'])){
     while($row =mysqli_fetch_assoc($resultCompAsigDesafio))
     {
         $emparrayAsigCompDesafio[] = $row;
-
     }
 
     echo json_encode($emparrayAsigCompDesafio);
@@ -2288,6 +2287,7 @@ if(isset($_POST['comboTipoActividad']) && isset($_POST['idDelProfesor'])){
 if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
 
     $idDesafioParaConsultarSusTrabajosAplicados = $_POST['idDesafioParaConsultarSusTrabajosAplicados'];
+    $idDesafioNumerico = (int) $idDesafioParaConsultarSusTrabajosAplicados;
 
     //obtenemos un array con los id de los trabajos destacados que tiene postulado un desafio determinado
     $arrayTrabajosQueTieneAplicadosUnDesafio = $desafioControla->consultarTrabajosDestacadosAplicadosAUnDesafio($idDesafioParaConsultarSusTrabajosAplicados);
@@ -2316,7 +2316,7 @@ if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajoAplicadoADesafio" onclick="funcionesParaRevisionDeTrabajosAplicadosADesafios()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-desafioInvolucrado="'.$idDesafioParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoADesafio" onclick="funcionesParaRevisionDeTrabajosAplicadosADesafios()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-desafio="'.$idDesafioNumerico.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>

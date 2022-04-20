@@ -545,7 +545,7 @@ if(isset($_GET['Id_profesor']) != 0){
                             <br>
                             <br>
                            
-                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button id="btn_evaluarTrabajoAplicadoADesafio" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajoDesafio" title="Evaluar trabajo">Evaluar</button>   
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
 
                         </div>
@@ -727,6 +727,167 @@ if(isset($_GET['Id_profesor']) != 0){
                         </div>
                     </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!--POPUP PARA LA EVALUACION DE LOS TRABAJOS QUE FUERON APLICADOS A UN DESAFIO-->
+                    <div class="modal fade" id="modalDetallesEvaluarTrabajoDesafio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="titulo_seccion" id="staticBackdropLabel">Evaluación de Trabajo</h3>
+                            </div>
+                            <div class="modal-body">
+                                
+                                <form id="infoDesafio">
+                                    <label class="subtitulosInfo">Nombre del desafio:</label><br>
+                                    <input type="hidden" id="idDesafioCarguecontribCompetencias" name="id_desafio" value="">
+                                    <input type="text" class="infoDetalleDesafio" name="nombre_desafio">
+                                </form>
+                                <br>                             
+                            
+                                <p class="enunciadoModalCompetencias">Análisis de competencias específicas realizado para el desafio. </p>
+                                <br>                                 
+
+                                <!--Este es el código que contiene las competencias específicas con su valoracion realizada para el desafio-->
+                                <div class="contenedorCompeEspeciasAEvaluar">                                 
+                                            
+                                    <span id="panelListaCompetenciasAnalizadas"></span>                                            
+                                    <br>
+                                        
+                                </div>  
+                                <br>
+
+                                <div class="contenedorEvaluacionCompetencias">
+                                    <form id="formularioDeEvaluacionDeTrabajoAplicadoADesafio">
+                                        <input type="hidden" id="txt_idDesafioEvaluacion" name="id_desafio" value="">
+                                        <input type="hidden" id="txt_idTrabajoAEvaluar" name="Id" value="">
+                                        <br>
+                                        
+                                        <p class="enunciadoModalCompetencias">Evalúe el nivel de competencia alcanzado por el trabajo presentado para cada una de las siguientes competencias: </p>
+                                        <br>
+
+                                        <!--Este es el código que contiene las competencias específicas a evaluar-->
+                                        <div class="contenedorCompeEspeciasAEvaluar">                                 
+                                            
+                                            <span id="panelListaCompetenciasAEvaluar"></span>                                            
+                                            <br>
+                                                
+                                        </div>  
+                                        <br>
+
+                                        <button type="button" id="btnGuardarEvaluacionDeTrabajoDesafio" class="btn_detalleDesafioReferenciado" title="Guardar">Guardar</button> 
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Cerrar">Cerrar</button>
+                                   </form>
+                                        
+                                </div> 
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1557,9 +1718,10 @@ if(isset($_GET['Id_profesor']) != 0){
                 .then((response) => {
                     var data = $.parseJSON(response)[0];
                     var formId = "#detallesDeTrabDestacadoDesafio";
+                    var formEvaluacion = "#formularioDeEvaluacionDeTrabajoAplicadoADesafio"
                     $.each(data, function(key, value){
                         $("[name="+key+"]", formId).val(value);
-
+                        $("[name="+key+"]", formEvaluacion).val(value);
                         
                     });
                 })
@@ -1658,6 +1820,51 @@ if(isset($_GET['Id_profesor']) != 0){
                 })
                     
             });
+
+            //Script que permite pasar el id del desafio con el fin de cargar su informacion en el modal de evaluacion de trabajos aplicados a un desafio
+            $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
+
+                var infoDesafioAlQueFueAplicado = $(this).data('desafio');
+            
+                function getFormInfo() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idDesafioQSePretendeSustituirParaModalAprobada': infoDesafioAlQueFueAplicado },
+                            success: function(response){
+                                resolve(response)
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                getFormInfo()
+                .then((response) => {
+                    console.log()
+                    var data = $.parseJSON(response)[0];
+                    var informacionDeDesafio = '#infoDesafio';
+                    var formularioDeEvaluacionDeTrabajoAplicadoADesafio = '#formularioDeEvaluacionDeTrabajoAplicadoADesafio';
+                    $.each(data, function(key, value){
+                        $('[name='+key+']', informacionDeDesafio).val(value);
+                        $('[name='+key+']', formularioDeEvaluacionDeTrabajoAplicadoADesafio).val(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
+            }); 
+
+            //Script que permite cargar el analisis de competencias específicas realizado a un desafio en el modal de evaluacion de trabajos aplicados a un desafio
+            $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
+
+            });
+            
+
 
         }
 
