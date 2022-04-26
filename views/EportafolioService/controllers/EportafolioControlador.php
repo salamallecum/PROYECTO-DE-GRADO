@@ -328,6 +328,17 @@ class EportafolioControlador{
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
 
     }
+
+    //Actualizamos el nombre del archivo pdf y el link con el que se comparte un eportafolio
+    public function limpiarDatosDeDivulgacionEportafolio(int $idEport){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "UPDATE tbl_eportafolio SET nombreArchivoEportafolio='', linkPortafolioParaCompartir='' where Id_estudiante =".$idEport;
+              
+        return $result = mysqli_query($conexion, $sql);
+    }
 }
 
 ?>

@@ -452,7 +452,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                                 ?>
 
                                 <div class="alineacionCompTrabajoDestacado">
-                                    <img class="insigDelTrabajo" src="<?php echo 'badgesImages/'.$nombreDeBadgeCE?>">
+                                    <a href="badgeInfo.php" target="_blank"><img class="insigDelTrabajo" src="<?php echo 'badgesImages/'.$nombreDeBadgeCE?>"></a>
                                 </div>
 
                                 <?php 

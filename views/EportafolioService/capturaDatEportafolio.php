@@ -67,6 +67,15 @@ if(isset($_POST['ocultarEportafolio'])){
     //Ocultamos el Eportafolio
     $eportafolioControla->ocultarEportafolio($idEportafolioAOcultar);
 
+    //Consultamos el id del link del eportafolio
+    $idLinkEportafolio = (string) $eportafolioControla->evaluarSiUnEportafolioTieneLink($idEportafolioAOcultar);
+
+    //Limpiamos los datos de drive con los que se comparte un eportafolio
+    $eportafolioControla->limpiarDatosDeDivulgacionEportafolio($idEportafolioAOcultar);
+
+    //Eliminamos el archivo que se comparte del eportafolio de drive
+    $eportafolioControla->eliminarEportafolioDeDrive($idLinkEportafolio); 
+
     header("Location: " . $_SERVER["HTTP_REFERER"]);
 }
 
