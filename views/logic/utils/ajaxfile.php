@@ -20,6 +20,9 @@ $profesorControla = new ProfesorControlador();
 $desafioControla = new DesafioControlador();
 $trabajoControla = new TrabajoControlador();
 
+//Arreglos transversales utiles para la evaluacion de los trabajos destacados
+$arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales = array();
+
 //----------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------SECCION ESTUDIANTE-----------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------//
@@ -1385,6 +1388,46 @@ if(isset($_POST['idEventoAAplicarEnunciado'])){
     }
 }
 
+//Capturamos el nombre del enunciado de convocatoria practicas para su descarga (boton descargar enunciado)
+if(isset($_REQUEST['downloadEnunEvento'])){
+
+    $nombreEnunciadoEventoDescarga = $_REQUEST['downloadEnunEvento'];
+
+    $rutaBase = realpath($_SERVER["DOCUMENT_ROOT"]); 
+    $rutaArchivo = $rutaBase."/MockupsPandora/views/eventosFiles/".$nombreEnunciadoEventoDescarga;
+    $type = '';
+
+    if (is_file($rutaArchivo)) {
+        
+        $size = filesize($rutaArchivo);
+
+        if (function_exists('mime_content_type')) {
+            $type = mime_content_type($rutaArchivo);
+        } else if (function_exists('finfo_file')) {
+            $info = finfo_open(FILEINFO_MIME);
+            $type = finfo_file($info, $rutaArchivo);
+            finfo_close($info);
+        } 
+
+        if ($type == '') {
+            $type = "application/force-download";
+        }
+
+        // Definir headers
+        header("Content-Type: $type");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Content-Disposition: attachment; filename=".$nombreEnunciadoEventoDescarga."");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: " . $size);
+        // Descargar archivo
+        readfile($rutaArchivo);
+    } else {
+        die("El archivo ".$nombreEnunciadoEventoDescarga." no existe.");
+    }
+    
+}
+
 
 
 
@@ -2474,7 +2517,283 @@ if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
 }
 
 
+//Capturamos el id de una actividad (sea desafio, evento o convocatoria) con el fin de cargar el analisis de competencias especificas previamente asociado
+if(isset($_POST['idActividadAConsultarCompetencias']) && isset($_POST['tipoDeActividad'])){
 
+    $idActividadAConsultarCompetencias = $_POST['idActividadAConsultarCompetencias'];
+    $tipoDeActividad =  $_POST['tipoDeActividad'];
+
+    //Obtenemos el string del arreglo de los codigos de las competencias especificas y el arreglo de los niveles de contribucion de las mismas
+    $stringArregloCodigosCompEspecificasDeLaActividad = $competenciaControla->consultarArregloDeCodigosDeCompetenciasEspecificasDeUnaActividad($idActividadAConsultarCompetencias, $tipoDeActividad); 
+    $stringArregloNivelesDeContribucionCompEspecificasDeLaActividad = $competenciaControla->consultarArregloDeNivelesDeCompetenciasEspecificasDeUnaActividad($idActividadAConsultarCompetencias, $tipoDeActividad); 
+
+    //Convertimos el string con los niveles de contribucion anteriormente consultados a tipo array
+    $arrayArregloNivelesDeContribucionCompEspecificasDeLaActividad = explode(",", $stringArregloNivelesDeContribucionCompEspecificasDeLaActividad);
+    $arrayArregloCodigosCompEspecificasDeLaActividad = explode(",", $stringArregloCodigosCompEspecificasDeLaActividad);
+
+    //Recorremos el arreglo de codigos el fin de agregar comillas simples al inicio y al final de cada uno de sus elementos
+    $arrayTransformadoCodigosCompEspecificasDeLaActividad = array();
+    $itemArregloCodigosCompEspecificasDeLaActividad = "";
+
+    for($i=0; $i<count($arrayArregloCodigosCompEspecificasDeLaActividad); $i++){
+
+        $itemArregloCodigosCompEspecificasDeLaActividad = "'".$arrayArregloCodigosCompEspecificasDeLaActividad[$i]."'";
+        $arrayTransformadoCodigosCompEspecificasDeLaActividad[$i] = $itemArregloCodigosCompEspecificasDeLaActividad;
+
+    }
+
+    //Convertimos el arreglo de codigos transformado a string
+    $stringArrayTransformadoCodigosCompEspecificasDeLaActividad = implode(",", $arrayTransformadoCodigosCompEspecificasDeLaActividad);
+
+    //Consultamos las descripciones de las competencias especificasque fueron evaluadas para laactividad y estructuramos el html del formulario
+    $sqlCompetenciasQueFueronAnalizadas = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where codigo in(".$stringArrayTransformadoCodigosCompEspecificasDeLaActividad.")";
+    $resultCompetenciasQueFueronAnalizadas = mysqli_query($conexion, $sqlCompetenciasQueFueronAnalizadas);
+    $codigoHtmlEnunciadoCompAnalisis = "";
+
+    $count = 0;
+    while(@mysqli_fetch_array($resultCompetenciasQueFueronAnalizadas)){
+        foreach($resultCompetenciasQueFueronAnalizadas as $ver){
+
+            $codigoHtmlEnunciadoCompAnalisis = $codigoHtmlEnunciadoCompAnalisis.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'; 
+
+            $codigoHtmlEnunciadoCompAnalisis = $codigoHtmlEnunciadoCompAnalisis.'<p>Valoración:'.' '.$arrayArregloNivelesDeContribucionCompEspecificasDeLaActividad[$count].'</p><br>';
+            $count++;           
+            
+        } 
+    }
+    
+    echo $codigoHtmlEnunciadoCompAnalisis;
+
+}
+
+//Capturamos el id de una actividad (sea desafio, evento o convocatoria) con el fin de cargar el formulario de competencias especificas para la evaluación del trabajo aplicado
+if(isset($_POST['idActividadParaEvaluarCompetenciasTrabajo']) && isset($_POST['tipoDeActividadInvolucrada'])){
+
+    $idActividadParaEvaluarCompetenciasTrabajo = $_POST['idActividadParaEvaluarCompetenciasTrabajo'];
+    $tipoDeActividadInvolucrada = $_POST['tipoDeActividadInvolucrada'];
+
+    //Obtenemos el string del arreglo de los codigos y niveles de contribucion de las competencias especificas 
+    $stringArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo = $competenciaControla->consultarArregloDeCodigosDeCompetenciasEspecificasDeUnaActividad($idActividadParaEvaluarCompetenciasTrabajo, $tipoDeActividadInvolucrada); 
+    $stringArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion = $competenciaControla->consultarArregloDeNivelesDeCompetenciasEspecificasDeUnaActividad($idActividadParaEvaluarCompetenciasTrabajo, $tipoDeActividadInvolucrada); 
+    
+    //Convertimos el string de los arreglos anteriormente consultados a tipo array
+    $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo = explode(",", $stringArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo);
+    $arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion = explode(",", $stringArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion);
+
+    //Recorremos el arreglo de niveles de contribucion con el fin de identificar si existe un elemento de tipo N/A para eliminarlo y eliminar el codigo de competencia especifica asociado al mismo
+    $arregloDeCodigosDeCompetenciasActualizado = array();
+    $contador = 0;
+    
+    
+    for($j=0; $j<count($arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion); $j++){
+
+        if($arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion[$j] != 'N/A'){
+            $arregloDeCodigosDeCompetenciasActualizado[$j-$contador] = $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$j];
+        }else{
+            $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales[$contador] = $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$j];
+            $contador++;
+        }
+    }
+   
+    //Recorremos el arreglo de codigos el fin de agregar comillas simples al inicio y al final de cada uno de sus elementos
+    $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo = array();
+    $itemArregloCodigosCompEspecificasDeLaActividadParaEv = "";
+
+    for($i=0; $i<count($arregloDeCodigosDeCompetenciasActualizado); $i++){
+
+        $itemArregloCodigosCompEspecificasDeLaActividadParaEv = "'".$arregloDeCodigosDeCompetenciasActualizado[$i]."'";
+        $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$i] = $itemArregloCodigosCompEspecificasDeLaActividadParaEv;
+
+    }
+
+    //Convertimos el arreglo de codigos transformado a string
+    $stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo = implode(",", $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo);
+
+    //Consultamos las descripciones de las competencias especificas que fueron seleccionadas para la evaluacion de un trabajo aplicado a la actividad y estructuramos el html del formulario
+    $sqlCompetenciasQueFueronEscogidasParaEvTrabajo = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where codigo in(".$stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo.")";
+    $resultCompetenciasQueFueronEscogidasParaEvTrabajo = mysqli_query($conexion, $sqlCompetenciasQueFueronEscogidasParaEvTrabajo);
+    $codigoHtmlEnunciadoCompParaEvTrabajo = "";
+
+    foreach($resultCompetenciasQueFueronEscogidasParaEvTrabajo as $ver){
+        $codigoHtmlEnunciadoCompParaEvTrabajo = $codigoHtmlEnunciadoCompParaEvTrabajo.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'.
+                
+                                        '<table class="contenedorRespContribucionCompEsp" id="'.$ver['codigo'].'">
+                                            <tr>
+                                                <td><input type="radio" name="'.$ver['codigo'].'" value="BAJA">
+                                                <label for="Baja">Baja</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="MEDIA">
+                                                <label for="Media">Media</label></td>
+                                                
+                                                <td class=columnaNivelContribucion><input type="radio" name="'.$ver['codigo'].'" value="ALTA">
+                                                <label for="Alta">Alta</label></td>
+
+                                            </tr>
+                                        </table>
+                                        <br>';           
+    }
+    
+    echo $codigoHtmlEnunciadoCompParaEvTrabajo;
+}
+
+//Capturamos los array para el registro de la evaluacion realizada a las competencias especificas que certifican un trabajo aplicado a una actividad (sea desafio, desafio personalizado, evento o convocatoria)
+if(isset($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']) && isset($_POST['idActividad']) && isset($_POST['tipoActividad']) && isset($_POST['idDelTrabajo']) && isset($_POST['arregloCodigosCompEspecificasEvaluacionTrabajo']) && isset($_POST['arregloNivelesContribucionCompEspecificasEvaluacionTrabajo'])) {
+
+    //Capturamos los datos de los campos del formulario
+    $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo = trim($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']);
+    $idActividad = trim($_POST['idActividad']);
+    $tipoActividad = trim($_POST['tipoActividad']);    
+    $idDelTrabajo = trim($_POST['idDelTrabajo']);
+    $arregloCodigosCompEspecificasEvaluacionTrabajo = json_decode(stripslashes($_POST['arregloCodigosCompEspecificasEvaluacionTrabajo']));
+    $arregloNivelesContribucionCompEspecificasEvaluacionTrabajo = json_decode(stripslashes($_POST['arregloNivelesContribucionCompEspecificasEvaluacionTrabajo']));
+
+    //Recorremos el arreglo de codigos el fin de agregar comillas simples al inicio y al final de cada uno de sus elementos
+    $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo = array();
+    $itemArregloCodigosCompEspecificDeLaActividadParaEv = "";
+
+    for($i=0; $i<count($arregloCodigosCompEspecificasEvaluacionTrabajo); $i++){
+
+        $itemArregloCodigosCompEspecificDeLaActividadParaEv = "'".$arregloCodigosCompEspecificasEvaluacionTrabajo[$i]."'";
+        $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo[$i] = $itemArregloCodigosCompEspecificDeLaActividadParaEv;
+
+    }
+
+    //Convertimos los arreglos de los codigos y los niveles de contribucion a string
+    $stringArregloCodigosCompEspecificasEvaluacionTrabajo = implode(",", $arregloCodigosCompEspecificasEvaluacionTrabajo);
+    $stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo  = implode(",", $arrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+    $stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo  = implode(",", $arregloNivelesContribucionCompEspecificasEvaluacionTrabajo);
+
+    //Construimos el arreglo con los tipos de badge ganados por el estudiante teniendo en cuenta el arreglo de niveles de contribucion obtenido en la evaluacion de competencias especificas
+    $arregloTiposDeBadgeGanadosEnActividadCompEsp = array();
+    for($k=0; $k<count($arregloNivelesContribucionCompEspecificasEvaluacionTrabajo); $k++){
+
+        if($arregloNivelesContribucionCompEspecificasEvaluacionTrabajo[$k] == 'BAJA'){
+            $arregloTiposDeBadgeGanadosEnActividadCompEsp[$k] = 'BRONCE'; 
+        }
+
+        if($arregloNivelesContribucionCompEspecificasEvaluacionTrabajo[$k] == 'MEDIA'){
+            $arregloTiposDeBadgeGanadosEnActividadCompEsp[$k] = 'PLATA'; 
+        }
+
+        if($arregloNivelesContribucionCompEspecificasEvaluacionTrabajo[$k] == 'ALTA'){
+            $arregloTiposDeBadgeGanadosEnActividadCompEsp[$k] = 'ORO'; 
+        }
+    }
+
+    //Verificamos si la evaluacion realizada al trabajo destacado va a certificar o no competencias generales (Megainsignias)
+    if($arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales != null){
+        /*
+        //Insertamos en base de datos la evaluacion de competencias especificas realizada al trabajo
+        $sqlInsercionDeEvaluacionRealizadaTrabajo = "INSERT INTO tbl_evaluaciondetrabajos VALUES (0, $idActividad, '$tipoActividad', '$stringArregloCodigosCompEspecificasEvaluacionTrabajo', '$stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo')";
+        mysqli_query($conexion, $sqlInsercionDeEvaluacionRealizadaTrabajo) or die(mysqli_error($conexion));
+
+        //Consultamos los ids de las competencias especificas que se van a certificar con el trabajo aplicado
+        $arregloIdsCompetenciasEspecificasACertificar = $competenciaControla->consultarIdsDeCompetenciasEspecificasACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+
+        //Insertamos en la BD de insignias ganadas, los tipos de badge de comp especificas obtenidos por el trabajo destacado
+        for($u=0; $u<count($arregloIdsCompetenciasEspecificasACertificar); $u++){
+
+            //Insertamos en BD las insignias de competencias especificas ganadas por el trabajo
+            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$arregloTiposDeBadgeGanadosEnActividadCompEsp[$u]', $arregloIdsCompetenciasEspecificasACertificar[$u], 'ESPECIFICA')";
+            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+
+        }-----HASTA AQUI FUNCIONA BIEN LA CERTIFICACION DE COMP ESPECIFICAS---------------------------------------------------
+
+        //Convertimos el arreglo de competencias especificas que no permiten la certificacion de comp generales a string
+        $stringArregloDeCompetenciasEspPorLasQueNoSeCertificaranCompGenerales = implode(",", $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales);
+
+        //Consultamos los ids de las competencias generales de aquellas competencias especificas que generaron inconsistencia N/A
+        $arregloIdsCompGeneralesQueNoPuedenSerCertificadas = $competenciaControla->consultarIdsCompGeneralesQueNoPuedenCertificarse($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+
+        //Consultamos los ids de las competencias generales de aquellas competencias especificas que si fueron certificadas individualmente
+        $arregloCompGeneralesDeCompEspCertificadasConAntelacion = $competenciaControla->consultarIdsCompetenciasGeneralesACertificar($stringArregloCodigosCompEspecificasEvaluacionTrabajo);
+
+        //Comparamos los dos arreglos y creamos un nuevo arreglo con aquellos ids que no tengan en común
+        $resultadoComparacion = array_diff($arregloCompGeneralesDeCompEspCertificadasConAntelacion, $arregloIdsCompGeneralesQueNoPuedenSerCertificadas);
+        */
+        
+
+    }else{
+        /*
+        //Insertamos en base de datos la evaluacion de competencias especificas realizada al trabajo
+        $sqlInsercionDeEvaluacionRealizadaTrabajo = "INSERT INTO tbl_evaluaciondetrabajos VALUES (0, $idActividad, '$tipoActividad', $idDelTrabajo, '$stringArregloCodigosCompEspecificasEvaluacionTrabajo', '$stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo')";
+        mysqli_query($conexion, $sqlInsercionDeEvaluacionRealizadaTrabajo) or die(mysqli_error($conexion));
+
+        //Consultamos los ids de las competencias especificas que se van a certificar con el trabajo aplicado
+        $arregloIdsCompetenciasEspecificasACertificar = $competenciaControla->consultarIdsDeCompetenciasEspecificasACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+
+        //Insertamos en la BD de insignias ganadas, los tipos de badge de comp especificas obtenidos por el trabajo destacado
+        for($u=0; $u<count($arregloIdsCompetenciasEspecificasACertificar); $u++){
+
+            //Insertamos en BD las insignias de competencias especificas ganadas por el trabajo
+            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$arregloTiposDeBadgeGanadosEnActividadCompEsp[$u]', $arregloIdsCompetenciasEspecificasACertificar[$u], 'ESPECIFICA')";
+            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+
+        }
+
+            //De Aqui pa arriba ya funciona 
+
+        */
+
+
+
+
+
+
+
+
+
+
+        //Consultamos las competencias generales a las que pertenecen las competencias especificas previamente certificadas
+        $arregloCompetenciasGeneralesACertificar = $competenciaControla->consultarIdsCompetenciasGeneralesACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+        $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array();
+        $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge = array();
+        
+        //Consultamos el numero de competencias especificas que tiene cada competencia general 
+        for($h=0; $h<count($arregloCompetenciasGeneralesACertificar); $h++){
+
+            $numeroDeCompEspQueTieneLaCompGeneral = $competenciaControla->contarCantidadDeCompEspecificasDeUnaCompGeneral($arregloCompetenciasGeneralesACertificar[$h]);
+
+            //Obtenemos un arreglo con los primeros n tipos de badge de la competencia general para hacer el procesamiento correspondiente
+            $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array_slice($valores, 0, $numeroDeCompEspQueTieneLaCompGeneral);
+
+            for($l=0; $l<count($arregloDeTiposDeBadgpanelParaBotonDescargaEnunciadoEventoeParaDeterminarTipoMegaInsig); $l++){
+                //Eliminamos el elemento del array
+                unset($arregloTiposDeBadgeGanadosEnActividadCompEsp[$l]);
+            }
+
+            //Recorremos el arreglo de tipos de badges con el fin de identificar cuantas veces se repite cada uno de sus elementos
+            for($x=0; $x<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $x++){
+                $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$x] = $competenciaControla->contarCuantasVecesSeRepiteUnTipoDeBadge($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig, $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$x]);
+            }
+
+            //Obtenemos el numero mas grande del arreglo de numero de repeticiones de los tipos de badge
+            $numeroMasGrandeDeRepeticiones = max($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge);
+            $tipoDeBadgeParaMegainsignia = "";
+
+            //Recorremos el arreglo de repeticiones con el fin de encontrar el indice del numero mas grande ($numeroMasGrandeDeRepeticiones) para asíobtner el tipo de badge que se encuentre en dicho indice en el arreglo de tipos de badges
+            for($y=0; $y<count($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge); $y++){
+                
+                if($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$y] == $numeroMasGrandeDeRepeticiones){
+                    $tipoDeBadgeParaMegainsignia = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$y];
+                }
+            }
+
+            //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
+            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegainsignia', $arregloCompetenciasGeneralesACertificar[$h], 'GENERAL')";
+            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+
+        }
+
+        //Eliminamos la aplicacion del trabajo a la actividad
+        $trabajoControla->eliminarAplicacionDelTrabajoParaUnaActividad($idDelTrabajo, $idActividad, $tipoActividad);
+
+        //Indicamos que el trabajo ya tiene badges de certificacion y lo publicamos en el eportafolio del estudiante
+        $trabajoControla->publicarTrabajoDestacadoCertificado($idDelTrabajo);
+  
+    }
+}
+    
 ?>
 
 

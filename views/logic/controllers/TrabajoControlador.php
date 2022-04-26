@@ -249,7 +249,7 @@ class TrabajoControlador{
         return $result = mysqli_query($conexion, $sql);
     }
 
-    //Funcion que permite eliminar las aplicaciones realizadas por el estudiante para un trabajo destacado
+    //Funcion que permite eliminar todas las aplicaciones realizadas por el estudiante para un trabajo destacado
     public function eliminarAplicacionesDelTrabajo(int $idTrabajo){
 
         $c = new conectar();
@@ -347,6 +347,28 @@ class TrabajoControlador{
         while ($row = $result->fetch_assoc()) {
             return $row['link_presentacion'];
         }
+    }
+
+    //Funcion que permite eliminar la aplicacion de un trabajo destacado a una actividad en especifica (sea desafio, evento o Convocatoria)
+    public function eliminarAplicacionDelTrabajoParaUnaActividad(int $idTrabajo, int $idActividad, string $tipoActivity){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "DELETE from tbl_aplicaciondetrabajos where id_trabajo = $idTrabajo and id_actividad = $idActividad and tipo_actividad= '$tipoActivity'";     
+               
+        return $result = mysqli_query($conexion, $sql);
+    }
+
+    //Funcion que publica los trabajos destacados una vez ganan insignias 
+    public function publicarTrabajoDestacadoCertificado(int $idDelTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();      
+                
+        $sql = "UPDATE tbl_trabajodestacado SET trabajoTieneBadge = 'Si', publicadoeneportafolio='Si' WHERE Id=".$idDelTrabajo;
+
+        return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }
 }
 ?>

@@ -805,8 +805,121 @@ class CompetenciaControlador{
 
     }
 
+    //Funcion que consulta el string de los array de las competencias especificas selesccionadaspara una actividad (sea desafio, evento o convocatoria)
+    public function consultarArregloDeCodigosDeCompetenciasEspecificasDeUnaActividad(int $idActividad, string $tipoActividad){
 
+        $c = new conectar();
+        $conexion = $c->conexion();
 
+        $sql = "SELECT codigosCompEspecificas from tbl_contribcompespecificas_actividad where id_actividad = $idActividad and tipo_actividad = '$tipoActividad'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['codigosCompEspecificas'];
+        }
+    }
+
+    //Funcion que consulta el string de los array de los niveles de contribucion de competencias especificas selesccionadas para una actividad (sea desafio, evento o convocatoria)
+    public function consultarArregloDeNivelesDeCompetenciasEspecificasDeUnaActividad(int $idActividad, string $tipoActividad){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT nivelesDeContribucion from tbl_contribcompespecificas_actividad where id_actividad = $idActividad and tipo_actividad = '$tipoActividad'";
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['nivelesDeContribucion'];
+        }
+    }
+
+    //Funcion que permite consultar los ids de las competencias generales que hacen parte de un grupo de competencias especificas para su certificacion
+    public function consultarIdsCompetenciasGeneralesACertificar(string $strSeleccionCompEspecificas){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT DISTINCT id_comp_gral from tbl_competencia_especifica where codigo in ($strSeleccionCompEspecificas)";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsCompGeneralesACertificar = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsCompGeneralesACertificar[$contador] = $row['id_comp_gral'];
+            $contador++;
+        }
+
+        return $emparrayIdsCompGeneralesACertificar;
+    }
+
+    //Funcion que permite consultar los ids de las competencias generales que no pueden certificarse por inconsistencia N/A
+    public function consultarIdsCompGeneralesQueNoPuedenCertificarse(string $strSeleccionCompEsp){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT DISTINCT id_comp_gral from tbl_competencia_especifica where codigo in ($strSeleccionCompEsp)";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsCompGeneralesQueNoSePuedenCertificar = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsCompGeneralesQueNoSePuedenCertificar[$contador] = $row['id_comp_gral'];
+            $contador++;
+        }
+
+        return $emparrayIdsCompGeneralesQueNoSePuedenCertificar;
+    }
+
+    //Funcion que permite consultar los ids de las competencias especificas para su certificacion
+    public function consultarIdsDeCompetenciasEspecificasACertificar(string $strSeleccionCompEspecificas){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT DISTINCT id_comp_esp from tbl_competencia_especifica where codigo in ($strSeleccionCompEspecificas)";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayIdsCompEspecificasACertificar = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayIdsCompEspecificasACertificar[$contador] = $row['id_comp_esp'];
+            $contador++;
+        }
+
+        return $emparrayIdsCompEspecificasACertificar;
+    }
+
+    //Funcion que permite contar cuantas competencias especificas tiene una competencia general
+    public function contarCantidadDeCompEspecificasDeUnaCompGeneral(int $idCompGeneral){
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT COUNT(*) from tbl_competencia_especifica where id_comp_gral=".$idCompGeneral;
+        $result = mysqli_query($conexion, $sql);
+
+        while ($row = $result->fetch_assoc()) {
+            return $row['COUNT(*)'];
+        }
+    }
+
+    //Funcion que cuenta cuantas veces se repite un tipo de badge de una competencia
+    function contarCuantasVecesSeRepiteUnTipoDeBadge($arrayTipoBadges, string $tipoBadgeABuscar) {
+        if(!is_array($arrayTipoBadges)){
+            return NULL;
+        }else{
+            $i=0;
+            foreach($arrayTipoBadges as $point){
+                if($tipoBadgeABuscar===$point){
+                    $i++;
+                }
+            }   
+            return $i;
+        }
+    }
 
 
 

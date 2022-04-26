@@ -1091,6 +1091,11 @@ thead{
     margin-bottom: 0;
 }
 
+.enunciadoCompEspecifica{
+    resize: none;
+    width: 400px;
+    height: 100px;
+}
 
 
 

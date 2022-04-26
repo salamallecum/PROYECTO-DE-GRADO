@@ -720,7 +720,7 @@ if(isset($_GET['Id_profesor']) != 0){
                             <br>
                             <br>
                            
-                            <button id="btn_evaluarTrabajoAplicado" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
+                            <button id="btnEvaluarTrabajoAplicadoADesafio" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalDetallesEvaluarTrabajo" title="Evaluar trabajo">Evaluar</button>   
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancelar">Cancelar</button>
 
                         </div>
@@ -820,7 +820,7 @@ if(isset($_GET['Id_profesor']) != 0){
                                 <!--Este es el código que contiene las competencias específicas con su valoracion realizada para el desafio-->
                                 <div class="contenedorCompeEspeciasAEvaluar">                                 
                                             
-                                    <span id="panelListaCompetenciasAnalizadas"></span>                                            
+                                    <span id="panelListaCompetenciasAnalizadasDelDesafio"></span>                                            
                                     <br>
                                         
                                 </div>  
@@ -828,7 +828,8 @@ if(isset($_GET['Id_profesor']) != 0){
 
                                 <div class="contenedorEvaluacionCompetencias">
                                     <form id="formularioDeEvaluacionDeTrabajoAplicadoADesafio">
-                                        <input type="hidden" id="txt_idDesafioEvaluacion" name="id_desafio" value="">
+                                        <input type="hidden" id="txt_idDelEstudianteEvaluado" name="id_usuario" value="">
+                                        <input type="hidden" id="txt_idDesafioAEvaluar" name="id_desafio" value="">
                                         <input type="hidden" id="txt_idTrabajoAEvaluar" name="Id" value="">
                                         <br>
                                         
@@ -844,7 +845,7 @@ if(isset($_GET['Id_profesor']) != 0){
                                         </div>  
                                         <br>
 
-                                        <button type="button" id="btnGuardarEvaluacionDeTrabajoDesafio" class="btn_detalleDesafioReferenciado" title="Guardar">Guardar</button> 
+                                        <button type="button" id="btnGuardarEvaluacionDeTrabajoAplicadoADesafio" class="btn_detalleDesafioReferenciado" title="Guardar">Guardar</button> 
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Cerrar">Cerrar</button>
                                    </form>
                                         
@@ -1786,7 +1787,7 @@ if(isset($_GET['Id_profesor']) != 0){
                     
             });
 
-            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un desafio
+            //Script que permite traer los datos del estudiante al modal de un trabajo destacado aplicado a un desafio y al modal de evaluacion
             $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
                     
                 var idEstudianteTrabajoAplicadoDesafio = $(this).data('estudiante');
@@ -1811,8 +1812,10 @@ if(isset($_GET['Id_profesor']) != 0){
                 .then((response) => {
                     var data = $.parseJSON(response)[0];
                     var formId = '#seccionDatosDelEstudianteAplicaDesafio';
+                    var modalEvaluacion = '#formularioDeEvaluacionDeTrabajoAplicadoADesafio';
                     $.each(data, function(key, value){
                         $('[name='+key+']', formId).val(value);
+                        $('[name='+key+']', modalEvaluacion).val(value);
                     });
                 })
                 .catch((error) => {
@@ -1820,6 +1823,28 @@ if(isset($_GET['Id_profesor']) != 0){
                 })
                     
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //ESTE ES EL CODIGO QUE DEBO REPLICAR PARA LAS DEMAS ACTIVIDADES PARA QUE PUEDAN EVALUAR SUS TRABAJOS APLICADOS
 
             //Script que permite pasar el id del desafio con el fin de cargar su informacion en el modal de evaluacion de trabajos aplicados a un desafio
             $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
@@ -1862,13 +1887,210 @@ if(isset($_GET['Id_profesor']) != 0){
             //Script que permite cargar el analisis de competencias específicas realizado a un desafio en el modal de evaluacion de trabajos aplicados a un desafio
             $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
 
+                var idDelDesafioAConsultarAnalisis = $(this).data('desafio');
+                var tipoActividad = "DESAFIO";
+
+                function obtenerAnalisisDeCompetenciasRealizadoAUnDesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idActividadAConsultarCompetencias': idDelDesafioAConsultarAnalisis, 'tipoDeActividad': tipoActividad},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelListaCompetenciasAnalizadasDelDesafio').html(response);
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+                
+                obtenerAnalisisDeCompetenciasRealizadoAUnDesafio();
+
             });
             
+            //Script que permite cargar el formulario de evaluacion de competencias para la certificacion de un trabajo aplicado a un desafio
+            $('.btnDetallesTrabajoAplicadoADesafio').click(function(){
 
+                var idDelDesafioAConsultarCompetenciasParaEvaluacion = $(this).data('desafio');
+                var tipoActividadInvolucrada = "DESAFIO";
+
+                function obtenerCompetenciasParaEvaluacionDeTrabajoAplicadoADesafio() {
+                    return new Promise((resolve, reject) => {
+                        // AJAX request
+                        $.ajax({
+                            url: 'logic/utils/ajaxfile.php',
+                            type: 'post',
+                            data: {'idActividadParaEvaluarCompetenciasTrabajo': idDelDesafioAConsultarCompetenciasParaEvaluacion, 'tipoDeActividadInvolucrada': tipoActividadInvolucrada},
+                            success: function(response){
+                                resolve(response)
+                                $('#panelListaCompetenciasAEvaluar').html(response);
+                            },
+                            error: function (error) {
+                            reject(error)
+                            },
+                        });
+                    })
+                }
+
+                obtenerCompetenciasParaEvaluacionDeTrabajoAplicadoADesafio();
+
+            });
 
         }
 
     </script>
+
+    <!--Script que permite el registro de la evaluación realizada a un trabajo que fue aplicado a un desafio--> 
+    <script type='text/javascript'>
+        $(document).ready(function(){
+                       
+            $('#btnGuardarEvaluacionDeTrabajoAplicadoADesafio').click(function() {
+                    
+                //En este bloque pasamos el id del desafio para tener el cuenta en la insercion de datos
+                var idDelEstudianteParaGuardarEvaluacionRealizadaATrabajoDesafio = document.getElementById('txt_idDelEstudianteEvaluado').value;
+                var idDelTrabajoEvaluadoDesafio = document.getElementById('txt_idTrabajoAEvaluar').value;
+                var idDelDesafioAEvaluar = document.getElementById('txt_idDesafioAEvaluar').value;
+                var tipoActividadDesafio = "DESAFIO";
+                var contenedoresDeRespuestasNivelContribCompetenciaATrabajoAplicadoDesafio = document.getElementsByClassName('contenedorRespContribucionCompEsp');
+                var arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio = []; 
+                var arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio = []; 
+            
+
+                for (let item of contenedoresDeRespuestasNivelContribCompetenciaATrabajoAplicadoDesafio) {
+                    arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.push(item.id)  
+                }
+                
+                //Recogemos lo marcado por el usario en los radiobuttons
+                for (let item of arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio) {
+                    var radioButtonsCmpEspecifica = document.getElementsByName(item);
+                    
+                    for (var i = 0, length = radioButtonsCmpEspecifica.length; i < length; i++) {
+                        if (radioButtonsCmpEspecifica[i].checked) {
+                            arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.push(radioButtonsCmpEspecifica[i].value);
+                            break;
+                        }
+                    }
+                }
+
+                var numeroDeCompEspecificas = arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.length;
+
+                if(arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.length > 0 && arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.length == numeroDeCompEspecificas){
+
+                    function evaluarTrabajoAplicadoAUnDesafio() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo': idDelEstudianteParaGuardarEvaluacionRealizadaATrabajoDesafio, 'idActividad':idDelDesafioAEvaluar, 'tipoActividad':tipoActividadDesafio, 'idDelTrabajo': idDelTrabajoEvaluadoDesafio, 'arregloCodigosCompEspecificasEvaluacionTrabajo': JSON.stringify(arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio), 'arregloNivelesContribucionCompEspecificasEvaluacionTrabajo': JSON.stringify(arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio)},
+                                success: function(response){
+                                    console.log("Informacion enviada satisfactoriamente");
+                                    resolve(response)  
+                                },
+                                error: function (error) {
+                                reject(error)
+                                console.log(error);
+                                },
+                            });
+                        })
+                    }
+                
+                    evaluarTrabajoAplicadoAUnDesafio();
+                                    
+                }else{
+                    alert('Debe evaluar todas las competencias específicas propuestas.');
+                    return false;
+                }                     
+                
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!--Aqui declaramos las funciones para la visualizacion y gestion de los trabajos que son aplicados a un desafio personalizado determinado en la tabla de trabajos-->
     <script>
