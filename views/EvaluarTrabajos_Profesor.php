@@ -1988,8 +1988,7 @@ if(isset($_GET['Id_profesor']) != 0){
                                 type: 'post',
                                 data: {'idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo': idDelEstudianteParaGuardarEvaluacionRealizadaATrabajoDesafio, 'idActividad':idDelDesafioAEvaluar, 'tipoActividad':tipoActividadDesafio, 'idDelTrabajo': idDelTrabajoEvaluadoDesafio, 'arregloCodigosCompEspecificasEvaluacionTrabajo': JSON.stringify(arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio), 'arregloNivelesContribucionCompEspecificasEvaluacionTrabajo': JSON.stringify(arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio)},
                                 success: function(response){
-                                    console.log("Informacion enviada satisfactoriamente");
-                                    resolve(response)  
+                                    resolve(response) 
                                 },
                                 error: function (error) {
                                 reject(error)

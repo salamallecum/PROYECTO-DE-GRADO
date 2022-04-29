@@ -366,7 +366,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET trabajoTieneBadge = 'Si', publicadoeneportafolio='Si' WHERE Id=".$idDelTrabajo;
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No', trabajoTieneBadge = 'Si', publicadoeneportafolio='Si' WHERE Id=".$idDelTrabajo;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

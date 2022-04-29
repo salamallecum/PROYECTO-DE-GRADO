@@ -20,8 +20,7 @@ $profesorControla = new ProfesorControlador();
 $desafioControla = new DesafioControlador();
 $trabajoControla = new TrabajoControlador();
 
-//Arreglos transversales utiles para la evaluacion de los trabajos destacados
-$arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales = array();
+$laEvaluacionTieneCompTipoNA = false;
 
 //----------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------SECCION ESTUDIANTE-----------------------------------------------------//
@@ -2581,17 +2580,18 @@ if(isset($_POST['idActividadParaEvaluarCompetenciasTrabajo']) && isset($_POST['t
     $arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion = explode(",", $stringArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion);
 
     //Recorremos el arreglo de niveles de contribucion con el fin de identificar si existe un elemento de tipo N/A para eliminarlo y eliminar el codigo de competencia especifica asociado al mismo
+    $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales = array();
     $arregloDeCodigosDeCompetenciasActualizado = array();
     $contador = 0;
     
     
     for($j=0; $j<count($arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion); $j++){
 
-        if($arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion[$j] != 'N/A'){
-            $arregloDeCodigosDeCompetenciasActualizado[$j-$contador] = $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$j];
-        }else{
+        if($arrayArregloNivelesDeContribucionCompEspecificasDeLaActividadParaEvaluacion[$j] == 'N/A'){
             $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales[$contador] = $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$j];
             $contador++;
+        }else{
+            $arregloDeCodigosDeCompetenciasActualizado[$j-$contador] = $arrayArregloCodigosCompEspecificasDeLaActividadParaEvaluacionTrabajo[$j];
         }
     }
    
@@ -2680,41 +2680,30 @@ if(isset($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']) && iss
         }
     }
 
+    //Obtenemos el string del arreglo de los codigos y niveles de contribucion de las competencias especificas 
+    $stringArregloCodigosCompEspDeLaActividadParaEvaluacionTrabajo = $competenciaControla->consultarArregloDeCodigosDeCompetenciasEspecificasDeUnaActividad($idActividad, $tipoActividad); 
+    $stringArregloNivelesDeContribucionCompEspDeLaActividadParaEvaluacion = $competenciaControla->consultarArregloDeNivelesDeCompetenciasEspecificasDeUnaActividad($idActividad, $tipoActividad); 
+
+    //Convertimos el string de los arreglos anteriormente consultados a tipo array
+    $arrayArregloCodigosCompEspDeLaActividadParaEvaluacionTrabajo = explode(",", $stringArregloCodigosCompEspDeLaActividadParaEvaluacionTrabajo);
+    $arrayArregloNivelesDeContribucionCompEspDeLaActividadParaEvaluacion = explode(",", $stringArregloNivelesDeContribucionCompEspDeLaActividadParaEvaluacion);
+
+    //Recorremos el arreglo de niveles de contribucion con el fin de identificar si existe un elemento de tipo N/A para eliminarlo y eliminar el codigo de competencia especifica asociado al mismo
+    $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales = array();
+    $count = 0;
+    
+    
+    for($g=0; $g<count($arrayArregloNivelesDeContribucionCompEspDeLaActividadParaEvaluacion); $g++){
+
+        if($arrayArregloNivelesDeContribucionCompEspDeLaActividadParaEvaluacion[$g] == 'N/A'){
+            $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales[$count] = "'".$arrayArregloCodigosCompEspDeLaActividadParaEvaluacionTrabajo[$g]."'";
+            $count++;
+        }
+    }
+
     //Verificamos si la evaluacion realizada al trabajo destacado va a certificar o no competencias generales (Megainsignias)
     if($arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales != null){
-        /*
-        //Insertamos en base de datos la evaluacion de competencias especificas realizada al trabajo
-        $sqlInsercionDeEvaluacionRealizadaTrabajo = "INSERT INTO tbl_evaluaciondetrabajos VALUES (0, $idActividad, '$tipoActividad', '$stringArregloCodigosCompEspecificasEvaluacionTrabajo', '$stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo')";
-        mysqli_query($conexion, $sqlInsercionDeEvaluacionRealizadaTrabajo) or die(mysqli_error($conexion));
-
-        //Consultamos los ids de las competencias especificas que se van a certificar con el trabajo aplicado
-        $arregloIdsCompetenciasEspecificasACertificar = $competenciaControla->consultarIdsDeCompetenciasEspecificasACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
-
-        //Insertamos en la BD de insignias ganadas, los tipos de badge de comp especificas obtenidos por el trabajo destacado
-        for($u=0; $u<count($arregloIdsCompetenciasEspecificasACertificar); $u++){
-
-            //Insertamos en BD las insignias de competencias especificas ganadas por el trabajo
-            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$arregloTiposDeBadgeGanadosEnActividadCompEsp[$u]', $arregloIdsCompetenciasEspecificasACertificar[$u], 'ESPECIFICA')";
-            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
-
-        }-----HASTA AQUI FUNCIONA BIEN LA CERTIFICACION DE COMP ESPECIFICAS---------------------------------------------------
-
-        //Convertimos el arreglo de competencias especificas que no permiten la certificacion de comp generales a string
-        $stringArregloDeCompetenciasEspPorLasQueNoSeCertificaranCompGenerales = implode(",", $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales);
-
-        //Consultamos los ids de las competencias generales de aquellas competencias especificas que generaron inconsistencia N/A
-        $arregloIdsCompGeneralesQueNoPuedenSerCertificadas = $competenciaControla->consultarIdsCompGeneralesQueNoPuedenCertificarse($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
-
-        //Consultamos los ids de las competencias generales de aquellas competencias especificas que si fueron certificadas individualmente
-        $arregloCompGeneralesDeCompEspCertificadasConAntelacion = $competenciaControla->consultarIdsCompetenciasGeneralesACertificar($stringArregloCodigosCompEspecificasEvaluacionTrabajo);
-
-        //Comparamos los dos arreglos y creamos un nuevo arreglo con aquellos ids que no tengan en común
-        $resultadoComparacion = array_diff($arregloCompGeneralesDeCompEspCertificadasConAntelacion, $arregloIdsCompGeneralesQueNoPuedenSerCertificadas);
-        */
         
-
-    }else{
-        /*
         //Insertamos en base de datos la evaluacion de competencias especificas realizada al trabajo
         $sqlInsercionDeEvaluacionRealizadaTrabajo = "INSERT INTO tbl_evaluaciondetrabajos VALUES (0, $idActividad, '$tipoActividad', $idDelTrabajo, '$stringArregloCodigosCompEspecificasEvaluacionTrabajo', '$stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo')";
         mysqli_query($conexion, $sqlInsercionDeEvaluacionRealizadaTrabajo) or die(mysqli_error($conexion));
@@ -2731,23 +2720,118 @@ if(isset($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']) && iss
 
         }
 
-            //De Aqui pa arriba ya funciona 
+        //Convertimos el arreglo de competencias especificas que no permiten la certificacion de comp generales a string
+        $stringArregloDeCompetenciasEspPorLasQueNoSeCertificaranCompGenerales = implode(",", $arregloDeCompetenciasEspPorLasQueNoSeCertificaranSusCompGenerales);
 
-        */
+        //Consultamos los ids de las competencias generales de aquellas competencias especificas que generaron inconsistencia N/A
+        $arregloCompetenciasGenACertificar = $competenciaControla->consultarIdsCompetenciasGeneralesACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+        $arregloIdsCompGeneralesQueNoPuedenSerCertificadas = $competenciaControla->consultarIdsCompGeneralesQueNoPuedenCertificarse($stringArregloDeCompetenciasEspPorLasQueNoSeCertificaranCompGenerales);
 
+        //Comparamos los dos arreglos y creamos un nuevo arreglo con aquellos ids que no tengan en común
+        $resultadoComparacion1 = array_diff($arregloCompetenciasGenACertificar, $arregloIdsCompGeneralesQueNoPuedenSerCertificadas);
 
+        //Estructuramos el arreglo con el fin de que se pueda utilizar y recorrerse con facilidad
+        $indiceOrdenado = 0;
+        $arrayEstructurado = array();
+        for($i=0; $i<=count($resultadoComparacion1); $i++){
+            if(array_key_exists($i, $resultadoComparacion1)){
+                $arrayEstructurado[$indiceOrdenado] = $resultadoComparacion1[$i];
+                $indiceOrdenado++;
+            }
+        }
+        
+        //Consultamos las competencias generales a las que pertenecen las competencias especificas previamente certificadas
+        $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array();
+        $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge = array();
+        $tipoDeBadgeParaMegainsignia = "";
+        
+        //Consultamos el numero de competencias especificas que tiene cada competencia general 
+        for($h=0; $h<count($arrayEstructurado); $h++){
 
+            $numeroDeCompEspQueTieneLaCompGeneral = $competenciaControla->contarCantidadDeCompEspecificasDeUnaCompGeneral($arrayEstructurado[$h]);
 
+            //Obtenemos un arreglo con los primeros n tipos de badge de la competencia general para hacer el procesamiento correspondiente
+            $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array_slice($arregloTiposDeBadgeGanadosEnActividadCompEsp, 0, $numeroDeCompEspQueTieneLaCompGeneral);
 
+            for($l=0; $l<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $l++){
+                //Eliminamos el elemento del array
+                unset($arregloTiposDeBadgeGanadosEnActividadCompEsp[$l]);
+            }
 
+            if(count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig) == 1){
+                $tipoDeBadgeParaMegaInsig = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[0];
 
+                //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
+                $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegaInsig', $arrayEstructurado[$h], 'GENERAL')";
+                mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+            
+            }else{
 
+                //Recorremos el arreglo de tipos de badges con el fin de identificar cuantas veces se repite cada uno de sus elementos
+                for($x=0; $x<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $x++){
+                    $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$x] = $competenciaControla->contarCuantasVecesSeRepiteUnTipoDeBadge($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig, $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$x]);
+                }
 
+                //Obtenemos el numero mas grande del arreglo de numero de repeticiones de los tipos de badge
+                $numeroMasGrandeDeRepeticiones = max($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge);
+
+                //Reestructuramos los indices del array de tipos de badge para determinar tipo de megainsignia
+                $indexOrdenado = 0;
+                $arrayEstructuradoTiposDeBadgeParaDeterminarTipoMegaInsig = array();
+                for($z=0; $z<=count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $z++){
+                    if(array_key_exists($z, $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig)){
+                        $arrayEstructuradoTiposDeBadgeParaDeterminarTipoMegaInsig[$indexOrdenado] = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$z];
+                        $indexOrdenado++;
+                    }
+                }
+                
+                //Recorremos el arreglo de repeticiones con el fin de encontrar el indice del numero mas grande ($numeroMasGrandeDeRepeticiones) para así obtener el tipo de badge que se encuentre en dicho indice en el arreglo de tipos de badges
+                for($y=0; $y<count($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge); $y++){
+                    
+                    if($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$y] == $numeroMasGrandeDeRepeticiones){
+                        $tipoDeBadgeParaMegainsignia = $arrayEstructuradoTiposDeBadgeParaDeterminarTipoMegaInsig[$y];
+                        break;
+                    }
+                }
+
+                //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
+                $sqlInsercionInsigWin = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegainsignia', $arrayEstructurado[$h], 'GENERAL')";
+                mysqli_query($conexion, $sqlInsercionInsigWin) or die(mysqli_error($conexion));
+            }
+        }
+
+        //Eliminamos la aplicacion del trabajo a la actividad
+        $trabajoControla->eliminarAplicacionDelTrabajoParaUnaActividad($idDelTrabajo, $idActividad, $tipoActividad);
+
+        //Indicamos que el trabajo ya tiene badges de certificacion y lo publicamos en el eportafolio del estudiante
+        $trabajoControla->publicarTrabajoDestacadoCertificado($idDelTrabajo);
+        
+        
+
+    }else{
+        
+        //Insertamos en base de datos la evaluacion de competencias especificas realizada al trabajo
+        $sqlInsercionDeEvaluacionRealizadaTrabajo = "INSERT INTO tbl_evaluaciondetrabajos VALUES (0, $idActividad, '$tipoActividad', $idDelTrabajo, '$stringArregloCodigosCompEspecificasEvaluacionTrabajo', '$stringArregloNivelesContribucionCompEspecificasEvaluacionTrabajo')";
+        mysqli_query($conexion, $sqlInsercionDeEvaluacionRealizadaTrabajo) or die(mysqli_error($conexion));
+
+        //Consultamos los ids de las competencias especificas que se van a certificar con el trabajo aplicado
+        $arregloIdsCompetenciasEspecificasACertificar = $competenciaControla->consultarIdsDeCompetenciasEspecificasACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
+
+        //Insertamos en la BD de insignias ganadas, los tipos de badge de comp especificas obtenidos por el trabajo destacado
+        for($u=0; $u<count($arregloIdsCompetenciasEspecificasACertificar); $u++){
+
+            //Insertamos en BD las insignias de competencias especificas ganadas por el trabajo
+            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$arregloTiposDeBadgeGanadosEnActividadCompEsp[$u]', $arregloIdsCompetenciasEspecificasACertificar[$u], 'ESPECIFICA')";
+            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+
+        }
+        
 
         //Consultamos las competencias generales a las que pertenecen las competencias especificas previamente certificadas
         $arregloCompetenciasGeneralesACertificar = $competenciaControla->consultarIdsCompetenciasGeneralesACertificar($stringArrayTransformadoCodigosCompEspecificasDeLaActividadParaEvTrabajo);
         $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array();
         $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge = array();
+        $tipoDeBadgeParaMegainsignia = "";
         
         //Consultamos el numero de competencias especificas que tiene cada competencia general 
         for($h=0; $h<count($arregloCompetenciasGeneralesACertificar); $h++){
@@ -2755,34 +2839,43 @@ if(isset($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']) && iss
             $numeroDeCompEspQueTieneLaCompGeneral = $competenciaControla->contarCantidadDeCompEspecificasDeUnaCompGeneral($arregloCompetenciasGeneralesACertificar[$h]);
 
             //Obtenemos un arreglo con los primeros n tipos de badge de la competencia general para hacer el procesamiento correspondiente
-            $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array_slice($valores, 0, $numeroDeCompEspQueTieneLaCompGeneral);
+            $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig = array_slice($arregloTiposDeBadgeGanadosEnActividadCompEsp, 0, $numeroDeCompEspQueTieneLaCompGeneral);
 
-            for($l=0; $l<count($arregloDeTiposDeBadgpanelParaBotonDescargaEnunciadoEventoeParaDeterminarTipoMegaInsig); $l++){
+            for($l=0; $l<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $l++){
                 //Eliminamos el elemento del array
                 unset($arregloTiposDeBadgeGanadosEnActividadCompEsp[$l]);
             }
 
-            //Recorremos el arreglo de tipos de badges con el fin de identificar cuantas veces se repite cada uno de sus elementos
-            for($x=0; $x<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $x++){
-                $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$x] = $competenciaControla->contarCuantasVecesSeRepiteUnTipoDeBadge($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig, $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$x]);
-            }
+            if(count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig) == 1){
+                $tipoDeBadgeParaMegaInsig = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[0];
 
-            //Obtenemos el numero mas grande del arreglo de numero de repeticiones de los tipos de badge
-            $numeroMasGrandeDeRepeticiones = max($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge);
-            $tipoDeBadgeParaMegainsignia = "";
+                //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
+                $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegaInsig', $arregloCompetenciasGeneralesACertificar[$h], 'GENERAL')";
+                mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
+            
+            }else{
 
-            //Recorremos el arreglo de repeticiones con el fin de encontrar el indice del numero mas grande ($numeroMasGrandeDeRepeticiones) para asíobtner el tipo de badge que se encuentre en dicho indice en el arreglo de tipos de badges
-            for($y=0; $y<count($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge); $y++){
-                
-                if($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$y] == $numeroMasGrandeDeRepeticiones){
-                    $tipoDeBadgeParaMegainsignia = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$y];
+                //Recorremos el arreglo de tipos de badges con el fin de identificar cuantas veces se repite cada uno de sus elementos
+                for($x=0; $x<count($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig); $x++){
+                    $arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$x] = $competenciaControla->contarCuantasVecesSeRepiteUnTipoDeBadge($arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig, $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$x]);
                 }
+
+                //Obtenemos el numero mas grande del arreglo de numero de repeticiones de los tipos de badge
+                $numeroMasGrandeDeRepeticiones = max($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge);
+                
+                //Recorremos el arreglo de repeticiones con el fin de encontrar el indice del numero mas grande ($numeroMasGrandeDeRepeticiones) para así obtener el tipo de badge que se encuentre en dicho indice en el arreglo de tipos de badges
+                for($y=0; $y<count($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge); $y++){
+                    
+                    if($arregloDeNumeroDeRepeticionesDeLosTiposDeBadge[$y] == $numeroMasGrandeDeRepeticiones){
+                        $tipoDeBadgeParaMegainsignia = $arregloDeTiposDeBadgeParaDeterminarTipoMegaInsig[$y];
+                        break;
+                    }
+                }
+
+                //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
+                $sqlInsercionInsigWin = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegainsignia', $arregloCompetenciasGeneralesACertificar[$h], 'GENERAL')";
+                mysqli_query($conexion, $sqlInsercionInsigWin) or die(mysqli_error($conexion));
             }
-
-            //Generamos la certificacion de la megainsignia de lacompetencia general para el trabajo destacado
-            $sqlInsercionInsigGanadas = "INSERT INTO tbl_insigniasganadastrabdestacado VALUES (0, $idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo, $idDelTrabajo, '$tipoDeBadgeParaMegainsignia', $arregloCompetenciasGeneralesACertificar[$h], 'GENERAL')";
-            mysqli_query($conexion, $sqlInsercionInsigGanadas) or die(mysqli_error($conexion));
-
         }
 
         //Eliminamos la aplicacion del trabajo a la actividad
