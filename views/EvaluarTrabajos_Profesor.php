@@ -845,7 +845,7 @@ if(isset($_GET['Id_profesor']) != 0){
                                         </div>  
                                         <br>
 
-                                        <button type="button" id="btnGuardarEvaluacionDeTrabajoAplicadoADesafio" class="btn_detalleDesafioReferenciado" title="Guardar">Guardar</button> 
+                                        <button type="button" id="btnGuardarEvaluacionDeTrabajoAplicadoADesafio" class="btn_detalleDesafioReferenciado" data-bs-toggle="modal" data-bs-target="#modalResultadosEvaluacionTrabajo" title="Guardar">Guardar</button> 
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Cerrar">Cerrar</button>
                                    </form>
                                         
@@ -854,6 +854,133 @@ if(isset($_GET['Id_profesor']) != 0){
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!--POPUP PARA LA PRESENTACION DE LOS RESULTADOS OBTENIDO EN LA EVALUACION DE COMPETENCIAS REALIZADA AL TRABAJO-->
+                    <div class="modal fade" id="modalResultadosEvaluacionTrabajo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="titulo_seccion" id="staticBackdropLabel">Resultados de Evaluación</h3>
+                            </div>
+                            <div class="modal-body">
+
+                                <form id="informacionGeneral">
+                                    <label class="subtitulosInfo">Nombre del trabajo:</label><br>
+                                    <input type="hidden" id="idTrabajoInvolucrado" name="Id" value="">
+                                    <input type="text" class="infoDetalleDesafio" name="nombre_trabajo">
+                                </form>
+                                <br>  
+                                                            
+                                <p class="enunciadoModalCompetencias">MegaInsignias obtenidas: </p>
+                                <br>                                 
+
+                                <!--Este es el código que contiene las competencias generales con su tipo de insignia obtenida por el trabajo en la evaluacion-->
+                                <div class="contenedorCompeEspeciasAEvaluar">                                         
+                                    <span id="panelListaMegaInsigniasGanadasEnEvaluacion"></span>                                            
+                                    <br>
+                                </div>  
+                                <br>
+
+                                <p class="enunciadoModalCompetencias">Insignias obtenidas: </p>
+                                <br> 
+
+                                <!--Este es el código que contiene las competencias especificas con su tipo de insignia obtenida por el trabajo en la evaluacion-->
+                                <div class="contenedorCompeEspeciasAEvaluar">                                         
+                                    <span id="panelListaInsigniasGanadasEnEvaluacion"></span>                                            
+                                    <br>
+                                </div>  
+                                <br>
+
+                                <button id="btn_finalizarEvaluacion" onclick="recargarPagina()" type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Finalizar">Finalizar</button>
+                                         
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -933,6 +1060,14 @@ if(isset($_GET['Id_profesor']) != 0){
             resetSpanLogicaActividades();
         });
     </script>
+
+    <!--Funcion que recarga la pagina-->
+    <script>
+        function recargarPagina(){
+            window.location.reload(true);
+        }
+    </script>
+
 
     <!--Funcion que resetea el span de la tabla de trabajos aplicados-->
     <script>
@@ -1720,9 +1855,11 @@ if(isset($_GET['Id_profesor']) != 0){
                     var data = $.parseJSON(response)[0];
                     var formId = "#detallesDeTrabDestacadoDesafio";
                     var formEvaluacion = "#formularioDeEvaluacionDeTrabajoAplicadoADesafio"
+                    var formResultadosEvaluacion = "#informacionGeneral"
                     $.each(data, function(key, value){
                         $("[name="+key+"]", formId).val(value);
                         $("[name="+key+"]", formEvaluacion).val(value);
+                        $("[name="+key+"]", formResultadosEvaluacion).val(value);
                         
                     });
                 })
@@ -1844,6 +1981,23 @@ if(isset($_GET['Id_profesor']) != 0){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //ESTE ES EL CODIGO QUE DEBO REPLICAR PARA LAS DEMAS ACTIVIDADES PARA QUE PUEDAN EVALUAR SUS TRABAJOS APLICADOS
 
             //Script que permite pasar el id del desafio con el fin de cargar su informacion en el modal de evaluacion de trabajos aplicados a un desafio
@@ -1938,14 +2092,14 @@ if(isset($_GET['Id_profesor']) != 0){
 
                 obtenerCompetenciasParaEvaluacionDeTrabajoAplicadoADesafio();
 
-            });
+            }); 
 
         }
-
     </script>
 
     <!--Script que permite el registro de la evaluación realizada a un trabajo que fue aplicado a un desafio--> 
     <script type='text/javascript'>
+
         $(document).ready(function(){
                        
             $('#btnGuardarEvaluacionDeTrabajoAplicadoADesafio').click(function() {
@@ -1958,8 +2112,10 @@ if(isset($_GET['Id_profesor']) != 0){
                 var contenedoresDeRespuestasNivelContribCompetenciaATrabajoAplicadoDesafio = document.getElementsByClassName('contenedorRespContribucionCompEsp');
                 var arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio = []; 
                 var arregloNivelesContribucionCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio = []; 
-            
 
+                var idDelTrabajoAConsultarMegaInsigObtenidasDesafio = document.getElementById('idTrabajoInvolucrado').value;
+                var idDelTrabajoAConsultarInsigObtenidasDesafio = document.getElementById('idTrabajoInvolucrado').value;
+            
                 for (let item of contenedoresDeRespuestasNivelContribCompetenciaATrabajoAplicadoDesafio) {
                     arregloCodigosCompEspecificasUsadasEvaluacionDeTrabajoAplicadoDesafio.push(item.id)  
                 }
@@ -1997,9 +2153,54 @@ if(isset($_GET['Id_profesor']) != 0){
                             });
                         })
                     }
+
+                    function obtenerMegaInsigniasDeUnTrabajoAplicadoADesafio() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDelTrabajoInvolucradoMegaInsigniasObtenidas': idDelTrabajoAConsultarMegaInsigObtenidasDesafio},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelListaMegaInsigniasGanadasEnEvaluacion').html(response);
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
+
+                    function obtenerInsigniasDeUnTrabajoAplicadoADesafio() {
+                        return new Promise((resolve, reject) => {
+                            // AJAX request
+                            $.ajax({
+                                url: 'logic/utils/ajaxfile.php',
+                                type: 'post',
+                                data: {'idDelTrabajoInvolucradoInsigniasObtenidas': idDelTrabajoAConsultarInsigObtenidasDesafio},
+                                success: function(response){
+                                    resolve(response)
+                                    $('#panelListaInsigniasGanadasEnEvaluacion').html(response);
+                                },
+                                error: function (error) {
+                                reject(error)
+                                },
+                            });
+                        })
+                    }
                 
-                    evaluarTrabajoAplicadoAUnDesafio();
-                                    
+                    evaluarTrabajoAplicadoAUnDesafio()
+                    .then((response) => {
+
+                        obtenerMegaInsigniasDeUnTrabajoAplicadoADesafio();
+                        obtenerInsigniasDeUnTrabajoAplicadoADesafio();
+
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+               
                 }else{
                     alert('Debe evaluar todas las competencias específicas propuestas.');
                     return false;
@@ -2007,7 +2208,17 @@ if(isset($_GET['Id_profesor']) != 0){
                 
             });
         });
+    
     </script>
+
+    
+
+
+
+
+
+
+    
 
 
 

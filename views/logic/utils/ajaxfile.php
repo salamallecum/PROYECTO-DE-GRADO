@@ -2886,6 +2886,110 @@ if(isset($_POST['idDelEstudianteParaGuardarEvaluacionRealizadaATrabajo']) && iss
   
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Capturamos el evento del id de un trabajo con el fin de mostrar sus resultados en la evaluacion realizada por el profesor (MegaInsignias)
+if(isset($_POST['idDelTrabajoInvolucradoMegaInsigniasObtenidas'])){
+
+    //Aqui traemos los datos
+    $idDelTrabajoInvolucradoMegaInsigniasObtenidas = $_POST['idDelTrabajoInvolucradoMegaInsigniasObtenidas'];
+
+    //Obtenemos el arreglo de los ids de las competencias generales que tiene certificado el trabajo
+    $arregloIdsCompGeneralesEvaluadasTrabajo = $competenciaControla->consultarArregloDeCompetenciasGeneralesEvaluadasParaTrabajo($idDelTrabajoInvolucradoMegaInsigniasObtenidas); 
+    $arregloTiposDeMegaInsigGanadasPorElTrabajo = $competenciaControla->consultarArregloDeMegaInsigniasGanadasPorElTrabajo($idDelTrabajoInvolucradoMegaInsigniasObtenidas);
+    $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo = "";
+    $noSeCertificaronCompGenerales = "<p>No se otorgaron Megainsignias</p>";
+
+    if($arregloIdsCompGeneralesEvaluadasTrabajo != null){
+
+        //Convertimos el arreglo a string
+        $stringArregloIdsCompGeneralesEvaluadasTrabajo = implode(",", $arregloIdsCompGeneralesEvaluadasTrabajo);
+
+        //Consultamos las descripciones de las competencias generales que fueron evaluadas para el trabajo y estructuramos el html del formulario
+        $sqlCompetenciasGeneralesQueFueronCertParaElTrabajo = "SELECT codigo, nombre_comp_gral from tbl_competencia_general where id_comp_gral in(".$stringArregloIdsCompGeneralesEvaluadasTrabajo.")";
+        $resultCompetenciasGeneralesQueFueronCertParaElTrabajo = mysqli_query($conexion, $sqlCompetenciasGeneralesQueFueronCertParaElTrabajo);
+        
+        $count = 0;
+        while(@mysqli_fetch_array($resultCompetenciasGeneralesQueFueronCertParaElTrabajo)){
+            foreach($resultCompetenciasGeneralesQueFueronCertParaElTrabajo as $ver){
+
+                $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo = $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo.'<textarea class="enunciadoCompEspecifica" name="nombre_comp_gral" disabled>'.$ver['codigo'].' '.$ver['nombre_comp_gral'].'</textarea><br>'; 
+
+                $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo = $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo.'<p>MegaInsignia ganada:'.' '.$arregloTiposDeMegaInsigGanadasPorElTrabajo[$count].'</p><br>';
+                $count++;           
+                
+            } 
+        }
+
+        echo $codigoHtmlEnunciadoCompGenEvaluadasAlTrabajo;
+
+    }else{
+        echo $noSeCertificaronCompGenerales;
+    }
+}
+
+//Capturamos el evento del id de un trabajo con el fin de mostrar sus resultados en la evaluacion realizada por el profesor (Insignias)
+if(isset($_POST['idDelTrabajoInvolucradoInsigniasObtenidas'])){
+
+    //Aqui traemos los datos
+    $idDelTrabajoInvolucradoInsigniasObtenidas = $_POST['idDelTrabajoInvolucradoInsigniasObtenidas'];
+
+    //Obtenemos el arreglo de los ids de las competencias especificas que tiene certificado el trabajo
+    $arregloIdsCompEspecificasEvaluadasTrabajo = $competenciaControla->consultarArregloDeCompetenciasEspecificasEvaluadasParaTrabajo($idDelTrabajoInvolucradoInsigniasObtenidas);
+    $arregloTiposDeInsigGanadasPorElTrabajo = $competenciaControla->consultarArregloDeInsigniasGanadasPorElTrabajo($idDelTrabajoInvolucradoInsigniasObtenidas);
+    $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo = "";
+    $noSeCertificaronCompEspecificas = "<p>No se otorgaron Insignias</p>";
+    
+    if($arregloIdsCompEspecificasEvaluadasTrabajo != null){
+
+        //Convertimos el arreglo a string
+        $stringArregloIdsCompEspecificasEvaluadasTrabajo = implode(",", $arregloIdsCompEspecificasEvaluadasTrabajo);
+
+        //Consultamos las descripciones de las competencias especificas que fueron evaluadas para el trabajo y estructuramos el html del formulario
+        $sqlCompetenciasEspecificasQueFueronCertParaElTrabajo = "SELECT codigo, nombre_competencia_esp from tbl_competencia_especifica where id_comp_esp in(".$stringArregloIdsCompEspecificasEvaluadasTrabajo.")";
+        $resultCompetenciasEspecificasQueFueronCertParaElTrabajo = mysqli_query($conexion, $sqlCompetenciasEspecificasQueFueronCertParaElTrabajo);
+        
+        $count = 0;
+        while(@mysqli_fetch_array($resultCompetenciasEspecificasQueFueronCertParaElTrabajo)){
+            foreach($resultCompetenciasEspecificasQueFueronCertParaElTrabajo as $ver){
+
+                $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo = $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo.'<textarea class="enunciadoCompEspecifica" name="nombre_competencia_esp" disabled>'.$ver['codigo'].' '.$ver['nombre_competencia_esp'].'</textarea><br>'; 
+
+                $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo = $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo.'<p>Insignia ganada:'.' '.$arregloTiposDeInsigGanadasPorElTrabajo[$count].'</p><br>';
+                $count++;           
+                
+            } 
+        }
+
+        echo $codigoHtmlEnunciadoCompEspEvaluadasAlTrabajo;
+
+    }else{
+        echo $noSeCertificaronCompEspecificas;
+    }
+}
     
 ?>
 

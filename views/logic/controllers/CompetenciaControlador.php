@@ -819,6 +819,90 @@ class CompetenciaControlador{
         }
     }
 
+    //Funcion que consulta las competencias generales que fueron evaluadas en un trabajo determinado
+    public function consultarArregloDeCompetenciasGeneralesEvaluadasParaTrabajo(int $idDelTrabajoInvolucrado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_competencia from tbl_insigniasganadastrabdestacado where id_trabajo = $idDelTrabajoInvolucrado and tipo_competencia = 'GENERAL'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayCompGeneralesEvaluadasTrabajo = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayCompGeneralesEvaluadasTrabajo[$contador] = $row['id_competencia'];
+            $contador++;
+        }
+
+        return $emparrayCompGeneralesEvaluadasTrabajo;
+
+    }
+
+    //Funcion que consulta las competencias especificas que fueron evaluadas en un trabajo determinado
+    public function consultarArregloDeCompetenciasEspecificasEvaluadasParaTrabajo(int $idDelTrabajoInvolucrado){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT id_competencia from tbl_insigniasganadastrabdestacado where id_trabajo = $idDelTrabajoInvolucrado and tipo_competencia = 'ESPECIFICA'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayCompEspEvaluadasTrabajo = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayCompEspEvaluadasTrabajo[$contador] = $row['id_competencia'];
+            $contador++;
+        }
+
+        return $emparrayCompEspEvaluadasTrabajo;
+
+    }
+
+    //Funcion que consulta los tipos de megainsignias ganadas por un trabajo
+    public function consultarArregloDeMegaInsigniasGanadasPorElTrabajo(int $idTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT tipo_badge from tbl_insigniasganadastrabdestacado where id_trabajo = $idTrabajo and tipo_competencia = 'GENERAL'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayMegaInsigGanadasTrabajo = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayMegaInsigGanadasTrabajo[$contador] = $row['tipo_badge'];
+            $contador++;
+        }
+
+        return $emparrayMegaInsigGanadasTrabajo;
+
+    }
+
+    //Funcion que consulta los tipos de megainsignias ganadas por un trabajo
+    public function consultarArregloDeInsigniasGanadasPorElTrabajo(int $idTrabajo){
+
+        $c = new conectar();
+        $conexion = $c->conexion();
+
+        $sql = "SELECT tipo_badge from tbl_insigniasganadastrabdestacado where id_trabajo = $idTrabajo and tipo_competencia = 'ESPECIFICA'";
+        $result = mysqli_query($conexion, $sql);
+
+        $emparrayInsigGanadasTrabajo = array();
+
+        $contador = 0;
+        while ($row = @mysqli_fetch_array($result)) {
+            $emparrayInsigGanadasTrabajo[$contador] = $row['tipo_badge'];
+            $contador++;
+        }
+
+        return $emparrayInsigGanadasTrabajo;
+
+    }
+
     //Funcion que consulta el string de los array de los niveles de contribucion de competencias especificas selesccionadas para una actividad (sea desafio, evento o convocatoria)
     public function consultarArregloDeNivelesDeCompetenciasEspecificasDeUnaActividad(int $idActividad, string $tipoActividad){
 
@@ -833,6 +917,7 @@ class CompetenciaControlador{
         }
     }
 
+    
     //Funcion que permite consultar los ids de las competencias generales que hacen parte de un grupo de competencias especificas para su certificacion
     public function consultarIdsCompetenciasGeneralesACertificar(string $strSeleccionCompEspecificas){
 
