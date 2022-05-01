@@ -283,7 +283,7 @@ if($_GET['Id_estudiante'] != 0){
                     foreach ($datosTrabDestacadosConMegaInsig as $key){
 
                         //Consultamos los datos de los trabajos destacados que tienen megainsignia para su muestreo en el eportafolio online
-                        $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$key['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id_trabajo=".$key['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
                         $datosTrabDestConMegaInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlInfoTrabDestacadosConMegaInsig);
                         foreach ($datosTrabDestConMegaInsig as $item){
                 ?>
@@ -390,7 +390,7 @@ if($_GET['Id_estudiante'] != 0){
                     foreach ($datosTrabDestacadosConInsig as $point){
 
                         //Consultamos los datos de los trabajos destacados que tienen insignia para su muestreo en el eportafolio online
-                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id_trabajo=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
                         $datosTrabDestConInsig = $trabajoDestControla->mostrarTrabajosDestacados($sqlInfoTrabDestacadosConInsig);
                         foreach ($datosTrabDestConInsig as $like){
                 ?>

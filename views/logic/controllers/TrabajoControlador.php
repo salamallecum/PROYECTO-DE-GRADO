@@ -28,7 +28,7 @@ class TrabajoControlador{
         $publicadoEnEport = $trabDestacado->getPublicadoEnEportafolio();
         
                 
-        $sql = "INSERT INTO tbl_trabajodestacado (Id, Id_estudiante, nombre_trabajo, descripcion, fueAplicadoAActividad, trabajoTieneBadge, publicadoeneportafolio)
+        $sql = "INSERT INTO tbl_trabajodestacado (Id_trabajo, Id_estudiante, nombre_trabajo, descripcion, fueAplicadoAActividad, trabajoTieneBadge, publicadoeneportafolio)
                             values ($idTrabajo, $idDelestudiante, '$nombreTrabajo', '$descripcionTrabajo', '$trabajoAplicadoAActividad', '$elTrabTieneBadge', '$publicadoEnEport')";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion)) ;
@@ -125,7 +125,7 @@ class TrabajoControlador{
         $conexion = $c->conexion();
                 
         $sql = "UPDATE tbl_trabajodestacado SET nombre_trabajo='$nombreTrabajoEdit', descripcion='$descripcionTrabEdit', publicadoeneportafolio='$sePublicaTrabEdit'
-                            WHERE  Id=$idTrabajoDestacadoEdit";
+                            WHERE  Id_trabajo=$idTrabajoDestacadoEdit";
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
@@ -136,7 +136,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT nombre_imagentrabajo from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "SELECT nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo = $idTrab";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -150,7 +150,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET nombre_imagentrabajo = null WHERE  nombre_imagentrabajo='$nombreImgTrabDestacado' and Id=".$idTr;
+        $sql = "UPDATE tbl_trabajodestacado SET nombre_imagentrabajo = null WHERE  nombre_imagentrabajo='$nombreImgTrabDestacado' and Id_trabajo=".$idTr;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
@@ -178,7 +178,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET link_documento = null WHERE Id=".$idTab;
+        $sql = "UPDATE tbl_trabajodestacado SET link_documento = null WHERE Id_trabajo=".$idTab;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
@@ -189,7 +189,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET link_video = null WHERE Id=".$idTab;
+        $sql = "UPDATE tbl_trabajodestacado SET link_video = null WHERE Id_trabajo=".$idTab;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
@@ -200,7 +200,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET link_repocodigo = null WHERE Id=".$idTab;
+        $sql = "UPDATE tbl_trabajodestacado SET link_repocodigo = null WHERE Id_trabajo=".$idTab;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
@@ -211,7 +211,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET link_presentacion = null WHERE Id=".$idTab;
+        $sql = "UPDATE tbl_trabajodestacado SET link_presentacion = null WHERE Id_trabajo=".$idTab;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     } 
@@ -222,11 +222,11 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT Id from tbl_trabajodestacado where Id = $idDelTrab and trabajoTieneBadge = 'No'";
+        $sql = "SELECT Id_trabajo from tbl_trabajodestacado where Id_trabajo = $idDelTrab and trabajoTieneBadge = 'No'";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
-            return $row['Id'];
+            return $row['Id_trabajo'];
         }
     } 
 
@@ -236,7 +236,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "DELETE  from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "DELETE  from tbl_trabajodestacado where Id_trabajo = $idTrab";
 
         //Consultamos si tiene imagen almacenada en el servidor
         $nombreImagen = (string) $this->consultarNombreImagenTrabajoDestacado($idTrab);
@@ -266,7 +266,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'Si' WHERE  Id=".$idDelTrabajo;
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'Si' WHERE  Id_trabajo=".$idDelTrabajo;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
@@ -278,7 +278,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No' WHERE  Id=".$idDelTrabajo;
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No' WHERE  Id_trabajo=".$idDelTrabajo;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
@@ -302,7 +302,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT link_documento from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "SELECT link_documento from tbl_trabajodestacado where Id_trabajo = $idTrab";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -315,7 +315,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT link_video from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "SELECT link_video from tbl_trabajodestacado where Id_trabajo = $idTrab";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -328,7 +328,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT link_repocodigo from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "SELECT link_repocodigo from tbl_trabajodestacado where Id_trabajo = $idTrab";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -341,7 +341,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();
 
-        $sql = "SELECT link_presentacion from tbl_trabajodestacado where Id = $idTrab";
+        $sql = "SELECT link_presentacion from tbl_trabajodestacado where Id_trabajo = $idTrab";
         $result = mysqli_query($conexion, $sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -366,7 +366,7 @@ class TrabajoControlador{
         $c = new conectar();
         $conexion = $c->conexion();      
                 
-        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No', trabajoTieneBadge = 'Si', publicadoeneportafolio='Si' WHERE Id=".$idDelTrabajo;
+        $sql = "UPDATE tbl_trabajodestacado SET fueAplicadoAActividad = 'No', trabajoTieneBadge = 'Si', publicadoeneportafolio='Si' WHERE Id_trabajo=".$idDelTrabajo;
 
         return $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
     }

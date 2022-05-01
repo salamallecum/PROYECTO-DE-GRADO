@@ -145,7 +145,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     
                         <!--Script para cargar datos de los trabajos destacados en cards-->      
                         <?php
-                            $sql = "SELECT Id, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion, fueAplicadoAActividad from tbl_trabajodestacado where trabajoTieneBadge = 'No' and Id_estudiante=".$idEstudianteLogueado;
+                            $sql = "SELECT Id_trabajo, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion, fueAplicadoAActividad from tbl_trabajodestacado where trabajoTieneBadge = 'No' and Id_estudiante=".$idEstudianteLogueado;
                             $resultDatosTrabDestacados = $trabajoDestControla->mostrarDatosTrabajosDestacados($sql);
                             while ($row = mysqli_fetch_row($resultDatosTrabDestacados)){
                         ?>
@@ -336,7 +336,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
 
                             <form id="formularioDeActualizacionDeTrabajos" action="logic/capturaDatTrabajo.php" method="POST" enctype="multipart/form-data">
 
-                                <input type="hidden" name="Id">
+                                <input type="hidden" name="Id_trabajo">
                             
                                 <label class="camposFormulario">Nombre del trabajo</label><br>
                                 <input name="nombre_trabajo" placeholder="" maxlength="30" type="text" onblur="cambiarAMayuscula(this)" class="form-control" required="true">
@@ -394,7 +394,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                         </div>
                         <form id="formularioDeEliminacionDeTrabajos" action="logic/capturaDatTrabajo.php"  method="POST">
                             <div class="modal-body">
-                                <input type="hidden" name="Id" value="">
+                                <input type="hidden" name="Id_trabajo" value="">
                                 <p>¿Esta seguro que desea eliminar?</p>
                             </div>
                             <div class="modal-footer">

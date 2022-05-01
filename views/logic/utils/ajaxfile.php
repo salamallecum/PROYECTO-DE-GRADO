@@ -887,7 +887,7 @@ if(isset($_POST['idTrabajoEdit'])){
     //Aqui traemos los datos de los eventos para su edición-----------------------------------
     $idTrabajoEdit = $_POST['idTrabajoEdit'];
 
-    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoEdit;
+    $sql = "select * from tbl_trabajodestacado where Id_trabajo=".$idTrabajoEdit;
     $resultTrabajoDest = mysqli_query($conexion,$sql);
 
     $emparrayTrabajos = array();
@@ -905,7 +905,7 @@ if(isset($_POST['idTrabajoElim'])){
     //Aqui traemos los datos de los eventos para su edición-----------------------------------
     $idTrabajoElim = $_POST['idTrabajoElim'];
 
-    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoElim;
+    $sql = "select * from tbl_trabajodestacado where Id_trabajo=".$idTrabajoElim;
     $resultTrabajoDestEl = mysqli_query($conexion,$sql);
 
     $emparrayTrabajos = array();
@@ -923,7 +923,7 @@ if(isset($_POST['idTrabajoAEvaluar'])){
     //Aqui traemos los datos de los eventos para su edición-----------------------------------
     $idTrabajoAEvaluar = $_POST['idTrabajoAEvaluar'];
 
-    $sql = "select * from tbl_trabajodestacado where Id=".$idTrabajoAEvaluar;
+    $sql = "select * from tbl_trabajodestacado where Id_trabajo=".$idTrabajoAEvaluar;
     $resultTrabajoDestEv = mysqli_query($conexion,$sql);
 
     $emparrayDatosTrabajoAEvaluar = array();
@@ -2336,7 +2336,7 @@ if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnDesafio = implode(",", $arrayTrabajosQueTieneAplicadosUnDesafio);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDelDesafio = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnDesafio.")";
+    $sqlDatTrabajosDelDesafio = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnDesafio.")";
     $datosTrabajosDelDesafio = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelDesafio);
 
     if($datosTrabajosDelDesafio != null){
@@ -2358,7 +2358,7 @@ if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajoAplicadoADesafio" onclick="funcionesParaRevisionDeTrabajosAplicadosADesafios()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-desafio="'.$idDesafioNumerico.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoADesafio" onclick="funcionesParaRevisionDeTrabajosAplicadosADesafios()" data-id="'.$key['Id_trabajo'].'" data-estudiante="'.$key['Id_estudiante'].'" data-desafio="'.$idDesafioNumerico.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoADesafio" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2384,7 +2384,7 @@ if(isset($_POST['idPropuestaParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnaPropuesta = implode(",", $arrayTrabajosQueTieneAplicadosUnaPropuesta);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDeLaPropuesta = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnaPropuesta.")";
+    $sqlDatTrabajosDeLaPropuesta = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaPropuesta.")";
     $datosTrabajosDeLaPropuesta = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaPropuesta);
 
     if($datosTrabajosDeLaPropuesta != null){
@@ -2406,7 +2406,7 @@ if(isset($_POST['idPropuestaParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajoAplicadoAPropuesta" onclick="funcionesParaRevisionDeTrabajosAplicadosAPropuestas()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-propuestaInvolucrada="'.$idPropuestaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAPropuesta" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoAPropuesta" onclick="funcionesParaRevisionDeTrabajosAplicadosAPropuestas()" data-id="'.$key['Id_trabajo'].'" data-estudiante="'.$key['Id_estudiante'].'" data-propuesta="'.$idPropuestaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAPropuesta" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2431,7 +2431,7 @@ if(isset($_POST['idEventoParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnEvento = implode(",", $arrayTrabajosQueTieneAplicadosUnEvento);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDelEvento = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnEvento.")";
+    $sqlDatTrabajosDelEvento = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnEvento.")";
     $datosTrabajosDelEvento = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelEvento);
 
     if($datosTrabajosDelEvento != null){
@@ -2453,7 +2453,7 @@ if(isset($_POST['idEventoParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                                <a class="btnDetallesTrabajoAplicadoAEvento" onclick="funcionesParaRevisionDeTrabajosAplicadosAEventos()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-eventoInvolucrado="'.$idEventoParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAEvento" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                                <a class="btnDetallesTrabajoAplicadoAEvento" onclick="funcionesParaRevisionDeTrabajosAplicadosAEventos()" data-id="'.$key['Id_trabajo'].'" data-estudiante="'.$key['Id_estudiante'].'" data-evento="'.$idEventoParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAEvento" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>
@@ -2478,7 +2478,7 @@ if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnaConvocatoria = implode(",", $arrayTrabajosQueTieneAplicadosUnaConvocatoria);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDeLaConvocatoria = "SELECT Id, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id in (".$stringTrabajosQueTieneAplicadosUnaConvocatoria.")";
+    $sqlDatTrabajosDeLaConvocatoria = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaConvocatoria.")";
     $datosTrabajosDeLaConvocatoria = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaConvocatoria);
 
     if($datosTrabajosDeLaConvocatoria != null){
@@ -2500,7 +2500,7 @@ if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
                                                         <td class="datoTabla"><div class="compEsp-edicion">
     
                                                             <div class="col-botonesEdicion">
-                                                            <a class="btnDetallesTrabajoAplicadoAConvocatoria" onclick="funcionesParaRevisionDeTrabajosAplicadosAConvocatorias()" data-id="'.$key['Id'].'" data-estudiante="'.$key['Id_estudiante'].'" data-convocatoriaInvolucrada="'.$idConvocatoriaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAConvocatoria" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
+                                                            <a class="btnDetallesTrabajoAplicadoAConvocatoria" onclick="funcionesParaRevisionDeTrabajosAplicadosAConvocatorias()" data-id="'.$key['Id_trabajo'].'" data-estudiante="'.$key['Id_estudiante'].'" data-convocatoria="'.$idConvocatoriaParaConsultarSusTrabajosAplicados.'" data-bs-toggle="modal" data-bs-target="#modalDetallesDeTrabajoAplicadoAConvocatoria" title="Ver detalles"><img src="assets/images/verDetallesActividad.png"></a> 
                                                             </div>
     
                                                         </div></td>

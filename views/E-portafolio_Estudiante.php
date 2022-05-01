@@ -227,7 +227,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     
                         <!--Script para cargar datos de los trabajos destacados en cards-->      
                         <?php
-                            $sql = "SELECT Id, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where trabajoTieneBadge = 'No' and publicadoeneportafolio='Si' and Id_estudiante=".$idEstudianteLogueado;
+                            $sql = "SELECT Id_trabajo, nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where trabajoTieneBadge = 'No' and publicadoeneportafolio='Si' and Id_estudiante=".$idEstudianteLogueado;
                             $resultDatosTrabDestacados = $trabajoDestControla->mostrarDatosTrabajosDestacados($sql);
                             while ($row = mysqli_fetch_row($resultDatosTrabDestacados)){
                         ?>
@@ -331,7 +331,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     foreach ($datosTrabDestacadosConMegaInsig as $key){
 
                         //Consultamos los datos de los trabajos destacados que tienen megainsignia para su muestreo en el eportafolio online
-                        $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$key['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $sqlInfoTrabDestacadosConMegaInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id_trabajo=".$key['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
                         $datosTrabDestConMegaInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlInfoTrabDestacadosConMegaInsig);
                         foreach ($datosTrabDestConMegaInsig as $item){
                 ?>
@@ -436,7 +436,7 @@ $idEstudianteLogueado = $_GET['Id_estudiante'];
                     foreach ($datosTrabDestacadosConInsig as $point){
 
                         //Consultamos los datos de los trabajos destacados que tienen insignia para su muestreo en el eportafolio online
-                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
+                        $sqlInfoTrabDestacadosConInsig = "SELECT nombre_trabajo, descripcion, nombre_imagentrabajo, link_documento, link_video, link_repocodigo, link_presentacion from tbl_trabajodestacado where Id_trabajo=".$point['id_trabajo']." and trabajoTieneBadge='Si' and publicadoeneportafolio = 'Si'";
                         $datosTrabDestConInsig = $trabajoDestControla->mostrarDatosTrabajosDestacados($sqlInfoTrabDestacadosConInsig);
                         foreach ($datosTrabDestConInsig as $like){
                 ?>
