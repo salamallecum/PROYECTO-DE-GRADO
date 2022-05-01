@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "proyectopandora-347104",
+  "private_key_id": "5be18113c84902783cab9b5a126877722596d9b0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCFh68wf4AQMqnD\nJyve89gcC2OlT9G+GE7Z1w/d4vFSNhrW7aUqAJOoGWSDQEESROFhDQLion3nWxbq\nd1Hxqq4nl7PpVyfG3UZDDh87Fc3qeEZ0f8hX/0sxYnFaTdLFjQu6C1WLm+zzr4bN\nrKRvpqzTWf0Y2jFkTjx6vy96r2f0UY70BdW2gC3o6yb95So2gNPGqWQNPfrBpvOj\nr++7sM5gsQGhXYoAxiPrisNXPmNewOvbeqx871+meDuFhXJrLNTqERL0sRO9hnZ2\n85rNhVYxLieuCa6WXUvWZVyBcn5EDiqC5QERa6xPGkqordkPN4ibAAR29EL223qT\nu5dnph83AgMBAAECggEAEEsvQG6+dLuJ5YtZGhqNK1bkcN6djGGw9Xn9sKipo8uA\nWOuktMxfOCrpDe8AQbdv/QS2bms/i8Sctj2bHS8jkyc6x+VfsC9+DF6jxvTxLIRC\nrKKPEtXPGhaWGFvYtUxxuuD5LlD3iADKJTzEz+75tcyMSsUNM90sGhpMM99FgxVn\niGjpJt/hWUF7Gzluk81uI5BB3aBWIZ9Yk2UAuUd2OphsnUUz9lXwEVcTd+MYgrZo\nBr0owFchOs9gl7CBgmbqmHy9cNjP+vYAKZ4I35oAPf/tc2Gx4FlFawttZ4yt408I\nOoyubHLII7OW6jcN33Co56+4BmpFdLhOw/OP9MN8CQKBgQC8AQB6XdsfPE0I6CFz\nyGqF/XmP9TOHKKKIFv7nkWWkpbNZSBEQnCRNXMPK8IqH247m/AbK8QTcwk9UQK1W\n+li7s70PcBopo7sVilll7UqBHFb2XLRsflYiFl+WKhiD5K2WI3DYhV5K2WT7ppD3\nieQJYRXesc+pFPZcL9TgjQsEywKBgQC10wbX6W8cJaDkFrUnS/59IcBZVOOg9cXU\njqhihqyfkJYHLZuySw7LR9WCiL7K9+nvtVGk/vBiHOXLGKHnjV6dUBZMAZ7LgSlt\nCXiL1QeWDLxyvYdpqMgTK+hv+TvG1Wh4JtPPpUVqNzKNRyG2QbtVNyRCMUUhIiaR\nVkkfRENtxQKBgHP94j+c/H5PA/BE167Jrf8xHfkVfU8cYPq5xVc1u5JTsU2aSv0G\neNdKLnpc4ftkGMymHcLD5Q4WzD7dEJUjK+/Suwh1T471N43Yp8NdHaR+yaCCHcb6\nQ0YQq7TIEAv/4KFLCGpuDnj7m3Qvli1DY+/teELHTamyBzVlRV+tZWj1AoGAZpXZ\nlpguCENysz3cl39Y5mDUlZI/m+EO7Q5QEsbJPn3lJ8ejwMR4ZFjzLeLZQsr9QjGb\nDuyH09NaE2yibHJmn3tAGUIQxeDp7osZaEuZLB+jc1lbvVFtEOQFEKgeAeEGQEQn\n3U/yCit6ahtn+dy8RSgHXRFPX5JVEEsOloV9RcECgYEAmxAteYUSyFOfEhXIRd7e\ngBkCNNWisM7UXDGohc38m32BOl/WEtJNzTw+Jwm/RhXUH53TwKuK3c2h9B8+dPNR\nSO6YHTISTY5T01eHI2/5guDyr3mcLd7TXPr13yYRzELhKwKKohF5H4/FJfwcYR2E\npzBvmFdzdBezvfYqk6xHJYc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "eportafoliospandora@proyectopandora-347104.iam.gserviceaccount.com",
+  "client_id": "103746819149443988591",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/eportafoliospandora%40proyectopandora-347104.iam.gserviceaccount.com"
+}
