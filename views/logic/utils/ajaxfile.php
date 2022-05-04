@@ -2336,7 +2336,7 @@ if(isset($_POST['idDesafioParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnDesafio = implode(",", $arrayTrabajosQueTieneAplicadosUnDesafio);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDelDesafio = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnDesafio.")";
+    $sqlDatTrabajosDelDesafio = "SELECT * from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnDesafio.")";
     $datosTrabajosDelDesafio = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelDesafio);
 
     if($datosTrabajosDelDesafio != null){
@@ -2384,7 +2384,7 @@ if(isset($_POST['idPropuestaParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnaPropuesta = implode(",", $arrayTrabajosQueTieneAplicadosUnaPropuesta);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDeLaPropuesta = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaPropuesta.")";
+    $sqlDatTrabajosDeLaPropuesta = "SELECT * from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaPropuesta.")";
     $datosTrabajosDeLaPropuesta = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaPropuesta);
 
     if($datosTrabajosDeLaPropuesta != null){
@@ -2431,7 +2431,7 @@ if(isset($_POST['idEventoParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnEvento = implode(",", $arrayTrabajosQueTieneAplicadosUnEvento);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDelEvento = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnEvento.")";
+    $sqlDatTrabajosDelEvento = "SELECT * from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnEvento.")";
     $datosTrabajosDelEvento = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDelEvento);
 
     if($datosTrabajosDelEvento != null){
@@ -2478,7 +2478,7 @@ if(isset($_POST['idConvocatoriaParaConsultarSusTrabajosAplicados'])){
     $stringTrabajosQueTieneAplicadosUnaConvocatoria = implode(",", $arrayTrabajosQueTieneAplicadosUnaConvocatoria);
 
     //Consultamos los datos principales de los trabajos para su muestreo en la tabla de trabajos
-    $sqlDatTrabajosDeLaConvocatoria = "SELECT Id_trabajo, Id_estudiante, nombre_trabajo, nombre_imagentrabajo from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaConvocatoria.")";
+    $sqlDatTrabajosDeLaConvocatoria = "SELECT * from tbl_trabajodestacado where Id_trabajo in (".$stringTrabajosQueTieneAplicadosUnaConvocatoria.")";
     $datosTrabajosDeLaConvocatoria = $trabajoControla->mostrarDatosTrabajosDestacados($sqlDatTrabajosDeLaConvocatoria);
 
     if($datosTrabajosDeLaConvocatoria != null){
