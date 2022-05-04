@@ -529,13 +529,13 @@ if(isset($_GET['Id_estudiante']) != 0){
                                         <?php
                                             
                                             $obj = new TrabajoControlador();
-                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $sql = "SELECT Id_trabajo, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
                                             $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
 
                                             foreach ($datosTrab as $key){
                                         ?>
 
-                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+                                                <option value="<?php echo $key['Id_trabajo']?>"><?php echo $key['nombre_trabajo']?></option>
 
                                         <?php
                                             }
@@ -579,13 +579,13 @@ if(isset($_GET['Id_estudiante']) != 0){
                                         <?php
                                             
                                             $obj = new TrabajoControlador();
-                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $sql = "SELECT Id_trabajo, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
                                             $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
 
                                             foreach ($datosTrab as $key){
                                         ?>
 
-                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+                                                <option value="<?php echo $key['Id_trabajo']?>"><?php echo $key['nombre_trabajo']?></option>
 
                                         <?php
                                             }
@@ -629,13 +629,13 @@ if(isset($_GET['Id_estudiante']) != 0){
                                         <?php
                                             
                                             $obj = new TrabajoControlador();
-                                            $sql = "SELECT Id, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
+                                            $sql = "SELECT Id_trabajo, nombre_trabajo FROM tbl_trabajodestacado WHERE Id_estudiante = $idEstudianteLogueado and fueAplicadoAActividad = 'No' and trabajoTieneBadge = 'No'";
                                             $datosTrab = $trabajoControla->mostrarDatosTrabajosDestacados($sql);
 
                                             foreach ($datosTrab as $key){
                                         ?>
 
-                                                <option value="<?php echo $key['Id']?>"><?php echo $key['nombre_trabajo']?></option>
+                                                <option value="<?php echo $key['Id_trabajo']?>"><?php echo $key['nombre_trabajo']?></option>
 
                                         <?php
                                             }
