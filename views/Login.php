@@ -97,6 +97,7 @@
                 var claveEstudiante = document.getElementById('txt_contraseña').value;
 
                 if(nombresEstudiante != "" && apellidosEstudiante != "" && correoEstudiante != "" && userEstudiante != "" && claveEstudiante != ""){
+                    alert("Pandora no se constituye como un repositorio de información, por lo tanto, no se hace responsable de que el contenido enlazado en los e-portafolios sea descargado por terceros, para lo cual, se recomienda hacer seguimiento a la configuración de seguridad y privacidad de el o los repositorios de almacenamiento utilizados para el almacenamiento de las evidencias de los e-portafolios.");
                     alert("Usuario registrado satisfactoriamente");
                 }else{
                     alert("Por favor diligencie todos los campos");
