@@ -25,5 +25,5 @@ Código fuente de la aplicación web Pandora.
     portafolios de los estudiantes.
  
 - Lenguajes utilizados: PHP, JavaScript, Bootstrap, CSS, Jquery, Ajax y MySQL
-- Para mayor información, revisar "Modelo Pandora V1.4.6 - ULTIMA VERSION.PDF" y "Manual de usuario - Proyecto PANDORA".     
+- Para mayor información, revisar "Modelo Pandora V1.4.6 - ULTIMA VERSION.pdf" y "Manual de usuario - Proyecto PANDORA.pdf".     
 
