@@ -1,6 +1,8 @@
 # PROYECTO-DE-GRADO
 Código fuente de la aplicación web Pandora.
 
+-Para desplegar, cambiar el nombre de la carpeta Proyecto-De-Grado por Mockups Pandora. 
+
 - Proyecto desarrollado bajo Arquitectura MVC (Modelo, Vista, Controlador) y POO (Programación Orientada a Objetos).
   ![Diagrama de arquitectura - Proyecto Pandora version 1 0](https://github.com/salamallecum/PROYECTO-DE-GRADO/assets/45154655/9d463dcf-b7ed-4dcc-9f42-e1e2c18aba00)
 
